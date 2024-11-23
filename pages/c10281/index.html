@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Git变基合并 | Hexo</title>
+    <meta name="author" content="John Doe" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>HEXO</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;HEXO</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>Git变基合并</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/11/18
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E3%80%8AGit%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                《Git》学习笔记
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/Git/" style="color: #00bcd4">
+                    Git
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="rebase分支合并"><a href="#rebase分支合并" class="headerlink" title="rebase分支合并"></a>rebase分支合并</h1><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>以下 <code>v2</code> 是某个需求的开发分支， <code>dev</code>是总的开发分支，<code>v2</code> 是基于<code>dev</code>分支签出的。</p>
+<p>当完成<code>v2</code>的开发后，需要把代码合并到<code>dev</code>，我们可以使用<code>rebase</code>进行合并：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先将 v2 push到远程仓库</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">git push origin v2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到 dev 拉取最新代码</span></span><br><span class="line">git checkout dev</span><br><span class="line">git pull origin dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到 v2</span></span><br><span class="line">git checkout v2</span><br><span class="line">git rebase dev <span class="comment"># 将 v2 的所有[commit] 变基到(应用到) dev</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到 dev</span></span><br><span class="line">git checkout dev</span><br><span class="line">git merge v2  <span class="comment"># 将 dev分支 快进合并 （此时 (HEAD -&gt; dev, v2) [commit] 两个分支指向同一个提交）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 原v2的[commit]记录 是否在dev分支的最前面（变基成功会把v2的提交记录应用到dev分支的最前面）</span></span><br><span class="line">git <span class="built_in">log</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 如果到这一步发现有问题，尝试使用 git --abort中止变基，如果还是有问题的可以在dev分支上使用《后悔药》操作， 再到v2分支上使用《后悔药》操作，即可使两个分支都回退到 rebase变基 之前的状态</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 试运行项目是否有问题</span></span><br><span class="line">yarn start</span><br><span class="line"></span><br><span class="line">git status <span class="comment"># 查看状态是否有问题</span></span><br><span class="line">git push origin dev <span class="comment"># 推送到远程仓库的 dev</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="变基要遵守的准则"><a href="#变基要遵守的准则" class="headerlink" title="变基要遵守的准则"></a>变基要遵守的准则</h3><p><strong>几个人同时在一个分支上进行开发和提交时，你不要中途执行变基，只有在大家都完成工作之后才可以执行变基。</strong></p>
+<h3 id="变基的实质"><a href="#变基的实质" class="headerlink" title="变基的实质"></a>变基的实质</h3><p>变基操作的实质是丢弃一些现有的提交，然后相应地新建一些内容一样但实际上不同的提交。<br>因此，<strong>变基操作过后的分支将不要再使用</strong>。</p>
+<h2 id="后悔药"><a href="#后悔药" class="headerlink" title="后悔药"></a>后悔药</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看HEAD指针变动记录</span></span><br><span class="line">git reflog</span><br><span class="line"><span class="comment"># 记录示例(当前分支是v2):</span></span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;0&#125;: checkout: moving from master to v2</span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;1&#125;: rebase (finish): returning to refs/heads/master</span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;2&#125;: rebase (start): checkout v2</span><br><span class="line">15a97d8 HEAD@&#123;3&#125;: reset: moving to 15a97d8</span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;4&#125;: merge v2: Fast-forward</span><br><span class="line">15a97d8 HEAD@&#123;5&#125;: checkout: moving from v2 to master</span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;6&#125;: rebase (finish): returning to refs/heads/v2</span><br><span class="line">07c398f (HEAD -&gt; v2, master) HEAD@&#123;7&#125;: rebase (pick): C</span><br><span class="line">15a97d8 HEAD@&#123;8&#125;: rebase (start): checkout master <span class="comment"># 首次rebase</span></span><br><span class="line">d278ecd HEAD@&#123;9&#125;: checkout: moving from master to v2 <span class="comment"># rebase前的状态</span></span><br><span class="line">15a97d8 HEAD@&#123;10&#125;: commit: D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可见，示例中最初的 rebase 操作是 HEAD@&#123;8&#125;，想回退到变基前的状态需让指针指向 HEAD@&#123;9&#125;</span></span><br><span class="line">git reset --hard d278ecd  <span class="comment"># 重置当前分支的HEAD为指定[commit]，同时重置暂存区和工作区，与指定[commit]一致</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时打印 log 查看是否回到之前的状态</span></span><br><span class="line">git <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：此操作只能回退当前的分支，如其他分支也要回退，需要切换到该分支并执行上面操作。</strong></p>
+<h2 id="开发期间的rebase操作"><a href="#开发期间的rebase操作" class="headerlink" title="开发期间的rebase操作"></a>开发期间的rebase操作</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有两个分支：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dev</span><br><span class="line">*v2</span><br></pre></td></tr></table></figure>
+
+<p><code>2.4-dev</code> 是基于<code>dev</code>切出来的。</p>
+<p>提交记录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">		dev</span><br><span class="line">a - b - c</span><br><span class="line">		v2</span><br></pre></td></tr></table></figure>
+
+<p>开发期间，两个分支同时有新的commit ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">				dev</span><br><span class="line">a - b - c - d - e</span><br><span class="line">		\ - f - g</span><br><span class="line">				v2</span><br></pre></td></tr></table></figure>
+
+<p>当前你正在<code>v2</code>进行开发，<code>dev</code>也同时进行开发，并有重大的改变，你需要把<code>dev</code>的提交同步到<code>v2</code>。</p>
+<p><strong>需求： 把<code>dev</code>中新的提交同步到<code>v2</code>，且不能影响<code>dev</code>分支。</strong></p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li><p>基于最新的 <code>dev</code> 切一个新的分支 <code>dev-copy</code></p>
+<blockquote>
+<p> <code>dev-copy</code> 和 <code>dev</code>  两者的 commit ID 一致。</p>
+</blockquote>
+</li>
+<li><p>在<code>dev-copy</code>中执行rebase，将 <code>dev-copy</code> 的提交变基到 <code>v2</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase v2 <span class="comment"># 将 dev-copy 的提交[commit] 变基到(应用到) v2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除原<code>v2</code>分支，将<code>dev-copy</code>分支名改为<code>v2</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当前在 dev-copy 分支</span></span><br><span class="line">git branch -d v2 <span class="comment"># 删除分支</span></span><br><span class="line">git branch -m dev-copy v2 <span class="comment"># 重命名</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h3><p>来源：<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html">《git cherry-pick 教程》</a></p>
+<p>用于将单个或几个<code>[commit]</code>复制到另一个分支。</p>
+<h4 id="基本应用"><a href="#基本应用" class="headerlink" title="基本应用"></a>基本应用</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick &lt;commitHash&gt; <span class="comment"># 将commitHash应用于当前分支</span></span><br></pre></td></tr></table></figure>
+<p>上面命令就会将指定的提交<code>commitHash</code>，应用于当前分支。这会在当前分支产生一个新的提交，当然它们的<strong>哈希值会不一样</strong>。</p>
+<p>git cherry-pick命令的参数，不一定是提交的哈希值，分支名也是可以的，表示转移该分支的最新提交。</p>
+<h4 id="转移多个提交"><a href="#转移多个提交" class="headerlink" title="转移多个提交"></a>转移多个提交</h4><p>Cherry pick 支持一次转移多个提交。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick &lt;HashA&gt; &lt;HashB&gt; <span class="comment"># A和B提交</span></span><br></pre></td></tr></table></figure>
+<p>上面的命令将 A 和 B 两个提交应用到当前分支。这会在当前分支生成两个对应的新提交。</p>
+<p>如果想要转移一系列的连续提交，可以使用下面的简便语法。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick A..B <span class="comment"># A到B提交，不包含A</span></span><br></pre></td></tr></table></figure>
+<p>上面的命令可以转移从 A 到 B 的所有提交。它们必须按照正确的顺序放置：提交 A 必须早于提交 B，否则命令将失败，但不会报错。</p>
+<p><strong>注意，使用上面的命令，提交 A 将不会包含在 Cherry pick 中。如果要包含提交 A，可以使用下面的语法。</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick A^..B <span class="comment"># A到B提交，包含A</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2024 Hexo
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;John Doe
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>
