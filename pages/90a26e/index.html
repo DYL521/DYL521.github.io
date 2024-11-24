@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            05.多k8s-master架构
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">05.多k8s-master架构</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-12
+                        </span>
+                        
+                            
+                                <span id="//pages/90a26e/" class="leancloud_visitors" data-flag-title="05.多k8s-master架构">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/90a26e/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">容器</span>
+                        
+                            <span class="category-color">K8S</span>
+                        
+                            <span class="category-color">02_二进制搭建K8s集群</span>
+                        
+                    
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="01-多k8s-master架构"><a href="#01-多k8s-master架构" class="headerlink" title="01.多k8s-master架构"></a>01.多k8s-master架构</h1><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP</th>
+<th>组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>k8s-master1</code></td>
+<td>192.168.56.63</td>
+<td>kube-apiserver<br />kube-controller-manager<br />kube-scheduler<br />etcd</td>
+</tr>
+<tr>
+<td><code>k8s-master2</code></td>
+<td>192.168.56.64</td>
+<td>kube-apiserver<br />kube-controller-manager<br />kube-scheduler</td>
+</tr>
+<tr>
+<td><code>k8s-node1</code></td>
+<td>192.168.56.65</td>
+<td>kubelet<br />kube-proxy<br />docker<br />etcd</td>
+</tr>
+<tr>
+<td><code>k8s-node2</code></td>
+<td>192.168.56.66</td>
+<td>kubelet<br />kube-proxy<br />docker<br />etcd</td>
+</tr>
+<tr>
+<td><code>Load Balancer(Master)</code></td>
+<td>192.168.31.61<br />&#x3D;&#x3D;192.168.56.60（VIP）&#x3D;&#x3D;</td>
+<td>Nginx L4</td>
+</tr>
+<tr>
+<td><code>Load Balancer(Backup)</code></td>
+<td>192.168.31.62</td>
+<td>Nginx L4</td>
+</tr>
+</tbody></table>
+<p><img src="./assets/image-20201216095605860.png" style="width:800px;margin-left:20px;"> </img></p>
+<h1 id="02-k8s-master2配置"><a href="#02-k8s-master2配置" class="headerlink" title="02.k8s-master2配置"></a>02.k8s-master2配置</h1><h2 id="2-1-在k8s-master1拷贝-opt-配置文件到k8s-master2"><a href="#2-1-在k8s-master1拷贝-opt-配置文件到k8s-master2" class="headerlink" title="2.1 在k8s-master1拷贝&#x2F;opt&#x2F;配置文件到k8s-master2"></a>2.1 在k8s-master1拷贝&#x2F;opt&#x2F;配置文件到k8s-master2</h2><p>&#x3D;&#x3D;k8s-master1和k8s-maser2配置基本一致，直接拷贝过去即可&#x3D;&#x3D;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;1.讲k8s-master1中的配置文件和证书拷贝到master2   &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master1 ~]# scp -r /opt/kubernetes/ root@<span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="regexp">/opt/</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;2.由于k8s-master2也要连接etcd所以要讲k8s-master1证书拷贝过去&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master1 opt]# scp -r /opt/etcd/ root@<span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="regexp">/opt/</span>etcd    </span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;3.把管理服务的 .service 文件拷贝过去 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master1 opt]# scp /usr/lib/systemd/system/&#123;kube-apiserver,kube-controller-manager,kube-scheduler&#125;.<span class="property">service</span> root@<span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="regexp">/usr/</span>lib/systemd/system</span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;4.将kubectl命令拷贝到k8s-master2中 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master1 opt]# scp /usr/local/bin/kubectl root@<span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="regexp">/usr/</span>local/bin/kubectl </span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-在k8s-master2中仅需要修改kube-apiserver-conf地址"><a href="#2-2-在k8s-master2中仅需要修改kube-apiserver-conf地址" class="headerlink" title="2.2 在k8s-master2中仅需要修改kube-apiserver.conf地址"></a>2.2 在k8s-master2中仅需要修改kube-apiserver.conf地址</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master2 opt]# vim /opt/kubernetes/cfg/kube-apiserver.<span class="property">conf</span> </span><br><span class="line"><span class="variable constant_">KUBE_APISERVER_OPTS</span>=<span class="string">&quot;--logtostderr=false \</span></span><br><span class="line"><span class="string">--v=2 \</span></span><br><span class="line"><span class="string">--log-dir=/opt/kubernetes/logs \</span></span><br><span class="line"><span class="string">--etcd-servers=https://192.168.56.63:2379,https://192.168.56.65:2379,https://192.168.56.66:2379 \</span></span><br><span class="line"><span class="string">--bind-address=192.168.56.64 \           # 绑定地址修改成 192.168.56.64</span></span><br><span class="line"><span class="string">--secure-port=6443 \</span></span><br><span class="line"><span class="string">--advertise-address=192.168.56.64 \        # 通告地址修改成 192.168.56.64</span></span><br><span class="line"><span class="string">--allow-privileged=true \</span></span><br><span class="line"><span class="string">--service-cluster-ip-range=10.0.0.0/24 \</span></span><br><span class="line"><span class="string">--enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota,NodeRestriction \</span></span><br><span class="line"><span class="string">--authorization-mode=RBAC,Node \</span></span><br><span class="line"><span class="string">--enable-bootstrap-token-auth=true \</span></span><br><span class="line"><span class="string">--token-auth-file=/opt/kubernetes/cfg/token.csv \</span></span><br><span class="line"><span class="string">--service-node-port-range=30000-32767 \</span></span><br><span class="line"><span class="string">--kubelet-client-certificate=/opt/kubernetes/ssl/server.pem \</span></span><br><span class="line"><span class="string">--kubelet-client-key=/opt/kubernetes/ssl/server-key.pem \</span></span><br><span class="line"><span class="string">--tls-cert-file=/opt/kubernetes/ssl/server.pem  \</span></span><br><span class="line"><span class="string">--tls-private-key-file=/opt/kubernetes/ssl/server-key.pem \</span></span><br><span class="line"><span class="string">--client-ca-file=/opt/kubernetes/ssl/ca.pem \</span></span><br><span class="line"><span class="string">--service-account-key-file=/opt/kubernetes/ssl/ca-key.pem \</span></span><br><span class="line"><span class="string">--etcd-cafile=/opt/etcd/ssl/ca.pem \</span></span><br><span class="line"><span class="string">--etcd-certfile=/opt/etcd/ssl/server.pem \</span></span><br><span class="line"><span class="string">--etcd-keyfile=/opt/etcd/ssl/server-key.pem \</span></span><br><span class="line"><span class="string">--audit-log-maxage=30 \</span></span><br><span class="line"><span class="string">--audit-log-maxbackup=3 \</span></span><br><span class="line"><span class="string">--audit-log-maxsize=100 \</span></span><br><span class="line"><span class="string">--audit-log-path=/opt/kubernetes/logs/k8s-audit.log&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-启动服务并设置开机自启动"><a href="#2-3-启动服务并设置开机自启动" class="headerlink" title="2.3 启动服务并设置开机自启动"></a>2.3 启动服务并设置开机自启动</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;1.启动服务 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">systemctl start kube-apiserver</span><br><span class="line">systemctl start kube-controller-manager</span><br><span class="line">systemctl start kube-scheduler</span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;2.设置服务开机自启动 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">systemctl enable kube-apiserver</span><br><span class="line">systemctl enable kube-controller-manager</span><br><span class="line">systemctl enable kube-scheduler</span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;3.查看服务启动状态  &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master1 opt]# tail -f /opt/kubernetes/logs<span class="comment">/*    # 可以看日志</span></span><br><span class="line"><span class="comment">systemctl status kube-apiserver</span></span><br><span class="line"><span class="comment">systemctl status kube-controller-manager</span></span><br><span class="line"><span class="comment">systemctl stauts kube-scheduler</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确定k8s-master2服务正常</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master1 opt]# kubectl get node</span><br><span class="line"><span class="variable constant_">NAME</span>        <span class="variable constant_">STATUS</span>   <span class="variable constant_">ROLES</span>    <span class="variable constant_">AGE</span>    <span class="variable constant_">VERSION</span></span><br><span class="line">k8s-node1   <span class="title class_">Ready</span>    &lt;none&gt;   2d4h   v1<span class="number">.16</span><span class="number">.0</span></span><br><span class="line">k8s-node2   <span class="title class_">Ready</span>    &lt;none&gt;   2d3h   v1<span class="number">.16</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="03-部署Nginx负载均衡"><a href="#03-部署Nginx负载均衡" class="headerlink" title="03.部署Nginx负载均衡"></a>03.部署Nginx负载均衡</h1><h2 id="3-1-安装nginx"><a href="#3-1-安装nginx" class="headerlink" title="3.1 安装nginx"></a>3.1 安装nginx</h2><h3 id="3-1-1-获取niginx-rpm包"><a href="#3-1-1-获取niginx-rpm包" class="headerlink" title="3.1.1 获取niginx rpm包"></a>3.1.1 获取niginx rpm包</h3><ul>
+<li>nginx rpm包地址：<a target="_blank" rel="noopener" href="http://nginx.org/packages/rhel/7/x86_64/RPMS/">http://nginx.org/packages/rhel/7/x86_64/RPMS/</a></li>
+</ul>
+<p><img src="./assets/image-20201220222924054.png" style="width:600px;margin-left:20px;"> </img></p>
+<ul>
+<li>在<code>192.168.56.61</code>和<code>192.168.56.62</code>中安装nginx</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-slave ~]# rpm -ivh <span class="attr">http</span>:<span class="comment">//nginx.org/packages/rhel/7/x86_64/RPMS/nginx-1.16.0-1.el7.ngx.x86_64.rpm</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-2-修改nginx-conf配置文件"><a href="#3-1-2-修改nginx-conf配置文件" class="headerlink" title="3.1.2 修改nginx.conf配置文件"></a>3.1.2 修改nginx.conf配置文件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]# vim /etc/nginx/nginx.<span class="property">conf</span>   # 添加一个stream配置即可</span><br><span class="line">stream &#123;</span><br><span class="line">    log_format  main  <span class="string">&#x27;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#x27;</span>;</span><br><span class="line">    access_log  /<span class="keyword">var</span>/log/nginx/k8s-access.<span class="property">log</span>  main;</span><br><span class="line">    upstream k8s-apiserver &#123;</span><br><span class="line">                server <span class="number">192.168</span><span class="number">.56</span><span class="number">.63</span>:<span class="number">6443</span>;</span><br><span class="line">                server <span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="number">6443</span>;</span><br><span class="line">            &#125;</span><br><span class="line">   </span><br><span class="line">    server &#123;</span><br><span class="line">       listen <span class="number">6443</span>;</span><br><span class="line">       proxy_pass k8s-apiserver;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>完整配置如下(看一下即可，都是nginx默认配置)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]# cat /etc/nginx/nginx.<span class="property">conf</span> </span><br><span class="line">user  nginx;</span><br><span class="line">worker_processes  <span class="number">1</span>;</span><br><span class="line">error_log  /<span class="keyword">var</span>/log/nginx/error.<span class="property">log</span> warn;</span><br><span class="line">pid        /<span class="keyword">var</span>/run/nginx.<span class="property">pid</span>;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stream &#123;</span><br><span class="line">    log_format  main  <span class="string">&#x27;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#x27;</span>;</span><br><span class="line">    access_log  /<span class="keyword">var</span>/log/nginx/k8s-access.<span class="property">log</span>  main;</span><br><span class="line">    upstream k8s-apiserver &#123;</span><br><span class="line">                server <span class="number">192.168</span><span class="number">.56</span><span class="number">.63</span>:<span class="number">6443</span>;</span><br><span class="line">                server <span class="number">192.168</span><span class="number">.56</span><span class="number">.64</span>:<span class="number">6443</span>;</span><br><span class="line">            &#125;  </span><br><span class="line">    server &#123;</span><br><span class="line">       listen <span class="number">6443</span>;</span><br><span class="line">       proxy_pass k8s-apiserver;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       /etc/nginx/mime.<span class="property">types</span>;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    log_format  main  <span class="string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span>;</span><br><span class="line">    access_log  /<span class="keyword">var</span>/log/nginx/access.<span class="property">log</span>  main;</span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line">    keepalive_timeout  <span class="number">65</span>;</span><br><span class="line">    #gzip  on;</span><br><span class="line">    include /etc/nginx/conf.<span class="property">d</span><span class="comment">/*.conf;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-3-启动nginx"><a href="#3-3-3-启动nginx" class="headerlink" title="3.3.3 启动nginx"></a>3.3.3 启动nginx</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-slave ~]# systemctl start nginx</span><br><span class="line">[root@lb-slave ~]# systemctl enable nginx</span><br></pre></td></tr></table></figure>
+
+<h1 id="04-keepalive高可用"><a href="#04-keepalive高可用" class="headerlink" title="04.keepalive高可用"></a>04.keepalive高可用</h1><h2 id="4-1-keepalive安装与配置"><a href="#4-1-keepalive安装与配置" class="headerlink" title="4.1 keepalive安装与配置"></a>4.1 keepalive安装与配置</h2><h3 id="4-1-安装keepalive"><a href="#4-1-安装keepalive" class="headerlink" title="4.1 安装keepalive"></a>4.1 安装keepalive</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]# yum -y install keepalived</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-keepalive-master配置修改"><a href="#4-2-keepalive-master配置修改" class="headerlink" title="4.2 keepalive-master配置修改"></a>4.2 keepalive-master配置修改</h3><ul>
+<li>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]# vim /etc/keepalived/keepalived.<span class="property">conf</span> </span><br><span class="line"></span><br><span class="line">global_defs &#123; </span><br><span class="line">   notification_email &#123; </span><br><span class="line">     acassen@firewall.<span class="property">loc</span> </span><br><span class="line">     failover@firewall.<span class="property">loc</span> </span><br><span class="line">     sysadmin@firewall.<span class="property">loc</span> </span><br><span class="line">   &#125; </span><br><span class="line">   notification_email_from <span class="title class_">Alexandre</span>.<span class="property">Cassen</span>@firewall.<span class="property">loc</span>  </span><br><span class="line">   smtp_server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> </span><br><span class="line">   smtp_connect_timeout <span class="number">30</span> </span><br><span class="line">   router_id <span class="variable constant_">NGINX_MASTER</span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"># 健康监测nginx</span><br><span class="line">vrrp_script check_nginx &#123;</span><br><span class="line">    script <span class="string">&quot;/etc/keepalived/check_nginx.sh&quot;</span>      # 设置检查nginx是否存活的脚本位置</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># keepalive热备组配置</span><br><span class="line">vrrp_instance <span class="variable constant_">VI_1</span> &#123; </span><br><span class="line">    state <span class="variable constant_">MASTER</span>            # 配置当前keepalive为master角色</span><br><span class="line">    interface eth0           # 网卡名字，必须和实际网卡名称一致，默认是ens33</span><br><span class="line">    virtual_router_id <span class="number">51</span>       # <span class="variable constant_">VRRP</span> 路由 <span class="variable constant_">ID</span>实例，每个实例是唯一的 </span><br><span class="line">    priority <span class="number">100</span>            # 优先级，备服务器设置 <span class="number">90</span> </span><br><span class="line">    advert_int <span class="number">1</span>            # 指定<span class="variable constant_">VRRP</span> 心跳包通告间隔时间，默认<span class="number">1</span>秒 </span><br><span class="line">    authentication &#123; </span><br><span class="line">        auth_type <span class="variable constant_">PASS</span>      </span><br><span class="line">        auth_pass <span class="number">1111</span>       # 设置keepalive的master和slave之间简单的秘钥认证</span><br><span class="line">    &#125;  </span><br><span class="line">    virtual_ipaddress &#123; </span><br><span class="line">        <span class="number">192.168</span><span class="number">.56</span><span class="number">.60</span>/<span class="number">24</span>     # 设置keepalive虚拟<span class="variable constant_">IP</span>地址</span><br><span class="line">    &#125; </span><br><span class="line">    track_script &#123;</span><br><span class="line">        check_nginx</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-keepalive-slave配置修改"><a href="#4-3-keepalive-slave配置修改" class="headerlink" title="4.3 keepalive-slave配置修改"></a>4.3 keepalive-slave配置修改</h3><p>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]# vim /etc/keepalived/keepalived.<span class="property">conf</span> </span><br><span class="line"> </span><br><span class="line">global_defs &#123; </span><br><span class="line">   notification_email &#123; </span><br><span class="line">     acassen@firewall.<span class="property">loc</span> </span><br><span class="line">     failover@firewall.<span class="property">loc</span> </span><br><span class="line">     sysadmin@firewall.<span class="property">loc</span> </span><br><span class="line">   &#125; </span><br><span class="line">   notification_email_from <span class="title class_">Alexandre</span>.<span class="property">Cassen</span>@firewall.<span class="property">loc</span>  </span><br><span class="line">   smtp_server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> </span><br><span class="line">   smtp_connect_timeout <span class="number">30</span> </span><br><span class="line">   router_id <span class="variable constant_">NGINX_BACKUP</span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">vrrp_script check_nginx &#123;</span><br><span class="line">    script <span class="string">&quot;/etc/keepalived/check_nginx.sh&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance <span class="variable constant_">VI_1</span> &#123; </span><br><span class="line">    state <span class="variable constant_">BACKUP</span>            # 设置keepalive角色为backend</span><br><span class="line">    interface eth0           # 设置虚拟网卡名称</span><br><span class="line">    virtual_router_id <span class="number">51</span>       # <span class="variable constant_">VRRP</span> 路由 <span class="variable constant_">ID</span>实例，每个实例是唯一的，master和slave保持一致即可</span><br><span class="line">    priority <span class="number">90</span>             # 优先级，备服务器设置 <span class="number">90</span> </span><br><span class="line">    advert_int <span class="number">1</span>            # 指定<span class="variable constant_">VRRP</span> 心跳包通告间隔时间，默认<span class="number">1</span>秒 </span><br><span class="line">    authentication &#123; </span><br><span class="line">        auth_type <span class="variable constant_">PASS</span>      </span><br><span class="line">        auth_pass <span class="number">1111</span> </span><br><span class="line">    &#125;  </span><br><span class="line">    virtual_ipaddress &#123; </span><br><span class="line">        <span class="number">192.168</span><span class="number">.56</span><span class="number">.60</span>/<span class="number">24</span>     # 设置虚拟网卡地址</span><br><span class="line">    &#125; </span><br><span class="line">    track_script &#123;</span><br><span class="line">        check_nginx</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-添加nginx健康监测脚本"><a href="#4-4-添加nginx健康监测脚本" class="headerlink" title="4.4 添加nginx健康监测脚本"></a>4.4 添加nginx健康监测脚本</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master keepalived]# vim /etc/keepalived/check_nginx.<span class="property">sh</span></span><br><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line">count=$(ps -ef |grep nginx |egrep -cv <span class="string">&quot;grep|$$&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;$count&quot;</span> -eq <span class="number">0</span> ];then</span><br><span class="line">    exit <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    exit <span class="number">0</span></span><br><span class="line">fi</span><br><span class="line">[root@lb-master keepalived]# chmod +x check_nginx.<span class="property">sh</span>           # 给脚本添加一个可执行权限</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-启动keepalive"><a href="#4-5-启动keepalive" class="headerlink" title="4.5 启动keepalive"></a>4.5 启动keepalive</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@lb-master ~]#  systemctl start keepalived</span><br><span class="line">[root@lb-master ~]#  systemctl enable keepalived</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-测试keepalive高可用"><a href="#4-2-测试keepalive高可用" class="headerlink" title="4.2 测试keepalive高可用"></a>4.2 测试keepalive高可用</h2><h3 id="4-2-1-在lb-master上可以看到已经绑定了虚拟ip"><a href="#4-2-1-在lb-master上可以看到已经绑定了虚拟ip" class="headerlink" title="4.2.1 在lb-master上可以看到已经绑定了虚拟ip"></a>4.2.1 在lb-master上可以看到已经绑定了虚拟ip</h3><ul>
+<li><p>在浏览器中访问: 192.168.56.60   192.168.56.61   192.168.56.61  都可以访问nginx默认页</p>
+</li>
+<li><p>关闭lb-master的nginx测试VIP是否漂移到备节点</p>
+</li>
+</ul>
+<p><img src="./assets/image-20201220232617992.png" style="width:800px;margin-left:20px;"> </img></p>
+<h1 id="05-修改Node连接VIP"><a href="#05-修改Node连接VIP" class="headerlink" title="05.修改Node连接VIP"></a>05.修改Node连接VIP</h1><h2 id="5-1-测试VIP是否正常工作"><a href="#5-1-测试VIP是否正常工作" class="headerlink" title="5.1 测试VIP是否正常工作"></a>5.1 测试VIP是否正常工作</h2><p>&#x3D;&#x3D;理论讲在任意k8s-master节点和 k8s-node节点都可以通过VIP访问k8s-apiserver服务&#x3D;&#x3D;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 logs]# curl -k --header <span class="string">&quot;Authorization: Bearer c47ffb939f5ca36231d9e3121a252940&quot;</span> <span class="attr">https</span>:<span class="comment">//192.168.56.60:6443/version</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;major&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;minor&quot;</span>: <span class="string">&quot;16&quot;</span>,</span><br><span class="line">  <span class="string">&quot;gitVersion&quot;</span>: <span class="string">&quot;v1.16.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;gitCommit&quot;</span>: <span class="string">&quot;2bd9643cee5b3b3a5ecbd3af49d09018f0773c77&quot;</span>,</span><br><span class="line">  <span class="string">&quot;gitTreeState&quot;</span>: <span class="string">&quot;clean&quot;</span>,</span><br><span class="line">  <span class="string">&quot;buildDate&quot;</span>: <span class="string">&quot;2019-09-18T14:27:17Z&quot;</span>,</span><br><span class="line">  <span class="string">&quot;goVersion&quot;</span>: <span class="string">&quot;go1.12.9&quot;</span>,</span><br><span class="line">  <span class="string">&quot;compiler&quot;</span>: <span class="string">&quot;gc&quot;</span>,</span><br><span class="line">  <span class="string">&quot;platform&quot;</span>: <span class="string">&quot;linux/amd64&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-将所有k8s-node节点修改成VIP"><a href="#5-2-将所有k8s-node节点修改成VIP" class="headerlink" title="5.2 将所有k8s-node节点修改成VIP"></a>5.2 将所有k8s-node节点修改成VIP</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;1.查看哪些配置文件配置了 192.168.56.63 作为apiserver  &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-node1 cfg]# cd /opt/kubernetes/cfg/</span><br><span class="line">[root@k8s-node1 cfg]# grep <span class="number">192</span> *</span><br><span class="line">bootstrap.<span class="property">kubeconfig</span>:     <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.63:6443</span></span><br><span class="line">kubelet.<span class="property">kubeconfig</span>:      <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.63:6443</span></span><br><span class="line">kube-proxy.<span class="property">kubeconfig</span>:    <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.63:6443</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;2.批量修改  &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-node1 cfg]# sed -i <span class="string">&#x27;s#192.168.56.63#192.168.56.60#g&#x27;</span> *</span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;3.确认是否修改成功 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-node1 cfg]# grep <span class="number">192</span> *</span><br><span class="line">bootstrap.<span class="property">kubeconfig</span>:    <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.60:6443</span></span><br><span class="line">kubelet.<span class="property">kubeconfig</span>:    <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.60:6443</span></span><br><span class="line">kube-proxy.<span class="property">kubeconfig</span>:    <span class="attr">server</span>: <span class="attr">https</span>:<span class="comment">//192.168.56.60:6443</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-3-检查集群是否正常"><a href="#5-3-检查集群是否正常" class="headerlink" title="5.3 检查集群是否正常"></a>5.3 检查集群是否正常</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;1.在 lb-master上打开日志 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@lb-master keepalived]# tail -f /<span class="keyword">var</span>/log/nginx/k8s-access.<span class="property">log</span> </span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;2.在所有node节点重启组件，可以在k8s-access.log日志中看到请求，每个组件重启都会重新访问kube-apiserver &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-node2 cfg]# systemctl restart kubelet</span><br><span class="line">[root@k8s-node2 cfg]# systemctl restart kube-proxy</span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;3.无论是在 k8s-master1还是 k8s-master2都可以检查到，节点状态时正常的 &#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@k8s-master2 opt]# kubectl get node</span><br><span class="line"><span class="variable constant_">NAME</span>      <span class="variable constant_">STATUS</span>   <span class="variable constant_">ROLES</span>    <span class="variable constant_">AGE</span>    <span class="variable constant_">VERSION</span></span><br><span class="line">k8s-node1   <span class="title class_">Ready</span>    &lt;none&gt;   2d6h   v1<span class="number">.16</span><span class="number">.0</span></span><br><span class="line">k8s-node2   <span class="title class_">Ready</span>    &lt;none&gt;   2d5h   v1<span class="number">.16</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/pages/90a26e/" target="_blank">05.多k8s-master架构</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="/categories/%E5%AE%B9%E5%99%A8/">容器</a>
+                        
+                            <a href="/categories/%E5%AE%B9%E5%99%A8/K8S/">K8S</a>
+                        
+                            <a href="/categories/%E5%AE%B9%E5%99%A8/K8S/02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%90%AD%E5%BB%BAK8s%E9%9B%86%E7%BE%A4/">02_二进制搭建K8s集群</a>
+                        
+                    </div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/pages/6feded/" class="prev-prefix">« </a> 上一篇：    <a href="/pages/6feded/" title="发布于 2021-02-12 06:38">04.部署WebUI和DNS工具</a>
+                        <br>
+                    
+                    
+                        <a href="/pages/8fb6eb/" class="next-prefix">» </a> 下一篇：    <a href="/pages/8fb6eb/" title="发布于 2021-02-12 06:38">01.使用kubeadm快速部署一个k8s集群</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                        <li class=""><a href="/friend" class="" target="_self"><span class="iconfont icon-link"></span>友情链接</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/category",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "友情链接",
+                    icon   : "icon-link",
+                    href   : "/friend",
+                    type   : "friend",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
