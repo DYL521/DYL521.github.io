@@ -122,7 +122,7 @@
 <blockquote>
 <p>第一步：给k8s-node1中打标签 <code>disktype=ssd</code> </p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# kubectl label node k8s-node1 disktype=ssd       # 将k8s-node1打一个标签为ssd</span><br><span class="line">node/k8s-node1 labeled</span><br><span class="line">[root@k8s-node2 ~]# kubectl get node --show-labels              # 可以查看到k8s-node1节点上就有了这个标签 </span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# kubectl label node k8s-node1 disktype=ssd       # 将k8s-node1打一个标签为ssd</span><br><span class="line">node/k8s-node1 labeled</span><br><span class="line">[root@k8s-node2 ~]# kubectl get node --show-labels              # 可以查看到k8s-node1节点上就有了这个标签 </span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>2.添加nodeSelector字段到Pod配置中</p>
@@ -135,7 +135,7 @@
 <ul>
 <li>部署,可以看到只会部署到k8s-node1节点，因为node1节点有  disktype: “ssd” 标记</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# kubectl apply -f pod-nodeselector.<span class="property">yaml</span> </span><br><span class="line">[root@k8s-master ~]# kubectl get pods -o wide</span><br><span class="line"><span class="variable constant_">NAME</span>            <span class="variable constant_">READY</span>   <span class="variable constant_">STATUS</span>  <span class="variable constant_">RESTARTS</span>   <span class="variable constant_">AGE</span>    <span class="variable constant_">IP</span>        <span class="variable constant_">NODE</span>    <span class="variable constant_">NOMINATED</span> <span class="variable constant_">NODE</span>   <span class="variable constant_">READINESS</span> <span class="variable constant_">GATES</span></span><br><span class="line">pod-nodeselector    <span class="number">1</span>/<span class="number">1</span>   <span class="title class_">Running</span>    <span class="number">0</span>     117s   <span class="number">10.244</span><span class="number">.36</span><span class="number">.74</span>  k8s-node1   &lt;none&gt;         &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# kubectl apply -f pod-nodeselector.yaml </span><br><span class="line">[root@k8s-master ~]# kubectl get pods -o wide</span><br><span class="line">NAME            READY   STATUS  RESTARTS   AGE    IP        NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">pod-nodeselector    1/1   Running    0     117s   10.244.36.74  k8s-node1   &lt;none&gt;         &lt;none&gt;</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-4-2-nodeAffinitty"><a href="#1-4-2-nodeAffinitty" class="headerlink" title="1.4.2 nodeAffinitty"></a>1.4.2 nodeAffinitty</h3><p>nodeAffinity：节点亲和性，与nodeSelector作用一样，但相比更灵活，</p>
 <p>满足更多条件，诸如：</p>
@@ -202,7 +202,7 @@
                         <br>
                     
                     
-                        <a href="/pages/79d9be/" class="next-prefix">» </a> 下一篇：    <a href="/pages/79d9be/" title="发布于 2021-02-12 06:38">01.Java项目部署</a>
+                        <a href="/pages/702829/" class="next-prefix">» </a> 下一篇：    <a href="/pages/702829/" title="发布于 2021-02-12 06:38">01.k8s集群架构两种模式</a>
                     
                 </div>
             </div>
