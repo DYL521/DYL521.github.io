@@ -97,7 +97,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="./assets/image-20210129095358555.png" style="width: 700px; margin-left: 50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/docker/assets/image-20210129095358555.png" style="width: 700px; margin-left: 50px;"> </img></p>
 <h2 id="1-3-Ingress-Contronler怎么工作的？"><a href="#1-3-Ingress-Contronler怎么工作的？" class="headerlink" title="1.3 Ingress Contronler怎么工作的？"></a>1.3 Ingress Contronler怎么工作的？</h2><ul>
 <li><p>Ingress Contronler通过与 Kubernetes API 交互，动态的去感知集群中 Ingress 规则变化，然后读取它</p>
 </li>
@@ -117,7 +117,7 @@
 <li><strong>部署文件注意事项：（修改两个地方）</strong><ul>
 <li>（第一处）镜像地址修改成国内的：lizhenliang&#x2F;nginx-ingress-controller:0.30.0 </li>
 <li>（第二处）将Ingress Controller暴露，一般使用宿主机网络（hostNetwork: true）或者使用NodePort</li>
-<li><img src="./assets/image-20210129103643098.png" style="width: 1000px; margin-left: 0px;"> </img></li>
+<li><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/10/assets/image-20210129103643098.png" style="width: 1000px; margin-left: 0px;"> </img></li>
 </ul>
 </li>
 </ul>
@@ -128,7 +128,7 @@
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# kubectl apply -f ingress-controller.yaml  </span><br><span class="line">[root@k8s-master ~]# kubectl get pods,svc -n ingress-nginx -o wide</span><br><span class="line">NAME                              READY   STATUS    RESTARTS   AGE   IP      NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">pod/nginx-ingress-controller-5dc64b58f-fljtd   1/1    Running   0    14m   192.168.56.62   k8s-node1   &lt;none&gt;      &lt;none&gt;</span><br></pre></td></tr></table></figure>
 
-<h1 id="03-使用Ingress部署应用"><a href="#03-使用Ingress部署应用" class="headerlink" title="03.使用Ingress部署应用"></a>03.使用Ingress部署应用</h1><h2 id="3-1-部署Service"><a href="#3-1-部署Service" class="headerlink" title="3.1 部署Service"></a>3.1 部署Service</h2><p><img src="./assets/image-20210129122626393.png" style="width: 400px; margin-left: 50px;"> </img></p>
+<h1 id="03-使用Ingress部署应用"><a href="#03-使用Ingress部署应用" class="headerlink" title="03.使用Ingress部署应用"></a>03.使用Ingress部署应用</h1><h2 id="3-1-部署Service"><a href="#3-1-部署Service" class="headerlink" title="3.1 部署Service"></a>3.1 部署Service</h2><p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/10/assets/image-20210129122626393.png" style="width: 400px; margin-left: 50px;"> </img></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]#  vim app.yaml</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: web1</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: web1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web1</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: web</span><br><span class="line">        image: nginx:1.18</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: web1</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 80        # Service端口</span><br><span class="line">    protocol: TCP    # 协议</span><br><span class="line">    targetPort: 80   # 容器端口（程序启动端口，比如django默认是8000端口）</span><br><span class="line">  selector: </span><br><span class="line">    app: nginx      # 指定关联Pod的标签（上面已经查到了，app=nginx）</span><br><span class="line">  type: ClusterIP      # 服务类型</span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]# kubectl apply -f app.yaml </span><br><span class="line">[root@k8s-master ~]# kubectl get pods,svc</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-2-使用Ingress部署应用"><a href="#3-2-使用Ingress部署应用" class="headerlink" title="3.2 使用Ingress部署应用"></a>3.2 使用Ingress部署应用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# vim ingress-web1.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: web1</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: web1.example.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: web1</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br><span class="line"> </span><br><span class="line">[root@k8s-master ~]# kubectl apply -f ingress-web1.yaml</span><br><span class="line">[root@k8s-master ~]# kubectl get ingress            # 查看创建的资源</span><br><span class="line">Warning: extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress</span><br><span class="line">NAME   CLASS    HOSTS              ADDRESS   PORTS   AGE</span><br><span class="line">web1   &lt;none&gt;   web1.example.com             80      2m</span><br></pre></td></tr></table></figure>
@@ -158,7 +158,7 @@
 <li><p>然后将这几台挂载到公网负载均衡器对外提供服务</p>
 </li>
 </ul>
-<p><img src="./assets/image-20210129132532067.png" style="width: 400px; margin-left: 50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/10/assets/image-20210129132532067.png" style="width: 400px; margin-left: 50px;"> </img></p>
 
                 
                 <p class="end">__END__</p>
@@ -197,11 +197,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="/pages/79d9be/" class="prev-prefix">« </a> 上一篇：    <a href="/pages/79d9be/" title="发布于 2021-02-12 06:38">01.Java项目部署</a>
+                        <a href="/pages/bb8451/" class="prev-prefix">« </a> 上一篇：    <a href="/pages/bb8451/" title="发布于 2021-02-12 06:38">01.常用负载控制器</a>
                         <br>
                     
                     
-                        <a href="/pages/0cccfd/" class="next-prefix">» </a> 下一篇：    <a href="/pages/0cccfd/" title="发布于 2021-02-12 03:33">02.安装docker</a>
+                        <a href="/pages/9feb99/" class="next-prefix">» </a> 下一篇：    <a href="/pages/9feb99/" title="发布于 2021-02-12 06:38">03.三台机器部署单master集群</a>
                     
                 </div>
             </div>

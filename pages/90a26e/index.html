@@ -117,7 +117,7 @@
 <td>Nginx L4</td>
 </tr>
 </tbody></table>
-<p><img src="./assets/image-20201216095605860.png" style="width:800px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216095605860.png" style="width:800px;margin-left:20px;"> </img></p>
 <h1 id="02-k8s-master2配置"><a href="#02-k8s-master2配置" class="headerlink" title="02.k8s-master2配置"></a>02.k8s-master2配置</h1><h2 id="2-1-在k8s-master1拷贝-opt-配置文件到k8s-master2"><a href="#2-1-在k8s-master1拷贝-opt-配置文件到k8s-master2" class="headerlink" title="2.1 在k8s-master1拷贝&#x2F;opt&#x2F;配置文件到k8s-master2"></a>2.1 在k8s-master1拷贝&#x2F;opt&#x2F;配置文件到k8s-master2</h2><p>&#x3D;&#x3D;k8s-master1和k8s-maser2配置基本一致，直接拷贝过去即可&#x3D;&#x3D;</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;1.讲k8s-master1中的配置文件和证书拷贝到master2   &#x27;&#x27;&#x27;</span><br><span class="line">[root@k8s-master1 ~]# scp -r /opt/kubernetes/ root@192.168.56.64:/opt/</span><br><span class="line">&#x27;&#x27;&#x27;2.由于k8s-master2也要连接etcd所以要讲k8s-master1证书拷贝过去&#x27;&#x27;&#x27;</span><br><span class="line">[root@k8s-master1 opt]# scp -r /opt/etcd/ root@192.168.56.64:/opt/etcd    </span><br><span class="line">&#x27;&#x27;&#x27;3.把管理服务的 .service 文件拷贝过去 &#x27;&#x27;&#x27;</span><br><span class="line">[root@k8s-master1 opt]# scp /usr/lib/systemd/system/&#123;kube-apiserver,kube-controller-manager,kube-scheduler&#125;.service root@192.168.56.64:/usr/lib/systemd/system</span><br><span class="line">&#x27;&#x27;&#x27;4.将kubectl命令拷贝到k8s-master2中 &#x27;&#x27;&#x27;</span><br><span class="line">[root@k8s-master1 opt]# scp /usr/local/bin/kubectl root@192.168.56.64:/usr/local/bin/kubectl </span><br></pre></td></tr></table></figure>
 
@@ -133,7 +133,7 @@
 <h1 id="03-部署Nginx负载均衡"><a href="#03-部署Nginx负载均衡" class="headerlink" title="03.部署Nginx负载均衡"></a>03.部署Nginx负载均衡</h1><h2 id="3-1-安装nginx"><a href="#3-1-安装nginx" class="headerlink" title="3.1 安装nginx"></a>3.1 安装nginx</h2><h3 id="3-1-1-获取niginx-rpm包"><a href="#3-1-1-获取niginx-rpm包" class="headerlink" title="3.1.1 获取niginx rpm包"></a>3.1.1 获取niginx rpm包</h3><ul>
 <li>nginx rpm包地址：<a target="_blank" rel="noopener" href="http://nginx.org/packages/rhel/7/x86_64/RPMS/">http://nginx.org/packages/rhel/7/x86_64/RPMS/</a></li>
 </ul>
-<p><img src="./assets/image-20201220222924054.png" style="width:600px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201220222924054.png" style="width:600px;margin-left:20px;"> </img></p>
 <ul>
 <li>在<code>192.168.56.61</code>和<code>192.168.56.62</code>中安装nginx</li>
 </ul>
@@ -168,7 +168,7 @@
 <li><p>关闭lb-master的nginx测试VIP是否漂移到备节点</p>
 </li>
 </ul>
-<p><img src="./assets/image-20201220232617992.png" style="width:800px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201220232617992.png" style="width:800px;margin-left:20px;"> </img></p>
 <h1 id="05-修改Node连接VIP"><a href="#05-修改Node连接VIP" class="headerlink" title="05.修改Node连接VIP"></a>05.修改Node连接VIP</h1><h2 id="5-1-测试VIP是否正常工作"><a href="#5-1-测试VIP是否正常工作" class="headerlink" title="5.1 测试VIP是否正常工作"></a>5.1 测试VIP是否正常工作</h2><p>&#x3D;&#x3D;理论讲在任意k8s-master节点和 k8s-node节点都可以通过VIP访问k8s-apiserver服务&#x3D;&#x3D;</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 logs]# curl -k --header &quot;Authorization: Bearer c47ffb939f5ca36231d9e3121a252940&quot; https://192.168.56.60:6443/version</span><br><span class="line">&#123;</span><br><span class="line">  &quot;major&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;minor&quot;: &quot;16&quot;,</span><br><span class="line">  &quot;gitVersion&quot;: &quot;v1.16.0&quot;,</span><br><span class="line">  &quot;gitCommit&quot;: &quot;2bd9643cee5b3b3a5ecbd3af49d09018f0773c77&quot;,</span><br><span class="line">  &quot;gitTreeState&quot;: &quot;clean&quot;,</span><br><span class="line">  &quot;buildDate&quot;: &quot;2019-09-18T14:27:17Z&quot;,</span><br><span class="line">  &quot;goVersion&quot;: &quot;go1.12.9&quot;,</span><br><span class="line">  &quot;compiler&quot;: &quot;gc&quot;,</span><br><span class="line">  &quot;platform&quot;: &quot;linux/amd64&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -226,7 +226,7 @@
                         <br>
                     
                     
-                        <a href="/pages/bdc771/" class="next-prefix">» </a> 下一篇：    <a href="/pages/bdc771/" title="发布于 2021-02-12 06:38">01.资源编排(YAML)</a>
+                        <a href="/pages/855055/" class="next-prefix">» </a> 下一篇：    <a href="/pages/855055/" title="发布于 2021-02-12 06:38">01.深入理解Pod对象调度</a>
                     
                 </div>
             </div>

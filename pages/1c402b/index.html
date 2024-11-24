@@ -114,7 +114,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="./assets/image-20201229141427818.png" style="width:800px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/06/assets/image-20201229141427818.png" style="width:800px;margin-left:20px;"> </img></p>
 <h2 id="1-4-Pod管理命令"><a href="#1-4-Pod管理命令" class="headerlink" title="1.4 Pod管理命令"></a>1.4 Pod管理命令</h2><h3 id="1-4-1-导出创建pod的YAML"><a href="#1-4-1-导出创建pod的YAML" class="headerlink" title="1.4.1 导出创建pod的YAML"></a>1.4.1 导出创建pod的YAML</h3><ul>
 <li>导出创建pod的YAML文件</li>
 </ul>
@@ -165,7 +165,7 @@
 <li>readinessProbe（就绪检查）：如果检查失败，Kubernetes会把 Pod从service endpoints中剔除。 </li>
 <li>startupProbe（启动检查）：</li>
 </ul>
-<p><img src="./assets/image-20201229223347960.png" style="width:400px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/06/assets/image-20201229223347960.png" style="width:400px;margin-left:20px;"> </img></p>
 <h3 id="1-5-3-支持以下三种检查方法"><a href="#1-5-3-支持以下三种检查方法" class="headerlink" title="1.5.3 支持以下三种检查方法"></a>1.5.3 支持以下三种检查方法</h3><ul>
 <li>httpGet：发送HTTP请求，返回200-400范围状态码为成功。 </li>
 <li>exec：执行Shell命令返回状态码是0为成功。 </li>
@@ -175,7 +175,7 @@
 <li><p>在官网搜索 readlinessProbe 关键字，可以看到官方示例</p>
 </li>
 <li><pre><code class="shell">  https://kubernetes.io/zh/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &lt;img src=&quot;./assets/image-20201229224810728.png&quot; style=&quot;width:600px;margin-left:20px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line">[root@k8s-master ~]# vim pod-check.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    test: liveness</span><br><span class="line">  name: pod-check</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: liveness</span><br><span class="line">    image: busybox</span><br><span class="line">    args:</span><br><span class="line">    - /bin/sh</span><br><span class="line">    - -c</span><br><span class="line">    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600</span><br><span class="line">    livenessProbe:</span><br><span class="line">      exec:</span><br><span class="line">        command:</span><br><span class="line">        - cat</span><br><span class="line">        - /tmp/healthy</span><br><span class="line">      initialDelaySeconds: 5     # 容器启动多少秒后进行健康检查</span><br><span class="line">      periodSeconds: 5         # 每个多少秒进行健康检查</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &lt;img src=&quot;https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/06/assets/image-20201229224810728.png&quot; style=&quot;width:600px;margin-left:20px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line">[root@k8s-master ~]# vim pod-check.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    test: liveness</span><br><span class="line">  name: pod-check</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: liveness</span><br><span class="line">    image: busybox</span><br><span class="line">    args:</span><br><span class="line">    - /bin/sh</span><br><span class="line">    - -c</span><br><span class="line">    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600</span><br><span class="line">    livenessProbe:</span><br><span class="line">      exec:</span><br><span class="line">        command:</span><br><span class="line">        - cat</span><br><span class="line">        - /tmp/healthy</span><br><span class="line">      initialDelaySeconds: 5     # 容器启动多少秒后进行健康检查</span><br><span class="line">      periodSeconds: 5         # 每个多少秒进行健康检查</span><br></pre></td></tr></table></figure>
 </code></pre>
 </li>
 <li><p>部署后即可看到健康检查失败后会自动重启</p>
@@ -272,11 +272,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="/pages/bdc771/" class="prev-prefix">« </a> 上一篇：    <a href="/pages/bdc771/" title="发布于 2021-02-12 06:38">01.资源编排(YAML)</a>
+                        <a href="/pages/855055/" class="prev-prefix">« </a> 上一篇：    <a href="/pages/855055/" title="发布于 2021-02-12 06:38">01.深入理解Pod对象调度</a>
                         <br>
                     
                     
-                        <a href="/pages/855055/" class="next-prefix">» </a> 下一篇：    <a href="/pages/855055/" title="发布于 2021-02-12 06:38">01.深入理解Pod对象调度</a>
+                        <a href="/pages/bb8451/" class="next-prefix">» </a> 下一篇：    <a href="/pages/bb8451/" title="发布于 2021-02-12 06:38">01.常用负载控制器</a>
                     
                 </div>
             </div>

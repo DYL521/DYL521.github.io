@@ -82,15 +82,15 @@
 <ul>
 <li><strong>1）硬件配置如下</strong></li>
 </ul>
-<p><img src="./assets/image-20201216130200067.png" style="width:600px;margin-left:50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216130200067.png" style="width:600px;margin-left:50px;"> </img></p>
 <ul>
 <li><strong>2） 先把光标放到”install CentOS 7”，按 Tab键编辑内核参数，添加 (net.ifnames&#x3D;0 biosdevname&#x3D;0)</strong></li>
 </ul>
-<p><img src="./assets/image-20201216130323924.png" style="width:600px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216130323924.png" style="width:600px;margin-left:20px;"> </img></p>
 <ul>
 <li><strong>3） 建议安装语言改成 简体中文，其他保持默认即可</strong></li>
 </ul>
-<p><img src="./assets/image-20201216130433585.png" style="width:500px;margin-left:50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216130433585.png" style="width:500px;margin-left:50px;"> </img></p>
 <ul>
 <li><strong>4）设置完root密码等待安装完成重启即可完成系统安装</strong></li>
 <li><strong>5）配置 VMware NAT 模式默认地址池</strong><ul>
@@ -98,10 +98,10 @@
 </ul>
 </li>
 </ul>
-<p><img src="./assets/image-20201216130619446.png" style="width:500px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216130619446.png" style="width:500px;margin-left:20px;"> </img></p>
 <h2 id="02-系统初始化"><a href="#02-系统初始化" class="headerlink" title="02.系统初始化"></a>02.系统初始化</h2><h3 id="2-1-配置网卡"><a href="#2-1-配置网卡" class="headerlink" title="2.1 配置网卡"></a>2.1 配置网卡</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]## vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">[root@linux-node1 ~]## systemctl restart network</span><br><span class="line">[root@linux-node1 ~]## systemctl disable firewalld</span><br><span class="line">[root@linux-node1 ~]## systemctl disable NetworkManager</span><br></pre></td></tr></table></figure>
 
-<p><img src="./assets/image-20201216140823264.png" style="width:500px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216140823264.png" style="width:500px;margin-left:20px;"> </img></p>
 <h3 id="2-2-关闭防火墙"><a href="#2-2-关闭防火墙" class="headerlink" title="2.2 关闭防火墙"></a>2.2 关闭防火墙</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;1.关闭防火墙&#x27;&#x27;&#x27;</span><br><span class="line">[root@linux-node1 ~]## systemctl stop firewalld          ## 临时关闭防火墙</span><br><span class="line">[root@linux-node1 ~]## systemctl disable firewalld       ## 开机不启动</span><br><span class="line">[root@linux-node1 ~]## firewall-cmd --state             ## 防火墙是否关闭</span><br><span class="line">&#x27;&#x27;&#x27;2.关闭selinux&#x27;&#x27;&#x27;</span><br><span class="line">[root@linux-node1 ~]## setenforce 0                  ## 临时关闭selinux</span><br><span class="line">[root@linux-node1 ~]## vi /etc/selinux/config           ## 修改配置文件永久关闭selinux</span><br><span class="line">SELINUX=disabled</span><br><span class="line">[root@linux-node1 ~]## getenforce                    ## selinux是否关闭</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-3-更新yum源"><a href="#2-3-更新yum源" class="headerlink" title="2.3 更新yum源"></a>2.3 更新yum源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;安装最新epel yum源&#x27;&#x27;&#x27;</span><br><span class="line">// 注：此地址中有各种源（https://opsx.alibaba.com/mirror）</span><br><span class="line">[root@linux-node1 ~]## rpm -ivh https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm</span><br><span class="line">// yum安装 一些基础包</span><br><span class="line">[root@linux-node1 ~]## yum -y install net-tools vim lrzsz tree screen lsof tcpdump nc mtr nmap wget ntpdate</span><br></pre></td></tr></table></figure>
@@ -156,15 +156,15 @@
 <li>1）<code>右键 “管理” ----》“克隆” ----》</code></li>
 <li>2）选择 从哪个状态创建克隆</li>
 </ul>
-<p><img src="./assets/image-20201216135030490.png" style="width:400px;margin-left:50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216135030490.png" style="width:400px;margin-left:50px;"> </img></p>
 <ul>
 <li><strong>3）克隆类型（创建完整克隆）</strong></li>
 </ul>
-<p><img src="./assets/image-20201216135134311.png" style="width:400px;margin-left:50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216135134311.png" style="width:400px;margin-left:50px;"> </img></p>
 <ul>
 <li>4）<strong>新建虚拟机名称</strong></li>
 </ul>
-<p><img src="./assets/image-20201216135226466.png" style="width:400px;margin-left:50px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/02/assets/image-20201216135226466.png" style="width:400px;margin-left:50px;"> </img></p>
 <ul>
 <li><p><strong>5）点击 “完成” 即可完成虚拟机克隆</strong></p>
 </li>
@@ -213,7 +213,7 @@
                         <br>
                     
                     
-                        <a href="/pages/9feb99/" class="next-prefix">» </a> 下一篇：    <a href="/pages/9feb99/" title="发布于 2021-02-12 06:38">03.三台机器部署单master集群</a>
+                        <a href="/pages/6feded/" class="next-prefix">» </a> 下一篇：    <a href="/pages/6feded/" title="发布于 2021-02-12 06:38">04.部署WebUI和DNS工具</a>
                     
                 </div>
             </div>

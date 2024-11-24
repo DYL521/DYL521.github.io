@@ -107,7 +107,7 @@
 <td>192.168.31.63</td>
 </tr>
 </tbody></table>
-<p><img src="./assets/image-20201221132229354.png" style="width:800px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/03/assets/image-20201221132229354.png" style="width:800px;margin-left:20px;"> </img></p>
 <h1 id="02-环境准备【所有节点】"><a href="#02-环境准备【所有节点】" class="headerlink" title="02.环境准备【所有节点】"></a>02.环境准备【所有节点】</h1><h2 id="2-1-安装要求"><a href="#2-1-安装要求" class="headerlink" title="2.1 安装要求"></a>2.1 安装要求</h2><p>在开始之前，部署Kubernetes集群机器需要满足以下几个条件：</p>
 <h3 id="2-1-1-操作系统和硬件要求"><a href="#2-1-1-操作系统和硬件要求" class="headerlink" title="2.1.1 操作系统和硬件要求"></a>2.1.1 操作系统和硬件要求</h3><ul>
 <li><p>1、操作系统要求</p>
@@ -180,7 +180,7 @@
 <li>–service-cidr 集群内部虚拟网络，Pod统一访问入口</li>
 <li>–pod-network-cidr Pod网络，，与下面部署的CNI网络组件yaml中保持一致</li>
 </ul>
-<h3 id="4-1-2-将集群的配置文件复制到指定位置"><a href="#4-1-2-将集群的配置文件复制到指定位置" class="headerlink" title="4.1.2 将集群的配置文件复制到指定位置"></a>4.1.2 将集群的配置文件复制到指定位置</h3><p><img src="./assets/image-20201228101040143.png" style="width:600px;margin-left:20px;"> </img></p>
+<h3 id="4-1-2-将集群的配置文件复制到指定位置"><a href="#4-1-2-将集群的配置文件复制到指定位置" class="headerlink" title="4.1.2 将集群的配置文件复制到指定位置"></a>4.1.2 将集群的配置文件复制到指定位置</h3><p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/03/assets/image-20201228101040143.png" style="width:600px;margin-left:20px;"> </img></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]#  mkdir -p $HOME/.kube</span><br><span class="line">[root@k8s-master ~]#  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">[root@k8s-master ~]#  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -295,7 +295,7 @@
 
 <h3 id="7-3-2-使用token登录Dashboard"><a href="#7-3-2-使用token登录Dashboard" class="headerlink" title="7.3.2 使用token登录Dashboard"></a>7.3.2 使用token登录Dashboard</h3><ul>
 <li><code>访问地址：</code><a target="_blank" rel="noopener" href="https://192.168.56.62:30001/">https://192.168.56.62:30001/</a>      （任意node节点地址都可以访问）</li>
-<li><img src="./assets/image-20201228160820281.png" style="width:800px;margin-left:20px;"> </img></li>
+<li><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/03/assets/image-20201228160820281.png" style="width:800px;margin-left:20px;"> </img></li>
 </ul>
 <h1 id="08-测试kubernetes集群"><a href="#08-测试kubernetes集群" class="headerlink" title="08. 测试kubernetes集群"></a>08. 测试kubernetes集群</h1><ul>
 <li>验证Pod工作</li>
@@ -310,7 +310,7 @@
 <ul>
 <li>访问地址：<a target="_blank" rel="noopener" href="http://192.168.56.62:30610/">http://192.168.56.62:30610/</a></li>
 </ul>
-<p><img src="./assets/image-20201228162714535.png" style="width:600px;margin-left:20px;"> </img></p>
+<p><img src="https://cdn.jsdelivr.net/gh/DYL521/hexo_cdn@0.0.4/static/image/post/04/k8s/03/assets/image-20201228162714535.png" style="width:600px;margin-left:20px;"> </img></p>
 <h2 id="8-2-查CoreDNS组件"><a href="#8-2-查CoreDNS组件" class="headerlink" title="8.2 查CoreDNS组件"></a>8.2 查CoreDNS组件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# kubectl get pod -n kube-system</span><br><span class="line">NAME                           READY    STATUS    RESTARTS   AGE</span><br><span class="line">calico-kube-controllers-744cfdf676-7kjk2   1/1     Running   0          77m</span><br><span class="line">calico-node-n4k82                   1/1     Running   0          77m</span><br><span class="line">calico-node-t6b45                   1/1     Running   0          77m</span><br><span class="line">calico-node-tl7dc                   1/1     Running   0          77m</span><br><span class="line">coredns-6d56c8448f-kpncp              1/1     Running   0          116m</span><br><span class="line">coredns-6d56c8448f-vx9vw              1/1     Running   0          116m</span><br><span class="line">etcd-k8s-master                    1/1     Running   0          116m</span><br><span class="line">kube-apiserver-k8s-master             1/1     Running   0          116m</span><br><span class="line">kube-controller-manager-k8s-master       1/1     Running   0          116m</span><br><span class="line">kube-proxy-829s7                   1/1     Running   0          116m</span><br><span class="line">kube-proxy-jm2wt                   1/1     Running   0          112m</span><br><span class="line">kube-proxy-qcgxk                   1/1     Running   0          112m</span><br><span class="line">kube-scheduler-k8s-master             1/1     Running   0          116m</span><br></pre></td></tr></table></figure>
 
 <h1 id="09-k8s-cni通信常见问题"><a href="#09-k8s-cni通信常见问题" class="headerlink" title="09.k8s-cni通信常见问题"></a>09.k8s-cni通信常见问题</h1><ul>
