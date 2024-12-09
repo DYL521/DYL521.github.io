@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            04.多对多
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">04.多对多</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-16
+                        </span>
+                        
+                            
+                                <span id="//pages/a3a881/" class="leancloud_visitors" data-flag-title="04.多对多">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/a3a881/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                            <span class="category-color">django</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">django</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01-不创建第三张表-推荐-法1"><a href="#01-不创建第三张表-推荐-法1" class="headerlink" title="01.不创建第三张表 推荐(法1)"></a>01.不创建第三张表 <code>推荐</code>(法1)</h2><ul>
+<li><strong>第一种</strong>： 自己不创建第三张关系表，有m2m字段: 根据queryset对象增删改查（<strong>推荐</strong>）</li>
+</ul>
+<h3 id="1-1-创建表"><a href="#1-1-创建表" class="headerlink" title="1.1 创建表"></a>1.1 创建表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserInfo</span>(models.Model):</span><br><span class="line">    username = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.username</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserGroup</span>(models.Model):</span><br><span class="line">    group_name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    user_info = models.ManyToManyField(to=<span class="string">&#x27;UserInfo&#x27;</span>,related_query_name=<span class="string">&#x27;m2m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.group_name</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-根据queryset对象操作"><a href="#1-2-根据queryset对象操作" class="headerlink" title="1.2 根据queryset对象操作"></a>1.2 根据queryset对象操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">orm</span>(<span class="params">request</span>):</span><br><span class="line">    user_info_obj = models.UserInfo.objects.get(username=<span class="string">&#x27;zhangsan&#x27;</span>)</span><br><span class="line">    user_info_objs = models.UserInfo.objects.<span class="built_in">all</span>()</span><br><span class="line"></span><br><span class="line">    group_obj = models.UserGroup.objects.get(group_name=<span class="string">&#x27;group_python&#x27;</span>)</span><br><span class="line">    group_objs = models.UserGroup.objects.<span class="built_in">all</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 添加: 正向</span></span><br><span class="line">    group_obj.user_info.add(user_info_obj)</span><br><span class="line">    group_obj.user_info.add(*user_info_objs)</span><br><span class="line">    <span class="comment"># 删除：正向</span></span><br><span class="line">    group_obj.user_info.remove(user_info_obj)</span><br><span class="line">    group_obj.user_info.remove(*user_info_objs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 添加: 反向</span></span><br><span class="line">    user_info_obj.usergroup_set.add(group_obj)</span><br><span class="line">    user_info_obj.usergroup_set.add(*group_objs)</span><br><span class="line">    <span class="comment"># 删除：反向</span></span><br><span class="line">    user_info_obj.usergroup_set.remove(group_obj)</span><br><span class="line">    user_info_obj.usergroup_set.remove(*group_objs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查找：正向</span></span><br><span class="line">    <span class="built_in">print</span>(group_obj.user_info.<span class="built_in">all</span>())                                <span class="comment"># 查找group_python组中所有用户</span></span><br><span class="line">    <span class="built_in">print</span>(group_obj.user_info.<span class="built_in">all</span>().<span class="built_in">filter</span>(username=<span class="string">&#x27;zhangsan&#x27;</span>))</span><br><span class="line">    <span class="comment"># 查找：反向</span></span><br><span class="line">    <span class="built_in">print</span>(user_info_obj.usergroup_set.<span class="built_in">all</span>())                        <span class="comment"># 查找用户zhangsan属于那些组</span></span><br><span class="line">    <span class="built_in">print</span>(user_info_obj.usergroup_set.<span class="built_in">all</span>().<span class="built_in">filter</span>(group_name=<span class="string">&#x27;group_python&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 双下划线 正向、反向查找</span></span><br><span class="line">    <span class="comment"># 正向：从用户组表中查找zhangsan属于哪个用户组：[&lt;UserGroup: group_python&gt;]</span></span><br><span class="line">    <span class="built_in">print</span>( models.UserGroup.objects.<span class="built_in">filter</span>(user_info__username=<span class="string">&#x27;zhangsan&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向：从用户表中查询group_python组中有哪些用户：related_query_name=&#x27;m2m&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>( models.UserInfo.objects.<span class="built_in">filter</span>(m2m__group_name=<span class="string">&#x27;group_python&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自动创建UserInfo表和UserGroup表中的数据</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    user_list = [&#123;&#x27;username&#x27;:&#x27;zhangsan&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;username&#x27;:&#x27;lisi&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;username&#x27;:&#x27;wangwu&#x27;&#125;,]</span></span><br><span class="line"><span class="string">    group_list = [&#123;&#x27;group_name&#x27;:&#x27;group_python&#x27;&#125;,</span></span><br><span class="line"><span class="string">               &#123;&#x27;group_name&#x27;:&#x27;group_linux&#x27;&#125;,</span></span><br><span class="line"><span class="string">               &#123;&#x27;group_name&#x27;:&#x27;group_mysql&#x27;&#125;,]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for c in user_list:</span></span><br><span class="line"><span class="string">        models.UserInfo.objects.create(**c)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for l in group_list:</span></span><br><span class="line"><span class="string">        models.UserGroup.objects.create(**l)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;orm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-自己创建第三张关系表-法2"><a href="#02-自己创建第三张关系表-法2" class="headerlink" title="02.自己创建第三张关系表(法2)"></a>02.自己创建第三张关系表(法2)</h2><ul>
+<li><strong>第二种</strong>： 自己创建第三张关系表，无 m2m 字段，自己链表查询</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment">#表1：主机表</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Host</span>(models.Model):</span><br><span class="line">    nid = models.AutoField(primary_key=<span class="literal">True</span>)</span><br><span class="line">    hostname = models.CharField(max_length=<span class="number">32</span>,db_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#表2：应用表</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span>(models.Model):</span><br><span class="line">    name = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#表3：自定义第三张关联表</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HostToApp</span>(models.Model):</span><br><span class="line">    hobj = models.ForeignKey(to=<span class="string">&quot;Host&quot;</span>,to_field=<span class="string">&quot;nid&quot;</span>)</span><br><span class="line">    aobj = models.ForeignKey(to=<span class="string">&#x27;Application&#x27;</span>,to_field=<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向第三张表插入数据，建立多对多外键关联</span></span><br><span class="line">HostToApp.objects.create(hobj_id=<span class="number">1</span>,aobj_id=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-根据外检ID操作-法3"><a href="#03-根据外检ID操作-法3" class="headerlink" title="03.根据外检ID操作(法3)"></a>03.根据外检ID操作(法3)</h2><ul>
+<li><strong>第三种</strong>： 自己不创建第三张关系表，有m2m字段: 根据数字id增删改查</li>
+</ul>
+<h3 id="3-1-创建表"><a href="#3-1-创建表" class="headerlink" title="3.1 创建表"></a>3.1 创建表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Host</span>(models.Model):</span><br><span class="line">    hostname = models.CharField(max_length=<span class="number">32</span>,db_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Group</span>(models.Model):</span><br><span class="line">    group_name = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    m2m = models.ManyToManyField(<span class="string">&quot;Host&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-根据id增删改查"><a href="#3-2-根据id增删改查" class="headerlink" title="3.2 根据id增删改查"></a>3.2 根据id增删改查</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">orm</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 使用间接方法对第三张表操作</span></span><br><span class="line">    obj = models.Group.objects.get(<span class="built_in">id</span>=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1、添加</span></span><br><span class="line">    obj.m2m.add(<span class="number">1</span>)           <span class="comment"># 在第三张表中增加一个条目(1,1)</span></span><br><span class="line">    obj.m2m.add(<span class="number">2</span>, <span class="number">3</span>)        <span class="comment"># 在第三张表中增加条目（1,2）（1,3）两条关系</span></span><br><span class="line">    obj.m2m.add(*[<span class="number">1</span>,<span class="number">3</span>])        <span class="comment"># 在第三张表中增加条目（1,2）（1,3）两条关系</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2、删除</span></span><br><span class="line">    obj.m2m.remove(<span class="number">1</span>)             <span class="comment"># 删除第三张表中的（1,1）条目</span></span><br><span class="line">    obj.m2m.remove(<span class="number">2</span>, <span class="number">3</span>)          <span class="comment"># 删除第三张表中的（1,2）（1,3）条目</span></span><br><span class="line">    obj.m2m.remove(*[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])    <span class="comment"># 删除第三张表中的（1,1）（1,2）（1,3）条目</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3、清空</span></span><br><span class="line">    obj.m2m.clear()                 <span class="comment"># 删除第三张表中application条目等于1的所有条目</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4 更新</span></span><br><span class="line">    obj.m2m.<span class="built_in">set</span>([<span class="number">1</span>, <span class="number">2</span>,])             <span class="comment"># 第三张表中会删除所有条目，然后创建（1,1）（1,2）条目</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5 查找</span></span><br><span class="line">    <span class="built_in">print</span>( obj.m2m.<span class="built_in">all</span>() )           <span class="comment"># 等价于 models.UserInfo.objects.all()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 6 反向查找： 双下划线</span></span><br><span class="line">    hosts = models.Group.objects.<span class="built_in">filter</span>(m2m__id=<span class="number">1</span>)         <span class="comment"># 在Host表中id=1的主机同时属于那些组</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自动创建Host表和Group表中的数据</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    hostname = [&#123;&#x27;hostname&#x27;:&#x27;zhangsan&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;hostname&#x27;:&#x27;lisi&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;hostname&#x27;:&#x27;wangwu&#x27;&#125;,]</span></span><br><span class="line"><span class="string">    group_name = [&#123;&#x27;group_name&#x27;:&#x27;DBA&#x27;&#125;,&#123;&#x27;group_name&#x27;:&#x27;public&#x27;&#125;,]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for h in hostname:</span></span><br><span class="line"><span class="string">        models.Host.objects.create(**h)</span></span><br><span class="line"><span class="string">    for u in group_name:</span></span><br><span class="line"><span class="string">        models.Group.objects.create(**u)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;orm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-ManyToManyField参数"><a href="#04-ManyToManyField参数" class="headerlink" title="04.ManyToManyField参数"></a>04.ManyToManyField参数</h2><ul>
+<li>创建m2m多对多时ManyToManyField可以添加的参数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、to,                        <span class="comment"># 要进行关联的表名</span></span><br><span class="line"><span class="number">2</span>、related_name=<span class="literal">None</span>,         <span class="comment"># 反向操作时，使用的字段名，用于代替 【表名_set】如： obj.表名_set.all()</span></span><br><span class="line"><span class="number">3</span>、related_query_name=<span class="literal">None</span>,   <span class="comment"># 反向操作时，使用的连接前缀，用于替换【表名】   </span></span><br><span class="line">                              <span class="comment"># 如： models.UserGroup.objects.filter(表名__字段名=1).values(&#x27;表名__字段名&#x27;)</span></span><br><span class="line"><span class="number">4</span>、limit_choices_to=<span class="literal">None</span>,     <span class="comment"># 在Admin或ModelForm中显示关联数据时，提供的条件：</span></span><br><span class="line">                              <span class="comment"># - limit_choices_to=&#123;&#x27;nid__gt&#x27;: 5&#125;</span></span><br><span class="line"><span class="number">5</span>、symmetrical=<span class="literal">None</span>,          <span class="comment"># 用于多对多自关联，symmetrical用于指定内部是否创建反向操作字段</span></span><br><span class="line"><span class="number">6</span>、through=<span class="literal">None</span>,              <span class="comment"># 自定义第三张表时，使用字段用于指定关系表</span></span><br><span class="line"><span class="number">7</span>、through_fields=<span class="literal">None</span>,       <span class="comment"># 自定义第三张表时，使用字段用于指定关系表中那些字段做多对多关系表</span></span><br><span class="line"><span class="number">8</span>、db_constraint=<span class="literal">True</span>,        <span class="comment"># 是否在数据库中创建外键约束</span></span><br><span class="line">   db_table=<span class="literal">None</span>,             <span class="comment"># 默认创建第三张表时，数据库中表的名称</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="05-values和values-list"><a href="#05-values和values-list" class="headerlink" title="05.values和values_list"></a>05.values和values_list</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">orm</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 第一种：values-----获取的内部是字典,拿固定列数</span></span><br><span class="line">    <span class="comment"># 1.1 正向查找： 使用ManyToManyField字段名user_info结合双下划线查询</span></span><br><span class="line">    models.UserGroup.objects.<span class="built_in">filter</span>(group_name=<span class="string">&#x27;group_python&#x27;</span>).values(<span class="string">&#x27;group_name&#x27;</span>, <span class="string">&#x27;user_info__username&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1.2 反向查找： 使用ManyToManyField的related_query_name=&#x27;m2m&#x27;,的字段</span></span><br><span class="line">    models.UserInfo.objects.<span class="built_in">filter</span>(username=<span class="string">&#x27;zhangsan&#x27;</span>).values(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;m2m__group_name&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第二种：values_list-----获取的是元组  拿固定列数</span></span><br><span class="line">    <span class="comment"># 2.1 正向查找： 使用ManyToManyField字段名user_info结合双下划线查询</span></span><br><span class="line">    models.UserGroup.objects.<span class="built_in">filter</span>(group_name=<span class="string">&#x27;group_python&#x27;</span>).values_list(<span class="string">&#x27;group_name&#x27;</span>, <span class="string">&#x27;user_info__username&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.2 反向查找： 使用ManyToManyField的related_query_name=&#x27;m2m&#x27;,的字段</span></span><br><span class="line">    lesson = models.UserInfo.objects.<span class="built_in">filter</span>(username=<span class="string">&#x27;zhangsan&#x27;</span>).values_list(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;m2m__group_name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自动创建UserInfo表和UserGroup表中的数据</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    # user_info_obj = models.UserInfo.objects.get(username=&#x27;lisi&#x27;)</span></span><br><span class="line"><span class="string">    # user_info_objs = models.UserInfo.objects.all()</span></span><br><span class="line"><span class="string">    #</span></span><br><span class="line"><span class="string">    # group_obj = models.UserGroup.objects.get(group_name=&#x27;group_python&#x27;)</span></span><br><span class="line"><span class="string">    # group_objs = models.UserGroup.objects.all()</span></span><br><span class="line"><span class="string">    #</span></span><br><span class="line"><span class="string">    # group_obj.user_info.add(*user_info_objs)</span></span><br><span class="line"><span class="string">    # user_info_obj.usergroup_set.add(*group_objs)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    user_list = [&#123;&#x27;username&#x27;:&#x27;zhangsan&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;username&#x27;:&#x27;lisi&#x27;&#125;,</span></span><br><span class="line"><span class="string">                &#123;&#x27;username&#x27;:&#x27;wangwu&#x27;&#125;,]</span></span><br><span class="line"><span class="string">    group_list = [&#123;&#x27;group_name&#x27;:&#x27;group_python&#x27;&#125;,</span></span><br><span class="line"><span class="string">               &#123;&#x27;group_name&#x27;:&#x27;group_linux&#x27;&#125;,</span></span><br><span class="line"><span class="string">               &#123;&#x27;group_name&#x27;:&#x27;group_mysql&#x27;&#125;,]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for c in user_list:</span></span><br><span class="line"><span class="string">        models.UserInfo.objects.create(**c)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for l in group_list:</span></span><br><span class="line"><span class="string">        models.UserGroup.objects.create(**l)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;orm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/a3a881/" target="_blank">04.多对多</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/python/">python</a>
+                        
+                            <a href="../../categories/python/django/">django</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tags/django/">django</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../pages/cd892a/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/cd892a/" title="发布于 2021-02-16 08:25">06.F()和Q()查询</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/df1ddc/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/df1ddc/" title="发布于 2021-02-16 07:42">03.一对多</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            04.磁盘_CPU_内存_负载
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">04.磁盘_CPU_内存_负载</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-12
+                        </span>
+                        
+                            
+                                <span id="//pages/d16d69/" class="leancloud_visitors" data-flag-title="04.磁盘_CPU_内存_负载">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/d16d69/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">Linux</span>
+                        
+                            <span class="category-color">Linux入门</span>
+                        
+                    
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01-磁盘"><a href="#01-磁盘" class="headerlink" title="01.磁盘"></a>01.磁盘</h2><h3 id="1-1-查看磁盘使"><a href="#1-1-查看磁盘使" class="headerlink" title="1.1 查看磁盘使"></a>1.1 查看磁盘使</h3><blockquote>
+<h4 id="1-df-hl-：查看磁盘使用情况"><a href="#1-df-hl-：查看磁盘使用情况" class="headerlink" title="1. df -hl   ：查看磁盘使用情况"></a>1.<span style="color: red"> df -hl </span>  ：查看磁盘使用情况</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># df -hl</span></span><br><span class="line">Filesystem           Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/cl-root   37G  <span class="number">2.9</span>G   35G   <span class="number">8</span>% /</span><br><span class="line">devtmpfs             898M     <span class="number">0</span>  898M   <span class="number">0</span>% /dev</span><br><span class="line">tmpfs                <span class="number">9</span>10M   16K  <span class="number">9</span>10M   <span class="number">1</span>% /dev/shm</span><br><span class="line">tmpfs                <span class="number">9</span>10M   34M  877M   <span class="number">4</span>% /run</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-查看指定目录使用"><a href="#1-2-查看指定目录使用" class="headerlink" title="1.2 查看指定目录使用"></a>1.2 查看指定目录使用</h3><blockquote>
+<h4 id="2-df-h-home-：查看指定目录磁盘使用情况"><a href="#2-df-h-home-：查看指定目录磁盘使用情况" class="headerlink" title="2. df -h &#x2F;home ：查看指定目录磁盘使用情况"></a>2.<span style="color: red"> df -h &#x2F;home </span>：<strong>查看指定目录磁盘使用情况</strong></h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># df -h /home</span></span><br><span class="line">Filesystem           Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/cl-root   37G  <span class="number">2.9</span>G   35G   <span class="number">8</span>% /</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-查看大于1G文件夹"><a href="#1-3-查看大于1G文件夹" class="headerlink" title="1.3 查看大于1G文件夹"></a>1.3 查看大于1G文件夹</h3><blockquote>
+<h4 id="3-du-sh-grep-G-查看当前目录下个文件大于1G的文件夹"><a href="#3-du-sh-grep-G-查看当前目录下个文件大于1G的文件夹" class="headerlink" title="3.du -sh .&#x2F;* | grep G : 查看当前目录下个文件大于1G的文件夹"></a>3.<span style="color: red">du -sh .&#x2F;* | grep G </span>: <strong>查看当前目录下个文件大于1G的文件夹</strong></h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># du -sh ./*|grep G</span></span><br><span class="line"><span class="number">2.2</span>G    ./usr</span><br><span class="line"><span class="number">1.2</span>G    ./home</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-大于10M小于100M，倒序排列"><a href="#1-4-大于10M小于100M，倒序排列" class="headerlink" title="1.4 大于10M小于100M，倒序排列"></a>1.4 大于10M小于100M，倒序排列</h3><blockquote>
+<h4 id="4-find-type-f-size-10M-a-size-100M-print0-xargs-0-du-h-sort-nr-查找文件大于10M小于100M，倒序排列"><a href="#4-find-type-f-size-10M-a-size-100M-print0-xargs-0-du-h-sort-nr-查找文件大于10M小于100M，倒序排列" class="headerlink" title="4. find &#x2F; -type f -size +10M -a -size -100M -print0 | xargs -0 du -h | sort -nr    : 查找文件大于10M小于100M，倒序排列"></a>4.<span style="color: red"> find &#x2F; -type f -size +10M -a -size -100M -print0 | xargs -0 du -h | sort -nr </span>   <br/>: 查找文件大于10M小于100M，倒序排列</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># find / -type f -size +10M -a -size -100M  -print0 | xargs -0 du -h | sort -nr</span></span><br><span class="line">85M     /usr/<span class="built_in">bin</span>/docker</span><br><span class="line">80M     /var/lib/rpm/Packages</span><br><span class="line">48M     /usr/<span class="built_in">bin</span>/containerd</span><br><span class="line">47M     /boot/initramfs-<span class="number">0</span>-rescue-8b956f09fe0549c4b6182589acceab30.img</span><br><span class="line"></span><br><span class="line">find / -<span class="built_in">type</span> f -size +10M -a -size -100M   <span class="comment"># 查找根文件夹下大于 10M小于 100M</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="02-CPU"><a href="#02-CPU" class="headerlink" title="02.CPU"></a>02.CPU</h2><h3 id="2-1-top"><a href="#2-1-top" class="headerlink" title="2.1 top"></a>2.1 top</h3><blockquote>
+<h4 id="1-top-：查看cpu-内存等使用情况"><a href="#1-top-：查看cpu-内存等使用情况" class="headerlink" title="1.top  ：查看cpu 内存等使用情况"></a>1.<span style="color: red">top </span> ：查看cpu 内存等使用情况</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># top</span></span><br><span class="line">top - 03:<span class="number">24</span>:<span class="number">29</span>      <span class="comment"># 表示当前时间</span></span><br><span class="line">up <span class="number">4</span> days, <span class="number">22</span>:<span class="number">56</span>,   <span class="comment"># 系统已经运行时间 </span></span><br><span class="line"><span class="number">2</span> users,            <span class="comment"># 当前登录用户数</span></span><br><span class="line">load average: <span class="number">0.01</span>, <span class="number">0.03</span>, <span class="number">0.05</span>  <span class="comment"># 系统负载，即任务队列的平均长度。 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值</span></span><br><span class="line">Tasks: <span class="number">123</span> total(进程总数),   <span class="number">2</span> running(正在运行进程数), <span class="number">121</span> sleeping,   <span class="number">0</span> stopped,   <span class="number">0</span> zombie</span><br><span class="line">%Cpu(s):  <span class="number">0.0</span> </span><br><span class="line">us,  <span class="number">0.0</span>  <span class="comment"># 用户空间占用CPU百分比</span></span><br><span class="line">sy,  <span class="number">0.0</span>  <span class="comment"># 内核空间占用CPU百分比</span></span><br><span class="line">ni,<span class="number">100.0</span>  <span class="comment"># 用户进程空间内改变过优先级的进程占用CPU百分比</span></span><br><span class="line"><span class="built_in">id</span>,  <span class="number">0.0</span>  <span class="comment"># 空闲CPU百分比</span></span><br><span class="line">wa,  <span class="number">0.0</span>  <span class="comment"># 等待输入输出的CPU时间百分比</span></span><br><span class="line">hi,  <span class="number">0.0</span>  <span class="comment"># 硬中断（Hardware IRQ）占用CPU的百分比</span></span><br><span class="line">si,  <span class="number">0.0</span>  <span class="comment"># 软中断（Software Interrupts）占用CPU的百分比</span></span><br><span class="line">st</span><br><span class="line">KiB Mem :  <span class="number">1863224</span> total(物理内存总量),   <span class="number">219592</span> free,   <span class="number">498732</span> used,  <span class="number">1144900</span> buff/cache</span><br><span class="line">KiB Swap:  <span class="number">2097148</span> total(交换区总量),  <span class="number">2094580</span> free,     <span class="number">2568</span> used.  <span class="number">1043628</span> avail Mem</span><br><span class="line">    </span><br><span class="line">进程<span class="built_in">id</span> 进程所有者  优先级  </span><br><span class="line"> PID    USER       PR      RES    SHR S %CPU %MEM     TIME+ COMMAND                                          </span><br><span class="line"><span class="number">6583</span>    root       <span class="number">20</span>      <span class="number">5156</span>   <span class="number">3796</span> S  <span class="number">0.3</span>  <span class="number">0.3</span>  <span class="number">10</span>:<span class="number">54.90</span> vmtoolsd       </span><br><span class="line"><span class="number">7284</span>    root       <span class="number">20</span>      <span class="number">2252</span>   <span class="number">1580</span> R  <span class="number">0.3</span>  <span class="number">0.1</span>   <span class="number">0</span>:<span class="number">00.03</span> top                 </span><br><span class="line">   <span class="number">1</span>    root       <span class="number">20</span>      <span class="number">3844</span>   <span class="number">2436</span> S  <span class="number">0.0</span>  <span class="number">0.2</span>   <span class="number">2</span>:<span class="number">04.28</span> systemd      </span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-查看CPU是用率"><a href="#2-2-查看CPU是用率" class="headerlink" title="2.2 查看CPU是用率"></a>2.2 查看CPU是用率</h3><blockquote>
+<h4 id="2-sar-u-1-5-每1秒采集一次CPU使用率，共采集5次"><a href="#2-sar-u-1-5-每1秒采集一次CPU使用率，共采集5次" class="headerlink" title="2. sar -u 1 5 : 每1秒采集一次CPU使用率，共采集5次"></a>2.<span style="color: red"> sar -u 1 5 </span>: 每1秒采集一次CPU使用率，共采集5次</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># yum install sysstat  # 安装sar工具</span></span><br><span class="line">[root@linux-node1 /]<span class="comment"># sar -u 1 5  # 每1秒采集一次CPU使用率，共采集5次</span></span><br><span class="line">03:<span class="number">58</span>:<span class="number">40</span> AM     CPU     %user     %nice   %system   %iowait    %steal     %idle</span><br><span class="line">03:<span class="number">58</span>:<span class="number">41</span> AM     <span class="built_in">all</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">3.61</span>      <span class="number">0.00</span>      <span class="number">0.00</span>     <span class="number">96.39</span></span><br><span class="line">03:<span class="number">58</span>:<span class="number">42</span> AM     <span class="built_in">all</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>    <span class="number">100.00</span></span><br><span class="line">03:<span class="number">58</span>:<span class="number">43</span> AM     <span class="built_in">all</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.00</span>    <span class="number">100.00</span></span><br><span class="line">Average:        <span class="built_in">all</span>      <span class="number">0.00</span>      <span class="number">0.00</span>      <span class="number">0.62</span>      <span class="number">0.00</span>      <span class="number">0.00</span>     <span class="number">99.38</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-查看CPU基本信息"><a href="#2-3-查看CPU基本信息" class="headerlink" title="2.3 查看CPU基本信息"></a>2.3 查看CPU基本信息</h3><blockquote>
+<h4 id="3-cat-proc-cpuinfo-查看CPU基本信息"><a href="#3-cat-proc-cpuinfo-查看CPU基本信息" class="headerlink" title="3. cat &#x2F;proc&#x2F;cpuinfo : 查看CPU基本信息"></a>3.<span style="color: red"> cat &#x2F;proc&#x2F;cpuinfo </span>: 查看CPU基本信息</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># cat /proc/cpuinfo</span></span><br><span class="line">processor       : <span class="number">0</span>                <span class="comment"># 系统中逻辑处理核的编号</span></span><br><span class="line">vendor_id       : GenuineIntel     <span class="comment"># CPU制造商 </span></span><br><span class="line">cpu family      : <span class="number">6</span>                <span class="comment"># CPU产品系列代号</span></span><br><span class="line">model           : <span class="number">142</span>              <span class="comment"># CPU属于其系列中的哪一代的代号</span></span><br><span class="line">model name      : Intel(R) Core(TM) i7-7500U CPU @ <span class="number">2.70</span>GHz   <span class="comment"># CPU属于的名字及其编号、标称主频</span></span><br><span class="line">stepping        : <span class="number">9</span>                <span class="comment"># CPU属于制作更新版本</span></span><br><span class="line">cache size      : <span class="number">4096</span> KB          <span class="comment"># CPU二级缓存大小</span></span><br><span class="line">physical <span class="built_in">id</span>     : <span class="number">0</span>                <span class="comment"># 单个CPU的标号</span></span><br><span class="line">siblings        : <span class="number">1</span>                <span class="comment"># 单个CPU逻辑物理核数          </span></span><br><span class="line">cpu cores       : <span class="number">1</span>                <span class="comment"># cpu个数</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-查看CPU个数"><a href="#2-4-查看CPU个数" class="headerlink" title="2.4 查看CPU个数"></a>2.4 查看CPU个数</h3><blockquote>
+<h4 id="4-cat-proc-cpuinfo-grep-“physical-id”-sort-uniq-wc-l-：查看CPU个数"><a href="#4-cat-proc-cpuinfo-grep-“physical-id”-sort-uniq-wc-l-：查看CPU个数" class="headerlink" title="4. cat &#x2F;proc&#x2F;cpuinfo| grep “physical id”| sort| uniq| wc -l ：查看CPU个数"></a>4.<span style="color: red"> cat &#x2F;proc&#x2F;cpuinfo| grep “physical id”| sort| uniq| wc -l</span> ：查看CPU个数</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># cat /proc/cpuinfo</span></span><br><span class="line">processor       : <span class="number">0</span>                <span class="comment"># 系统中逻辑处理核的编号</span></span><br><span class="line">vendor_id       : GenuineIntel     <span class="comment"># CPU制造商 </span></span><br><span class="line">cpu family      : <span class="number">6</span>                <span class="comment"># CPU产品系列代号</span></span><br><span class="line">model           : <span class="number">142</span>              <span class="comment"># CPU属于其系列中的哪一代的代号</span></span><br><span class="line">model name      : Intel(R) Core(TM) i7-7500U CPU @ <span class="number">2.70</span>GHz   <span class="comment"># CPU属于的名字及其编号、标称主频</span></span><br><span class="line">stepping        : <span class="number">9</span>                <span class="comment"># CPU属于制作更新版本</span></span><br><span class="line">cache size      : <span class="number">4096</span> KB          <span class="comment"># CPU二级缓存大小</span></span><br><span class="line">physical <span class="built_in">id</span>     : <span class="number">0</span>                <span class="comment"># 单个CPU的标号</span></span><br><span class="line">siblings        : <span class="number">1</span>                <span class="comment"># 单个CPU逻辑物理核数          </span></span><br><span class="line">cpu cores       : <span class="number">1</span>                <span class="comment"># cpu个数</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="03-内存"><a href="#03-内存" class="headerlink" title="03.内存"></a>03.内存</h2><h3 id="3-1-查询内存详情"><a href="#3-1-查询内存详情" class="headerlink" title="3.1 查询内存详情"></a>3.1 查询内存详情</h3><blockquote>
+<h4 id="1-free-m-：查询内存详情"><a href="#1-free-m-：查询内存详情" class="headerlink" title="1. free -m ：查询内存详情"></a>1.<span style="color: red"> free -m</span> ：查询内存详情</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># free -m</span></span><br><span class="line">              total        used        free      shared              buff/cache   available</span><br><span class="line">Mem:           <span class="number">1819</span>         <span class="number">486</span>         <span class="number">190</span>          <span class="number">32</span>                <span class="number">1142</span>        <span class="number">1020</span></span><br><span class="line">Swap:          <span class="number">2047</span>           <span class="number">2</span>        <span class="number">2045</span></span><br><span class="line">              总内存       已使用       可用空间    多进程共享内存        磁盘缓存大小</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-查看内存详细信息"><a href="#3-2-查看内存详细信息" class="headerlink" title="3.2 查看内存详细信息"></a>3.2 查看内存详细信息</h3><blockquote>
+<h4 id="2-cat-proc-meminfo-：查看内存详细信息"><a href="#2-cat-proc-meminfo-：查看内存详细信息" class="headerlink" title="2. cat &#x2F;proc&#x2F;meminfo  ：查看内存详细信息"></a>2.<span style="color: red"> cat &#x2F;proc&#x2F;meminfo </span> ：查看内存详细信息</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># cat /proc/meminfo</span></span><br><span class="line">MemTotal:        <span class="number">1863224</span> kB</span><br><span class="line">MemFree:          <span class="number">195568</span> kB</span><br><span class="line">MemAvailable:    <span class="number">1044924</span> kB</span><br><span class="line">Buffers:               <span class="number">0</span> kB</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-vmstat查看内存"><a href="#3-3-vmstat查看内存" class="headerlink" title="3.3 vmstat查看内存"></a>3.3 vmstat查看内存</h3><blockquote>
+<h4 id="3-vmstat：查看内存"><a href="#3-vmstat：查看内存" class="headerlink" title="3. vmstat：查看内存"></a>3.<span style="color: red"> <strong>vmstat</strong></span>：查看内存</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 shdir]<span class="comment"># vmstat</span></span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   <span class="keyword">in</span>   cs us sy <span class="built_in">id</span> wa st</span><br><span class="line"> <span class="number">1</span>  <span class="number">0</span>   <span class="number">2568</span> <span class="number">181696</span>      <span class="number">0</span> <span class="number">1057272</span>    <span class="number">0</span>    <span class="number">0</span>     <span class="number">9</span>    <span class="number">52</span>  <span class="number">107</span>  <span class="number">155</span>  <span class="number">2</span>  <span class="number">1</span> <span class="number">97</span>  <span class="number">0</span>  <span class="number">0</span></span><br><span class="line"> </span><br><span class="line">r   <span class="comment"># 表示运行队列(就是说多少个进程真的分配到CPU)，当这个值超过了CPU数目，就会出现CPU瓶颈了。</span></span><br><span class="line">b   <span class="comment"># 表示阻塞的进程,这个不多说，进程阻塞，大家懂的。</span></span><br><span class="line">swpd   <span class="comment"># 虚拟内存已使用的大小，如果大于0，表示你的机器物理内存不足了</span></span><br><span class="line">free   <span class="comment">#空闲的物理内存的大小，我的机器内存总共8G，剩余3415M。</span></span><br><span class="line">buff   <span class="comment"># 用来存储目录里面有什么内容，权限等的缓存，我本机大概占用300多M</span></span><br><span class="line">cache  <span class="comment"># cache直接用来记忆我们打开的文件,给文件做缓冲</span></span><br><span class="line">si     <span class="comment"># 每秒从磁盘读入虚拟内存的大小，如果这个值大于0，表示物理内存不够用或者内存泄露了，要查找耗内存进程解决掉。</span></span><br><span class="line">so     <span class="comment"># 每秒虚拟内存写入磁盘的大小，如果这个值大于0，表示物理内存不够用或者内存泄露了，要查找耗内存进程解决掉。</span></span><br><span class="line">bi     <span class="comment"># 块设备每秒接收的块数量，当处理拷贝大量数据(2-3T)的机器上看过可以达到140000/s，磁盘写入速度差不多140M每秒</span></span><br><span class="line">bo     <span class="comment"># 块设备每秒发送的块数量，例如我们读取文件，bo就要大于0。bi和bo一般都要接近0，不然就是IO过于频繁，需要调整。</span></span><br><span class="line"><span class="keyword">in</span>     <span class="comment"># 每秒CPU的中断次数，包括时间中断</span></span><br><span class="line">cs     <span class="comment"># 每秒上下文切换次数，例如我们调用系统函数，就要进行上下文切换，线程的切换，也要进程上下文切换，这个值要越小越好</span></span><br><span class="line"></span><br><span class="line">us  <span class="comment"># 用户CPU使用百分比</span></span><br><span class="line">sy  <span class="comment"># 系统CPU使用百分比</span></span><br><span class="line"><span class="built_in">id</span>  <span class="comment"># idle(空闲CPU百分比)，一般来说，id + us + sy = 100,一般我认为id是空闲CPU使用率，us是用户CPU使用率，sy是系统CPU使用率。</span></span><br><span class="line">wt  <span class="comment"># 等待IO CPU时间（大于0代表系统资源不足）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-显示内存使用详细信息"><a href="#3-4-显示内存使用详细信息" class="headerlink" title="3.4 显示内存使用详细信息"></a>3.4 显示内存使用详细信息</h3><blockquote>
+<h4 id="4-vmstat-s-显示内存使用详细信息"><a href="#4-vmstat-s-显示内存使用详细信息" class="headerlink" title="4. vmstat -s  : 显示内存使用详细信息"></a>4.<span style="color: red"> vmstat -s  </span>: 显示内存使用详细信息</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># vmstat -s</span></span><br><span class="line">      <span class="number">1863224</span> K total memory</span><br><span class="line">       <span class="number">497780</span> K used memory</span><br><span class="line">       <span class="number">599272</span> K active memory</span><br><span class="line">       <span class="number">620812</span> K inactive memory</span><br><span class="line">       <span class="number">188652</span> K free memory</span><br><span class="line">            <span class="number">0</span> K buffer memory</span><br><span class="line">      <span class="number">1176792</span> K swap cache</span><br><span class="line">      <span class="number">2097148</span> K total swap</span><br><span class="line">         <span class="number">2568</span> K used swap</span><br><span class="line">      <span class="number">2094580</span> K free swap</span><br><span class="line">       <span class="number">608294</span> non-nice user cpu ticks</span><br><span class="line">          <span class="number">625</span> nice user cpu ticks</span><br><span class="line">       <span class="number">539067</span> system cpu ticks</span><br><span class="line">     <span class="number">63631049</span> idle cpu ticks</span><br><span class="line">        <span class="number">15051</span> IO-wait cpu ticks</span><br><span class="line">            <span class="number">0</span> IRQ cpu ticks</span><br><span class="line">        <span class="number">10324</span> softirq cpu ticks</span><br><span class="line">            <span class="number">0</span> stolen cpu ticks</span><br><span class="line">       <span class="number">420669</span> pages paged <span class="keyword">in</span></span><br><span class="line">      <span class="number">3118282</span> pages paged out</span><br><span class="line">            <span class="number">7</span> pages swapped <span class="keyword">in</span></span><br><span class="line">          <span class="number">627</span> pages swapped out</span><br><span class="line">     <span class="number">73440819</span> interrupts</span><br><span class="line">    <span class="number">111933117</span> CPU context switches</span><br><span class="line">   <span class="number">1574604468</span> boot time</span><br><span class="line">      <span class="number">1097163</span> forks</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-负载"><a href="#04-负载" class="headerlink" title="04.负载"></a>04.负载</h2><h3 id="4-1-什么是系统平均负载？"><a href="#4-1-什么是系统平均负载？" class="headerlink" title="4.1 什么是系统平均负载？"></a>4.1 什么是系统平均负载？</h3><blockquote>
+<h4 id="什么是系统平均负载？"><a href="#什么是系统平均负载？" class="headerlink" title="什么是系统平均负载？"></a>什么是系统平均负载？</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 系统平均负载是指在特定时间间隔内运行队列中的平均进程数。</span></span><br><span class="line"><span class="comment"># 2. 如果每个CPU内核的当前活动进程数不大于3的话，那么系统的性能是良好的。</span></span><br><span class="line"><span class="comment"># 3. 如果每个CPU内核的任务数大于5，那么这台机器的性能有严重问题。</span></span><br><span class="line"><span class="comment"># 4. 如果你的linux主机是1个双核CPU的话，当Load Average 为6的时候说明机器已经被充分使用了。</span></span><br><span class="line"><span class="comment"># 5. 1可以被认为是最优的负载值。负载是会随着系统不同改变得。</span></span><br><span class="line"><span class="comment"># 6. 单CPU系统1-3和SMP系统6-10都是可能接受的。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-查询系统当前负载信息"><a href="#4-2-查询系统当前负载信息" class="headerlink" title="4.2 查询系统当前负载信息"></a>4.2 查询系统当前负载信息</h3><blockquote>
+<h4 id="1-uptime-：-查询系统当前负载信息"><a href="#1-uptime-：-查询系统当前负载信息" class="headerlink" title="1. uptime ： 查询系统当前负载信息"></a>1.<span style="color: red"> uptime </span>： 查询系统当前负载信息</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># uptime</span></span><br><span class="line"> <span class="number">21</span>:03:<span class="number">50</span> up <span class="number">5</span> days,  <span class="number">5</span>:<span class="number">14</span>,  <span class="number">2</span> users,  load average: <span class="number">0.02</span>, <span class="number">0.04</span>, <span class="number">0.05</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;显示内容说明：&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="number">10</span>:<span class="number">19</span>:04             <span class="comment"># 系统当前时间 </span></span><br><span class="line">up <span class="number">257</span> days, <span class="number">18</span>:<span class="number">56</span>   <span class="comment"># 主机已运行时间,时间越大，说明你的机器越稳定。 </span></span><br><span class="line"><span class="number">12</span> user              <span class="comment"># 用户连接数，是总连接数而不是用户数 </span></span><br><span class="line">load average         <span class="comment"># 系统平均负载，统计最近1，5，15分钟的系统平均负载</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-查看负载信息"><a href="#4-3-查看负载信息" class="headerlink" title="4.3 查看负载信息"></a>4.3 查看负载信息</h3><blockquote>
+<h4 id="2-cat-proc-loadavg-：查看负载信息"><a href="#2-cat-proc-loadavg-：查看负载信息" class="headerlink" title="2. cat &#x2F;proc&#x2F;loadavg ：查看负载信息"></a>2.<span style="color: red"> cat &#x2F;proc&#x2F;loadavg </span>：查看负载信息</h4></blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># cat /proc/loadavg </span></span><br><span class="line"><span class="number">0.00</span> <span class="number">0.01</span> <span class="number">0.05</span> <span class="number">2</span>/<span class="number">384</span> <span class="number">4482</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 0.00 0.01 0.05 表示最近1分钟,5分钟,15分钟 系统的平均负载; 系统负载越高,代表CPU越繁忙;</span></span><br><span class="line"><span class="comment"># 2/384 2代表此时运行队列中的进程个数;384 代表系统中进程的总数</span></span><br><span class="line"><span class="comment"># 4482 代表到此为止创建的最后一个进程的ID.</span></span><br></pre></td></tr></table></figure>
+
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/d16d69/" target="_blank">04.磁盘_CPU_内存_负载</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/Linux/">Linux</a>
+                        
+                            <a href="../../categories/Linux/Linux%E5%85%A5%E9%97%A8/">Linux入门</a>
+                        
+                    </div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../pages/75f126/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/75f126/" title="发布于 2021-02-12 09:41">03.Linux基础命令</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/a07d15/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a07d15/" title="发布于 2021-02-12 09:41">05.进程管理</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

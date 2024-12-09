@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            05.python使用ES
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">05.python使用ES</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-12
+                        </span>
+                        
+                            
+                                <span id="//pages/51290c/" class="leancloud_visitors" data-flag-title="05.python使用ES">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/51290c/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">数据库</span>
+                        
+                            <span class="category-color">Elasticsearch</span>
+                        
+                    
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01-安装连接"><a href="#01-安装连接" class="headerlink" title="01.安装连接"></a>01.安装连接</h2><p>python ES客户端：<a target="_blank" rel="noopener" href="https://elasticsearch-py.readthedocs.io/">https://elasticsearch-py.readthedocs.io/</a> </p>
+<p>elasticsearch官方文档：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html</a></p>
+<h3 id="1-1-安装elasticsearch客户端"><a href="#1-1-安装elasticsearch客户端" class="headerlink" title="1.1 安装elasticsearch客户端"></a>1.1 安装elasticsearch客户端</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># pip install elasticsearch</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-创建索引"><a href="#1-2-创建索引" class="headerlink" title="1.2 创建索引"></a>1.2 创建索引</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 1.连接ES</span></span></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 2.创建索引</span></span></span><br><span class="line">es.indices.create(index=&#x27;python_es01&#x27;,ignore=400)   ## 注意:ignore可以忽略异常</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 3.删除索引</span></span></span><br><span class="line">es.indices.delete(index=&#x27;python_es01&#x27;, ignore=[400, 404])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若需验证</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># es = Elasticsearch([&#x27;192.168.56.66:9200&#x27;], http_auth=(&#x27;xiao&#x27;, &#x27;123456&#x27;), timeout=3600)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在dev-tools中查看操作结果</li>
+</ul>
+<blockquote>
+<p>GET &#x2F;python_es01</p>
+</blockquote>
+<h3 id="1-3-插入数据"><a href="#1-3-插入数据" class="headerlink" title="1.3 插入数据"></a>1.3 插入数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line">from datetime import datetime</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 其中index表示插入的索引,doc_type表示数据类型,id表示主键,body表示要插入索引的内容</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 注意:因为elasticsearch中的数据格式为json,所以python中提供的数据类型为dict</span></span></span><br><span class="line">es.index(index=&quot;my-index&quot;, doc_type=&quot;test-type&quot;, id=1, body=&#123;&quot;any&quot;: &quot;data01&quot;, &quot;timestamp&quot;: datetime.now()&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在dev-tools中操作</li>
+</ul>
+<blockquote>
+<p>get &#x2F;my-index&#x2F;test-type&#x2F;1</p>
+</blockquote>
+<h3 id="1-4-查询数据"><a href="#1-4-查询数据" class="headerlink" title="1.4 查询数据"></a>1.4 查询数据</h3><h4 id="1-4-1-法1-使用id查询"><a href="#1-4-1-法1-使用id查询" class="headerlink" title="1.4.1 法1:使用id查询"></a>1.4.1 法1:使用id查询</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">result = es.get(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,id=&quot;1&quot;)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-2-法2：使用DevTools中方法进行查询"><a href="#1-4-2-法2：使用DevTools中方法进行查询" class="headerlink" title="1.4.2 法2：使用DevTools中方法进行查询"></a>1.4.2 法2：使用DevTools中方法进行查询</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"></span><br><span class="line">body=&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result2 = es.search(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,body=body)</span><br><span class="line">print(result2)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;_index&quot;: &quot;my-index&quot;,</span><br><span class="line">	&quot;_type&quot;: &quot;test-type&quot;,</span><br><span class="line">	&quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">	&quot;_version&quot;: 1,</span><br><span class="line">	&quot;_seq_no&quot;: 0,</span><br><span class="line">	&quot;_primary_term&quot;: 1,</span><br><span class="line">	&quot;found&quot;: true,</span><br><span class="line">	&quot;_source&quot;: &#123;</span><br><span class="line">		&quot;any&quot;: &quot;data01&quot;,</span><br><span class="line">		&quot;timestamp&quot;: &quot;2021-02-03T11:00:33.396408&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-删除数据"><a href="#1-5-删除数据" class="headerlink" title="1.5 删除数据"></a>1.5 删除数据</h3><ul>
+<li><code>等同于：</code>DELETE &#x2F;my-index&#x2F;test-type&#x2F;1</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">result = es.delete(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,id=1)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-创建mapping"><a href="#02-创建mapping" class="headerlink" title="02.创建mapping"></a>02.创建mapping</h2><h3 id="2-1-什么是mapping"><a href="#2-1-什么是mapping" class="headerlink" title="2.1 什么是mapping"></a>2.1 什么是mapping</h3><ul>
+<li>mapping 在中的作用就是约束，数据类型声明</li>
+<li>它类似于静态语言中的数据类型声明，比如声明一个字段为<code>String</code>， 以后这个变量都只能存储<code>String</code>类型的数据。</li>
+<li>同样的， 一个<code>number</code>类型的mapping 字段只能存储<code>number</code>类型的数据。</li>
+</ul>
+<h3 id="2-2-自动创建mapping"><a href="#2-2-自动创建mapping" class="headerlink" title="2.2 自动创建mapping"></a>2.2 自动创建mapping</h3><h4 id="2-2-1-自动创建数据"><a href="#2-2-1-自动创建数据" class="headerlink" title="2.2.1 自动创建数据"></a>2.2.1 自动创建数据</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put /goods/fruit/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;xiangjiao&quot;,</span><br><span class="line">  &quot;describe&quot;:&quot;haochi tian&quot;,</span><br><span class="line">  &quot;price&quot;:40,</span><br><span class="line">  &quot;producer&quot;:&quot;feilvbin&quot;,</span><br><span class="line">  &quot;tags&quot;:[&quot;xiangjiao&quot;,&quot;haochi&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-2-查看mapping映射"><a href="#2-2-2-查看mapping映射" class="headerlink" title="2.2.2 查看mapping映射"></a>2.2.2 查看mapping映射</h4><blockquote>
+<p>GET &#x2F;goods&#x2F;_mapping</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;goods&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;properties&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;describe&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;price&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;long&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;producer&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;tags&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-mapping说明"><a href="#2-3-mapping说明" class="headerlink" title="2.3 mapping说明"></a>2.3 mapping说明</h3><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
+<h4 id="2-3-1-mapping分词器"><a href="#2-3-1-mapping分词器" class="headerlink" title="2.3.1 mapping分词器"></a>2.3.1 mapping分词器</h4><ul>
+<li><code>analyzer</code>是字段文本的分词器</li>
+<li><code>search_analyzer</code>是搜索词的分词器</li>
+<li><code>ik_max_word</code>分词器是插件<code>ik</code>提供的，可以对文本进行最大数量的分词</li>
+</ul>
+<h4 id="2-3-2-域类型"><a href="#2-3-2-域类型" class="headerlink" title="2.3.2 域类型"></a>2.3.2 域类型</h4><ul>
+<li>字符串: <code>text</code> , <code>keyword</code><ul>
+<li><code>text</code>：当一个字段需要用于全文搜索(会被分词)</li>
+<li><code>keyword</code>：当一个字段需要按照<code>精确值</code>进行过滤、排序、聚合等操作时, 就应该使用keyword类型</li>
+</ul>
+</li>
+<li>整数 : <code>byte</code>, <code>short</code>, <code>integer</code>, <code>long</code><ul>
+<li><p>byte  有符号的8位整数, 范围: [-128 ~ 127]</p>
+</li>
+<li><p>short 有符号的16位整数, 范围: [-32768 ~ 32767]</p>
+</li>
+<li><p>integer 有符号的32位整数, 范围: [$-2^{31}$ ~ $2^{31}$-1]</p>
+</li>
+<li><p>long  有符号的32位整数, 范围: [$-2^{63}$ ~ $2^{63}$-1]</p>
+</li>
+</ul>
+</li>
+<li>浮点数: <code>float</code>, <code>double</code><ul>
+<li><p>float 32位单精度浮点数</p>
+</li>
+<li><p>double  64位双精度浮点数</p>
+</li>
+</ul>
+</li>
+<li>布尔型: <code>boolean</code><ul>
+<li><p>真值: true, “true”, “on”, “yes”, “1”…</p>
+</li>
+<li><p>假值: false, “false”, “off”, “no”, “0”, “”(空字符串), 0.0, 0</p>
+</li>
+</ul>
+</li>
+<li>日期: <code>date</code></li>
+</ul>
+<p><img src="./assets/image-20210205155546382.png" style="width: 700px; margin-left: 50px;"> </img></p>
+<h2 id="04-手动创建mapping"><a href="#04-手动创建mapping" class="headerlink" title="04.手动创建mapping"></a>04.手动创建mapping</h2><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>书名</th>
+<th>作者</th>
+<th>价格</th>
+<th>描述</th>
+<th>出版时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>name</td>
+<td>author</td>
+<td>price</td>
+<td>desc</td>
+<td>pub_date</td>
+</tr>
+<tr>
+<td>1</td>
+<td>三国演义</td>
+<td>罗贯中</td>
+<td>88</td>
+<td>三国争雄</td>
+<td>2014-9-12</td>
+</tr>
+<tr>
+<td>2</td>
+<td>水浒传</td>
+<td>施耐庵</td>
+<td>106</td>
+<td>宋江梁山起义</td>
+<td>2018-01-27</td>
+</tr>
+<tr>
+<td>3</td>
+<td>西游记</td>
+<td>吴承恩</td>
+<td>206</td>
+<td>唐僧师徒四人</td>
+<td>2020-10-10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>红楼梦</td>
+<td>曹雪芹</td>
+<td>88</td>
+<td>石头记</td>
+<td>2021–09-18</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># -*- coding: utf-8 -*-</span></span></span><br><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">mappings = &#123;</span><br><span class="line">	&quot;mappings&quot;: &#123;</span><br><span class="line">		&quot;properties&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;author&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;price&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;long&quot;,</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;desc&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;pub_date&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">res = es.indices.create(index = &#x27;books&#x27;,body =mappings)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在浏览器管理页面，查询mappings创建结果</li>
+</ul>
+<blockquote>
+<p>GET &#x2F;books&#x2F;_mapping</p>
+</blockquote>
+<h2 id="04-添加数据"><a href="#04-添加数据" class="headerlink" title="04.添加数据"></a>04.添加数据</h2><h3 id="4-1-for循环添加数据"><a href="#4-1-for循环添加数据" class="headerlink" title="4.1 for循环添加数据"></a>4.1 for循环添加数据</h3><table>
+<thead>
+<tr>
+<th>D</th>
+<th>书名</th>
+<th>作者</th>
+<th>价格</th>
+<th>描述</th>
+<th>出版时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>name</td>
+<td>author</td>
+<td>price</td>
+<td>desc</td>
+<td>pub_date</td>
+</tr>
+<tr>
+<td>1</td>
+<td>三国演义</td>
+<td>罗贯中</td>
+<td>88</td>
+<td>三国争雄</td>
+<td>2014-09-12</td>
+</tr>
+<tr>
+<td>2</td>
+<td>水浒传</td>
+<td>施耐庵</td>
+<td>106</td>
+<td>宋江梁山起义</td>
+<td>2018-01-27</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch(&#x27;192.168.56.66:9200&#x27;)</span><br><span class="line">list = [</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;三国演义&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;罗贯中&quot;,</span><br><span class="line">     &quot;price&quot;: 88,</span><br><span class="line">     &quot;desc&quot;: &quot;三国争雄&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2014-09-12&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;水浒传&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;施耐庵&quot;,</span><br><span class="line">     &quot;price&quot;: 106,</span><br><span class="line">     &quot;desc&quot;: &quot;宋江梁山起义&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2018-01-27&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">for item in list:</span><br><span class="line">    res = es.index(index=&#x27;books&#x27;, body=item)</span><br><span class="line">    print(res[&#x27;created&#x27;])</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-bulk批量添加数据"><a href="#4-2-bulk批量添加数据" class="headerlink" title="4.2 bulk批量添加数据"></a>4.2 bulk批量添加数据</h3><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>书名</th>
+<th>作者</th>
+<th>价格</th>
+<th>描述</th>
+<th>出版时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>name</td>
+<td>author</td>
+<td>price</td>
+<td>desc</td>
+<td>pub_date</td>
+</tr>
+<tr>
+<td>3</td>
+<td>西游记</td>
+<td>吴承恩</td>
+<td>206</td>
+<td>唐僧师徒四人</td>
+<td>2020-10-10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>红楼梦</td>
+<td>曹雪芹</td>
+<td>88</td>
+<td>石头记</td>
+<td>2021–09-18</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># -*- coding: utf-8 -*-</span></span></span><br><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line">from elasticsearch.helpers import bulk</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">list = [</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;西游记&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;吴承恩&quot;,</span><br><span class="line">     &quot;price&quot;: 206,</span><br><span class="line">     &quot;desc&quot;: &quot;唐僧师徒四人&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2020-10-10&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;红楼梦&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;曹雪芹&quot;,</span><br><span class="line">     &quot;price&quot;: 88,</span><br><span class="line">     &quot;desc&quot;: &quot;石头记&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2021–09-18&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">ACTIONS = []</span><br><span class="line">i = 10</span><br><span class="line">for line in list:</span><br><span class="line">    action = &#123;</span><br><span class="line">        &quot;_index&quot;: &#x27;books&#x27;,</span><br><span class="line">        &quot;_id&quot;: i,  ## _id 也可以默认生成，不赋值</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: line[&#x27;name&#x27;],</span><br><span class="line">            &quot;author&quot;: line[&#x27;author&#x27;],</span><br><span class="line">            &quot;price&quot;: line[&#x27;price&#x27;],</span><br><span class="line">            &quot;desc&quot;: line[&#x27;desc&#x27;],</span><br><span class="line">            &quot;pub_date&quot;: line[&#x27;pub_date&#x27;]&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i += 1</span><br><span class="line">    ACTIONS.append(action)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 批量处理</span></span></span><br><span class="line">success, _ = bulk(es, ACTIONS, index=&#x27;books&#x27;, raise_on_error=True)</span><br><span class="line">print(&#x27;Performed %d actions&#x27; % success)</span><br></pre></td></tr></table></figure>
+
+<h2 id="05-查询所有数据"><a href="#05-查询所有数据" class="headerlink" title="05.查询所有数据"></a>05.查询所有数据</h2><h3 id="5-1-查询所有数据"><a href="#5-1-查询所有数据" class="headerlink" title="5.1 查询所有数据"></a>5.1 查询所有数据</h3><h4 id="5-1-1-查询所有数据"><a href="#5-1-1-查询所有数据" class="headerlink" title="5.1.1 查询所有数据"></a>5.1.1 查询所有数据</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([<span class="string">&quot;192.168.56.66:9200&quot;</span>,])</span><br><span class="line">result = es.search(index=<span class="string">&quot;es_test&quot;</span>,)</span><br><span class="line"><span class="built_in">print</span>((result))</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-1-2-根据body查询所有数据"><a href="#5-1-2-根据body查询所有数据" class="headerlink" title="5.1.2 根据body查询所有数据"></a>5.1.2 根据body查询所有数据</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">        &quot;match_all&quot;:&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;es_test&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-查询结果"><a href="#5-2-查询结果" class="headerlink" title="5.2 查询结果"></a>5.2 查询结果</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;took&quot;: 0,</span><br><span class="line">	&quot;timed_out&quot;: false,</span><br><span class="line">	&quot;_shards&quot;: &#123;</span><br><span class="line">		&quot;total&quot;: 1,</span><br><span class="line">		&quot;successful&quot;: 1,</span><br><span class="line">		&quot;skipped&quot;: 0,</span><br><span class="line">		&quot;failed&quot;: 0</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;hits&quot;: &#123;</span><br><span class="line">		&quot;total&quot;: &#123;</span><br><span class="line">			&quot;value&quot;: 4,</span><br><span class="line">			&quot;relation&quot;: &quot;eq&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;max_score&quot;: 1.0,</span><br><span class="line">		&quot;hits&quot;: [&#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;Vac9bXcBpdA8au-rDwE0&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;水浒传&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;施耐庵&quot;,</span><br><span class="line">				&quot;price&quot;: 106,</span><br><span class="line">				&quot;desc&quot;: &quot;宋江梁山起义&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2018-01-27&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;10&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;西游记&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;吴承恩&quot;,</span><br><span class="line">				&quot;price&quot;: 206,</span><br><span class="line">				&quot;desc&quot;: &quot;唐僧师徒四人&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2020-10-10&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;11&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;红楼梦&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;曹雪芹&quot;,</span><br><span class="line">				&quot;price&quot;: 88,</span><br><span class="line">				&quot;desc&quot;: &quot;石头记&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2021–09-18&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;VqdJbXcBpdA8au-r0AHI&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;三国演义&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;罗贯中&quot;,</span><br><span class="line">				&quot;price&quot;: 88,</span><br><span class="line">				&quot;desc&quot;: &quot;三国争雄&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2014-09-12&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="06-term和terms模糊查询"><a href="#06-term和terms模糊查询" class="headerlink" title="06.term和terms模糊查询"></a>06.term和terms模糊查询</h2><ul>
+<li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
+<li>terms与term区别是可以按照多个“关键字” 过滤</li>
+</ul>
+<h3 id="6-1-term"><a href="#6-1-term" class="headerlink" title="6.1 term"></a>6.1 term</h3><ul>
+<li><code>查找 title 字段中包含：&quot;电视&quot;关键字的内容</code></li>
+<li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;三国&quot;     ## 查找 title 字段中包含：&quot;三国&quot;关键字的内容</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-terms"><a href="#6-2-terms" class="headerlink" title="6.2 terms"></a>6.2 terms</h3><ul>
+<li><code>查找name字段包含：&quot;三国&quot;或者&quot;红楼&quot;关键字</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;terms&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: [     ## 查找name字段包含：&quot;三国&quot;或者&quot;红楼&quot;关键字</span><br><span class="line">        &quot;三国&quot;,</span><br><span class="line">        &quot;西游&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="07-match和multi-match"><a href="#07-match和multi-match" class="headerlink" title="07.match和multi_match"></a>07.match和multi_match</h2><ul>
+<li>match：智能在一个字段匹配</li>
+<li>multi_match：多个字段同时匹配</li>
+<li>作用：把搜索关键字 <code>先分词在搜索</code><ul>
+<li>比如”宝马多少马力”会被分词为”宝马 多少 马力”, 所有有关”宝马 多少 马力”, 那么所有包含这三个词中的一个或多个的文档就会被搜索出来。</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-1-match"><a href="#7-1-match" class="headerlink" title="7.1 match"></a>7.1 match</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;三国&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-multi-match"><a href="#7-2-multi-match" class="headerlink" title="7.2 multi_match"></a>7.2 multi_match</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;multi_match&quot;: &#123;</span><br><span class="line">      &quot;query&quot;: &quot;吴承恩&quot;,                   #查询的内容为  吴承恩</span><br><span class="line">      &quot;fields&quot;: [&quot;name&quot;,&quot;author&quot;]          #查询 图书名称 或者 作者包含 吴承恩 关键字</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;, body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="08-ids根据多个id查询"><a href="#08-ids根据多个id查询" class="headerlink" title="08.ids根据多个id查询"></a>08.ids根据多个id查询</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;ids&quot;: &#123;</span><br><span class="line">      &quot;values&quot;: [10,11]      ## 查询id为：10或者11的数据</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="09-复合查询bool"><a href="#09-复合查询bool" class="headerlink" title="09.复合查询bool"></a>09.复合查询bool</h2><ul>
+<li><p>must:必须都满足条件</p>
+</li>
+<li><p>should:其中一个满足</p>
+</li>
+<li><p>must_not:必须都不满足</p>
+</li>
+</ul>
+<h3 id="9-1-must"><a href="#9-1-must" class="headerlink" title="9.1 must"></a>9.1 must</h3><ul>
+<li><code>图书名称同时包含：&quot;西游&quot;   作者包含：&quot;唐僧&quot;</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;唐僧&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-should"><a href="#9-2-should" class="headerlink" title="9.2 should"></a>9.2 should</h3><ul>
+<li>图书名称 包含 “西游” 或者 描述中 包含 “石头记”</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;石头记&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-3-must-not"><a href="#9-3-must-not" class="headerlink" title="9.3 must_not"></a>9.3 must_not</h3><p>图书名称 不包含 “西游” 和 描述中 不包含 “石头记”得所有图书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must_not&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;石头记&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="10-分页"><a href="#10-分页" class="headerlink" title="10.分页"></a>10.分页</h2><h3 id="10-1-分页查询"><a href="#10-1-分页查询" class="headerlink" title="10.1 分页查询"></a>10.1 分页查询</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"></span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;   #这里是查询的条件部分</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,         #从第几条开始查</span><br><span class="line">  &quot;size&quot;: 2         #一次查多少条数据</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-2-范围查询加分页"><a href="#10-2-范围查询加分页" class="headerlink" title="10.2 范围查询加分页"></a>10.2 范围查询加分页</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;range&quot;: &#123;      ## 查找图书价格在 10~100 之间的书籍</span><br><span class="line">      &quot;price&quot;: &#123;</span><br><span class="line">        &quot;gte&quot;: 10,</span><br><span class="line">        &quot;lte&quot;: 100</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 10</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="11-前缀查询"><a href="#11-前缀查询" class="headerlink" title="11.前缀查询"></a>11.前缀查询</h2><h3 id="11-前缀查询-1"><a href="#11-前缀查询-1" class="headerlink" title="11.前缀查询"></a>11.前缀查询</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;prefix&quot;: &#123;</span><br><span class="line">      &quot;author&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;吴&quot;     ## 查找图书作者 姓 吴 </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="12-通配符查询"><a href="#12-通配符查询" class="headerlink" title="12.通配符查询"></a>12.通配符查询</h2><h3 id="12-通配符查询-1"><a href="#12-通配符查询-1" class="headerlink" title="12.通配符查询"></a>12.通配符查询</h3><ul>
+<li><code>*无忌</code>:  以无忌结尾的都要</li>
+<li><code>张*: </code>   以张开头的都要</li>
+<li><code>张*忌</code>:  张无忌,张有忌,张1234忌都是我的菜</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;wildcard&quot;: &#123;       #使用通配符</span><br><span class="line">      &quot;author&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;*承恩&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="13-排序"><a href="#13-排序" class="headerlink" title="13.排序"></a>13.排序</h2><h3 id="13-排序-1"><a href="#13-排序-1" class="headerlink" title="13.排序"></a>13.排序</h3><ul>
+<li>Sort是数组,也可以同时对多个字段进行排序,<code>asc升序,desc降序</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;price&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;    ## 查找所有图书，以 价格 降序</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="14-聚合函数"><a href="#14-聚合函数" class="headerlink" title="14.聚合函数"></a>14.聚合函数</h2><h3 id="14-聚合函数-1"><a href="#14-聚合函数-1" class="headerlink" title="14.聚合函数"></a>14.聚合函数</h3><ul>
+<li>求最小值:min</li>
+<li>求最大值:max</li>
+<li>求平均值:avg</li>
+<li>求和:sum</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;               #这里是聚合函数的意思</span><br><span class="line">    &quot;价格最低书籍&quot;: &#123;          #自定义的字段名称</span><br><span class="line">      &quot;min&quot;: &#123;            #求最小值</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;      #要求那个字段的最小值</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="15-同时查询多条聚合函数"><a href="#15-同时查询多条聚合函数" class="headerlink" title="15.同时查询多条聚合函数"></a>15.同时查询多条聚合函数</h2><h3 id="15-同时查询多条聚合函数-1"><a href="#15-同时查询多条聚合函数-1" class="headerlink" title="15.同时查询多条聚合函数"></a>15.同时查询多条聚合函数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;图书总价格&quot;: &#123;</span><br><span class="line">      &quot;sum&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;图书平均价格&quot;:&#123;</span><br><span class="line">      &quot;avg&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;, body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="16-过滤查询"><a href="#16-过滤查询" class="headerlink" title="16.过滤查询"></a>16.过滤查询</h2><h3 id="16-过滤查询-1"><a href="#16-过滤查询-1" class="headerlink" title="16.过滤查询"></a>16.过滤查询</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询_id属性:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._id&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询_source属性:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._source&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 默认全查:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._*&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询当前数据总数</span></span></span><br><span class="line">result = es.count(index=&quot;person&quot;,doc_type=&quot;daxia&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="17-删除"><a href="#17-删除" class="headerlink" title="17.删除"></a>17.删除</h2><h3 id="17-1-关键字删除"><a href="#17-1-关键字删除" class="headerlink" title="17.1 关键字删除"></a>17.1 关键字删除</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;school.name&quot;: &quot;华山派&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.delete_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="17-2-年龄范围删除"><a href="#17-2-年龄范围删除" class="headerlink" title="17.2 年龄范围删除"></a>17.2 年龄范围删除</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">    &quot;range&quot;: &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;lte&quot;: 20      #删除小于等于20岁的人</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.delete_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="18-按条件更新"><a href="#18-按条件更新" class="headerlink" title="18.按条件更新"></a>18.按条件更新</h2><h3 id="18-按条件更新-1"><a href="#18-按条件更新-1" class="headerlink" title="18.按条件更新"></a>18.按条件更新</h3><ul>
+<li>重点: 更新查询条件为年龄小于等于20岁的人,</li>
+<li>其中script中为脚本语法(有坑,详细内容还未查询),修改多项内容,内容与内容之间用”;”号间隔</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;script&quot;: &#123;</span><br><span class="line">        &quot;source&quot;: &quot;ctx._source[&#x27;age&#x27;]=21;ctx._source[&#x27;name&#x27;]=&#x27;renyy&#x27;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">            &quot;age&quot;: &#123;</span><br><span class="line">                &quot;lte&quot;: 20</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.update_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/51290c/" target="_blank">05.python使用ES</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                        
+                            <a href="../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Elasticsearch/">Elasticsearch</a>
+                        
+                    </div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../pages/5021f3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/5021f3/" title="发布于 2021-02-12 03:04">04.中文分词检索</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/abc352/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/abc352/" title="发布于 2021-02-12 03:04">06.ES复杂类型</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

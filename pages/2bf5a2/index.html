@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            09.ModelViewSet
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">09.ModelViewSet</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-18
+                        </span>
+                        
+                            
+                                <span id="//pages/2bf5a2/" class="leancloud_visitors" data-flag-title="09.ModelViewSet">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/2bf5a2/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                            <span class="category-color">django</span>
+                        
+                            <span class="category-color">03_DRF框架</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">DRF</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01-DRF初始化"><a href="#01-DRF初始化" class="headerlink" title="01.DRF初始化"></a>01.DRF初始化</h2><ul>
+<li>1.DRF框架的8个核心功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>认证（用户登录校验用户名密码或者token是否合法）</span><br><span class="line"><span class="number">2.</span>权限（根据不同的用户角色，可以操作不同的表）</span><br><span class="line"><span class="number">3.</span>限流（限制接口访问速度）</span><br><span class="line"><span class="number">4.</span>序列化（返回json）</span><br><span class="line"><span class="number">5.</span>分页</span><br><span class="line"><span class="number">6.</span>版本（接口版本号，用 v1/v2/v3）</span><br><span class="line">	<span class="comment"># api.example.com/v1/login     # 只有用户名密码登录</span></span><br><span class="line">	<span class="comment"># api.example.com/v2/login     # 手机号，微信 登录</span></span><br><span class="line"><span class="number">7.</span>过滤（username=zhangsan）</span><br><span class="line"><span class="number">8.</span>排序（ordering=-<span class="built_in">id</span>）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>2.相关包</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;1.序列化相关&#x27;&#x27;&#x27;</span></span><br><span class="line">serializer</span><br><span class="line">ModelSerializer</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;2.DRF视图函数继承&#x27;&#x27;&#x27;</span></span><br><span class="line">APIView</span><br><span class="line">ModelViewSet</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-安装DRF"><a href="#1-1-安装DRF" class="headerlink" title="1.1 安装DRF"></a>1.1 安装DRF</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install djangorestframework==<span class="number">3.11</span><span class="number">.0</span>        <span class="comment"># 安装djangorestframework</span></span><br><span class="line">pip install django-<span class="built_in">filter</span>==<span class="number">2.3</span><span class="number">.0</span>             <span class="comment"># 安装过滤器</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-在syl-settings-py中注册"><a href="#1-2-在syl-settings-py中注册" class="headerlink" title="1.2 在syl&#x2F;settings.py中注册"></a>1.2 在syl&#x2F;settings.py中注册</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">&#x27;django_filters&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;rest_framework&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-syl-settings-py配置DRF"><a href="#1-3-syl-settings-py配置DRF" class="headerlink" title="1.3 syl&#x2F;settings.py配置DRF"></a>1.3 syl&#x2F;settings.py配置DRF</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 过滤器</span></span><br><span class="line"><span class="comment"># 1,安装 django-filter</span></span><br><span class="line"><span class="comment"># 2,注册应用</span></span><br><span class="line"><span class="comment"># 3,配置settings, 在view里配置可过滤的字段</span></span><br><span class="line"><span class="comment"># 4,使用 查询字符串携带过滤信息</span></span><br><span class="line"></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 文档报错： AttributeError: ‘AutoSchema’ object has no attribute ‘get_link’</span></span><br><span class="line">    <span class="comment"># 用下面的设置可以解决</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_SCHEMA_CLASS&#x27;</span>: <span class="string">&#x27;rest_framework.schemas.AutoSchema&#x27;</span>,</span><br><span class="line">    <span class="comment"># 默认设置是:</span></span><br><span class="line">    <span class="comment"># &#x27;DEFAULT_SCHEMA_CLASS&#x27;: &#x27;rest_framework.schemas.openapi.AutoSchema&#x27;,</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 异常处理器</span></span><br><span class="line">    <span class="comment"># &#x27;EXCEPTION_HANDLER&#x27;: &#x27;user.utils.exception_handler&#x27;,</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Base API policies</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_RENDERER_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="string">&#x27;rest_framework.renderers.JSONRenderer&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.renderers.BrowsableAPIRenderer&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;DEFAULT_PARSER_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="string">&#x27;rest_framework.parsers.JSONParser&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.parsers.FormParser&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.parsers.MultiPartParser&#x27;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># 1.认证器（全局）：用户登录校验用户名密码或者token是否合法</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_AUTHENTICATION_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="comment"># &#x27;rest_framework_jwt.authentication.JSONWebTokenAuthentication&#x27;,    # 在DRF中配置JWT认证</span></span><br><span class="line">        <span class="comment"># &#x27;rest_framework.authentication.SessionAuthentication&#x27;,  # 使用session时的认证器</span></span><br><span class="line">        <span class="comment"># &#x27;rest_framework.authentication.BasicAuthentication&#x27;     # 提交表单时的认证器</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">#2.权限配置（全局）： 顺序靠上的严格（根据不同的用户角色，可以操作不同的表）</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_PERMISSION_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="comment"># &#x27;rest_framework.permissions.IsAdminUser&#x27;,                # 管理员可以访问</span></span><br><span class="line">        <span class="comment"># &#x27;rest_framework.permissions.IsAuthenticated&#x27;,            # 认证用户可以访问</span></span><br><span class="line">        <span class="comment"># &#x27;rest_framework.permissions.IsAuthenticatedOrReadOnly&#x27;,  # 认证用户可以访问, 否则只能读取</span></span><br><span class="line">        <span class="comment"># &#x27;rest_framework.permissions.AllowAny&#x27;,                   # 所有用户都可以访问</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">#3.限流（防爬虫）</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_THROTTLE_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="string">&#x27;rest_framework.throttling.AnonRateThrottle&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.throttling.UserRateThrottle&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">#3.1限流策略</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_THROTTLE_RATES&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;user&#x27;</span>: <span class="string">&#x27;100/hour&#x27;</span>,    <span class="comment"># 认证用户每小时100次</span></span><br><span class="line">        <span class="string">&#x27;anon&#x27;</span>: <span class="string">&#x27;3/day&#x27;</span>,       <span class="comment"># 未认证用户每天能访问3次</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;DEFAULT_CONTENT_NEGOTIATION_CLASS&#x27;</span>: <span class="string">&#x27;rest_framework.negotiation.DefaultContentNegotiation&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;DEFAULT_METADATA_CLASS&#x27;</span>: <span class="string">&#x27;rest_framework.metadata.SimpleMetadata&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;DEFAULT_VERSIONING_CLASS&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">#4.分页（全局）：全局分页器, 例如 省市区的数据自定义分页器, 不需要分页</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_PAGINATION_CLASS&#x27;</span>: <span class="string">&#x27;rest_framework.pagination.PageNumberPagination&#x27;</span>,</span><br><span class="line">    <span class="comment"># 每页返回数量</span></span><br><span class="line">    <span class="string">&#x27;PAGE_SIZE&#x27;</span>: <span class="number">10</span>,  <span class="comment"># 默认 None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#5.过滤器后端</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_FILTER_BACKENDS&#x27;</span>: [</span><br><span class="line">        <span class="string">&#x27;django_filters.rest_framework.DjangoFilterBackend&#x27;</span>,</span><br><span class="line">        <span class="comment"># &#x27;django_filters.rest_framework.backends.DjangoFilterBackend&#x27;, 包路径有变化</span></span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    <span class="comment">#5.1过滤排序（全局）：Filtering 过滤排序</span></span><br><span class="line">    <span class="string">&#x27;SEARCH_PARAM&#x27;</span>: <span class="string">&#x27;search&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;ORDERING_PARAM&#x27;</span>: <span class="string">&#x27;ordering&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;NUM_PROXIES&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">#6.版本控制：Versioning  接口版本控制</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_VERSION&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;ALLOWED_VERSIONS&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;VERSION_PARAM&#x27;</span>: <span class="string">&#x27;version&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Authentication  认证</span></span><br><span class="line">    <span class="comment"># 未认证用户使用的用户类型</span></span><br><span class="line">    <span class="string">&#x27;UNAUTHENTICATED_USER&#x27;</span>: <span class="string">&#x27;django.contrib.auth.models.AnonymousUser&#x27;</span>,</span><br><span class="line">    <span class="comment"># 未认证用户使用的Token值</span></span><br><span class="line">    <span class="string">&#x27;UNAUTHENTICATED_TOKEN&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># View configuration</span></span><br><span class="line">    <span class="string">&#x27;VIEW_NAME_FUNCTION&#x27;</span>: <span class="string">&#x27;rest_framework.views.get_view_name&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;VIEW_DESCRIPTION_FUNCTION&#x27;</span>: <span class="string">&#x27;rest_framework.views.get_view_description&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;NON_FIELD_ERRORS_KEY&#x27;</span>: <span class="string">&#x27;non_field_errors&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Testing</span></span><br><span class="line">    <span class="string">&#x27;TEST_REQUEST_RENDERER_CLASSES&#x27;</span>: [</span><br><span class="line">        <span class="string">&#x27;rest_framework.renderers.MultiPartRenderer&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;rest_framework.renderers.JSONRenderer&#x27;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;TEST_REQUEST_DEFAULT_FORMAT&#x27;</span>: <span class="string">&#x27;multipart&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Hyperlink settings</span></span><br><span class="line">    <span class="string">&#x27;URL_FORMAT_OVERRIDE&#x27;</span>: <span class="string">&#x27;format&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;FORMAT_SUFFIX_KWARG&#x27;</span>: <span class="string">&#x27;format&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;URL_FIELD_NAME&#x27;</span>: <span class="string">&#x27;url&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Encoding</span></span><br><span class="line">    <span class="string">&#x27;UNICODE_JSON&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&#x27;COMPACT_JSON&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&#x27;STRICT_JSON&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&#x27;COERCE_DECIMAL_TO_STRING&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&#x27;UPLOADED_FILES_USE_URL&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Browseable API</span></span><br><span class="line">    <span class="string">&#x27;HTML_SELECT_CUTOFF&#x27;</span>: <span class="number">1000</span>,</span><br><span class="line">    <span class="string">&#x27;HTML_SELECT_CUTOFF_TEXT&#x27;</span>: <span class="string">&quot;More than &#123;count&#125; items...&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Schemas</span></span><br><span class="line">    <span class="string">&#x27;SCHEMA_COERCE_PATH_PK&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&#x27;SCHEMA_COERCE_METHOD_NAMES&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;retrieve&#x27;</span>: <span class="string">&#x27;read&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;destroy&#x27;</span>: <span class="string">&#x27;delete&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-DRF使用"><a href="#02-DRF使用" class="headerlink" title="02.DRF使用"></a>02.DRF使用</h2><ul>
+<li>认证、权限、限流、分页、过滤、序列化</li>
+</ul>
+<h3 id="2-1-user-urls-py"><a href="#2-1-user-urls-py" class="headerlink" title="2.1 user&#x2F;urls.py"></a>2.1 user&#x2F;urls.py</h3><ul>
+<li>ModelViewSet注册路由三部曲</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> include, path</span><br><span class="line"><span class="keyword">from</span> user <span class="keyword">import</span> views</span><br><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> SimpleRouter, DefaultRouter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自动生成路由方法, 必须使用视图集</span></span><br><span class="line"><span class="comment"># router = SimpleRouter()  # 没有根路由  /user/ 无法识别</span></span><br><span class="line">router = DefaultRouter()                       <span class="comment"># 1.有根路由</span></span><br><span class="line">router.register(<span class="string">r&#x27;user&#x27;</span>, views.UserViewSet)    <span class="comment"># 2.配置路由</span></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;index/&#x27;</span>, views.index),</span><br><span class="line">    path(<span class="string">&#x27;api-auth/&#x27;</span>, include(<span class="string">&#x27;rest_framework.urls&#x27;</span>, namespace=<span class="string">&#x27;rest_framework&#x27;</span>))  <span class="comment"># 认证地址</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">urlpatterns += router.urls     <span class="comment"># 3.模块地址</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[&lt;URLPattern <span class="string">&#x27;^user/$&#x27;</span> [name=<span class="string">&#x27;user-list&#x27;</span>]&gt;, </span><br><span class="line"> &lt;URLPattern <span class="string">&#x27;^user\.(?P&lt;format&gt;[a-z0-9]+)/?$&#x27;</span> [name=<span class="string">&#x27;user-list&#x27;</span>]&gt;,</span><br><span class="line"> &lt;URLPattern <span class="string">&#x27;^user/actived/$&#x27;</span> [name=<span class="string">&#x27;user-actived&#x27;</span>]&gt;, </span><br><span class="line"> &lt;URLPattern <span class="string">&#x27;^user/actived\.(?P&lt;format&gt;[a-z0-9]+)/?$&#x27;</span> [name=<span class="string">&#x27;user-actived&#x27;</span>]&gt;, </span><br><span class="line"> &lt;URLPattern <span class="string">&#x27;^user/unactived/$&#x27;</span> [name=<span class="string">&#x27;user-unactived&#x27;</span>]&gt;, </span><br><span class="line"> &lt;URLPattern <span class="string">&#x27;^user/unactived\.(?P&lt;format&gt;[a-z0-9]+)/?$&#x27;</span> [name=<span class="string">&#x27;user-unactived&#x27;</span>]&gt;, &lt;URLPattern <span class="string">&#x27;^user/(?P&lt;pk&gt;[^/.]+)/$&#x27;</span> [name=<span class="string">&#x27;user-detail&#x27;</span>]&gt;, &lt;URLPattern <span class="string">&#x27;^user/(?P&lt;pk&gt;[^/.]+)\.(?P&lt;format&gt;[a-z0-9]+)/?$&#x27;</span> [name=<span class="string">&#x27;user-detail&#x27;</span>]&gt;, &lt;URLPattern <span class="string">&#x27;^$&#x27;</span> [name=<span class="string">&#x27;api-root&#x27;</span>]&gt;, &lt;URLPattern <span class="string">&#x27;^\.(?P&lt;format&gt;[a-z0-9]+)/?$&#x27;</span> [name=<span class="string">&#x27;api-root&#x27;</span>]&gt;] DRF</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-serializers-py"><a href="#2-2-serializers-py" class="headerlink" title="2.2 serializers.py"></a>2.2 serializers.py</h3><ul>
+<li><p>创建 <code>user/serializers.py</code>写序列化器</p>
+</li>
+<li><p>功能一：数据校验，<code>创建/修改数据</code></p>
+<ul>
+<li>在创建数据或者修改数据时校验用户提交的数据是否合法</li>
+<li>用户名必须是8位以上，邮箱、手机号是合法的</li>
+</ul>
+</li>
+<li><p>功能二：序列化</p>
+<ul>
+<li>把通过model查询的queryset对象转换成JSON格式</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> user.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">address_validate</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># data：是用户提交的地址这个字段的数据（河南省 郑州市）</span></span><br><span class="line">    <span class="comment"># 独立校验器</span></span><br><span class="line">    <span class="comment"># raise serializers.ValidationError(&#x27;请填写实际地址&#x27;)  # 有错就抛出异常</span></span><br><span class="line">    <span class="comment"># 没错就返回数据</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    <span class="comment"># 1.独立校验器：重新设定字段, 替换掉模型中的设定, 重新设定地址的长度为5</span></span><br><span class="line">    <span class="comment"># address_validate是自定义的数据校验函数</span></span><br><span class="line">    address = serializers.CharField(max_length=<span class="number">255</span>, min_length=<span class="number">5</span>, validators=[address_validate])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.单一字段验证（validate_字段名）, 验证地址</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_address</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="keyword">if</span> data == <span class="string">&#x27;测试&#x27;</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;请填写实际地址&#x27;</span>)  <span class="comment"># 有错就抛出异常</span></span><br><span class="line">        <span class="keyword">return</span> data  <span class="comment"># 没错就返回结果</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_phone</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="comment"># 不符合手机号格式</span></span><br><span class="line">        <span class="comment"># raise serializers.ValidationError(&#x27;手机号格式不正确&#x27;)</span></span><br><span class="line">        model = <span class="variable language_">self</span>.root.Meta.model</span><br><span class="line">        num = model.objects.<span class="built_in">filter</span>(phone=data).count()</span><br><span class="line">        <span class="keyword">if</span> num &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;手机号已存在&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.所有属性验证器</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate</span>(<span class="params">self, attrs</span>):</span><br><span class="line">        <span class="comment"># attrs：&#123;&quot;username&quot;:&quot;zhangsan&quot;, &quot;phone&quot;:&quot;18538752511&quot;, ....&#125;</span></span><br><span class="line">        <span class="comment"># 所有属性验证器</span></span><br><span class="line">        <span class="comment"># self.context 中有request和view上下文</span></span><br><span class="line">        <span class="comment"># self.context[&#x27;view&#x27;].action 可以取到动作</span></span><br><span class="line">        <span class="comment"># attrs 是需要序列化的数据</span></span><br><span class="line">        <span class="comment"># raise serializers.ValidationError(&#x27;xxx错误&#x27;)  # 有问题报错</span></span><br><span class="line">        <span class="keyword">return</span> attrs  <span class="comment"># 没问题返回数据</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = User              <span class="comment"># 具体对哪个表进行序列化</span></span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span>  <span class="comment"># 所有字段</span></span><br><span class="line">        <span class="comment"># fields = (&#x27;id&#x27;, )       # 临时添加字段也需要写在这里</span></span><br><span class="line">        <span class="comment"># exclude = [&#x27;id&#x27;]  # 排除 id 字段</span></span><br><span class="line">        <span class="comment"># read_only_fields = (&#x27;&#x27;,)  # 指定字段为 read_only,</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserUnActiveSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = User</span><br><span class="line">        fields = (<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;is_active&#x27;</span>)  <span class="comment"># 临时添加字段也需要写在这里</span></span><br><span class="line">        <span class="comment"># fields = &#x27;__all__&#x27;  # 所有字段</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-user-views-py"><a href="#2-3-user-views-py" class="headerlink" title="2.3 user&#x2F;views.py"></a>2.3 user&#x2F;views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> django_filters.rest_framework <span class="keyword">import</span> DjangoFilterBackend</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> viewsets</span><br><span class="line"><span class="keyword">from</span> rest_framework.authentication <span class="keyword">import</span> BasicAuthentication, SessionAuthentication</span><br><span class="line"><span class="keyword">from</span> rest_framework.decorators <span class="keyword">import</span> action</span><br><span class="line"><span class="keyword">from</span> rest_framework.filters <span class="keyword">import</span> OrderingFilter</span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> AllowAny, IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework.throttling <span class="keyword">import</span> UserRateThrottle</span><br><span class="line"><span class="keyword">from</span> rest_framework.pagination <span class="keyword">import</span> PageNumberPagination</span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> BasePermission, SAFE_METHODS</span><br><span class="line"><span class="keyword">from</span> user.models <span class="keyword">import</span> User</span><br><span class="line"><span class="keyword">from</span> user.serializers <span class="keyword">import</span> UserSerializer, UserUnActiveSerializer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 需要认证才能访问的视图</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;hello&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分页（局部）：自定义分页器 局部</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PageNum</span>(<span class="title class_ inherited__">PageNumberPagination</span>):</span><br><span class="line">    <span class="comment"># 查询字符串中代表每页返回数据数量的参数名, 默认值: None</span></span><br><span class="line">    page_size_query_param = <span class="string">&#x27;page_size&#x27;</span></span><br><span class="line">    <span class="comment"># 查询字符串中代表页码的参数名, 有默认值: page</span></span><br><span class="line">    <span class="comment"># page_query_param = &#x27;page&#x27;</span></span><br><span class="line">    <span class="comment"># 一页中最多的结果条数</span></span><br><span class="line">    max_page_size = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义权限（局部）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyPermission</span>(<span class="title class_ inherited__">BasePermission</span>):</span><br><span class="line">    <span class="comment"># has_permission 是用户对这个视图有没有 GET POST PUT PATCH DELETE 权限的分别判断</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_permission</span>(<span class="params">self, request, view</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;has_perm&#x27;</span>)</span><br><span class="line">        <span class="comment"># print(view.kwargs.get(&quot;pk&quot;), request.user.id)</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;判断用户对模型有没有访问权&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 任何用户对使用此权限类的视图都有访问权限</span></span><br><span class="line">        <span class="keyword">if</span> request.user.is_superuser:</span><br><span class="line">            <span class="comment"># 管理员对用户模型有访问权</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">elif</span> view.kwargs.get(<span class="string">&#x27;pk&#x27;</span>) == <span class="built_in">str</span>(request.user.<span class="built_in">id</span>):</span><br><span class="line">            <span class="comment"># 携带的id和用户的id相同时有访问权</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># has_object_permission 是用户过了 has_permission 判断有权限以后，再判断这个用户有没有对一个具体的对象有没有操作权限</span></span><br><span class="line">    <span class="comment"># 这样设置以后，即使是django admin管理员也只能查询自己user标的信息，不能查询其他用户的单条信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_object_permission</span>(<span class="params">self, request, view, obj</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;has_object_perm&#x27;</span>)</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取单个数据时,判断用户对某个数据对象是否有访问权限&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> request.user.<span class="built_in">id</span> == obj.<span class="built_in">id</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserViewSet</span>(viewsets.ModelViewSet):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    完成产品的增删改查</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    queryset = User.objects.<span class="built_in">all</span>()</span><br><span class="line">    serializer_class = UserSerializer  <span class="comment"># 优先使用 get_serializer_class 返回的序列化器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># # 1.认证：自定义认证类, 自定义会覆盖全局配置</span></span><br><span class="line">    <span class="comment"># authentication_classes = (BasicAuthentication, SessionAuthentication)</span></span><br><span class="line">    <span class="comment"># # 2.权限：自定义权限类</span></span><br><span class="line">    <span class="comment"># permission_classes = (MyPermission,)</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 3.分页：自定义分页器 覆盖全局配置</span></span><br><span class="line">    pagination_class = PageNum</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 4.限流：自定义限流类</span></span><br><span class="line">    throttle_classes = [UserRateThrottle]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5.过滤：指定过滤方法类, 排序方法类, 一个或多个</span></span><br><span class="line">    filter_backends = (DjangoFilterBackend, OrderingFilter)  <span class="comment"># 同时支持过滤和排序</span></span><br><span class="line">    <span class="comment"># 5.1指定排序字段, 不设置, 排序功能不起效</span></span><br><span class="line">    ordering_fields = (<span class="string">&#x27;date_joined&#x27;</span>, <span class="string">&#x27;id&#x27;</span>)              <span class="comment"># ?ordering=-id</span></span><br><span class="line">    <span class="comment"># 5.2指定过滤字段, 不设置, 过滤功能不起效</span></span><br><span class="line">    filter_fields = (<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;phone&#x27;</span>, <span class="string">&#x27;is_active&#x27;</span>)   <span class="comment"># ?username=tom&amp;phone=&amp;is_active=true</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 根据不同的请求, 获得不同的序列化器</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_serializer_class</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.action == <span class="string">&#x27;unactived&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> UserUnActiveSerializer</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> UserSerializer</span><br><span class="line"></span><br><span class="line"><span class="meta">    @action(<span class="params">methods=[<span class="string">&#x27;get&#x27;</span>], detail=<span class="literal">False</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">unactived</span>(<span class="params">self, request, *args, **kwargs</span>):</span><br><span class="line">        <span class="comment"># 获取查询集, 过滤出未激活的用户</span></span><br><span class="line">        qs = <span class="variable language_">self</span>.queryset.<span class="built_in">filter</span>(is_active=<span class="literal">False</span>)</span><br><span class="line">        <span class="comment"># 使用序列化器, 序列化查询集, 并且是</span></span><br><span class="line">        ser = <span class="variable language_">self</span>.get_serializer(qs, many=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(ser.data)</span><br><span class="line">  </span><br><span class="line"><span class="meta">    @action(<span class="params">methods=[<span class="string">&#x27;get&#x27;</span>], detail=<span class="literal">False</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">actived</span>(<span class="params">self, request, *args, **kwargs</span>):</span><br><span class="line">        <span class="comment"># 获取查询集, 过滤出未激活的用户</span></span><br><span class="line">        qs = <span class="variable language_">self</span>.queryset.<span class="built_in">filter</span>(is_active=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># 使用序列化器, 序列化查询集, 并且是</span></span><br><span class="line">        ser = <span class="variable language_">self</span>.get_serializer(qs, many=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(ser.data)</span><br></pre></td></tr></table></figure>
+
+<h2 id="03-测试接口"><a href="#03-测试接口" class="headerlink" title="03.测试接口"></a>03.测试接口</h2><h3 id="3-1-查询-接口"><a href="#3-1-查询-接口" class="headerlink" title="3.1 查询 接口"></a>3.1 查询 接口</h3><ul>
+<li>查询路由</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.查询所有用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/</span><br><span class="line"><span class="comment">#2.查询id=1的用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/<span class="number">1</span>/    <span class="comment">#3.查询 用户名（tom），激活的用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/?username=tom&amp;phone=&amp;is_active=true</span><br><span class="line"><span class="comment">#4.查询所有用户 用id 反向排序</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/?ordering=-<span class="built_in">id</span></span><br><span class="line"><span class="comment">#5.查询用户表中第一页，每页显示一条数据</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/?page=<span class="number">1</span>&amp;page_size=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>增加（POST）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.增加用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改（PUT）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改用户信息</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/<span class="number">1</span>/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除（DELETE）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/<span class="number">1</span>/</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-自定义认证权限"><a href="#3-2-自定义认证权限" class="headerlink" title="3.2 自定义认证权限"></a>3.2 自定义认证权限</h3><h4 id="3-2-1-测试-全局权限功能"><a href="#3-2-1-测试-全局权限功能" class="headerlink" title="3.2.1 测试 全局权限功能"></a>3.2.1 测试 <code>全局权限</code>功能</h4><ul>
+<li>在浏览器中，打开任意接口，未登录用户只能发送get请求，只有登录用户才能发送post等请求</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http://192.168.56.100:8888/user/user/</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;syl/settings.py中设置，只有认证用户可以访问, 否则只能读取</span></span><br><span class="line"><span class="string">REST_FRAMEWORK = &#123;</span></span><br><span class="line"><span class="string">    #2.权限配置（全局）： 顺序靠上的严格</span></span><br><span class="line"><span class="string">    &#x27;DEFAULT_PERMISSION_CLASSES&#x27;: [</span></span><br><span class="line"><span class="string">        &#x27;rest_framework.permissions.IsAuthenticatedOrReadOnly&#x27;,  # 认证用户可以访问, 否则只能读取</span></span><br><span class="line"><span class="string">    ],</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-2-测试-自定义权限功能"><a href="#3-2-2-测试-自定义权限功能" class="headerlink" title="3.2.2 测试 自定义权限功能"></a>3.2.2 测试 <code>自定义权限</code>功能</h4><ul>
+<li><code>注：自定义权限会覆盖settings.py中配置的全局权限</code></li>
+<li>1.自定义权限（<code>其实应该写到一个单独的文件内进行公用，这里先写到这里进行测试</code>）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义权限（局部）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyPermission</span>(<span class="title class_ inherited__">BasePermission</span>):</span><br><span class="line">    <span class="comment"># has_permission 是用户对这个视图有没有 GET POST PUT PATCH DELETE 权限的分别判断</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_permission</span>(<span class="params">self, request, view</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;has_perm&#x27;</span>)</span><br><span class="line">        <span class="comment"># print(view.kwargs.get(&quot;pk&quot;), request.user.id)</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;判断用户对模型有没有访问权&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 任何用户对使用此权限类的视图都有访问权限</span></span><br><span class="line">        <span class="keyword">if</span> request.user.is_superuser:</span><br><span class="line">            <span class="comment"># 管理员对用户模型有访问权</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">elif</span> view.kwargs.get(<span class="string">&#x27;pk&#x27;</span>) == <span class="built_in">str</span>(request.user.<span class="built_in">id</span>):</span><br><span class="line">            <span class="comment"># 携带的id和用户的id相同时有访问权</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># has_object_permission 是用户过了 has_permission 判断有权限以后，再判断这个用户有没有对一个具体的对象有没有操作权限</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_object_permission</span>(<span class="params">self, request, view, obj</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;has_object_perm&#x27;</span>)</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取单个数据时,判断用户对某个数据对象是否有访问权限&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> request.user.<span class="built_in">id</span> == obj.<span class="built_in">id</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>2.<code>user/viesws.py视图函数中指定当前视图要用的</code>权限类</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserViewSet</span>(viewsets.ModelViewSet):</span><br><span class="line">    <span class="comment"># 2.权限：自定义权限类</span></span><br><span class="line">    permission_classes = (MyPermission,)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-限流"><a href="#3-3-限流" class="headerlink" title="3.3 限流"></a>3.3 限流</h3><ul>
+<li><code>syl/settings.py中配置限流</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/apiview/</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;修改syl/settings.py配置限速设置&#x27;&#x27;&#x27;</span></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment">#3.1 限流策略</span></span><br><span class="line">    <span class="string">&#x27;DEFAULT_THROTTLE_RATES&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;user&#x27;</span>: <span class="string">&#x27;3/hour&#x27;</span>,    <span class="comment"># 认证用户每小时10次</span></span><br><span class="line">        <span class="string">&#x27;anon&#x27;</span>: <span class="string">&#x27;3/day&#x27;</span>,     <span class="comment"># 未认证用户每天</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-序列化"><a href="#3-4-序列化" class="headerlink" title="3.4 序列化"></a>3.4 序列化</h3><ul>
+<li><code>user/serialzers.py</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> user.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">address_validate</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 独立校验器</span></span><br><span class="line">    <span class="comment"># raise serializers.ValidationError(&#x27;请填写实际地址&#x27;)  # 有错就抛出异常</span></span><br><span class="line">    <span class="comment"># 没错就返回数据</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    <span class="comment"># 1.独立校验器：重新设定字段, 替换掉模型中的设定, 重新设定地址的长度为5</span></span><br><span class="line">    address = serializers.CharField(max_length=<span class="number">255</span>, min_length=<span class="number">5</span>, validators=[address_validate])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.单一字段验证, 验证地址，validate_字段名</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_address</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="keyword">if</span> data == <span class="string">&#x27;测试&#x27;</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;请填写实际地址&#x27;</span>)  <span class="comment"># 有错就抛出异常</span></span><br><span class="line">        <span class="keyword">return</span> data  <span class="comment"># 没错就返回结果</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_phone</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="comment"># 不符合手机号格式</span></span><br><span class="line">        <span class="comment"># raise serializers.ValidationError(&#x27;手机号格式不正确&#x27;)</span></span><br><span class="line">        model = <span class="variable language_">self</span>.root.Meta.model</span><br><span class="line">        num = model.objects.<span class="built_in">filter</span>(phone=data).count()</span><br><span class="line">        <span class="keyword">if</span> num &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;手机号已存在&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.所有属性验证器</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate</span>(<span class="params">self, attrs</span>):</span><br><span class="line">        <span class="comment"># attrs：&#123;&quot;username&quot;:&quot;zhangsan&quot;, &quot;phone&quot;:&quot;18538752511&quot;, ....&#125;</span></span><br><span class="line">        <span class="comment"># 所有属性验证器</span></span><br><span class="line">        <span class="comment"># self.context 中有request和view上下文</span></span><br><span class="line">        <span class="comment"># self.context[&#x27;view&#x27;].action 可以取到动作</span></span><br><span class="line">        <span class="comment"># attrs 是需要序列化的数据</span></span><br><span class="line">        <span class="comment"># raise serializers.ValidationError(&#x27;xxx错误&#x27;)  # 有问题报错</span></span><br><span class="line">        <span class="keyword">return</span> attrs  <span class="comment"># 没问题返回数据</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = User        <span class="comment"># 指定表</span></span><br><span class="line">        <span class="comment"># fields = (&#x27;id&#x27;, ) # 临时添加字段也需要写在这里</span></span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span>  <span class="comment"># 所有字段</span></span><br><span class="line">        <span class="comment"># exclude = [&#x27;id&#x27;]  # 排除 id 字段</span></span><br><span class="line">        read_only_fields = (<span class="string">&#x27;id&#x27;</span>,)  <span class="comment"># 指定字段为 read_only,</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 扩展address： extra_kwargs = &#123;&#125;  # 局部替换某些字段的设定, 或者新增设定</span></span><br><span class="line">        extra_kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;address&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;min_length&quot;</span>: <span class="number">5</span>,  <span class="comment"># 给地址增加 最小长度限制</span></span><br><span class="line">                <span class="string">&quot;default&quot;</span>: <span class="string">&#x27;默认测试地址&#x27;</span>,  <span class="comment"># 增加默认值</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-自定义分页"><a href="#3-5-自定义分页" class="headerlink" title="3.5 自定义分页"></a>3.5 自定义分页</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.56.100:8888/user/user/?page=1&amp;page_size=1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>1.<code>user/views.py</code>中定义自定义分页类</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分页（局部）：自定义分页器 局部</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PageNum</span>(<span class="title class_ inherited__">PageNumberPagination</span>):</span><br><span class="line">    <span class="comment"># 查询字符串中代表每页返回数据数量的参数名, 默认值: None</span></span><br><span class="line">    page_size_query_param = <span class="string">&#x27;page_size&#x27;</span></span><br><span class="line">    <span class="comment"># 查询字符串中代表页码的参数名, 有默认值: page</span></span><br><span class="line">    <span class="comment"># page_query_param = &#x27;page&#x27;</span></span><br><span class="line">    <span class="comment"># 一页中最多的结果条数</span></span><br><span class="line">    max_page_size = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>2.<code>user/views.py</code>视图函数中使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserViewSet</span>(viewsets.ModelViewSet):</span><br><span class="line">    <span class="comment"># 3.分页：自定义分页器 覆盖全局配置</span></span><br><span class="line">    pagination_class = PageNum</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-过滤和排序"><a href="#3-6-过滤和排序" class="headerlink" title="3.6 过滤和排序"></a>3.6 过滤和排序</h3><ul>
+<li>测试url</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.过滤：查询 用户名（tom），激活的用户</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/?username=tom&amp;phone=&amp;is_active=true</span><br><span class="line"><span class="comment">#2.排序：查询所有用户 用id 反向排序</span></span><br><span class="line">http://<span class="number">192.168</span><span class="number">.56</span><span class="number">.100</span>:<span class="number">8888</span>/user/user/?ordering=-<span class="built_in">id</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>user/views.py</code>视图函数中配置过滤和排序字段</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserViewSet</span>(viewsets.ModelViewSet):</span><br><span class="line">    <span class="comment"># 5.过滤：指定过滤方法类, 排序方法类, 一个或多个</span></span><br><span class="line">    filter_backends = (DjangoFilterBackend, OrderingFilter)  <span class="comment"># 同时支持过滤和排序</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 5.1指定排序字段, 不设置, 排序功能不起效</span></span><br><span class="line">    ordering_fields = (<span class="string">&#x27;date_joined&#x27;</span>, <span class="string">&#x27;id&#x27;</span>)  <span class="comment"># ?ordering=-id</span></span><br><span class="line">    <span class="comment"># 5.2指定过滤字段, 不设置, 过滤功能不起效</span></span><br><span class="line">    filter_fields = (<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;phone&#x27;</span>, <span class="string">&#x27;is_active&#x27;</span>)  <span class="comment"># ?username=tom&amp;phone=&amp;is_active=true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="04-多对多序列化"><a href="#04-多对多序列化" class="headerlink" title="04.多对多序列化"></a>04.多对多序列化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> course.models <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CourseSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Course</span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span>  <span class="comment"># 所有字段</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SectionsSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Sections</span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChaptersSerializer</span>(serializers.ModelSerializer):</span><br><span class="line">    sections = SectionsSerializer(many=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Chapters</span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CourseDeepSerializer</span>(<span class="title class_ inherited__">CourseSerializer</span>):</span><br><span class="line">    <span class="comment"># 字段名名, 必须是模型可以 . 引用到的变量</span></span><br><span class="line">    <span class="comment"># Course().   &quot;chapters&quot;  才能作为字段名,  如果是集合, 需要加many=True,</span></span><br><span class="line">    chapters = ChaptersSerializer(many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/2bf5a2/" target="_blank">09.ModelViewSet</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/python/">python</a>
+                        
+                            <a href="../../categories/python/django/">django</a>
+                        
+                            <a href="../../categories/python/django/03-DRF%E6%A1%86%E6%9E%B6/">03_DRF框架</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tags/DRF/">DRF</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../pages/a36fa8/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a36fa8/" title="发布于 2021-02-22 04:00">06.MySQL优化</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/13a7f0/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/13a7f0/" title="发布于 2021-02-18 09:51">08.初始化项目结构</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

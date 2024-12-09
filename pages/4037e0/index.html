@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            05.Serializer
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">05.Serializer</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-17
+                        </span>
+                        
+                            
+                                <span id="//pages/4037e0/" class="leancloud_visitors" data-flag-title="05.Serializer">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/4037e0/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                            <span class="category-color">django</span>
+                        
+                            <span class="category-color">03_DRF框架</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">DRF</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01-Serializer介绍"><a href="#01-Serializer介绍" class="headerlink" title="01.Serializer介绍"></a>01.Serializer介绍</h2><ul>
+<li>Serializer三个作用</li>
+<li>第一：序列化</li>
+<li>第二:  反序列化</li>
+<li>第三：数据校验</li>
+</ul>
+<h3 id="1-1-定义Serializer"><a href="#1-1-定义Serializer" class="headerlink" title="1.1 定义Serializer"></a>1.1 定义Serializer</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> book.models <span class="keyword">import</span> BookInfo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">APIViewBookInfoSerializer</span>(serializers.Serializer):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图书数据序列化器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">id</span> = serializers.IntegerField(label=<span class="string">&#x27;ID&#x27;</span>, read_only=<span class="literal">True</span>)       <span class="comment"># 主键序列化</span></span><br><span class="line">    <span class="comment"># 第一：普通字段序列化</span></span><br><span class="line">    btitle = serializers.CharField(label=<span class="string">&#x27;名称&#x27;</span>, max_length=<span class="number">20</span>)</span><br><span class="line">    bpub_date = serializers.DateField(label=<span class="string">&#x27;发布日期&#x27;</span>)</span><br><span class="line">    bread = serializers.IntegerField(label=<span class="string">&#x27;阅读量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    bcomment = serializers.IntegerField(label=<span class="string">&#x27;评论量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 第二：一对多字段序列化</span></span><br><span class="line">    heroinfo_set = serializers.PrimaryKeyRelatedField(read_only=<span class="literal">True</span>, many=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 第三：自定义显示（显示多对多）</span></span><br><span class="line">    xxx = serializers.SerializerMethodField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = BookInfo</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义显示 多对多 字段</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_xxx</span>(<span class="params">self,row</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;row: 传过来的正是 BookInfo表的对象&#x27;&#x27;&#x27;</span></span><br><span class="line">        books = row.btitle   <span class="comment"># 获取用户名</span></span><br><span class="line">        <span class="keyword">return</span> books</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-序列化：作用1"><a href="#1-2-序列化：作用1" class="headerlink" title="1.2 序列化：作用1"></a>1.2 序列化：<code>作用1</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">APIViewBookInfoViewSet</span>(<span class="title class_ inherited__">APIView</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        obj = BookInfo.objects.<span class="built_in">all</span>()</span><br><span class="line">        ser = serializers.BookInfoSerializer1(instance=obj, many=<span class="literal">True</span>)  <span class="comment"># 序列化多条数据</span></span><br><span class="line">        <span class="comment"># ser = serializers.BookInfoSerializer1(instance=obj[0])            # 序列化一条数据</span></span><br><span class="line">        <span class="keyword">return</span> Response(ser.data)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-反序列化：作用2"><a href="#1-3-反序列化：作用2" class="headerlink" title="1.3 反序列化：作用2"></a>1.3 反序列化：<code>作用2</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self,request</span>):</span><br><span class="line">    ser =  serializers.BookInfoSerializer1(data=request.data)</span><br><span class="line">    <span class="comment"># 判断提交数据是否合法</span></span><br><span class="line">    <span class="keyword">if</span> ser.is_valid():</span><br><span class="line">        ser.save()</span><br><span class="line">        <span class="keyword">return</span> Response(data=ser.data, status=<span class="number">201</span>)</span><br><span class="line">    <span class="keyword">return</span> Response(data=ser.errors,status=<span class="number">400</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-字段校验：作用3"><a href="#1-4-字段校验：作用3" class="headerlink" title="1.4 字段校验：作用3"></a>1.4 字段校验：<code>作用3</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BookInfoSerializer1</span>(serializers.Serializer):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图书数据序列化器&quot;&quot;&quot;</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 定义单一字段验证的方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_name</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value == <span class="string">&#x27;root&#x27;</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;不能创建root管理员账号&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义多字段验证方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate</span>(<span class="params">self, attrs</span>):</span><br><span class="line">        <span class="keyword">if</span> attrs[<span class="string">&#x27;name&#x27;</span>] == <span class="string">&#x27;admin&#x27;</span>:</span><br><span class="line">            <span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;不能创建admin用户&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-序列化-反序列化"><a href="#02-序列化-反序列化" class="headerlink" title="02.序列化&amp;反序列化"></a>02.序列化&amp;反序列化</h2><h3 id="2-1-book-models-py"><a href="#2-1-book-models-py" class="headerlink" title="2.1 book&#x2F;models.py"></a>2.1 book&#x2F;models.py</h3><p><img src="./assets/image-20210217194315866.png" style="width: 900px; margin-left: 0px;"> </img></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义图书模型类BookInfo</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BookInfo</span>(models.Model):</span><br><span class="line">    btitle = models.CharField(max_length=<span class="number">20</span>, verbose_name=<span class="string">&#x27;名称&#x27;</span>)</span><br><span class="line">    bpub_date = models.DateField(verbose_name=<span class="string">&#x27;发布日期&#x27;</span>)</span><br><span class="line">    bread = models.IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">&#x27;阅读量&#x27;</span>)</span><br><span class="line">    bcomment = models.IntegerField(default=<span class="number">0</span>, verbose_name=<span class="string">&#x27;评论量&#x27;</span>)</span><br><span class="line">    is_delete = models.BooleanField(default=<span class="literal">False</span>, verbose_name=<span class="string">&#x27;逻辑删除&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        db_table = <span class="string">&#x27;tb_books&#x27;</span>  <span class="comment"># 指明数据库表名</span></span><br><span class="line">        verbose_name = <span class="string">&#x27;图书&#x27;</span>  <span class="comment"># 在admin站点中显示的名称</span></span><br><span class="line">        verbose_name_plural = verbose_name  <span class="comment"># 显示的复数名称</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;定义每个数据对象的显示信息&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.btitle</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义英雄模型类HeroInfo</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HeroInfo</span>(models.Model):</span><br><span class="line">    GENDER_CHOICES = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">&#x27;female&#x27;</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">&#x27;male&#x27;</span>)</span><br><span class="line">    )</span><br><span class="line">    hname = models.CharField(max_length=<span class="number">20</span>, verbose_name=<span class="string">&#x27;名称&#x27;</span>)</span><br><span class="line">    hgender = models.SmallIntegerField(choices=GENDER_CHOICES, default=<span class="number">0</span>, verbose_name=<span class="string">&#x27;性别&#x27;</span>)</span><br><span class="line">    hcomment = models.CharField(max_length=<span class="number">200</span>, null=<span class="literal">True</span>, verbose_name=<span class="string">&#x27;描述信息&#x27;</span>)</span><br><span class="line">    hbook = models.ForeignKey(BookInfo, on_delete=models.CASCADE, verbose_name=<span class="string">&#x27;图书&#x27;</span>)  <span class="comment"># 外键</span></span><br><span class="line">    is_delete = models.BooleanField(default=<span class="literal">False</span>, verbose_name=<span class="string">&#x27;逻辑删除&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        db_table = <span class="string">&#x27;tb_heros&#x27;</span></span><br><span class="line">        verbose_name = <span class="string">&#x27;英雄&#x27;</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.hname</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-book-serializers-py"><a href="#2-2-book-serializers-py" class="headerlink" title="2.2 book&#x2F;serializers.py"></a>2.2 book&#x2F;serializers.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> book.models <span class="keyword">import</span> BookInfo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BookInfoSerializer1</span>(serializers.Serializer):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图书数据序列化器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">id</span> = serializers.IntegerField(label=<span class="string">&#x27;ID&#x27;</span>, read_only=<span class="literal">True</span>)       <span class="comment"># 主键序列化</span></span><br><span class="line">    <span class="comment"># 第一：普通字段序列化</span></span><br><span class="line">    btitle = serializers.CharField(label=<span class="string">&#x27;名称&#x27;</span>, max_length=<span class="number">20</span>)</span><br><span class="line">    bpub_date = serializers.DateField(label=<span class="string">&#x27;发布日期&#x27;</span>)</span><br><span class="line">    bread = serializers.IntegerField(label=<span class="string">&#x27;阅读量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    bcomment = serializers.IntegerField(label=<span class="string">&#x27;评论量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 第二：一对多字段序列化</span></span><br><span class="line">    heroinfo_set = serializers.PrimaryKeyRelatedField(read_only=<span class="literal">True</span>, many=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 第三：自定义显示（显示多对多）</span></span><br><span class="line">    xxx = serializers.SerializerMethodField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = BookInfo</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义显示 多对多 字段</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_xxx</span>(<span class="params">self,row</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;row: 传过来的正是 BookInfo表的对象&#x27;&#x27;&#x27;</span></span><br><span class="line">        books = row.btitle   <span class="comment"># 获取用户名</span></span><br><span class="line">        <span class="keyword">return</span> books</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义创建语法：ser.save()执行，就会立刻调用create方法用来创建数据</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">self, validated_data</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;validated_data: 表单或者vue请求携带的json：&#123;&quot;username&quot;:&quot;zhangsan&quot;,&quot;password&quot;:&quot;123456&quot;&#125;&#x27;&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.Meta.model.objects.create(**validated_data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义更新方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, instance, validated_data</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        instance : 查询的对象</span></span><br><span class="line"><span class="string">        validated_data :  postman提交的json数据 &#123;&quot;username&quot;:&quot;zhangsan&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> validated_data.get(<span class="string">&#x27;btitle&#x27;</span>):</span><br><span class="line">            instance.btitle = validated_data[<span class="string">&#x27;btitle&#x27;</span>]</span><br><span class="line">        <span class="keyword">if</span> validated_data.get(<span class="string">&#x27;bpub_date&#x27;</span>):</span><br><span class="line">            instance.bpub_date = validated_data[<span class="string">&#x27;bpub_date&#x27;</span>]</span><br><span class="line">        instance.save()</span><br><span class="line">        <span class="keyword">return</span> instance</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-book-views-py"><a href="#2-3-book-views-py" class="headerlink" title="2.3 book&#x2F;views.py"></a>2.3 book&#x2F;views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> book.models <span class="keyword">import</span> BookInfo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">APIViewBookInfoViewSet</span>(<span class="title class_ inherited__">APIView</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        obj = BookInfo.objects.<span class="built_in">all</span>()</span><br><span class="line">        ser = serializers.BookInfoSerializer1(instance=obj, many=<span class="literal">True</span>)  <span class="comment"># 关联数据多条</span></span><br><span class="line">        <span class="comment"># ser = serializers.BookInfoSerializer1(instance=obj[0])           # 关联数据一条</span></span><br><span class="line">        <span class="keyword">return</span> Response(ser.data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self,request</span>):</span><br><span class="line">        ser =  serializers.BookInfoSerializer1(data=request.data)</span><br><span class="line">        <span class="comment"># 判断提交数据是否合法</span></span><br><span class="line">        <span class="keyword">if</span> ser.is_valid():</span><br><span class="line">            ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(data=ser.data, status=<span class="number">201</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(data=ser.errors,status=<span class="number">400</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">put</span>(<span class="params">self, request</span>):</span><br><span class="line">        pk = request.query_params.get(<span class="string">&#x27;pk&#x27;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            bookinfo = BookInfo.objects.get(<span class="built_in">id</span> = pk)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">return</span> Response(data=<span class="string">&#x27;不存在&#x27;</span>, status=<span class="number">201</span>)</span><br><span class="line">        <span class="comment"># 创建序列化对象，并将要反序列化的数据传递给data构造参数，进而进行验证</span></span><br><span class="line">        ser = serializers.BookInfoSerializer1(bookinfo, data=request.data)</span><br><span class="line">        <span class="keyword">if</span> ser.is_valid():</span><br><span class="line">            ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(data=ser.data, status=<span class="number">201</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(data=ser.errors,status=<span class="number">400</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-book-urls-py"><a href="#2-4-book-urls-py" class="headerlink" title="2.4 book&#x2F;urls.py"></a>2.4 book&#x2F;urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> re_path,path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;book1/&#x27;</span>, views.APIViewBookInfoViewSet.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-测试接口"><a href="#2-5-测试接口" class="headerlink" title="2.5 测试接口"></a>2.5 测试接口</h3><h4 id="2-5-1-get获取数据"><a href="#2-5-1-get获取数据" class="headerlink" title="2.5.1 get获取数据"></a>2.5.1 get获取数据</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;西游记&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2020-08-11&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">666</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">123</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;西游记&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;水浒传&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2020-08-11&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;水浒传&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-5-2-post添加数据"><a href="#2-5-2-post添加数据" class="headerlink" title="2.5.2 post添加数据"></a>2.5.2 post添加数据</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
+</blockquote>
+<p><img src="./assets/image-20210217181023301.png" style="width: 800px; margin-left: 20px;"> </img></p>
+<h4 id="2-5-3-put修改数据"><a href="#2-5-3-put修改数据" class="headerlink" title="2.5.3 put修改数据"></a>2.5.3 put修改数据</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?pk=4">http://127.0.0.1:8000/book/book1/?pk=4</a></p>
+</blockquote>
+<p><img src="./assets/image-20210217181515171.png" style="width: 700px; margin-left: 20px;"> </img></p>
+<h2 id="03-嵌套序列化"><a href="#03-嵌套序列化" class="headerlink" title="03.嵌套序列化"></a>03.嵌套序列化</h2><h3 id="3-1-book-serializers-py"><a href="#3-1-book-serializers-py" class="headerlink" title="3.1 book&#x2F;serializers.py"></a>3.1 book&#x2F;serializers.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> book.models <span class="keyword">import</span> BookInfo,HeroInfo</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HeroInfoSerializer</span>(serializers.Serializer):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;英雄数据序列化器&quot;&quot;&quot;</span></span><br><span class="line">    GENDER_CHOICES = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">&#x27;男&#x27;</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">&#x27;女&#x27;</span>)</span><br><span class="line">    )</span><br><span class="line">    <span class="built_in">id</span> = serializers.IntegerField(label=<span class="string">&#x27;ID&#x27;</span>, read_only=<span class="literal">True</span>)</span><br><span class="line">    hname = serializers.CharField(label=<span class="string">&#x27;名字&#x27;</span>, max_length=<span class="number">20</span>)</span><br><span class="line">    hgender = serializers.ChoiceField(label=<span class="string">&#x27;性别&#x27;</span>, choices=GENDER_CHOICES, required=<span class="literal">False</span>)</span><br><span class="line">    hcomment = serializers.CharField(label=<span class="string">&#x27;描述信息&#x27;</span>, max_length=<span class="number">200</span>, required=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = HeroInfo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BookInfoSerializer1</span>(serializers.Serializer):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图书数据序列化器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">id</span> = serializers.IntegerField(label=<span class="string">&#x27;ID&#x27;</span>, read_only=<span class="literal">True</span>)       <span class="comment"># 主键序列化</span></span><br><span class="line">    <span class="comment"># 第一：普通字段序列化</span></span><br><span class="line">    btitle = serializers.CharField(label=<span class="string">&#x27;名称&#x27;</span>, max_length=<span class="number">20</span>)</span><br><span class="line">    bpub_date = serializers.DateField(label=<span class="string">&#x27;发布日期&#x27;</span>)</span><br><span class="line">    bread = serializers.IntegerField(label=<span class="string">&#x27;阅读量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    bcomment = serializers.IntegerField(label=<span class="string">&#x27;评论量&#x27;</span>, required=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 第二：一对多字段序列化</span></span><br><span class="line">    <span class="comment"># heroinfo_set = serializers.PrimaryKeyRelatedField(read_only=True, many=True)</span></span><br><span class="line">    heroinfo_set = HeroInfoSerializer(many=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 第三：自定义显示（显示多对多）</span></span><br><span class="line">    xxx = serializers.SerializerMethodField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = BookInfo</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义显示 多对多 字段</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_xxx</span>(<span class="params">self,row</span>):</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;row: 传过来的正是 BookInfo表的对象&#x27;&#x27;&#x27;</span></span><br><span class="line">        books = row.btitle   <span class="comment"># 获取用户名</span></span><br><span class="line">        <span class="keyword">return</span> books</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-查询结果"><a href="#3-2-查询结果" class="headerlink" title="3.2 查询结果"></a>3.2 查询结果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;西游记&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2020-08-11&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">666</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">123</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">&quot;hname&quot;</span>: <span class="string">&quot;孙悟空&quot;</span>,</span><br><span class="line">                <span class="string">&quot;hgender&quot;</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">&quot;hcomment&quot;</span>: <span class="string">&quot;七十二变&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">                <span class="string">&quot;hname&quot;</span>: <span class="string">&quot;猪八戒&quot;</span>,</span><br><span class="line">                <span class="string">&quot;hgender&quot;</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">&quot;hcomment&quot;</span>: <span class="string">&quot;天蓬元帅&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;西游记&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;水浒传&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2020-08-11&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;水浒传&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;红楼梦&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2020-08-11&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;红楼梦&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="string">&quot;btitle&quot;</span>: <span class="string">&quot;三国演义2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bpub_date&quot;</span>: <span class="string">&quot;2018-08-19&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bread&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;bcomment&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;heroinfo_set&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;三国演义2&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-字段类型和选项参数"><a href="#04-字段类型和选项参数" class="headerlink" title="04.字段类型和选项参数"></a>04.字段类型和选项参数</h2><h3 id="4-1-通用参数"><a href="#4-1-通用参数" class="headerlink" title="4.1 通用参数"></a>4.1 通用参数</h3><ul>
+<li>无论哪种字段类型都可以使用的选项参数。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>read_only</strong></td>
+<td>表明该字段仅用于序列化输出，默认False</td>
+</tr>
+<tr>
+<td><strong>write_only</strong></td>
+<td>表明该字段仅用于反序列化输入，默认False</td>
+</tr>
+<tr>
+<td><strong>required</strong></td>
+<td>表明该字段在反序列化时必须输入，默认True</td>
+</tr>
+<tr>
+<td><strong>default</strong></td>
+<td>序列化和反序列化时使用的默认值</td>
+</tr>
+<tr>
+<td><strong>error_messages</strong></td>
+<td>包含错误编号与错误信息的字典</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>用于HTML展示API页面时，显示的字段名称</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注：定义序列化器类的字段时，如果没有指定read_only和write_only，则这两个参数默认值都为False，表明对应的字段既在序列化时使用，也在反序列化时使用。</p>
+</blockquote>
+<h3 id="4-2-常用字段类型"><a href="#4-2-常用字段类型" class="headerlink" title="4.2 常用字段类型"></a>4.2 常用字段类型</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>字段构造方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>BooleanField</strong></td>
+<td>BooleanField()</td>
+</tr>
+<tr>
+<td><strong>NullBooleanField</strong></td>
+<td>NullBooleanField()</td>
+</tr>
+<tr>
+<td><strong>CharField</strong></td>
+<td>CharField(max_length&#x3D;None, min_length&#x3D;None, allow_blank&#x3D;False, trim_whitespace&#x3D;True)</td>
+</tr>
+<tr>
+<td><strong>EmailField</strong></td>
+<td>EmailField(max_length&#x3D;None, min_length&#x3D;None, allow_blank&#x3D;False)</td>
+</tr>
+<tr>
+<td><strong>RegexField</strong></td>
+<td>RegexField(regex, max_length&#x3D;None, min_length&#x3D;None, allow_blank&#x3D;False)</td>
+</tr>
+<tr>
+<td><strong>SlugField</strong></td>
+<td>SlugField(max_length&#x3D;50, min<em>length&#x3D;None, allow_blank&#x3D;False) 正则字段，验证正则模式 [-a-zA-Z0-9</em>-]+</td>
+</tr>
+<tr>
+<td><strong>URLField</strong></td>
+<td>URLField(max_length&#x3D;200, min_length&#x3D;None, allow_blank&#x3D;False)</td>
+</tr>
+<tr>
+<td><strong>UUIDField</strong></td>
+<td>UUIDField(format&#x3D;’hex_verbose’) format: 1)<code>&#39;hex_verbose&#39;</code> 如 <code>&quot;5ce0e9a5-5ffa-654b-cee0-1238041fb31a&quot;</code> 2） <code>&#39;hex&#39;</code> 如 <code>&quot;5ce0e9a55ffa654bcee01238041fb31a&quot;</code> 3）<code>&#39;int&#39;</code> - 如: <code>&quot;123456789012312313134124512351145145114&quot;</code> 4）<code>&#39;urn&#39;</code> 如: <code>&quot;urn:uuid:5ce0e9a5-5ffa-654b-cee0-1238041fb31a&quot;</code></td>
+</tr>
+<tr>
+<td><strong>IPAddressField</strong></td>
+<td>IPAddressField(protocol&#x3D;’both’, unpack_ipv4&#x3D;False, **options)</td>
+</tr>
+<tr>
+<td><strong>IntegerField</strong></td>
+<td>IntegerField(max_value&#x3D;None, min_value&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>FloatField</strong></td>
+<td>FloatField(max_value&#x3D;None, min_value&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>DecimalField</strong></td>
+<td>DecimalField(max_digits, decimal_places, coerce_to_string&#x3D;None, max_value&#x3D;None, min_value&#x3D;None) max_digits: 最多位数 decimal_palces: 小数点位置</td>
+</tr>
+<tr>
+<td><strong>DateTimeField</strong></td>
+<td>DateTimeField(format&#x3D;api_settings.DATETIME_FORMAT, input_formats&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>DateField</strong></td>
+<td>DateField(format&#x3D;api_settings.DATE_FORMAT, input_formats&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>TimeField</strong></td>
+<td>TimeField(format&#x3D;api_settings.TIME_FORMAT, input_formats&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>DurationField</strong></td>
+<td>DurationField()</td>
+</tr>
+<tr>
+<td><strong>ChoiceField</strong></td>
+<td>ChoiceField(choices) choices与Django的用法相同</td>
+</tr>
+<tr>
+<td><strong>MultipleChoiceField</strong></td>
+<td>MultipleChoiceField(choices)</td>
+</tr>
+<tr>
+<td><strong>FileField</strong></td>
+<td>FileField(max_length&#x3D;None, allow_empty_file&#x3D;False, use_url&#x3D;UPLOADED_FILES_USE_URL)</td>
+</tr>
+<tr>
+<td><strong>ImageField</strong></td>
+<td>ImageField(max_length&#x3D;None, allow_empty_file&#x3D;False, use_url&#x3D;UPLOADED_FILES_USE_URL)</td>
+</tr>
+<tr>
+<td><strong>ListField</strong></td>
+<td>ListField(child&#x3D;, min_length&#x3D;None, max_length&#x3D;None)</td>
+</tr>
+<tr>
+<td><strong>DictField</strong></td>
+<td>DictField(child&#x3D;)</td>
+</tr>
+</tbody></table>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/4037e0/" target="_blank">05.Serializer</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/python/">python</a>
+                        
+                            <a href="../../categories/python/django/">django</a>
+                        
+                            <a href="../../categories/python/django/03-DRF%E6%A1%86%E6%9E%B6/">03_DRF框架</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tags/DRF/">DRF</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../pages/42c53d/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/42c53d/" title="发布于 2021-02-17 07:46">06.ModelSerializer</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/49ae81/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/49ae81/" title="发布于 2021-02-17 03:03">04.环境安装与使用</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tags" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="" target="_self" data=""><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home.jpeg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tags",
+                    type   : "tags",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archive",
+                    type   : "archive",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "",
+                        target : "_self",
+                        image  : ""
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "010C3EANT8",
+            apiKey        : "c7abab9f11b79102b9aff7fe6d41447d",
+            indexName     : "Notes",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
