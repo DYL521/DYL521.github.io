@@ -92,9 +92,42 @@
 </ul>
 </li>
 </ul>
-<h3 id="1-2-设置mapping"><a href="#1-2-设置mapping" class="headerlink" title="1.2 设置mapping"></a>1.2 设置mapping</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查看映射关系</span></span></span><br><span class="line">GET /worker1/_mapping</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 创建映射</span></span></span><br><span class="line">PUT /worker1</span><br><span class="line">&#123;</span><br><span class="line">	&quot;mappings&quot;: &#123;</span><br><span class="line">		&quot;properties&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;age&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;long&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-设置mapping"><a href="#1-2-设置mapping" class="headerlink" title="1.2 设置mapping"></a>1.2 设置mapping</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射关系</span>
+GET /worker1/_mapping
 
-<h3 id="1-3-添加和查询数据"><a href="#1-3-添加和查询数据" class="headerlink" title="1.3 添加和查询数据"></a>1.3 添加和查询数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询worker1中所有数据</span></span></span><br><span class="line">GET /worker1/_search</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 不指定id在worker1中添加数据</span></span></span><br><span class="line">POST /worker1/_doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;tom&quot;,</span><br><span class="line">  &quot;age&quot;:18</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 指定id在worker1中添加数据</span></span></span><br><span class="line">POST /worker1/_doc/2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;jack&quot;,</span><br><span class="line">  &quot;age&quot;:18</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token comment">## 创建映射</span>
+PUT /worker1
+<span class="token punctuation">&#123;</span>
+	<span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+		<span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>
+			<span class="token punctuation">&#125;</span>,
+			<span class="token string">"age"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"long"</span>
+			<span class="token punctuation">&#125;</span>,
+			
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-添加和查询数据"><a href="#1-3-添加和查询数据" class="headerlink" title="1.3 添加和查询数据"></a>1.3 添加和查询数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询worker1中所有数据</span>
+GET /worker1/_search
+
+<span class="token comment">## 不指定id在worker1中添加数据</span>
+POST /worker1/_doc
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"tom"</span>,
+  <span class="token string">"age"</span>:18
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token comment">## 指定id在worker1中添加数据</span>
+POST /worker1/_doc/2
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"jack"</span>,
+  <span class="token string">"age"</span>:18
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="02-分析器"><a href="#02-分析器" class="headerlink" title="02.分析器"></a>02.分析器</h2><h3 id="2-1-分析器类型"><a href="#2-1-分析器类型" class="headerlink" title="2.1 分析器类型"></a>2.1 分析器类型</h3><h4 id="2-1-1-三方中文分词器"><a href="#2-1-1-三方中文分词器" class="headerlink" title="2.1.1 三方中文分词器"></a>2.1.1 三方中文分词器</h4><ul>
 <li>ik_max_word：会做细粒度拆分</li>
@@ -111,15 +144,58 @@
 </ul>
 </li>
 </ul>
-<h3 id="2-2-在mapping中指定分析"><a href="#2-2-在mapping中指定分析" class="headerlink" title="2.2 在mapping中指定分析"></a>2.2 在mapping中指定分析</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查看映射</span></span></span><br><span class="line">GET /worker4/_mapping</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 创建mapping</span></span></span><br><span class="line">PUT /worker</span><br><span class="line">&#123;</span><br><span class="line">	&quot;mappings&quot;: &#123;</span><br><span class="line">		&quot;properties&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;whitespace&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;address&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;english&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;desc&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-在mapping中指定分析"><a href="#2-2-在mapping中指定分析" class="headerlink" title="2.2 在mapping中指定分析"></a>2.2 在mapping中指定分析</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射</span>
+GET /worker4/_mapping
 
-<h3 id="2-3-添加数据"><a href="#2-3-添加数据" class="headerlink" title="2.3 添加数据"></a>2.3 添加数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询所有数据</span></span></span><br><span class="line">GET /worker/_search</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 添加记录</span></span></span><br><span class="line">POST /worker/_doc/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;xiao-nai-qiang first&quot;,</span><br><span class="line">  &quot;address&quot;:&quot;xiao-nai-qiang henan&quot;,</span><br><span class="line">  &quot;desc&quot;:&quot;肖乃强是谁？&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-4-whitespace空格分析器"><a href="#2-4-whitespace空格分析器" class="headerlink" title="2.4 whitespace空格分析器"></a>2.4 whitespace空格分析器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查看刚刚设置的mapping映射</span></span></span><br><span class="line">GET /worker/_mapping</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询刚创建的数据 id=1</span></span></span><br><span class="line">GET /worker/_doc/1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 因为name使用的是&quot;whitespace&quot;空格分析器，所以 ?q=name:xiao 无法匹配xiao-nai-qiang 这个关键字</span></span></span><br><span class="line">GET /worker/_search?q=name:xiao</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 只有完整查询 ?q=name:xiao-nai-qiang 才能匹配到数据</span></span></span><br><span class="line">GET /worker/_search?q=name:xiao-nai-qiang</span><br></pre></td></tr></table></figure>
+<span class="token comment">## 创建mapping</span>
+PUT /worker
+<span class="token punctuation">&#123;</span>
+	<span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+		<span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
+				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"whitespace"</span>
+			<span class="token punctuation">&#125;</span>,
+			<span class="token string">"address"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
+				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"english"</span>
+			<span class="token punctuation">&#125;</span>,
+			<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
+				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
+			<span class="token punctuation">&#125;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-5-语言分析器（english）"><a href="#2-5-语言分析器（english）" class="headerlink" title="2.5 语言分析器（english）"></a>2.5 语言分析器（english）</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 因为 note字段设置的是 &quot;english&quot; 语音分析器，所以通过 ?q=note:xiao 可以搜索到 xiao-nai-qiang</span></span></span><br><span class="line">GET /worker4/_search?q=address:xiao</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-添加数据"><a href="#2-3-添加数据" class="headerlink" title="2.3 添加数据"></a>2.3 添加数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询所有数据</span>
+GET /worker/_search
 
-<h3 id="2-6-ik-max-word中文分词"><a href="#2-6-ik-max-word中文分词" class="headerlink" title="2.6 ik_max_word中文分词"></a>2.6 ik_max_word中文分词</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># ik_max_word中文分词，可以通过 ?q=desc:肖乃强 查询到 &quot;肖乃强是谁？&quot;</span></span></span><br><span class="line">GET /worker/_search?q=desc:肖乃强</span><br></pre></td></tr></table></figure>
+<span class="token comment">## 添加记录</span>
+POST /worker/_doc/1
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang first"</span>,
+  <span class="token string">"address"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang henan"</span>,
+  <span class="token string">"desc"</span><span class="token builtin class-name">:</span><span class="token string">"肖乃强是谁？"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-4-whitespace空格分析器"><a href="#2-4-whitespace空格分析器" class="headerlink" title="2.4 whitespace空格分析器"></a>2.4 whitespace空格分析器</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看刚刚设置的mapping映射</span>
+GET /worker/_mapping
+<span class="token comment">## 查询刚创建的数据 id=1</span>
+GET /worker/_doc/1
+
+<span class="token comment">## 因为name使用的是"whitespace"空格分析器，所以 ?q=name:xiao 无法匹配xiao-nai-qiang 这个关键字</span>
+GET /worker/_search?q<span class="token operator">=</span>name:xiao
+
+<span class="token comment">## 只有完整查询 ?q=name:xiao-nai-qiang 才能匹配到数据</span>
+GET /worker/_search?q<span class="token operator">=</span>name:xiao-nai-qiang<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-5-语言分析器（english）"><a href="#2-5-语言分析器（english）" class="headerlink" title="2.5 语言分析器（english）"></a>2.5 语言分析器（english）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 因为 note字段设置的是 "english" 语音分析器，所以通过 ?q=note:xiao 可以搜索到 xiao-nai-qiang</span>
+GET /worker4/_search?q<span class="token operator">=</span>address:xiao<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="2-6-ik-max-word中文分词"><a href="#2-6-ik-max-word中文分词" class="headerlink" title="2.6 ik_max_word中文分词"></a>2.6 ik_max_word中文分词</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## ik_max_word中文分词，可以通过 ?q=desc:肖乃强 查询到 "肖乃强是谁？"</span>
+GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
                 
                 <p class="end">__END__</p>
             </div>
@@ -155,11 +231,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/df12b3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/df12b3/" title="发布于 2021-02-12 03:04">03.es基本使用</a>
+                        <a href="../../pages/d236d3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
                         <br>
                     
                     
-                        <a href="../../pages/51290c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/51290c/" title="发布于 2021-02-12 03:04">05.python使用ES</a>
+                        <a href="../../pages/abc352/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/abc352/" title="发布于 2021-02-12 03:04">06.ES复杂类型</a>
                     
                 </div>
             </div>

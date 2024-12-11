@@ -93,7 +93,23 @@ sourceList[3][0]=100
 print(sourceList)           # [1, 2, 3, [100, 5, 6]]
 print(copyList)             # [1, 2, 3, [100, 5, 6]]
 print(deepcopyList)         # [1, 2, 3, [4, 5, 6]]
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20200311090206377.png](./assets/image-20200311090206377.png)</span><br><span class="line"></span><br><span class="line">- 案例</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">import copy</span><br><span class="line">a = [1,2,3,4,[&#x27;a&#x27;,&#x27;b&#x27;]]</span><br><span class="line">b = a</span><br><span class="line">c = copy.copy(a)</span><br><span class="line">d = copy.deepcopy(a)</span><br><span class="line">a.append(5)</span><br><span class="line">a[4].append(&#x27;c&#x27;)</span><br><span class="line">print(a)     # [1, 2, 3, 4, [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;], 5]</span><br><span class="line">print(b)     # [1, 2, 3, 4, [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;], 5]</span><br><span class="line">print(c)     # [1, 2, 3, 4, [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]]</span><br><span class="line">print(d)     # [1, 2, 3, 4, [&#x27;a&#x27;, &#x27;b&#x27;]]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">
+![image-20200311090206377.png](.&#x2F;assets&#x2F;image-20200311090206377.png)
+
+- 案例
+
+&#96;&#96;&#96;python
+import copy
+a &#x3D; [1,2,3,4,[&#39;a&#39;,&#39;b&#39;]]
+b &#x3D; a
+c &#x3D; copy.copy(a)
+d &#x3D; copy.deepcopy(a)
+a.append(5)
+a[4].append(&#39;c&#39;)
+print(a)     # [1, 2, 3, 4, [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], 5]
+print(b)     # [1, 2, 3, 4, [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], 5]
+print(c)     # [1, 2, 3, 4, [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]]
+print(d)     # [1, 2, 3, 4, [&#39;a&#39;, &#39;b&#39;]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </code></pre>
 </li>
 </ul>
@@ -109,7 +125,33 @@ print(deepcopyList)         # [1, 2, 3, [4, 5, 6]]
 <li><p><strong>理解</strong>：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。</p>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str2 = str1</span><br><span class="line"></span><br><span class="line"><span class="comment">#1、让str1和str2变量都存储了‘hello’所在的内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#2、当str1的值变成‘new hello’后str1的值被重新赋值成&#x27;new hello&#x27;的内存地址，而str2的值依旧是‘hello’的内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&#x27;new hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748320</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str2)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sourceList = [<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newList = sourceList</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>][<span class="number">0</span>]=<span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sourceList</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">100</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newList</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">100</span>, <span class="number">4</span>]]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> str1 <span class="token operator">=</span> <span class="token string">'hello'</span>
+<span class="token operator">>></span><span class="token operator">></span> str2 <span class="token operator">=</span> str1
+
+<span class="token comment">#1、让str1和str2变量都存储了‘hello’所在的内存地址</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
+<span class="token number">22748280</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
+<span class="token number">22748280</span>
+<span class="token operator">>></span><span class="token operator">></span>
+
+<span class="token comment">#2、当str1的值变成‘new hello’后str1的值被重新赋值成'new hello'的内存地址，而str2的值依旧是‘hello’的内存地址</span>
+<span class="token operator">>></span><span class="token operator">></span> str1 <span class="token operator">=</span> <span class="token string">'new hello'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
+<span class="token number">22748320</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str2<span class="token punctuation">)</span>
+<span class="token number">22748280</span>
+
+<span class="token comment">#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。</span>
+<span class="token operator">>></span><span class="token operator">></span> sourceList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> newList <span class="token operator">=</span> sourceList
+
+<span class="token operator">>></span><span class="token operator">></span> l<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">100</span>
+
+<span class="token operator">>></span><span class="token operator">></span> sourceList
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> newList
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="03-is和-区别"><a href="#03-is和-区别" class="headerlink" title="03.is和&#x3D;&#x3D;区别"></a>03.is和&#x3D;&#x3D;区别</h2><ul>
 <li>is不仅数据一样内存地址也一样</li>

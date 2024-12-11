@@ -93,7 +93,45 @@ sourceList[3][0]=100
 print(sourceList)           # [1, 2, 3, [100, 5, 6]]
 print(copyList)             # [1, 2, 3, [100, 5, 6]]
 print(deepcopyList)         # [1, 2, 3, [4, 5, 6]]
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20200311090206377.png](./assets/image-20200311090206377.png)</span><br><span class="line"></span><br><span class="line">## 02.变量及其存储</span><br><span class="line"></span><br><span class="line">- 1. python的一切变量都是对象，变量的存储，采用了引用语义的方式，存储的只是一个变量的值所在的内存地址，而不是这个变量的只本身</span><br><span class="line"></span><br><span class="line">- 2. 不管多么复杂的数据结构，浅拷贝都只会copy一层。</span><br><span class="line"></span><br><span class="line">- **理解**：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">&gt;&gt;&gt; str1 = &#x27;hello&#x27;</span><br><span class="line">&gt;&gt;&gt; str2 = str1</span><br><span class="line"></span><br><span class="line">#1、让str1和str2变量都存储了‘hello’所在的内存地址</span><br><span class="line">&gt;&gt;&gt; id(str1)</span><br><span class="line">22748280</span><br><span class="line">&gt;&gt;&gt; id(str1)</span><br><span class="line">22748280</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br><span class="line">#2、当str1的值变成‘new hello’后str1的值被重新赋值成&#x27;new hello&#x27;的内存地址，而str2的值依旧是‘hello’的内存地址</span><br><span class="line">&gt;&gt;&gt; str1 = &#x27;new hello&#x27;</span><br><span class="line">&gt;&gt;&gt; id(str1)</span><br><span class="line">22748320</span><br><span class="line">&gt;&gt;&gt; id(str2)</span><br><span class="line">22748280</span><br><span class="line"></span><br><span class="line">#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。</span><br><span class="line">&gt;&gt;&gt; sourceList = [1,2,[3,4]]</span><br><span class="line">&gt;&gt;&gt; newList = sourceList</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; l[2][0]=100</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; sourceList</span><br><span class="line">[1, 2, [100, 4]]</span><br><span class="line">&gt;&gt;&gt; newList</span><br><span class="line">[1, 2, [100, 4]]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">
+![image-20200311090206377.png](.&#x2F;assets&#x2F;image-20200311090206377.png)
+
+## 02.变量及其存储
+
+- 1. python的一切变量都是对象，变量的存储，采用了引用语义的方式，存储的只是一个变量的值所在的内存地址，而不是这个变量的只本身
+
+- 2. 不管多么复杂的数据结构，浅拷贝都只会copy一层。
+
+- **理解**：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。
+
+&#96;&#96;&#96;python
+&gt;&gt;&gt; str1 &#x3D; &#39;hello&#39;
+&gt;&gt;&gt; str2 &#x3D; str1
+
+#1、让str1和str2变量都存储了‘hello’所在的内存地址
+&gt;&gt;&gt; id(str1)
+22748280
+&gt;&gt;&gt; id(str1)
+22748280
+&gt;&gt;&gt;
+
+#2、当str1的值变成‘new hello’后str1的值被重新赋值成&#39;new hello&#39;的内存地址，而str2的值依旧是‘hello’的内存地址
+&gt;&gt;&gt; str1 &#x3D; &#39;new hello&#39;
+&gt;&gt;&gt; id(str1)
+22748320
+&gt;&gt;&gt; id(str2)
+22748280
+
+#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。
+&gt;&gt;&gt; sourceList &#x3D; [1,2,[3,4]]
+&gt;&gt;&gt; newList &#x3D; sourceList
+
+&gt;&gt;&gt; l[2][0]&#x3D;100
+
+&gt;&gt;&gt; sourceList
+[1, 2, [100, 4]]
+&gt;&gt;&gt; newList
+[1, 2, [100, 4]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </code></pre>
 </li>
 </ul>

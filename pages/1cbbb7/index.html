@@ -85,39 +85,51 @@
 <li><p><code>安装前，我们可以检测系统是否自带安装 MySQL</code></p>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  rpm -qa | grep mysql</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  yum list installed | grep mysql</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  rpm -qa | grep mysql</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  yum list installed | grep mysql</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>如果你系统有安装，那可以选择进行卸载</code></li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  rpm -e mysql　         # 普通删除模式</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  rpm -e --nodeps mysql　　 # 强力删除模式，如果使用上面命令删除时，提示有依赖的其它文件，则用该命令可以对其进行强力删除</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment"># yum erase mysql-*        # yum删除所有mysql相关包</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  rpm -e mysql　         # 普通删除模式</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  rpm -e --nodeps mysql　　 # 强力删除模式，如果使用上面命令删除时，提示有依赖的其它文件，则用该命令可以对其进行强力删除</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># yum erase mysql-*        # yum删除所有mysql相关包</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-2-下载-Yum-资源包"><a href="#1-2-下载-Yum-资源包" class="headerlink" title="1.2 下载 Yum 资源包"></a>1.2 下载 Yum 资源包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]#  wget http://repo.mysql.com/mysql57-community-release-el7-10.noarch.rpm</span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]#  rpm -ivh mysql57-community-release-el7-10.noarch.rpm</span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]#  yum update</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-下载-Yum-资源包"><a href="#1-2-下载-Yum-资源包" class="headerlink" title="1.2 下载 Yum 资源包"></a>1.2 下载 Yum 资源包</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z ~<span class="token punctuation">]</span><span class="token comment">#  wget http://repo.mysql.com/mysql57-community-release-el7-10.noarch.rpm</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z ~<span class="token punctuation">]</span><span class="token comment">#  rpm -ivh mysql57-community-release-el7-10.noarch.rpm</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z ~<span class="token punctuation">]</span><span class="token comment">#  yum update</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>获取域名资源包地址：<a target="_blank" rel="noopener" href="http://repo.mysql.com/">http://repo.mysql.com/</a></li>
 </ul>
 <p><img src="./assets/image-20210216111625482.png" style="width: 600px; margin-left: 20px;"> </img></p>
-<h3 id="1-3-安装mysql服务"><a href="#1-3-安装mysql服务" class="headerlink" title="1.3 安装mysql服务"></a>1.3 安装mysql服务</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  yum install mysql-server       # 安装mysql服务端</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  yum -y install mysql-devel      # 安装mysql所需的库和包含文件</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-3-安装mysql服务"><a href="#1-3-安装mysql服务" class="headerlink" title="1.3 安装mysql服务"></a>1.3 安装mysql服务</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  yum install mysql-server       # 安装mysql服务端</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  yum -y install mysql-devel      # 安装mysql所需的库和包含文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li>服务管理</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment"># systemctl status start</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment"># systemctl status mysqld</span></span><br><span class="line">root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment"># systemctl enable mysqld</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl status start</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl status mysqld</span>
+root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl enable mysqld</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-4-设置登录密码"><a href="#1-4-设置登录密码" class="headerlink" title="1.4 设置登录密码"></a>1.4 设置登录密码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  mysql -uroot -p</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  mysqladmin -u root password &quot;1&quot;      # 给root用户配置密码：1</span></span><br><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment">#  mysql -uroot -p1                # 配置完密码后必须使用密码登录</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-4-设置登录密码"><a href="#1-4-设置登录密码" class="headerlink" title="1.4 设置登录密码"></a>1.4 设置登录密码</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  mysql -uroot -p</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  mysqladmin -u root password "1"      # 给root用户配置密码：1</span>
+<span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  mysql -uroot -p1                # 配置完密码后必须使用密码登录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>如果出现下面报错：<code>Please use mysql_upgrade to fix this error.</code></li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]<span class="comment"># mysql_upgrade -u root -p</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@iZ2ze4owq6ailug7vb38z5Z <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mysql_upgrade -u root -p</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>修改mysql密码</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;  update mysql.user set authentication_string=password(&#x27;v5blog.cn&#x27;) where user=&#x27;root&#x27; and Host = &#x27;localhost&#x27;;</span><br><span class="line">mysql&gt;  flush privileges; </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt;  update mysql.user set authentication_string&#x3D;password(&#39;v5blog.cn&#39;) where user&#x3D;&#39;root&#39; and Host &#x3D; &#39;localhost&#39;;
+mysql&gt;  flush privileges; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="1-5-连接MySQL"><a href="#1-5-连接MySQL" class="headerlink" title="1.5 连接MySQL"></a>1.5 连接MySQL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2ze4owq6ailug7vb38z5Z ~]# mysql -uroot -p</span><br><span class="line">Enter password:  ******</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-连接MySQL"><a href="#1-5-连接MySQL" class="headerlink" title="1.5 连接MySQL"></a>1.5 连接MySQL</h3><pre class="line-numbers language-none"><code class="language-none">[root@iZ2ze4owq6ailug7vb38z5Z ~]# mysql -uroot -p
+Enter password:  ******<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>mysql -h 主机名 -u 用户名 -p</code></li>

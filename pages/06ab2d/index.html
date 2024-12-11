@@ -93,7 +93,32 @@
 <li>索引的建立是越多越好？为什么不是越多越好？</li>
 <li><code>一个精彩的故事</code></li>
 </ul>
-<h1 id="02-简单说明"><a href="#02-简单说明" class="headerlink" title="02.简单说明"></a>02.简单说明</h1><h2 id="2-1-MySQL索引优化"><a href="#2-1-MySQL索引优化" class="headerlink" title="2.1 MySQL索引优化"></a>2.1 MySQL索引优化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、最左前缀匹配原则，上面讲到了</span></span><br><span class="line"><span class="comment"># 2、主键外键一定要建索引</span></span><br><span class="line"><span class="comment"># 3、对 where,on,group by,order by 中出现的列使用索引</span></span><br><span class="line"><span class="comment"># 4、尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，</span></span><br><span class="line"><span class="comment"># 5、为较长的字符串使用前缀索引</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"># 6、不要过多创建索引, 权衡索引个数与DML之间关系，DML也就是插入、删除数据操作。</span></span><br><span class="line"><span class="string">    这里需要权衡一个问题，建立索引的目的是为了提高查询效率的，但建立的索引过多，</span></span><br><span class="line"><span class="string">    会影响插入、删除数据的速度，因为我们修改的表数据，索引也需要进行调整重建</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"># 7、对于like查询，”%”不要放在前面。</span></span><br><span class="line"><span class="string">    SELECT * FROMhoudunwangWHEREunameLIKE&#x27;后盾%&#x27; -- 走索引 </span></span><br><span class="line"><span class="string">    SELECT * FROMhoudunwangWHEREunameLIKE &quot;%后盾%&quot; -- 不走索引</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"># 8、查询where条件数据类型不匹配也无法使用索引 </span></span><br><span class="line"><span class="string">    字符串与数字比较不使用索引; </span></span><br><span class="line"><span class="string">    CREATE TABLEa(achar(10)); </span></span><br><span class="line"><span class="string">    EXPLAIN SELECT * FROMaWHEREa=&quot;1&quot; – 走索引 </span></span><br><span class="line"><span class="string">    EXPLAIN SELECT * FROM a WHERE a=1 – 不走索引 </span></span><br><span class="line"><span class="string">    正则表达式不使用索引,这应该很好理解,所以为什么在SQL中很难看到regexp关键字的原因</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h1 id="02-简单说明"><a href="#02-简单说明" class="headerlink" title="02.简单说明"></a>02.简单说明</h1><h2 id="2-1-MySQL索引优化"><a href="#2-1-MySQL索引优化" class="headerlink" title="2.1 MySQL索引优化"></a>2.1 MySQL索引优化</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、最左前缀匹配原则，上面讲到了</span>
+<span class="token comment"># 2、主键外键一定要建索引</span>
+<span class="token comment"># 3、对 where,on,group by,order by 中出现的列使用索引</span>
+<span class="token comment"># 4、尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，</span>
+<span class="token comment"># 5、为较长的字符串使用前缀索引</span>
+
+<span class="token triple-quoted-string string">'''
+# 6、不要过多创建索引, 权衡索引个数与DML之间关系，DML也就是插入、删除数据操作。
+    这里需要权衡一个问题，建立索引的目的是为了提高查询效率的，但建立的索引过多，
+    会影响插入、删除数据的速度，因为我们修改的表数据，索引也需要进行调整重建
+'''</span>
+
+<span class="token triple-quoted-string string">'''
+# 7、对于like查询，”%”不要放在前面。
+    SELECT * FROMhoudunwangWHEREunameLIKE'后盾%' -- 走索引 
+    SELECT * FROMhoudunwangWHEREunameLIKE "%后盾%" -- 不走索引
+'''</span>
+
+<span class="token triple-quoted-string string">'''
+# 8、查询where条件数据类型不匹配也无法使用索引 
+    字符串与数字比较不使用索引; 
+    CREATE TABLEa(achar(10)); 
+    EXPLAIN SELECT * FROMaWHEREa="1" – 走索引 
+    EXPLAIN SELECT * FROM a WHERE a=1 – 不走索引 
+    正则表达式不使用索引,这应该很好理解,所以为什么在SQL中很难看到regexp关键字的原因
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="2-2-MySql分库分表"><a href="#2-2-MySql分库分表" class="headerlink" title="2.2 MySql分库分表"></a>2.2 MySql分库分表</h2><p><code>了解内容，不作为学习重点</code></p>
 <ul>

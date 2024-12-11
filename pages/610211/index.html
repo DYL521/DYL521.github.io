@@ -118,7 +118,14 @@
 <li>也就是在用户A获取获取 id&#x3D;1 的商品信息时对该行记录加锁，期间其他用户阻塞等待访问该记录。</li>
 </ul>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#### 悲观锁实现加一操作代码</span></span><br><span class="line"><span class="comment"># 我们可以看到，首先通过begin开启一个事物，在获得shop信息和修改数据的整个过程中都对数据加锁，保证了数据的一致性。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">begin;</span></span><br><span class="line"><span class="string">select id,name,stock as old_stock from shop  where id=1 for update;</span></span><br><span class="line"><span class="string">update shop set stock=stock-1 where id=1 and stock=old_stock;</span></span><br><span class="line"><span class="string">commit</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 悲观锁实现加一操作代码</span>
+<span class="token comment"># 我们可以看到，首先通过begin开启一个事物，在获得shop信息和修改数据的整个过程中都对数据加锁，保证了数据的一致性。</span>
+<span class="token triple-quoted-string string">'''
+begin;
+select id,name,stock as old_stock from shop  where id=1 for update;
+update shop set stock=stock-1 where id=1 and stock=old_stock;
+commit
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-3-2-乐观锁：读多写少"><a href="#2-3-2-乐观锁：读多写少" class="headerlink" title="2.3.2 乐观锁：读多写少"></a>2.3.2 乐观锁：读多写少</h3><ul>
 <li><p>在更新数据的时候需要比较程序中的库存量与数据库中的库存量是否相等，如果相等则进行更新。</p>
@@ -134,7 +141,16 @@
 <li>反之程序重新获取库存量，再次进行比较，直到两个库存量的数值相等才进行数据更新。</li>
 </ul>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#### 乐观锁实现加一操作代码</span></span><br><span class="line"><span class="comment"># 我们可以看到，只有当对数量-1操作时才会加锁，只有当程序中值和数据库中的值相等时才正真执行。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">//不加锁</span></span><br><span class="line"><span class="string">select id,name,stock where id=1;</span></span><br><span class="line"><span class="string">//业务处理</span></span><br><span class="line"><span class="string">begin;</span></span><br><span class="line"><span class="string">update shop set stock=stock-1 where id=1 and stock=stock;</span></span><br><span class="line"><span class="string">commit;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 乐观锁实现加一操作代码</span>
+<span class="token comment"># 我们可以看到，只有当对数量-1操作时才会加锁，只有当程序中值和数据库中的值相等时才正真执行。</span>
+<span class="token triple-quoted-string string">'''
+//不加锁
+select id,name,stock where id=1;
+//业务处理
+begin;
+update shop set stock=stock-1 where id=1 and stock=stock;
+commit;
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="1-4-行级锁-表级锁"><a href="#1-4-行级锁-表级锁" class="headerlink" title="1.4 行级锁 &amp; 表级锁"></a>1.4 行级锁 &amp; 表级锁</h2><ul>
 <li>行级锁（写多读少）开销大，加锁慢，锁定粒度最小，<strong>发生锁冲突概率最低</strong>，并发度最高</li>

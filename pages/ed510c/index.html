@@ -114,7 +114,25 @@
 </ul>
 </li>
 </ul>
-<h4 id="1-2-2-最左前缀原理"><a href="#1-2-2-最左前缀原理" class="headerlink" title="1.2.2 最左前缀原理"></a>1.2.2 最左前缀原理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;最左前缀原理&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##### 1、以下的查询方式都可以用到索引</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">select * from table where a=1；</span></span><br><span class="line"><span class="string">select * from table where a=1 and b=2；</span></span><br><span class="line"><span class="string">select * from table where a=1 and b=2 and c=3；</span></span><br><span class="line"><span class="string">上面三个查询按照 （a ）, （a，b ）,（a，b，c ）的顺序都可以利用到索引，这就是最左前缀匹配。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##### 2、如果查询语句是：</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">select * from table where a=1 and c=3； 那么只会用到索引a。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##### 3、这样不会用的索引</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">select * from table where b=2 and c=3； 因为没有用到最左前缀a，所以这个查询是用户到索引的。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-2-2-最左前缀原理"><a href="#1-2-2-最左前缀原理" class="headerlink" title="1.2.2 最左前缀原理"></a>1.2.2 最左前缀原理</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''最左前缀原理'''</span>
+
+<span class="token comment">##### 1、以下的查询方式都可以用到索引</span>
+<span class="token triple-quoted-string string">'''
+select * from table where a=1；
+select * from table where a=1 and b=2；
+select * from table where a=1 and b=2 and c=3；
+上面三个查询按照 （a ）, （a，b ）,（a，b，c ）的顺序都可以利用到索引，这就是最左前缀匹配。
+'''</span>
+
+<span class="token comment">##### 2、如果查询语句是：</span>
+<span class="token triple-quoted-string string">'''
+select * from table where a=1 and c=3； 那么只会用到索引a。
+'''</span>
+
+<span class="token comment">##### 3、这样不会用的索引</span>
+<span class="token triple-quoted-string string">'''
+select * from table where b=2 and c=3； 因为没有用到最左前缀a，所以这个查询是用户到索引的。
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-3-mysql索引失效"><a href="#1-3-mysql索引失效" class="headerlink" title="1.3 mysql索引失效"></a>1.3 mysql索引失效</h3><ul>
 <li><p>1、like 以%开头，索引无效；当like前缀没有%，后缀有%时，索引有效。</p>
@@ -124,7 +142,14 @@
    select * from table where name LIKE &quot;%张&quot;
    ## 2）可以命中索引
    select * from table where name LIKE &quot;张%&quot;
-   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 2、or语句前后没有同时使用索引。当or左右查询字段只有一个是索引，该索引失效，只有当or左右查询字段均为索引时，才会生效</span><br><span class="line"></span><br><span class="line">     - ```shell</span><br><span class="line">          ## 1）命中索引</span><br><span class="line">          select * from table where uid=24 or uid=18;</span><br><span class="line">          ## 2）无法命中索引</span><br><span class="line">          select * from table where uid=24 or name=zhangsan;</span><br></pre></td></tr></table></figure>
+   <pre class="line-numbers language-none"><code class="language-none">
+- 2、or语句前后没有同时使用索引。当or左右查询字段只有一个是索引，该索引失效，只有当or左右查询字段均为索引时，才会生效
+
+     - &#96;&#96;&#96;shell
+          ## 1）命中索引
+          select * from table where uid&#x3D;24 or uid&#x3D;18;
+          ## 2）无法命中索引
+          select * from table where uid&#x3D;24 or name&#x3D;zhangsan;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </code></pre>
 </li>
 </ul>
@@ -137,7 +162,29 @@
    select * from table where b=2 and c=3； 
    ## 3）命中索引
    select * from table where a=1 and b=2 and c=3；
-   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 02.B-tree/B+tree</span><br><span class="line"></span><br><span class="line">### 2.1 B-Tree</span><br><span class="line"></span><br><span class="line">- 每个节点占用一个盘块的磁盘空间，一个节点上有两个升序排序的关键字和三个指向子树根节点的指针，指针存储的是子节点所在磁盘块的地址。</span><br><span class="line"></span><br><span class="line">- 两个关键词划分成的三个范围域对应三个指针指向的子树的数据的范围域。</span><br><span class="line"></span><br><span class="line">- 以根节点为例，关键字为17和35，P1指针指向的子树的数据范围为小于17，P2指针指向的子树的数据范围为17~35，P3指针指向的子树的数据范围为大于35。</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;./assets/image-20210114170732820.png&quot; style=&quot;width: 800px; margin-left: 50px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">- 模拟查找关键字29的过程</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">&#x27;&#x27;&#x27;模拟查找关键字29的过程：&#x27;&#x27;&#x27;</span><br><span class="line">## 根据根节点找到磁盘块1，读入内存。【磁盘I/O操作第1次】</span><br><span class="line">## 比较关键字29在区间（17,35），找到磁盘块1的指针P2。</span><br><span class="line">## 根据P2指针找到磁盘块3，读入内存。【磁盘I/O操作第2次】</span><br><span class="line">## 比较关键字29在区间（26,30），找到磁盘块3的指针P2。</span><br><span class="line">## 根据P2指针找到磁盘块8，读入内存。【磁盘I/O操作第3次】</span><br><span class="line">## 在磁盘块8中的关键字列表中找到关键字29。</span><br></pre></td></tr></table></figure>
+   <pre class="line-numbers language-none"><code class="language-none">
+## 02.B-tree&#x2F;B+tree
+
+### 2.1 B-Tree
+
+- 每个节点占用一个盘块的磁盘空间，一个节点上有两个升序排序的关键字和三个指向子树根节点的指针，指针存储的是子节点所在磁盘块的地址。
+
+- 两个关键词划分成的三个范围域对应三个指针指向的子树的数据的范围域。
+
+- 以根节点为例，关键字为17和35，P1指针指向的子树的数据范围为小于17，P2指针指向的子树的数据范围为17~35，P3指针指向的子树的数据范围为大于35。
+
+&lt;img src&#x3D;&quot;.&#x2F;assets&#x2F;image-20210114170732820.png&quot; style&#x3D;&quot;width: 800px; margin-left: 50px;&quot;&gt; &lt;&#x2F;img&gt;
+
+- 模拟查找关键字29的过程
+
+&#96;&#96;&#96;python
+&#39;&#39;&#39;模拟查找关键字29的过程：&#39;&#39;&#39;
+## 根据根节点找到磁盘块1，读入内存。【磁盘I&#x2F;O操作第1次】
+## 比较关键字29在区间（17,35），找到磁盘块1的指针P2。
+## 根据P2指针找到磁盘块3，读入内存。【磁盘I&#x2F;O操作第2次】
+## 比较关键字29在区间（26,30），找到磁盘块3的指针P2。
+## 根据P2指针找到磁盘块8，读入内存。【磁盘I&#x2F;O操作第3次】
+## 在磁盘块8中的关键字列表中找到关键字29。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </code></pre>
 </li>
 </ul>

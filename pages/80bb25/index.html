@@ -97,13 +97,24 @@
 <p><img src="./assets/1579789440638.png" style="width: 600px; margin-left: 50px;"> </img></p>
 <blockquote>
 <h4 id="2-必须重启虚拟机才能识别到新加磁盘"><a href="#2-必须重启虚拟机才能识别到新加磁盘" class="headerlink" title="2.必须重启虚拟机才能识别到新加磁盘"></a>2.必须重启虚拟机才能识别到新加磁盘</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># fdisk -l              # 查看硬盘信息和分区情况(下面这个sdb就是上面添加的硬盘)</span></span><br><span class="line">磁盘 /dev/sdb：<span class="number">64.4</span> GB, <span class="number">64424509440</span> 字节，<span class="number">125829120</span> 个扇区</span><br><span class="line">Units = 扇区 of <span class="number">1</span> * <span class="number">512</span> = <span class="number">512</span> <span class="built_in">bytes</span></span><br><span class="line">扇区大小(逻辑/物理)：<span class="number">512</span> 字节 / <span class="number">512</span> 字节</span><br><span class="line">I/O 大小(最小/最佳)：<span class="number">512</span> 字节 / <span class="number">512</span> 字节</span><br><span class="line"></span><br><span class="line">sda（第一块盘）： sda1标识第一块盘中第一个分区</span><br><span class="line">sdb（第二块盘）</span><br><span class="line">sdc（第三开盘）</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># fdisk -l              # 查看硬盘信息和分区情况(下面这个sdb就是上面添加的硬盘)</span>
+磁盘 <span class="token operator">/</span>dev<span class="token operator">/</span>sdb：<span class="token number">64.4</span> GB<span class="token punctuation">,</span> <span class="token number">64424509440</span> 字节，<span class="token number">125829120</span> 个扇区
+Units <span class="token operator">=</span> 扇区 of <span class="token number">1</span> <span class="token operator">*</span> <span class="token number">512</span> <span class="token operator">=</span> <span class="token number">512</span> <span class="token builtin">bytes</span>
+扇区大小<span class="token punctuation">(</span>逻辑<span class="token operator">/</span>物理<span class="token punctuation">)</span>：<span class="token number">512</span> 字节 <span class="token operator">/</span> <span class="token number">512</span> 字节
+I<span class="token operator">/</span>O 大小<span class="token punctuation">(</span>最小<span class="token operator">/</span>最佳<span class="token punctuation">)</span>：<span class="token number">512</span> 字节 <span class="token operator">/</span> <span class="token number">512</span> 字节
+
+sda（第一块盘）： sda1标识第一块盘中第一个分区
+sdb（第二块盘）
+sdc（第三开盘）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <blockquote>
 <h4 id="3-查看当前磁盘使用情况"><a href="#3-查看当前磁盘使用情况" class="headerlink" title="3.查看当前磁盘使用情况"></a>3.查看当前磁盘使用情况</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment"># df -hl           # 查看当前分区使用情况</span></span><br><span class="line">文件系统              容量   已用   可用   已用%  挂载点</span><br><span class="line">/dev/mapper/cl-root   13G    <span class="number">9.9</span>G   <span class="number">2.8</span>G    <span class="number">79</span>%    /</span><br><span class="line">devtmpfs              <span class="number">3.8</span>G     <span class="number">0</span>    <span class="number">3.8</span>G    <span class="number">0</span>%     /dev</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># df -hl           # 查看当前分区使用情况</span>
+文件系统              容量   已用   可用   已用<span class="token operator">%</span>  挂载点
+<span class="token operator">/</span>dev<span class="token operator">/</span>mapper<span class="token operator">/</span>cl<span class="token operator">-</span>root   13G    <span class="token number">9</span><span class="token punctuation">.</span>9G   <span class="token number">2</span><span class="token punctuation">.</span>8G    <span class="token number">79</span><span class="token operator">%</span>    <span class="token operator">/</span>
+devtmpfs              <span class="token number">3</span><span class="token punctuation">.</span>8G     <span class="token number">0</span>    <span class="token number">3</span><span class="token punctuation">.</span>8G    <span class="token number">0</span><span class="token operator">%</span>     <span class="token operator">/</span>dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -112,29 +123,32 @@
 <p><img src="./assets/1579790430419.png" style="width: 780px; margin-left: 10px;"> </img></p>
 <blockquote>
 <h4 id="2-格式化分区"><a href="#2-格式化分区" class="headerlink" title="2.格式化分区"></a>2.格式化分区</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment"># mkfs.ext3 /dev/sdb1      # 将分区格式化为ext3类型</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mkfs.ext3 /dev/sdb1      # 将分区格式化为ext3类型</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
 <h2 id="1-4-创建LVM扩展根分区"><a href="#1-4-创建LVM扩展根分区" class="headerlink" title="1.4 创建LVM扩展根分区"></a>1.4 创建LVM扩展根分区</h2><blockquote>
 <h4 id="1-创建物理卷"><a href="#1-创建物理卷" class="headerlink" title="1.创建物理卷"></a>1.<strong>创建物理卷</strong></h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment"># pvcreate /dev/sdb1      # 用刚刚添加硬盘，创建物理卷</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pvcreate /dev/sdb1      # 用刚刚添加硬盘，创建物理卷</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
 <blockquote>
 <h4 id="2-查看创建的物理卷的详细信息"><a href="#2-查看创建的物理卷的详细信息" class="headerlink" title="2.查看创建的物理卷的详细信息"></a>2.查看创建的物理卷的详细信息</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment"># pvscan             # 查看当前所有物理卷</span></span><br><span class="line">[root@redis ~]<span class="comment"># pvdisplay          # 查看创建的物理卷的详细信息（我们需要获取现有根分区使用的卷组名称，这里是 “cl”）</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pvscan             # 查看当前所有物理卷</span>
+<span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pvdisplay          # 查看创建的物理卷的详细信息（我们需要获取现有根分区使用的卷组名称，这里是 “cl”）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="./assets/1579790770860.png" style="width: 500px; margin-left: 50px;"> </img></p>
 <blockquote>
 <h4 id="3-卷组扩容"><a href="#3-卷组扩容" class="headerlink" title="3.卷组扩容"></a>3.卷组扩容</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment">#  vgextend cl /dev/sdb1       # 对 cl 卷组扩容 </span></span><br><span class="line">[root@redis ~]<span class="comment">#  lvextend -L +60G /dev/mapper/cl-root  </span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  vgextend cl /dev/sdb1       # 对 cl 卷组扩容 </span>
+<span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  lvextend -L +60G /dev/mapper/cl-root  </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="./assets/1579791106327.png" style="width: 500px; margin-left: 50px;"> </img></p>
 <blockquote>
 <h4 id="4-xfs用以下命令来扩磁盘空间"><a href="#4-xfs用以下命令来扩磁盘空间" class="headerlink" title="4.xfs用以下命令来扩磁盘空间"></a>4.xfs用以下命令来扩磁盘空间</h4></blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@redis ~]<span class="comment">#  xfs_growfs /dev/mapper/cl-root           # 扩展磁盘空间</span></span><br><span class="line">[root@redis ~]<span class="comment">#  df -hl                                   # 可以看到根分区已经扩展</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  xfs_growfs /dev/mapper/cl-root           # 扩展磁盘空间</span>
+<span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment">#  df -hl                                   # 可以看到根分区已经扩展</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="./assets/1579791284408.png" style="width: 400px; margin-left: 50px;"> </img></p>
 
