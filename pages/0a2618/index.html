@@ -84,17 +84,17 @@
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">def test<span class="token punctuation">(</span><span class="token punctuation">)</span>:
-    yield <span class="token number">1</span>
-    print<span class="token punctuation">(</span><span class="token string">'aaaa'</span><span class="token punctuation">)</span>
-    yield <span class="token number">2</span>
-    print<span class="token punctuation">(</span><span class="token string">'bbb'</span><span class="token punctuation">)</span>
+<pre><code class="shell">def test():
+    yield 1
+    print(&#39;aaaa&#39;)
+    yield 2
+    print(&#39;bbb&#39;)
 
-r1 <span class="token operator">=</span> test<span class="token punctuation">(</span><span class="token punctuation">)</span>
+r1 = test()
 
-r1.__next__<span class="token punctuation">(</span><span class="token punctuation">)</span>
-r1.__next__<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+r1.__next__()
+r1.__next__()
+</code></pre>
 <h3 id="1-2-生成器哪些场景应用？（Where）"><a href="#1-2-生成器哪些场景应用？（Where）" class="headerlink" title="1.2 生成器哪些场景应用？（Where）"></a>1.2 生成器哪些场景应用？（Where）</h3><ul>
 <li><p>生成器是一个概念，我们平常写代码可能用的并不多，但是python源码大量使用</p>
 </li>
@@ -105,15 +105,15 @@ r1.__next__<span class="token punctuation">(</span><span class="token punctuatio
 <li><p>比如我们要生成一百万个数据，如果用生成器非常节省空间，用列表浪费大量空间</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
-t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-g <span class="token operator">=</span> <span class="token punctuation">(</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100000000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-t2 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-lst <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100000000</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-t3 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'生成器时间：'</span><span class="token punctuation">,</span>t2 <span class="token operator">-</span> t1<span class="token punctuation">)</span>  <span class="token comment"># 生成器时间： 0.0</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'列表时间：'</span><span class="token punctuation">,</span>t3 <span class="token operator">-</span> t2<span class="token punctuation">)</span>    <span class="token comment"># 列表时间： 5.821957349777222</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">import time
+t1 = time.time()
+g = (i for i in range(100000000))
+t2 = time.time()
+lst = [i for i in range(100000000)]
+t3 = time.time()
+print(&#39;生成器时间：&#39;,t2 - t1)  # 生成器时间： 0.0
+print(&#39;列表时间：&#39;,t3 - t2)    # 列表时间： 5.821957349777222
+</code></pre>
 <h3 id="1-3-为什么使用生成器"><a href="#1-3-为什么使用生成器" class="headerlink" title="1.3 为什么使用生成器"></a>1.3 为什么使用生成器</h3><ul>
 <li>节省空间</li>
 <li>高效</li>
@@ -165,7 +165,7 @@ t3 <span class="token operator">=</span> time<span class="token punctuation">.</
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/0e4385/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/0e4385/" title="发布于 2021-02-11 10:59">09.装饰器</a>
+                        <a href="../../pages/d776ab/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d776ab/" title="发布于 2021-02-11 10:59">08.select、poll、epoll</a>
                         <br>
                     
                     

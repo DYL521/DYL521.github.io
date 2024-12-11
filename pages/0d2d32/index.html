@@ -109,32 +109,32 @@
 <li>Master都是基本的配置，但要将 <strong>bind 127.0.0.1</strong> 改为 <strong>bind 0.0.0.0</strong> ，要不然Slave会连不上</li>
 <li>日志提示“Error condition on socket for SYNC: Connection refused”。</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># vim /usr/local/redis/bin/redis.conf</span>
-bind <span class="token number">0.0</span><span class="token number">.0</span><span class="token number">.0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@k8s-node2 bin]# vim /usr/local/redis/bin/redis.conf
+bind 0.0.0.0
+</code></pre>
 <h3 id="1-3-Slave配置"><a href="#1-3-Slave配置" class="headerlink" title="1.3 Slave配置"></a>1.3 Slave配置</h3><ul>
 <li>Slave除基本的配置外，需要增加 <strong>slaveof 10.10.3.211 6379</strong> </li>
 <li>如果有密码就配置 masterauth</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># vim /usr/local/redis/bin/redis.conf</span>
-bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span>
-slaveof <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.66</span> <span class="token number">6379</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-4-查看主从信息"><a href="#1-4-查看主从信息" class="headerlink" title="1.4 查看主从信息"></a>1.4 查看主从信息</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># systemctl restart redis</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># redis -h 192.168.56.66 info Replication</span>
-<span class="token comment"># Replication</span>
-role<span class="token punctuation">:</span>master
-connected_slaves<span class="token punctuation">:</span><span class="token number">1</span>
-slave0<span class="token punctuation">:</span>ip<span class="token operator">=</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span><span class="token punctuation">,</span>port<span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">,</span>state<span class="token operator">=</span>online<span class="token punctuation">,</span>offset<span class="token operator">=</span><span class="token number">14</span><span class="token punctuation">,</span>lag<span class="token operator">=</span><span class="token number">0</span>    <span class="token comment"># 这里可以看到redis从服务器信息</span>
-master_replid<span class="token punctuation">:</span>650401390e63f086e4dff957b896a4598895ba57
-master_replid2<span class="token punctuation">:</span><span class="token number">0000000000000000000000000000000000000000</span>
-master_repl_offset<span class="token punctuation">:</span><span class="token number">14</span>
-second_repl_offset<span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span>
-repl_backlog_active<span class="token punctuation">:</span><span class="token number">1</span>
-repl_backlog_size<span class="token punctuation">:</span><span class="token number">1048576</span>
-repl_backlog_first_byte_offset<span class="token punctuation">:</span><span class="token number">1</span>
-repl_backlog_histlen<span class="token punctuation">:</span><span class="token number">14</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@k8s-node2 bin]# vim /usr/local/redis/bin/redis.conf
+bind 192.168.56.65
+slaveof 192.168.56.66 6379
+</code></pre>
+<h3 id="1-4-查看主从信息"><a href="#1-4-查看主从信息" class="headerlink" title="1.4 查看主从信息"></a>1.4 查看主从信息</h3><pre><code class="python">[root@k8s-node2 bin]# systemctl restart redis
+[root@k8s-node2 bin]# redis -h 192.168.56.66 info Replication
+# Replication
+role:master
+connected_slaves:1
+slave0:ip=192.168.56.65,port=6379,state=online,offset=14,lag=0    # 这里可以看到redis从服务器信息
+master_replid:650401390e63f086e4dff957b896a4598895ba57
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:14
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:14
+</code></pre>
 <h3 id="1-5-测试是否自动同步"><a href="#1-5-测试是否自动同步" class="headerlink" title="1.5 测试是否自动同步"></a>1.5 测试是否自动同步</h3><p><img src="./assets/image-20210223212139361.png" style="width: 800px; margin-left: 20px;"> </img></p>
 <h2 id="02-主从概念"><a href="#02-主从概念" class="headerlink" title="02.主从概念"></a>02.主从概念</h2><h3 id="2-1-redis主从概念"><a href="#2-1-redis主从概念" class="headerlink" title="2.1 redis主从概念"></a>2.1 redis主从概念</h3><ul>
 <li>⼀个master可以拥有多个slave，⼀个slave⼜可以拥有多个slave，如此下去，形成了强⼤的多级服务器集群架构</li>

@@ -93,33 +93,33 @@
 <li>索引的建立是越多越好？为什么不是越多越好？</li>
 <li><code>一个精彩的故事</code></li>
 </ul>
-<h1 id="02-简单说明"><a href="#02-简单说明" class="headerlink" title="02.简单说明"></a>02.简单说明</h1><h2 id="2-1-MySQL索引优化"><a href="#2-1-MySQL索引优化" class="headerlink" title="2.1 MySQL索引优化"></a>2.1 MySQL索引优化</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、最左前缀匹配原则，上面讲到了</span>
-<span class="token comment"># 2、主键外键一定要建索引</span>
-<span class="token comment"># 3、对 where,on,group by,order by 中出现的列使用索引</span>
-<span class="token comment"># 4、尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，</span>
-<span class="token comment"># 5、为较长的字符串使用前缀索引</span>
+<h1 id="02-简单说明"><a href="#02-简单说明" class="headerlink" title="02.简单说明"></a>02.简单说明</h1><h2 id="2-1-MySQL索引优化"><a href="#2-1-MySQL索引优化" class="headerlink" title="2.1 MySQL索引优化"></a>2.1 MySQL索引优化</h2><pre><code class="python"># 1、最左前缀匹配原则，上面讲到了
+# 2、主键外键一定要建索引
+# 3、对 where,on,group by,order by 中出现的列使用索引
+# 4、尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，
+# 5、为较长的字符串使用前缀索引
 
-<span class="token triple-quoted-string string">'''
+&#39;&#39;&#39;
 # 6、不要过多创建索引, 权衡索引个数与DML之间关系，DML也就是插入、删除数据操作。
     这里需要权衡一个问题，建立索引的目的是为了提高查询效率的，但建立的索引过多，
     会影响插入、删除数据的速度，因为我们修改的表数据，索引也需要进行调整重建
-'''</span>
+&#39;&#39;&#39;
 
-<span class="token triple-quoted-string string">'''
+&#39;&#39;&#39;
 # 7、对于like查询，”%”不要放在前面。
-    SELECT * FROMhoudunwangWHEREunameLIKE'后盾%' -- 走索引 
-    SELECT * FROMhoudunwangWHEREunameLIKE "%后盾%" -- 不走索引
-'''</span>
+    SELECT * FROMhoudunwangWHEREunameLIKE&#39;后盾%&#39; -- 走索引 
+    SELECT * FROMhoudunwangWHEREunameLIKE &quot;%后盾%&quot; -- 不走索引
+&#39;&#39;&#39;
 
-<span class="token triple-quoted-string string">'''
+&#39;&#39;&#39;
 # 8、查询where条件数据类型不匹配也无法使用索引 
     字符串与数字比较不使用索引; 
     CREATE TABLEa(achar(10)); 
-    EXPLAIN SELECT * FROMaWHEREa="1" – 走索引 
+    EXPLAIN SELECT * FROMaWHEREa=&quot;1&quot; – 走索引 
     EXPLAIN SELECT * FROM a WHERE a=1 – 不走索引 
     正则表达式不使用索引,这应该很好理解,所以为什么在SQL中很难看到regexp关键字的原因
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#39;&#39;&#39;
+</code></pre>
 <h2 id="2-2-MySql分库分表"><a href="#2-2-MySql分库分表" class="headerlink" title="2.2 MySql分库分表"></a>2.2 MySql分库分表</h2><p><code>了解内容，不作为学习重点</code></p>
 <ul>
 <li>mysql一主多从，读写分离：写主库，读从库（所有数据库的数据一样）<ul>

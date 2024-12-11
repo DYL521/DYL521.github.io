@@ -81,58 +81,58 @@
 <pre><code>-e  : 显示运行在系统上的所有进程
 -f  : 扩展显示输出
 </code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># ps -ef|grep python</span>
-所有者     进程<span class="token builtin">id</span>  父进程<span class="token builtin">id</span>
-root       <span class="token number">6852</span>      <span class="token number">1</span>     <span class="token number">0</span> Nov23 ?        <span class="token number">00</span><span class="token punctuation">:</span><span class="token number">01</span><span class="token punctuation">:</span><span class="token number">23</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python2 <span class="token operator">-</span>Es <span class="token operator">/</span>usr<span class="token operator">/</span>sbin<span class="token operator">/</span>tuned <span class="token operator">-</span>l <span class="token operator">-</span>P
-root      <span class="token number">37276</span>      <span class="token number">1</span>     <span class="token number">0</span> Nov24 ?        <span class="token number">00</span><span class="token punctuation">:</span><span class="token number">00</span><span class="token punctuation">:</span><span class="token number">25</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>salt<span class="token operator">-</span>master
-root      <span class="token number">37285</span>  <span class="token number">37276</span>     <span class="token number">0</span> Nov24 ?        <span class="token number">00</span><span class="token punctuation">:</span><span class="token number">00</span><span class="token punctuation">:</span><span class="token number">00</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>salt<span class="token operator">-</span>master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# ps -ef|grep python
+所有者     进程id  父进程id
+root       6852      1     0 Nov23 ?        00:01:23 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      37276      1     0 Nov24 ?        00:00:25 /usr/bin/python /usr/bin/salt-master
+root      37285  37276     0 Nov24 ?        00:00:00 /usr/bin/python /usr/bin/salt-master
+</code></pre>
 <h2 id="1-2-ps-aux"><a href="#1-2-ps-aux" class="headerlink" title="1.2 ps -aux"></a>1.2 ps -aux</h2><blockquote>
 <h4 id="2-ps-aux-grep-python-：查看python相关进程"><a href="#2-ps-aux-grep-python-：查看python相关进程" class="headerlink" title="2. ps -aux | grep python ：查看python相关进程"></a>2.<span style="color: red"> ps -aux | grep python </span>：查看python相关进程</h4></blockquote>
 <pre><code>-a  :  显示现行终端机下的所有程序，包括其他用户的程序
 -u  :  以用户为主的格式来显示程序状况
 -x  :  显示所有程序，不以终端机来区分
 </code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># ps -aux | grep python</span>
-所有者    进程<span class="token builtin">id</span>  cpu占用 内存占用
-root       <span class="token number">6852</span>  <span class="token number">0.0</span>  <span class="token number">0.8</span> <span class="token number">573820</span> <span class="token number">16424</span> ?        Ssl  Nov23   <span class="token number">1</span><span class="token punctuation">:</span><span class="token number">23</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python2 <span class="token operator">-</span>Es <span class="token operator">/</span>usr<span class="token operator">/</span>sbin<span class="token operator">/</span>tuned <span class="token operator">-</span>l <span class="token operator">-</span>P
-root      <span class="token number">37276</span>  <span class="token number">0.0</span>  <span class="token number">2.1</span> <span class="token number">389128</span> <span class="token number">40640</span> ?        Ss   Nov24   <span class="token number">0</span><span class="token punctuation">:</span><span class="token number">25</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>salt<span class="token operator">-</span>master
-root      <span class="token number">37285</span>  <span class="token number">0.0</span>  <span class="token number">1.0</span> <span class="token number">306196</span> <span class="token number">20276</span> ?        S    Nov24   <span class="token number">0</span><span class="token punctuation">:</span><span class="token number">00</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>python <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>salt<span class="token operator">-</span>master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# ps -aux | grep python
+所有者    进程id  cpu占用 内存占用
+root       6852  0.0  0.8 573820 16424 ?        Ssl  Nov23   1:23 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      37276  0.0  2.1 389128 40640 ?        Ss   Nov24   0:25 /usr/bin/python /usr/bin/salt-master
+root      37285  0.0  1.0 306196 20276 ?        S    Nov24   0:00 /usr/bin/python /usr/bin/salt-master
+</code></pre>
 <h2 id="1-3-程序的名字来查询进程"><a href="#1-3-程序的名字来查询进程" class="headerlink" title="1.3 程序的名字来查询进程"></a>1.3 程序的名字来查询进程</h2><blockquote>
 <h4 id="3-pgrep-ln-sshd-通过程序的名字来查询进程的工具，一般是用来判断程序是否正在运行"><a href="#3-pgrep-ln-sshd-通过程序的名字来查询进程的工具，一般是用来判断程序是否正在运行" class="headerlink" title="3. pgrep -ln sshd : 通过程序的名字来查询进程的工具，一般是用来判断程序是否正在运行"></a>3.<span style="color: red"> pgrep -ln sshd</span><br/> : 通过程序的名字来查询进程的工具，一般是用来判断程序是否正在运行</h4></blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pgrep -ln sshd</span>
-<span class="token number">32946</span> sshd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# pgrep -ln sshd
+32946 sshd
+</code></pre>
 <h2 id="1-4-显示进程间的关系"><a href="#1-4-显示进程间的关系" class="headerlink" title="1.4 显示进程间的关系"></a>1.4 显示进程间的关系</h2><blockquote>
 <h4 id="4-pstree-apnh-grep-sshd-：显示进程间的关系"><a href="#4-pstree-apnh-grep-sshd-：显示进程间的关系" class="headerlink" title="4. pstree -apnh|grep sshd  ：显示进程间的关系"></a>4.<span style="color: red"> pstree -apnh|grep sshd  </span>：显示进程间的关系</h4></blockquote>
-<pre class="line-numbers language-none"><code class="language-none">-a  :  显示每个程序的完整指令，包含路径
+<pre><code>-a  :  显示每个程序的完整指令，包含路径
 -p  :  显示程序识别码
 -n  :  用程序识别码排序，预设是以程序名称来排序。
--h  :  列出树状图时<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pstree -apnh|grep sshd</span>
-  <span class="token operator">|</span><span class="token operator">-</span>sshd<span class="token punctuation">,</span><span class="token number">6851</span> <span class="token operator">-</span>D
-  <span class="token operator">|</span>   `<span class="token operator">-</span>sshd<span class="token punctuation">,</span><span class="token number">32946</span>    
-  <span class="token operator">|</span>           `<span class="token operator">-</span>grep<span class="token punctuation">,</span><span class="token number">39535</span> <span class="token operator">-</span><span class="token operator">-</span>color<span class="token operator">=</span>auto sshd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+-h  :  列出树状图时
+</code></pre>
+<pre><code class="python">[root@linux-node1 ~]# pstree -apnh|grep sshd
+  |-sshd,6851 -D
+  |   `-sshd,32946    
+  |           `-grep,39535 --color=auto sshd
+</code></pre>
 <h2 id="1-5-显示sshd进程的所有进程号"><a href="#1-5-显示sshd进程的所有进程号" class="headerlink" title="1.5 显示sshd进程的所有进程号"></a>1.5 显示sshd进程的所有进程号</h2><blockquote>
 <h4 id="5-pidof-sshd-：显示sshd进程的所有进程号"><a href="#5-pidof-sshd-：显示sshd进程的所有进程号" class="headerlink" title="5.pidof sshd ：显示sshd进程的所有进程号"></a>5.<span style="color: red">pidof sshd </span>：显示sshd进程的所有进程号</h4></blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pidof sshd</span>
-<span class="token number">32946</span> <span class="token number">6851</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# pidof sshd
+32946 6851
+</code></pre>
 <h2 id="1-6-杀死进程"><a href="#1-6-杀死进程" class="headerlink" title="1.6 杀死进程"></a>1.6 杀死进程</h2><blockquote>
 <h4 id="6-kill-和-pkill-杀死进程"><a href="#6-kill-和-pkill-杀死进程" class="headerlink" title="6. kill 和 pkill 杀死进程"></a>6.<span style="color: red"> kill 和 pkill 杀死进程</span></h4></blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># kill -9  2233    # 杀死进程2233</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># pkill zabbix     # 杀死zabbix进程</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# kill -9  2233    # 杀死进程2233
+[root@linux-node1 ~]# pkill zabbix     # 杀死zabbix进程
+</code></pre>
 <h2 id="1-7-查看22端口运行的服务"><a href="#1-7-查看22端口运行的服务" class="headerlink" title="1.7 查看22端口运行的服务"></a>1.7 查看22端口运行的服务</h2><blockquote>
 <h4 id="7-netstat-anptu-grep-22-：-查看22端口运行的服务"><a href="#7-netstat-anptu-grep-22-：-查看22端口运行的服务" class="headerlink" title="7.netstat -anptu|grep 22 ： 查看22端口运行的服务"></a>7.<span style="color: red">netstat -anptu|grep 22 </span>： 查看22端口运行的服务</h4></blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># netstat -anptu|grep 22</span>
-tcp        <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0.0</span><span class="token number">.0</span><span class="token number">.0</span><span class="token punctuation">:</span><span class="token number">22</span>              <span class="token number">0.0</span><span class="token number">.0</span><span class="token number">.0</span><span class="token punctuation">:</span><span class="token operator">*</span>               LISTEN      <span class="token number">6851</span><span class="token operator">/</span>sshd           
-tcp        <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.11</span><span class="token punctuation">:</span><span class="token number">22</span>        <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.1</span><span class="token punctuation">:</span><span class="token number">62530</span>      ESTABLISHED <span class="token number">32946</span><span class="token operator">/</span>sshd<span class="token punctuation">:</span> root@pt 
-tcp6       <span class="token number">0</span>      <span class="token number">0</span> <span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">22</span>                   <span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span>                    LISTEN      <span class="token number">6851</span><span class="token operator">/</span>sshd    <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 ~]# netstat -anptu|grep 22
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      6851/sshd           
+tcp        0      0 192.168.56.11:22        192.168.56.1:62530      ESTABLISHED 32946/sshd: root@pt 
+tcp6       0      0 :::22                   :::*                    LISTEN      6851/sshd    
+</code></pre>
 
                 
                 <p class="end">__END__</p>

@@ -101,28 +101,28 @@
 <li>python2中，新式类：广度优先，经典类：深度优先</li>
 </ul>
 <p><img src="./assets/image-20200310084245988.png" style="width: 600px; margin-left: 50px;"> </img></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">D</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">talk</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">)</span>
+<pre><code class="python">class D:
+    def talk(self):
+        print(&#39;D&#39;)
 
-<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-    <span class="token comment"># def talk(self):</span>
-    <span class="token comment">#     print('B')</span>
+class B(D):
+    pass
+    # def talk(self):
+    #     print(&#39;B&#39;)
 
-<span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-    <span class="token keyword">def</span> <span class="token function">talk</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span>
+class C(D):
+    pass
+    def talk(self):
+        print(&#39;C&#39;)
 
-<span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span>C<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-    <span class="token comment"># def talk(self):</span>
-    <span class="token comment">#     print('A')</span>
+class A(B,C):
+    pass
+    # def talk(self):
+    #     print(&#39;A&#39;)
 
-a <span class="token operator">=</span> A<span class="token punctuation">(</span><span class="token punctuation">)</span>
-a<span class="token punctuation">.</span>talk<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+a = A()
+a.talk()
+</code></pre>
 <h3 id="1-4-静态方法、类方法、属性方法"><a href="#1-4-静态方法、类方法、属性方法" class="headerlink" title="1.4 静态方法、类方法、属性方法"></a>1.4 静态方法、类方法、属性方法</h3><ul>
 <li>静态方法<ul>
 <li>特点：名义上归类管理，实际上不能访问类或者变量中的任意属性或者方法</li>
@@ -131,18 +131,18 @@ a<span class="token punctuation">.</span>talk<span class="token punctuation">(</
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Dog</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+<pre><code class="python">class Dog(object):
+    def __init__(self,name):
+        self.name = name
         
-    <span class="token decorator annotation punctuation">@staticmethod</span>
-    <span class="token keyword">def</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"I am a static method"</span><span class="token punctuation">)</span>
+    @staticmethod
+    def eat():
+        print(&quot;I am a static method&quot;)
         
-d <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token string">"ChenRonghua"</span><span class="token punctuation">)</span>
-d<span class="token punctuation">.</span>eat<span class="token punctuation">(</span><span class="token punctuation">)</span>                       <span class="token comment"># 方法1：使用实例调用</span>
-Dog<span class="token punctuation">.</span>eat<span class="token punctuation">(</span><span class="token punctuation">)</span>                     <span class="token comment"># 方法2：使用类直接调用</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+d = Dog(&quot;ChenRonghua&quot;)
+d.eat()                       # 方法1：使用实例调用
+Dog.eat()                     # 方法2：使用类直接调用
+</code></pre>
 <ul>
 <li>类方法<ul>
 <li>作用**：无需实例化直接被类调用  </li>
@@ -152,36 +152,36 @@ Dog<span class="token punctuation">.</span>eat<span class="token punctuation">(<
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">class Dog<span class="token punctuation">(</span>object<span class="token punctuation">)</span>:
-    name <span class="token operator">=</span> <span class="token string">'类变量'</span>                  <span class="token comment">#在这里如果不定义类变量仅定义实例变量依然报错</span>
-    def __init__<span class="token punctuation">(</span>self,name<span class="token punctuation">)</span>:
-        self.name <span class="token operator">=</span> <span class="token string">'实例变量'</span>
-        self.name <span class="token operator">=</span> name
+<pre><code class="shell">class Dog(object):
+    name = &#39;类变量&#39;                  #在这里如果不定义类变量仅定义实例变量依然报错
+    def __init__(self,name):
+        self.name = &#39;实例变量&#39;
+        self.name = name
     @classmethod
-    def eat<span class="token punctuation">(</span>self,food<span class="token punctuation">)</span>:
-        print<span class="token punctuation">(</span><span class="token string">"%s is eating %s"</span>%<span class="token punctuation">(</span>self.name,food<span class="token punctuation">))</span>
-Dog.eat<span class="token punctuation">(</span><span class="token string">'baozi'</span><span class="token punctuation">)</span>                   <span class="token comment">#方法1：使用类直接调用</span>
-d <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token string">"ChenRonghua"</span><span class="token punctuation">)</span>          
-d.eat<span class="token punctuation">(</span><span class="token string">"包子"</span><span class="token punctuation">)</span>                     <span class="token comment">#方法2：使用实例d调用</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    def eat(self,food):
+        print(&quot;%s is eating %s&quot;%(self.name,food))
+Dog.eat(&#39;baozi&#39;)                   #方法1：使用类直接调用
+d = Dog(&quot;ChenRonghua&quot;)          
+d.eat(&quot;包子&quot;)                     #方法2：使用实例d调用
+</code></pre>
 <ul>
 <li>属性方法<ul>
 <li>属性方法把一个方法变成一个属性，隐藏了实现细节,调用时不必加括号直接d.eat即可调用self.eat()方法</li>
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">class Dog<span class="token punctuation">(</span>object<span class="token punctuation">)</span>:
-    def __init__<span class="token punctuation">(</span>self, name<span class="token punctuation">)</span>:
-        self.name <span class="token operator">=</span> name
+<pre><code class="shell">class Dog(object):
+    def __init__(self, name):
+        self.name = name
 
     @property
-    def eat<span class="token punctuation">(</span>self<span class="token punctuation">)</span>:
-        print<span class="token punctuation">(</span><span class="token string">" %s is eating"</span> % self.name<span class="token punctuation">)</span>
-d <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token string">"ChenRonghua"</span><span class="token punctuation">)</span>
-d.eat<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment"># 调用会出以下错误， 说NoneType is not callable, 因为eat此时已经变成一个静态属性了， </span>
-<span class="token comment"># 不是方法了， 想调用已经不需要加()号了，直接d.eat就可以了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    def eat(self):
+        print(&quot; %s is eating&quot; % self.name)
+d = Dog(&quot;ChenRonghua&quot;)
+d.eat()
+# 调用会出以下错误， 说NoneType is not callable, 因为eat此时已经变成一个静态属性了， 
+# 不是方法了， 想调用已经不需要加()号了，直接d.eat就可以了
+</code></pre>
 <h3 id="1-5-魔法方法"><a href="#1-5-魔法方法" class="headerlink" title="1.5 魔法方法"></a>1.5 魔法方法</h3><ul>
 <li>_<em>new</em>_<ul>
 <li>产生一个实例</li>
@@ -200,28 +200,28 @@ d.eat<span class="token punctuation">(</span><span class="token punctuation">)</
 <h3 id="1-6-反射"><a href="#1-6-反射" class="headerlink" title="1.6 反射"></a>1.6 反射</h3><ul>
 <li>hasattr: 判断当前类是否有这个方法</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Dog</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">eat</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>food<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"eat method!!!"</span><span class="token punctuation">)</span>
-d <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre><code class="python">class Dog(object):
+    def eat(self,food):
+        print(&quot;eat method!!!&quot;)
+d = Dog()
 
-<span class="token comment">#hasattr判断对象d是否有eat方法，有返回True，没有返回False</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">hasattr</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span><span class="token string">'eat'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>     <span class="token comment">#True</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">hasattr</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span><span class="token string">'cat'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>     <span class="token comment">#False</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+#hasattr判断对象d是否有eat方法，有返回True，没有返回False
+print(hasattr(d,&#39;eat&#39;))     #True
+print(hasattr(d,&#39;cat&#39;))     #False
+</code></pre>
 <ul>
 <li>getattr: 通过字符串反射出这个方法的内存地址</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Dog</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">eat</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"eat method!!!"</span><span class="token punctuation">)</span>
-d <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre><code class="python">class Dog(object):
+    def eat(self):
+        print(&quot;eat method!!!&quot;)
+d = Dog()
 
-<span class="token keyword">if</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span><span class="token string">'eat'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>          <span class="token comment"># hasattr判断实例是否有eat方法</span>
-    func <span class="token operator">=</span> <span class="token builtin">getattr</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> <span class="token string">'eat'</span><span class="token punctuation">)</span>  <span class="token comment"># getattr获取实例d的eat方法内存地址</span>
-    func<span class="token punctuation">(</span><span class="token punctuation">)</span>                    <span class="token comment"># 执行实例d的eat方法</span>
-<span class="token comment">#运行结果：  eat method!!!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+if hasattr(d,&#39;eat&#39;):          # hasattr判断实例是否有eat方法
+    func = getattr(d, &#39;eat&#39;)  # getattr获取实例d的eat方法内存地址
+    func()                    # 执行实例d的eat方法
+#运行结果：  eat method!!!
+</code></pre>
 <ul>
 <li>setattr：将当前类添加一个方法</li>
 <li>delatrr: 删除实例属性</li>
@@ -231,25 +231,25 @@ d <span class="token operator">=</span> Dog<span class="token punctuation">(</sp
 <li>实质：使用__new__方法新建类对象时先判断是否已经建立过，如果建过就使用已有的对象</li>
 <li>使用场景：如果每个对象内部封装的值都相同就可以用单例模式</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-   instance <span class="token operator">=</span> <span class="token boolean">None</span>
-   <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-      self<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'alex'</span>
+<pre><code class="python">class Foo(object):
+   instance = None
+   def __init__(self):
+      self.name = &#39;alex&#39;
 
-   <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
-      <span class="token keyword">if</span> Foo<span class="token punctuation">.</span>instance<span class="token punctuation">:</span>
-         <span class="token keyword">return</span> Foo<span class="token punctuation">.</span>instance
-      <span class="token keyword">else</span><span class="token punctuation">:</span>
-         Foo<span class="token punctuation">.</span>instance <span class="token operator">=</span> <span class="token builtin">object</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
-         <span class="token keyword">return</span> Foo<span class="token punctuation">.</span>instance
+   def __new__(cls, *args, **kwargs):
+      if Foo.instance:
+         return Foo.instance
+      else:
+         Foo.instance = object.__new__(cls,*args,**kwargs)
+         return Foo.instance
 
-obj1 <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment"># obj1和obj2获取的就是__new__方法返回的内容</span>
-obj2 <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>obj1<span class="token punctuation">,</span>obj2<span class="token punctuation">)</span>   <span class="token comment"># 运行结果： &lt;__main__.Foo object at 0x00D3B450>    &lt;__main__.Foo object at 0x00D3B450></span>
+obj1 = Foo()       # obj1和obj2获取的就是__new__方法返回的内容
+obj2 = Foo()
+print(obj1,obj2)   # 运行结果： &lt;__main__.Foo object at 0x00D3B450&gt;    &lt;__main__.Foo object at 0x00D3B450&gt;
 
-<span class="token comment"># 运行结果说明：</span>
-<span class="token comment"># 这可以看到我们新建的两个Foo()对象内存地址相同，说明使用的•同一个类，没有重复建立类</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+# 运行结果说明：
+# 这可以看到我们新建的两个Foo()对象内存地址相同，说明使用的•同一个类，没有重复建立类
+</code></pre>
 
                 
                 <p class="end">__END__</p>

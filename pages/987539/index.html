@@ -78,124 +78,125 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-基本操作"><a href="#01-基本操作" class="headerlink" title="01.基本操作"></a>01.基本操作</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
+                <h2 id="01-基本操作"><a href="#01-基本操作" class="headerlink" title="01.基本操作"></a>01.基本操作</h2><pre><code class="python">from django.shortcuts import HttpResponse
+from app01 import models
 
-<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 1 创建</span>
-    <span class="token comment"># 创建数据方法一</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>create<span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'123'</span><span class="token punctuation">)</span>
-    <span class="token comment"># 创建数据方法二</span>
-    obj <span class="token operator">=</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'alex'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'123'</span><span class="token punctuation">)</span>
-    obj<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token comment"># 创建数据库方法三(传入字典必须在字典前加两个星号)</span>
-    dic <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'username'</span><span class="token punctuation">:</span> <span class="token string">'eric'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">:</span> <span class="token string">'666'</span><span class="token punctuation">&#125;</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>create<span class="token punctuation">(</span><span class="token operator">**</span>dic<span class="token punctuation">)</span>
+def orm(request):
+    # 1 创建
+    # 创建数据方法一
+    models.UserInfo.objects.create(username=&#39;root&#39;, password=&#39;123&#39;)
+    # 创建数据方法二
+    obj = models.UserInfo(username=&#39;alex&#39;, password=&#39;123&#39;)
+    obj.save()
+    # 创建数据库方法三(传入字典必须在字典前加两个星号)
+    dic = &#123;&#39;username&#39;: &#39;eric&#39;, &#39;password&#39;: &#39;666&#39;&#125;
+    models.UserInfo.objects.create(**dic)
 
-    <span class="token comment"># 2 查</span>
-    result <span class="token operator">=</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 查找所有条目</span>
-    result <span class="token operator">=</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'alex'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'123'</span><span class="token punctuation">)</span>
-    <span class="token keyword">for</span> row <span class="token keyword">in</span> result<span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>row<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">,</span> row<span class="token punctuation">.</span>username<span class="token punctuation">,</span> row<span class="token punctuation">.</span>password<span class="token punctuation">)</span>
+    # 2 查
+    result = models.UserInfo.objects.all()  # 查找所有条目
+    result = models.UserInfo.objects.filter(username=&#39;alex&#39;, password=&#39;123&#39;)
+    for row in result:
+        print(row.id, row.username, row.password)
 
-    <span class="token comment"># 3 删除</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>delete<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 删除所有</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'alex'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>delete<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 删除指定</span>
+    # 3 删除
+    models.UserInfo.objects.all().delete()  # 删除所有
+    models.UserInfo.objects.filter(username=&#39;alex&#39;).delete()  # 删除指定
 
-    <span class="token comment"># 4 更新</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>update<span class="token punctuation">(</span>password<span class="token operator">=</span><span class="token string">'12345'</span><span class="token punctuation">)</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span><span class="token builtin">id</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span>update<span class="token punctuation">(</span>password<span class="token operator">=</span><span class="token string">'15'</span><span class="token punctuation">)</span>
+    # 4 更新
+    models.UserInfo.objects.all().update(password=&#39;12345&#39;)
+    models.UserInfo.objects.filter(id=4).update(password=&#39;15&#39;)
 
-    <span class="token comment"># 5 获取个数</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'seven'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    # 5 获取个数
+    models.UserInfo.objects.filter(name=&#39;seven&#39;).count()
 
-    <span class="token comment"># 6 执行原生SQL</span>
-    <span class="token comment"># 6.1 执行原生SQL</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>raw<span class="token punctuation">(</span><span class="token string">'select * from userinfo'</span><span class="token punctuation">)</span>
+    # 6 执行原生SQL
+    # 6.1 执行原生SQL
+    models.UserInfo.objects.raw(&#39;select * from userinfo&#39;)
 
-    <span class="token comment"># 6.2 如果SQL是其他表时，必须将名字设置为当前UserInfo对象的主键列名</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>raw<span class="token punctuation">(</span><span class="token string">'select id as nid from 其他表'</span><span class="token punctuation">)</span>
+    # 6.2 如果SQL是其他表时，必须将名字设置为当前UserInfo对象的主键列名
+    models.UserInfo.objects.raw(&#39;select id as nid from 其他表&#39;)
 
-    <span class="token comment"># 6.3 指定数据库</span>
-    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>raw<span class="token punctuation">(</span><span class="token string">'select * from userinfo'</span><span class="token punctuation">,</span> using<span class="token operator">=</span><span class="token string">"default"</span><span class="token punctuation">)</span>
+    # 6.3 指定数据库
+    models.UserInfo.objects.raw(&#39;select * from userinfo&#39;, using=&quot;default&quot;)
 
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    return HttpResponse(&#39;orm&#39;)
+</code></pre>
 <h2 id="02-进阶操作"><a href="#02-进阶操作" class="headerlink" title="02.进阶操作"></a>02.进阶操作</h2><ul>
 <li><code>进阶操作：牛掰掰的双下划线</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、大于，小于
-        <span class="token comment"># models.Tb1.objects.filter(id__gt=1)                 # 获取id大于1的值</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__gte=1)                # 获取id大于等于1的值</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__lt=10)                # 获取id小于10的值</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__lte=10)               # 获取id小于10的值</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__lt=10, id__gt=1)      # 获取id大于1 且 小于10的值</span>
-<span class="token number">2</span>、<span class="token keyword">in</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__in=[11, 22, 33])      # 获取id等于11、22、33的数据</span>
-        <span class="token comment"># models.Tb1.objects.exclude(id__in=[11, 22, 33])     # not in</span>
-<span class="token number">3</span>、isnull
-        <span class="token comment"># Entry.objects.filter(pub_date__isnull=True)         #双下划线isnull，查找pub_date是null的数据</span>
-<span class="token number">4</span>、contains                                                    <span class="token comment">#就是原生sql的like操作:模糊匹配</span>
-        <span class="token comment"># models.Tb1.objects.filter(name__contains="ven")</span>
-        <span class="token comment"># models.Tb1.objects.filter(name__icontains="ven")    # icontains大小写不敏感</span>
-        <span class="token comment"># models.Tb1.objects.exclude(name__icontains="ven")</span>
-<span class="token number">5</span>、<span class="token builtin">range</span>
-        <span class="token comment"># models.Tb1.objects.filter(id__range=[1, 2])          # 范围bettwen and</span>
-<span class="token number">6</span>、order by
-        <span class="token comment"># models.Tb1.objects.filter(name='seven').order_by('id')      # asc     没有减号升续排列</span>
-        <span class="token comment"># models.Tb1.objects.filter(name='seven').order_by('-id')     # desc      有减号升续排列</span>
-<span class="token number">7</span>、group by
-        <span class="token comment"># from django.db.models import Count, Min, Max, Sum</span>
-        <span class="token comment"># models.Tb1.objects.filter(c1=1).values('id').annotate(c=Count('num'))        #根据id列进行分组</span>
-        <span class="token comment"># SELECT "app01_tb1"."id", COUNT("app01_tb1"."num") AS "c" FROM "app01_tb1" </span>
-        <span class="token comment"># WHERE "app01_tb1"."c1" = 1 GROUP BY "app01_tb1"."id"</span>
-<span class="token number">8</span>、limit 、offset    <span class="token comment">#分页</span>
-        <span class="token comment"># models.Tb1.objects.all()[10:20]</span>
-<span class="token number">9</span>、regex正则匹配，iregex 不区分大小写
-        <span class="token comment"># Entry.objects.get(title__regex=r'^(An?|The) +')</span>
-        <span class="token comment"># Entry.objects.get(title__iregex=r'^(an?|the) +')</span>
+<pre><code class="python">1、大于，小于
+        # models.Tb1.objects.filter(id__gt=1)                 # 获取id大于1的值
+        # models.Tb1.objects.filter(id__gte=1)                # 获取id大于等于1的值
+        # models.Tb1.objects.filter(id__lt=10)                # 获取id小于10的值
+        # models.Tb1.objects.filter(id__lte=10)               # 获取id小于10的值
+        # models.Tb1.objects.filter(id__lt=10, id__gt=1)      # 获取id大于1 且 小于10的值
+2、in
+        # models.Tb1.objects.filter(id__in=[11, 22, 33])      # 获取id等于11、22、33的数据
+        # models.Tb1.objects.exclude(id__in=[11, 22, 33])     # not in
+3、isnull
+        # Entry.objects.filter(pub_date__isnull=True)         #双下划线isnull，查找pub_date是null的数据
+4、contains                                                    #就是原生sql的like操作:模糊匹配
+        # models.Tb1.objects.filter(name__contains=&quot;ven&quot;)
+        # models.Tb1.objects.filter(name__icontains=&quot;ven&quot;)    # icontains大小写不敏感
+        # models.Tb1.objects.exclude(name__icontains=&quot;ven&quot;)
+5、range
+        # models.Tb1.objects.filter(id__range=[1, 2])          # 范围bettwen and
+6、order by
+        # models.Tb1.objects.filter(name=&#39;seven&#39;).order_by(&#39;id&#39;)      # asc     没有减号升续排列
+        # models.Tb1.objects.filter(name=&#39;seven&#39;).order_by(&#39;-id&#39;)     # desc      有减号升续排列
+7、group by
+        # from django.db.models import Count, Min, Max, Sum
+        # models.Tb1.objects.filter(c1=1).values(&#39;id&#39;).annotate(c=Count(&#39;num&#39;))        #根据id列进行分组
+        # SELECT &quot;app01_tb1&quot;.&quot;id&quot;, COUNT(&quot;app01_tb1&quot;.&quot;num&quot;) AS &quot;c&quot; FROM &quot;app01_tb1&quot; 
+        # WHERE &quot;app01_tb1&quot;.&quot;c1&quot; = 1 GROUP BY &quot;app01_tb1&quot;.&quot;id&quot;
+8、limit 、offset    #分页
+        # models.Tb1.objects.all()[10:20]
+9、regex正则匹配，iregex 不区分大小写
+        # Entry.objects.get(title__regex=r&#39;^(An?|The) +&#39;)
+        # Entry.objects.get(title__iregex=r&#39;^(an?|the) +&#39;)
 
       
-<span class="token number">10</span>、date
-        <span class="token comment"># Entry.objects.filter(pub_date__date=datetime.date(2005, 1, 1))          #__data表示日期查找，2005-01-01</span>
-        <span class="token comment"># Entry.objects.filter(pub_date__date__gt=datetime.date(2005, 1, 1))</span>
-<span class="token number">11</span>、year
-        <span class="token comment"># Entry.objects.filter(pub_date__year=2005)                               #__year根据年查找</span>
-        <span class="token comment"># Entry.objects.filter(pub_date__year__gte=2005)</span>
-<span class="token number">12</span>、month
-        <span class="token comment"># Entry.objects.filter(pub_date__month=12)</span>
-        <span class="token comment"># Entry.objects.filter(pub_date__month__gte=6)</span>
-<span class="token number">13</span>、day
-        <span class="token comment"># Entry.objects.filter(pub_date__day=3)</span>
-        <span class="token comment"># Entry.objects.filter(pub_date__day__gte=3)</span>
-<span class="token number">14</span>、week_day
-        <span class="token comment"># Entry.objects.filter(pub_date__week_day=2)</span>
-        <span class="token comment"># Entry.objects.filter(pub_date__week_day__gte=2)</span>
-<span class="token number">15</span>、hour
-        <span class="token comment"># Event.objects.filter(timestamp__hour=23)</span>
-        <span class="token comment"># Event.objects.filter(time__hour=5)</span>
-        <span class="token comment"># Event.objects.filter(timestamp__hour__gte=12)</span>
-<span class="token number">16</span>、minute
-        <span class="token comment"># Event.objects.filter(timestamp__minute=29)</span>
-        <span class="token comment"># Event.objects.filter(time__minute=46)</span>
-        <span class="token comment"># Event.objects.filter(timestamp__minute__gte=29)</span>
-<span class="token number">17</span>、second
-        <span class="token comment"># Event.objects.filter(timestamp__second=31)</span>
-        <span class="token comment"># Event.objects.filter(time__second=2)</span>
-        <span class="token comment"># Event.objects.filter(timestamp__second__gte=31)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+10、date
+        # Entry.objects.filter(pub_date__date=datetime.date(2005, 1, 1))          #__data表示日期查找，2005-01-01
+        # Entry.objects.filter(pub_date__date__gt=datetime.date(2005, 1, 1))
+11、year
+        # Entry.objects.filter(pub_date__year=2005)                               #__year根据年查找
+        # Entry.objects.filter(pub_date__year__gte=2005)
+12、month
+        # Entry.objects.filter(pub_date__month=12)
+        # Entry.objects.filter(pub_date__month__gte=6)
+13、day
+        # Entry.objects.filter(pub_date__day=3)
+        # Entry.objects.filter(pub_date__day__gte=3)
+14、week_day
+        # Entry.objects.filter(pub_date__week_day=2)
+        # Entry.objects.filter(pub_date__week_day__gte=2)
+15、hour
+        # Event.objects.filter(timestamp__hour=23)
+        # Event.objects.filter(time__hour=5)
+        # Event.objects.filter(timestamp__hour__gte=12)
+16、minute
+        # Event.objects.filter(timestamp__minute=29)
+        # Event.objects.filter(time__minute=46)
+        # Event.objects.filter(timestamp__minute__gte=29)
+17、second
+        # Event.objects.filter(timestamp__second=31)
+        # Event.objects.filter(time__second=2)
+        # Event.objects.filter(timestamp__second__gte=31)
+</code></pre>
 <h2 id="03-时间过滤"><a href="#03-时间过滤" class="headerlink" title="03.时间过滤"></a>03.时间过滤</h2><ul>
 <li>根据天&#x2F;小时进行过滤</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils <span class="token keyword">import</span> timezone
-<span class="token keyword">from</span> report<span class="token punctuation">.</span>models <span class="token keyword">import</span> <span class="token operator">*</span>
+<pre><code class="python">from django.utils import timezone
+from report.models import *
 
-now <span class="token operator">=</span> timezone<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment"># start_time = now - timezone.timedelta(days=7)</span>
-start_time <span class="token operator">=</span> now <span class="token operator">-</span> timezone<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">240</span><span class="token punctuation">)</span>  <span class="token comment"># 查询10天前的数据</span>
-end_time <span class="token operator">=</span> now
+now = timezone.now()
+# start_time = now - timezone.timedelta(days=7)
+start_time = now - timezone.timedelta(hours=240)  # 查询10天前的数据
+end_time = now
 
-qs <span class="token operator">=</span> AllClarm<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>start_tm__range<span class="token operator">=</span><span class="token punctuation">(</span>start_time<span class="token punctuation">,</span> end_time<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+qs = AllClarm.objects.filter(start_tm__range=(start_time, end_time))
+</code></pre>
 
                 
                 <p class="end">__END__</p>

@@ -82,37 +82,37 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-初始化项目结构"><a href="#01-初始化项目结构" class="headerlink" title="01.初始化项目结构"></a>01.初始化项目结构</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">└─shiyanlou_project          <span class="token comment"># 项目根路径</span>
-    │  <span class="token punctuation">.</span>gitignore             <span class="token comment"># 提交git仓库时，不提交的文件必须要在这里进行标注</span>
-    │  README<span class="token punctuation">.</span>en<span class="token punctuation">.</span>md           <span class="token comment"># 英文（项目介绍）</span>
-    │  README<span class="token punctuation">.</span>md              <span class="token comment"># 中文项目简介</span>
-    │  requirements<span class="token punctuation">.</span>txt       <span class="token comment"># django项目安装文件</span>
+                <h2 id="01-初始化项目结构"><a href="#01-初始化项目结构" class="headerlink" title="01.初始化项目结构"></a>01.初始化项目结构</h2><pre><code class="python">└─shiyanlou_project          # 项目根路径
+    │  .gitignore             # 提交git仓库时，不提交的文件必须要在这里进行标注
+    │  README.en.md           # 英文（项目介绍）
+    │  README.md              # 中文项目简介
+    │  requirements.txt       # django项目安装文件
     │
-    ├─celery_task            <span class="token comment"># 用来存放celery相关文件（以便分布式部署）</span>
-    │      __init__<span class="token punctuation">.</span>py
+    ├─celery_task            # 用来存放celery相关文件（以便分布式部署）
+    │      __init__.py
     │
-    ├─db                     <span class="token comment"># 数据库相关：1.数据库初始化sql脚本； 2.数据库维护脚本，清理，备份脚本</span>
-    ├─scrips                 <span class="token comment"># 脚本目录：1.定时任务脚本；2.页面静态化脚本；处理项目脚本</span>
-    ├─logs                   <span class="token comment"># 存放日志</span>
-    ├─packages               <span class="token comment"># 外部包，原始的，未配置的：1.七牛云sdk；2.阿里云短信；</span>
-    └─uwsgi_conf             <span class="token comment"># uwsgi配置，日志，pid</span>
+    ├─db                     # 数据库相关：1.数据库初始化sql脚本； 2.数据库维护脚本，清理，备份脚本
+    ├─scrips                 # 脚本目录：1.定时任务脚本；2.页面静态化脚本；处理项目脚本
+    ├─logs                   # 存放日志
+    ├─packages               # 外部包，原始的，未配置的：1.七牛云sdk；2.阿里云短信；
+    └─uwsgi_conf             # uwsgi配置，日志，pid
     │
     │
-    └─syl                    <span class="token comment"># 真正的django项目（代码）django-admin startproject   项目名</span>
-        │  apps （python包）                   <span class="token comment"># Django各种app模块 </span>
-        │  libs （python包）                   <span class="token comment"># 七牛云sdk+配置（外部下载）</span>
-        │  utils （python包）                  <span class="token comment"># 小工具，常用函数(自己写的)</span>
+    └─syl                    # 真正的django项目（代码）django-admin startproject   项目名
+        │  apps （python包）                   # Django各种app模块 
+        │  libs （python包）                   # 七牛云sdk+配置（外部下载）
+        │  utils （python包）                  # 小工具，常用函数(自己写的)
         │  static               
         │  templates
         │  syl（项目配置）
-        │  manager<span class="token punctuation">.</span>py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+        │  manager.py
+</code></pre>
 <p><img src="./assets/image-20200925112025607.png" style="width: 400px; margin-left: 50px;"> </img></p>
-<h2 id="02-创建Django项目"><a href="#02-创建Django项目" class="headerlink" title="02.创建Django项目"></a>02.创建Django项目</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># workon syl</span>
-<span class="token punctuation">(</span>syl<span class="token punctuation">)</span> root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># cd /aaa/shiyanlou_project/</span>
-<span class="token punctuation">(</span>syl<span class="token punctuation">)</span> root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># django-admin startproject syl</span>
-<span class="token comment"># 注：创建三个python包， apps、utils、libs</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<h2 id="02-创建Django项目"><a href="#02-创建Django项目" class="headerlink" title="02.创建Django项目"></a>02.创建Django项目</h2><pre><code class="python">root@dev:shiyanlou_project# workon syl
+(syl) root@dev:shiyanlou_project# cd /aaa/shiyanlou_project/
+(syl) root@dev:shiyanlou_project# django-admin startproject syl
+# 注：创建三个python包， apps、utils、libs
+</code></pre>
 <ul>
 <li><p>使用pycharm打开项目</p>
 <ul>
@@ -120,106 +120,107 @@
 <ul>
 <li><pre><code>   PYTHONUNBUFFERED               1 
    DJANGO_SETTINGS_MODULE         syl.settings
-<pre class="line-numbers language-none"><code class="language-none">    - &lt;img src&#x3D;&quot;.&#x2F;assets&#x2F;image-20201026153155814.png&quot; style&#x3D;&quot;width: 800px; margin-left: 0px;&quot;&gt; &lt;&#x2F;img&gt;
-  - 2.文件----&gt;设置-----&gt;
-
-    - &lt;img src&#x3D;&quot;.&#x2F;assets&#x2F;image-20201026153355278.png&quot; style&#x3D;&quot;width: 800px; margin-left: 00px;&quot;&gt; &lt;&#x2F;img&gt;
-  - 3.文件----&gt;设置-----&gt;
-
-    - &lt;img src&#x3D;&quot;.&#x2F;assets&#x2F;image-20201026153527196.png&quot; style&#x3D;&quot;width: 800px; margin-left: 0px;&quot;&gt; &lt;&#x2F;img&gt;
-
-## 03.创建user模型
-
-### 3.1 创建用户模型user
-
-&#96;&#96;&#96;python
-python ..&#x2F;manage.py startapp user  # 创建user模型<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </code></pre>
 </li>
+<li><img src="./assets/image-20201026153155814.png" style="width: 800px; margin-left: 0px;"> </img></li>
+</ul>
+</li>
+<li><p>2.文件—-&gt;设置—–&gt;</p>
+<ul>
+<li><img src="./assets/image-20201026153355278.png" style="width: 800px; margin-left: 00px;"> </img></li>
+</ul>
+</li>
+<li><p>3.文件—-&gt;设置—–&gt;</p>
+<ul>
+<li><img src="./assets/image-20201026153527196.png" style="width: 800px; margin-left: 0px;"> </img></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h3 id="3-2-在setting-py中注册user模型（第一步）"><a href="#3-2-在setting-py中注册user模型（第一步）" class="headerlink" title="3.2 在setting.py中注册user模型（第一步）"></a>3.2 在setting.py中注册user模型（第一步）</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token string">'user.apps.UserConfig'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span>
-<span class="token comment"># 注：pycharm无法联想，需要把apps文件夹设置为源根</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<h2 id="03-创建user模型"><a href="#03-创建user模型" class="headerlink" title="03.创建user模型"></a>03.创建user模型</h2><h3 id="3-1-创建用户模型user"><a href="#3-1-创建用户模型user" class="headerlink" title="3.1 创建用户模型user"></a>3.1 创建用户模型user</h3><pre><code class="python">python ../manage.py startapp user  # 创建user模型
+</code></pre>
+<h3 id="3-2-在setting-py中注册user模型（第一步）"><a href="#3-2-在setting-py中注册user模型（第一步）" class="headerlink" title="3.2 在setting.py中注册user模型（第一步）"></a>3.2 在setting.py中注册user模型（第一步）</h3><pre><code class="python">INSTALLED_APPS = [
+    &#39;user.apps.UserConfig&#39;,
+]
+# 注：pycharm无法联想，需要把apps文件夹设置为源根
+</code></pre>
 <ul>
 <li>要想让pycharm识别要这样操作<ul>
 <li><img src="./assets/image-20201026185113022.png" style="width: 600px; margin-left: 50px;"> </img></li>
 </ul>
 </li>
 </ul>
-<h3 id="3-3-syl-urls-py添加主路由（第二步）"><a href="#3-3-syl-urls-py添加主路由（第二步）" class="headerlink" title="3.3 syl&#x2F;urls.py添加主路由（第二步）"></a>3.3 syl&#x2F;urls.py添加主路由（第二步）</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    path<span class="token punctuation">(</span><span class="token string">'user/'</span><span class="token punctuation">,</span> include<span class="token punctuation">(</span><span class="token string">'user.urls'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-syl-urls-py添加主路由（第二步）"><a href="#3-3-syl-urls-py添加主路由（第二步）" class="headerlink" title="3.3 syl&#x2F;urls.py添加主路由（第二步）"></a>3.3 syl&#x2F;urls.py添加主路由（第二步）</h3><pre><code class="python">urlpatterns = [
+    path(&#39;user/&#39;, include(&#39;user.urls&#39;)),
+]
+</code></pre>
+<h3 id="3-5-syl-settings-py中添加apps路径"><a href="#3-5-syl-settings-py中添加apps路径" class="headerlink" title="3.5 syl&#x2F;settings.py中添加apps路径"></a>3.5 syl&#x2F;settings.py中添加apps路径</h3><pre><code class="python"># 把apps目录插入，到系统包搜索路径第一个位置中
+sys.path.insert(0,os.path.join(BASE_DIR,&#39;apps&#39;))
+</code></pre>
+<h3 id="3-4-创建-user-urls-py子路由文件（第三步）"><a href="#3-4-创建-user-urls-py子路由文件（第三步）" class="headerlink" title="3.4 创建 user&#x2F;urls.py子路由文件（第三步）"></a>3.4 创建 user&#x2F;urls.py子路由文件（第三步）</h3><pre><code class="python">from django.urls import path
 
-<h3 id="3-5-syl-settings-py中添加apps路径"><a href="#3-5-syl-settings-py中添加apps路径" class="headerlink" title="3.5 syl&#x2F;settings.py中添加apps路径"></a>3.5 syl&#x2F;settings.py中添加apps路径</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 把apps目录插入，到系统包搜索路径第一个位置中</span>
-sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span><span class="token string">'apps'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+urlpatterns = [
 
-<h3 id="3-4-创建-user-urls-py子路由文件（第三步）"><a href="#3-4-创建-user-urls-py子路由文件（第三步）" class="headerlink" title="3.4 创建 user&#x2F;urls.py子路由文件（第三步）"></a>3.4 创建 user&#x2F;urls.py子路由文件（第三步）</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path
+]
+</code></pre>
+<h2 id="04-重写Django默认认证用户模型"><a href="#04-重写Django默认认证用户模型" class="headerlink" title="04.重写Django默认认证用户模型"></a>04.重写Django默认认证用户模型</h2><h3 id="4-1-重写django-user表"><a href="#4-1-重写django-user表" class="headerlink" title="4.1 重写django user表"></a>4.1 重写django user表</h3><pre><code class="python">from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
+# Create your models here.
+class User(AbstractUser):
+    phone = models.CharField(&#39;手机号&#39;,max_length=20)
+    img = models.ImageField(upload_to=&#39;user&#39;,null=True)
+    nick_name = models.CharField(&#39;昵称&#39;,max_length=20)
+    address = models.CharField(&#39;地址&#39;,max_length=255)
 
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    class Meta:
+        db_table = &#39;tb_user&#39;
+</code></pre>
+<h3 id="4-2-syl-settings-py中注册"><a href="#4-2-syl-settings-py中注册" class="headerlink" title="4.2 syl&#x2F;settings.py中注册"></a>4.2 syl&#x2F;settings.py中注册</h3><pre><code class="python"># 注册自己的用户模型类: 应用名.模型名，指定我们重写的User表进行身份验证
+AUTH_USER_MODEL = &#39;user.User&#39;
+</code></pre>
+<h3 id="4-3-配置mysql"><a href="#4-3-配置mysql" class="headerlink" title="4.3 配置mysql"></a>4.3 配置mysql</h3><pre><code class="python">&#39;&#39;&#39;1.创建mysql数据库&#39;&#39;&#39;
+mysql&gt; create database syldatabase charset utf8;
 
-<h2 id="04-重写Django默认认证用户模型"><a href="#04-重写Django默认认证用户模型" class="headerlink" title="04.重写Django默认认证用户模型"></a>04.重写Django默认认证用户模型</h2><h3 id="4-1-重写django-user表"><a href="#4-1-重写django-user表" class="headerlink" title="4.1 重写django user表"></a>4.1 重写django user表</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib<span class="token punctuation">.</span>auth<span class="token punctuation">.</span>models <span class="token keyword">import</span> AbstractUser
-
-<span class="token comment"># Create your models here.</span>
-<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span>AbstractUser<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    phone <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'手机号'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
-    img <span class="token operator">=</span> models<span class="token punctuation">.</span>ImageField<span class="token punctuation">(</span>upload_to<span class="token operator">=</span><span class="token string">'user'</span><span class="token punctuation">,</span>null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-    nick_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'昵称'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
-    address <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'地址'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">255</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-        db_table <span class="token operator">=</span> <span class="token string">'tb_user'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-2-syl-settings-py中注册"><a href="#4-2-syl-settings-py中注册" class="headerlink" title="4.2 syl&#x2F;settings.py中注册"></a>4.2 syl&#x2F;settings.py中注册</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 注册自己的用户模型类: 应用名.模型名，指定我们重写的User表进行身份验证</span>
-AUTH_USER_MODEL <span class="token operator">=</span> <span class="token string">'user.User'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="4-3-配置mysql"><a href="#4-3-配置mysql" class="headerlink" title="4.3 配置mysql"></a>4.3 配置mysql</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1.创建mysql数据库'''</span>
-mysql<span class="token operator">></span> create database syldatabase charset utf8<span class="token punctuation">;</span>
-
-<span class="token triple-quoted-string string">'''2.在syl/settings.py中配置mysql'''</span>
-DATABASES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">'default'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">'ENGINE'</span><span class="token punctuation">:</span> <span class="token string">'django.db.backends.mysql'</span><span class="token punctuation">,</span>
-        <span class="token string">'NAME'</span><span class="token punctuation">:</span> <span class="token string">'syldatabase'</span><span class="token punctuation">,</span>              <span class="token comment"># 指定数据库名称：syldatabase</span>
-        <span class="token string">'USER'</span><span class="token punctuation">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span>
-        <span class="token string">'PASSWORD'</span><span class="token punctuation">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span>
-        <span class="token string">'HOST'</span><span class="token punctuation">:</span> <span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span>
-        <span class="token string">'PORT'</span><span class="token punctuation">:</span> <span class="token string">'3306'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-4生成表"><a href="#4-4生成表" class="headerlink" title="4.4生成表"></a>4.4生成表</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py makemigrations
-python manage<span class="token punctuation">.</span>py migrate<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+&#39;&#39;&#39;2.在syl/settings.py中配置mysql&#39;&#39;&#39;
+DATABASES = &#123;
+    &#39;default&#39;: &#123;
+        &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,
+        &#39;NAME&#39;: &#39;syldatabase&#39;,              # 指定数据库名称：syldatabase
+        &#39;USER&#39;: &#39;root&#39;,
+        &#39;PASSWORD&#39;: &#39;1&#39;,
+        &#39;HOST&#39;: &#39;127.0.0.1&#39;,
+        &#39;PORT&#39;: &#39;3306&#39;,
+    &#125;
+&#125;
+</code></pre>
+<h3 id="4-4生成表"><a href="#4-4生成表" class="headerlink" title="4.4生成表"></a>4.4生成表</h3><pre><code class="python">python manage.py makemigrations
+python manage.py migrate
+</code></pre>
 <h2 id="05-python中的三种路径"><a href="#05-python中的三种路径" class="headerlink" title="05.python中的三种路径"></a>05.python中的三种路径</h2><h3 id="5-1-操作系统绝对路径（第一种）"><a href="#5-1-操作系统绝对路径（第一种）" class="headerlink" title="5.1 操作系统绝对路径（第一种）"></a>5.1 操作系统绝对路径（第一种）</h3><ul>
 <li>django 静态文件查找, 模板查找（第一种）</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 去配置好的 文件夹 中查找指定的文件</span>
-BASE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-STATIC_URL <span class="token operator">=</span> <span class="token string">'/static/'</span>
-<span class="token comment"># /teach/shiyanlou_project/syl/apps/user/   # linux</span>
-<span class="token comment"># E:\_000\XSX</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python"># 去配置好的 文件夹 中查找指定的文件
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_URL = &#39;/static/&#39;
+# /teach/shiyanlou_project/syl/apps/user/   # linux
+# E:\_000\XSX
+</code></pre>
 <h3 id="5-2-django-导包路径（第二种）"><a href="#5-2-django-导包路径（第二种）" class="headerlink" title="5.2 django 导包路径（第二种）"></a>5.2 django 导包路径（第二种）</h3><ul>
 <li>第一：<code>当期文件夹</code></li>
 <li>第二：<code>sys.path</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">导包之前<span class="token punctuation">,</span> 包的上级路径<span class="token punctuation">,</span> 需要存在于 python system 的 path
-sys<span class="token punctuation">.</span>path  这是一个列表<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre><code class="python">导包之前, 包的上级路径, 需要存在于 python system 的 path
+sys.path  这是一个列表
+</code></pre>
 <p>sys.path.insert(0, os.path.join(BASE_DIR, ‘apps’))</p>
-<pre class="line-numbers language-none"><code class="language-none">from xxx import yyy  才能成功<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="5-3-django模型引用（第三种）"><a href="#5-3-django模型引用（第三种）" class="headerlink" title="5.3 django模型引用（第三种）"></a>5.3 django模型引用（第三种）</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">想使用 一个 models<span class="token punctuation">.</span>py 文件中的模型
-apps名称<span class="token punctuation">.</span>model模型名
-<span class="token string">'users.User'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre><code>from xxx import yyy  才能成功
+</code></pre>
+<h3 id="5-3-django模型引用（第三种）"><a href="#5-3-django模型引用（第三种）" class="headerlink" title="5.3 django模型引用（第三种）"></a>5.3 django模型引用（第三种）</h3><pre><code class="python">想使用 一个 models.py 文件中的模型
+apps名称.model模型名
+&#39;users.User&#39;
+</code></pre>
 
                 
                 <p class="end">__END__</p>

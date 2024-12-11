@@ -110,69 +110,67 @@
 <td>根据文件权限查找</td>
 </tr>
 </tbody></table>
-<h3 id="1-3-find参数基本使用"><a href="#1-3-find参数基本使用" class="headerlink" title="1.3 find参数基本使用"></a>1.3 find参数基本使用</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1. -name（根据文件名查找）</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>name <span class="token string">'*.conf'</span>      <span class="token comment"># 查找 /etc 目录下以 conf 结尾的文件</span>
+<h3 id="1-3-find参数基本使用"><a href="#1-3-find参数基本使用" class="headerlink" title="1.3 find参数基本使用"></a>1.3 find参数基本使用</h3><pre><code class="python">#1. -name（根据文件名查找）
+find /etc -name &#39;*.conf&#39;      # 查找 /etc 目录下以 conf 结尾的文件
 
-<span class="token comment">#2. -size（根据文件大小查询）</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span>size <span class="token operator">+</span>9M              <span class="token comment"># 查找当前文件夹下大于9M的文件</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span>size <span class="token operator">-</span>1M              <span class="token comment"># 查找当前文件夹下小于1M的文件</span>
+#2. -size（根据文件大小查询）
+find . -size +9M              # 查找当前文件夹下大于9M的文件
+find . -size -1M              # 查找当前文件夹下小于1M的文件
 
-<span class="token comment">#3.1 -mtime（根据天查询）</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>mtime <span class="token operator">-</span><span class="token number">5</span> <span class="token operator">-</span>name <span class="token string">'*.conf'</span>          <span class="token comment"># 查询 /etc 目录下，5天以内修改 且以 conf 结尾的文件</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>mtime <span class="token operator">+</span><span class="token number">5</span> <span class="token operator">-</span>name <span class="token string">'*.conf'</span>          <span class="token comment"># 查询 /etc 目录下，5天以内修改 且以 conf 结尾的文件</span>
-<span class="token comment">#3.2 -mmin（根据分钟查询）</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>mmin <span class="token operator">+</span><span class="token number">30</span>                         <span class="token comment"># 查询 /etc 目录下 30分钟 之前修改过的文件</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>mmin <span class="token operator">-</span><span class="token number">30</span>                         <span class="token comment"># 查询 /etc 目录下 30分钟 之内修改过的文件</span>
+#3.1 -mtime（根据天查询）
+find /etc -mtime -5 -name &#39;*.conf&#39;          # 查询 /etc 目录下，5天以内修改 且以 conf 结尾的文件
+find /etc -mtime +5 -name &#39;*.conf&#39;          # 查询 /etc 目录下，5天以内修改 且以 conf 结尾的文件
+#3.2 -mmin（根据分钟查询）
+find /etc -mmin +30                         # 查询 /etc 目录下 30分钟 之前修改过的文件
+find /etc -mmin -30                         # 查询 /etc 目录下 30分钟 之内修改过的文件
 
-<span class="token comment">#4. -type（根据类型查找）</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span><span class="token builtin">type</span> f                              <span class="token comment"># 查找当前文件夹下所有文件</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span><span class="token builtin">type</span> d                              <span class="token comment"># 查找当前文件夹下所有目录</span>
+#4. -type（根据类型查找）
+find . -type f                              # 查找当前文件夹下所有文件
+find . -type d                              # 查找当前文件夹下所有目录
 
-<span class="token comment">#5. -user（根据文件所有者查询）</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span>user yangyang                       <span class="token comment"># 查找文件所属用户为 yangyang 的所有文件</span>
+#5. -user（根据文件所有者查询）
+find . -user yangyang                       # 查找文件所属用户为 yangyang 的所有文件
 
-<span class="token comment">#6. -group（根据文件所属组查询）</span>
-find <span class="token punctuation">.</span> <span class="token operator">-</span>group yangyang                      <span class="token comment"># 查找文件所属组为 yangyang 的所有文件</span>
+#6. -group（根据文件所属组查询）
+find . -group yangyang                      # 查找文件所属组为 yangyang 的所有文件
 
-<span class="token comment">#7. -perm（根据权限查询）</span>
-find <span class="token operator">/</span>etc <span class="token operator">-</span>perm <span class="token number">664</span>                         <span class="token comment"># 查找/etc目录下权限为664的文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
+#7. -perm（根据权限查询）
+find /etc -perm 664                         # 查找/etc目录下权限为664的文件
+</code></pre>
 <h2 id="02-find应用"><a href="#02-find应用" class="headerlink" title="02.find应用"></a>02.find应用</h2><h3 id="2-1-大于9M的文件"><a href="#2-1-大于9M的文件" class="headerlink" title="2.1 大于9M的文件"></a>2.1 大于9M的文件</h3><ul>
 <li>1.<span style="color: red"> find . -size +9M | xargs ls -lh  </span>: 查找当前目录下大于9M的文件详细信息</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># find . -size +9M | xargs ls -lh</span>
-<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">-</span><span class="token operator">-</span>r<span class="token operator">-</span><span class="token operator">-</span>  <span class="token number">1</span> root root  24M Jul  <span class="token number">7</span> <span class="token number">04</span><span class="token punctuation">:</span><span class="token number">18</span> <span class="token punctuation">.</span><span class="token operator">/</span>aaa<span class="token operator">/</span>Python<span class="token operator">-</span><span class="token number">3.7</span><span class="token number">.0</span><span class="token operator">/</span>libpython3<span class="token punctuation">.</span>7m<span class="token punctuation">.</span>a
-<span class="token operator">-</span>rwxr<span class="token operator">-</span>xr<span class="token operator">-</span>x  <span class="token number">1</span> root root  14M Jul  <span class="token number">7</span> <span class="token number">04</span><span class="token punctuation">:</span><span class="token number">19</span> <span class="token punctuation">.</span><span class="token operator">/</span>aaa<span class="token operator">/</span>Python<span class="token operator">-</span><span class="token number">3.7</span><span class="token number">.0</span><span class="token operator">/</span>Programs<span class="token operator">/</span>_testembed
-<span class="token operator">-</span>rwxr<span class="token operator">-</span>xr<span class="token operator">-</span>x  <span class="token number">1</span> root root  14M Jul  <span class="token number">7</span> <span class="token number">04</span><span class="token punctuation">:</span><span class="token number">18</span> <span class="token punctuation">.</span><span class="token operator">/</span>aaa<span class="token operator">/</span>Python<span class="token operator">-</span><span class="token number">3.7</span><span class="token number">.0</span><span class="token operator">/</span>python
-<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">-</span><span class="token operator">-</span>r<span class="token operator">-</span><span class="token operator">-</span>  <span class="token number">1</span> root root  22M Jul  <span class="token number">6</span> <span class="token number">23</span><span class="token punctuation">:</span><span class="token number">53</span> <span class="token punctuation">.</span><span class="token operator">/</span>aaa<span class="token operator">/</span>Python<span class="token operator">-</span><span class="token number">3.7</span><span class="token number">.0</span><span class="token punctuation">.</span>tgz
-<span class="token operator">-</span>rw<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span> <span class="token number">1</span> root root  47M Jan  <span class="token number">7</span>  <span class="token number">2019</span> <span class="token punctuation">.</span><span class="token operator">/</span>boot<span class="token operator">/</span>initramfs<span class="token operator">-</span><span class="token number">0</span><span class="token operator">-</span>rescue<span class="token operator">-</span>8b956f09fe0549c4b6182589acceab30<span class="token punctuation">.</span>img
-<span class="token operator">-</span>rw<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span> <span class="token number">1</span> root root  21M Jan  <span class="token number">7</span>  <span class="token number">2019</span> <span class="token punctuation">.</span><span class="token operator">/</span>boot<span class="token operator">/</span>initramfs<span class="token operator">-</span><span class="token number">3.10</span><span class="token number">.0</span><span class="token operator">-</span><span class="token number">514</span><span class="token punctuation">.</span>el7<span class="token punctuation">.</span>x86_64<span class="token punctuation">.</span>img
-<span class="token operator">-</span>rw<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span> <span class="token number">1</span> root root  14M Jan  <span class="token number">7</span>  <span class="token number">2019</span> <span class="token punctuation">.</span><span class="token operator">/</span>boot<span class="token operator">/</span>initramfs<span class="token operator">-</span><span class="token number">3.10</span><span class="token number">.0</span><span class="token operator">-</span><span class="token number">514</span><span class="token punctuation">.</span>el7<span class="token punctuation">.</span>x86_64kdump<span class="token punctuation">.</span>img<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 /]# find . -size +9M | xargs ls -lh
+-rw-r--r--  1 root root  24M Jul  7 04:18 ./aaa/Python-3.7.0/libpython3.7m.a
+-rwxr-xr-x  1 root root  14M Jul  7 04:19 ./aaa/Python-3.7.0/Programs/_testembed
+-rwxr-xr-x  1 root root  14M Jul  7 04:18 ./aaa/Python-3.7.0/python
+-rw-r--r--  1 root root  22M Jul  6 23:53 ./aaa/Python-3.7.0.tgz
+-rw-------. 1 root root  47M Jan  7  2019 ./boot/initramfs-0-rescue-8b956f09fe0549c4b6182589acceab30.img
+-rw-------. 1 root root  21M Jan  7  2019 ./boot/initramfs-3.10.0-514.el7.x86_64.img
+-rw-------. 1 root root  14M Jan  7  2019 ./boot/initramfs-3.10.0-514.el7.x86_64kdump.img
+</code></pre>
 <h3 id="2-2-以-log-结尾且大于5M的文件"><a href="#2-2-以-log-结尾且大于5M的文件" class="headerlink" title="2.2 以 .log 结尾且大于5M的文件"></a>2.2 以 .log 结尾且大于5M的文件</h3><ul>
 <li>2.<span style="color: red"> find . -type f -name “*.log” -size +1M -exec cp -av {} &#x2F;tmp ;</span></li>
 <li>查找当前目录下以 .log 结尾且大于5M的文件，并复制到&#x2F;tmp目录下</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># find . -type f -name "*.log" -size +1M -exec cp -av &#123;&#125; /tmp \;</span>
-cp<span class="token punctuation">:</span> ‘<span class="token punctuation">.</span><span class="token operator">/</span>tmp<span class="token operator">/</span>audit<span class="token punctuation">.</span>log’ <span class="token keyword">and</span> ‘<span class="token operator">/</span>tmp<span class="token operator">/</span>audit<span class="token punctuation">.</span>log’ are the same <span class="token builtin">file</span>
-cp<span class="token punctuation">:</span> ‘<span class="token punctuation">.</span><span class="token operator">/</span>tmp<span class="token operator">/</span>journal<span class="token punctuation">.</span>log’ <span class="token keyword">and</span> ‘<span class="token operator">/</span>tmp<span class="token operator">/</span>journal<span class="token punctuation">.</span>log’ are the same <span class="token builtin">file</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 /]# find . -type f -name &quot;*.log&quot; -size +1M -exec cp -av &#123;&#125; /tmp \;
+cp: ‘./tmp/audit.log’ and ‘/tmp/audit.log’ are the same file
+cp: ‘./tmp/journal.log’ and ‘/tmp/journal.log’ are the same file
+</code></pre>
 <h3 id="2-3-更改时间在三天到五天的文件"><a href="#2-3-更改时间在三天到五天的文件" class="headerlink" title="2.3 更改时间在三天到五天的文件"></a>2.3 更改时间在三天到五天的文件</h3><ul>
 <li>3.<span style="color: red"> find &#x2F;var -mtime +3 -mtime -5 </span> ：在&#x2F;var下查找更改时间在三天到五天的文件</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># find /var -mtime +3 -mtime -5</span>
-<span class="token operator">/</span>var<span class="token operator">/</span>tmp
-<span class="token operator">/</span>var<span class="token operator">/</span>lib<span class="token operator">/</span>yum<span class="token operator">/</span>yumdb<span class="token operator">/</span>l
-<span class="token operator">/</span>var<span class="token operator">/</span>lib<span class="token operator">/</span>yum<span class="token operator">/</span>yumdb<span class="token operator">/</span>l<span class="token operator">/</span>f20daac8f6b3893e42be72af22a5118848f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 /]# find /var -mtime +3 -mtime -5
+/var/tmp
+/var/lib/yum/yumdb/l
+/var/lib/yum/yumdb/l/f20daac8f6b3893e42be72af22a5118848f
+</code></pre>
 <h3 id="2-4-1分钟前3分钟内修改的文件"><a href="#2-4-1分钟前3分钟内修改的文件" class="headerlink" title="2.4 1分钟前3分钟内修改的文件"></a>2.4 1分钟前3分钟内修改的文件</h3><ul>
 <li>4.<span style="color: red"> find . -mmin +1 -mmin -3 </span>：查找当前文件夹下1分钟前3分钟内修改的文件</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># find . -mmin +1 -mmin -3</span>
-<span class="token punctuation">.</span><span class="token operator">/</span>aa<span class="token punctuation">.</span>py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@linux-node1 /]# find . -mmin +1 -mmin -3
+./aa.py
+</code></pre>
 
                 
                 <p class="end">__END__</p>
@@ -213,7 +211,7 @@ cp<span class="token punctuation">:</span> ‘<span class="token punctuation">.<
                         <br>
                     
                     
-                        <a href="../../pages/1363ec/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/1363ec/" title="发布于 2021-02-13 10:05">04.sed</a>
+                        <a href="../../pages/271563/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/271563/" title="发布于 2021-02-13 10:05">03.grep</a>
                     
                 </div>
             </div>

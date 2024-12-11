@@ -84,81 +84,82 @@
 <li>F() —- 专门取对象中某列值的操作</li>
 <li><strong>作用：</strong>F()允许Django在未实际链接数据的情况下具有对数据库字段的值的引用</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> F<span class="token punctuation">,</span>Q
+<pre><code class="python">from django.shortcuts import HttpResponse
+from app01 import models
+from django.db.models import F,Q
 
-<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 每访问一次数据库中zhangsan的年纪就会自动增加1</span>
-    models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>update<span class="token punctuation">(</span>age<span class="token operator">=</span>F<span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+def orm(request):
+    # 每访问一次数据库中zhangsan的年纪就会自动增加1
+    models.Student.objects.filter(name=&#39;zhangsan&#39;).update(age=F(&quot;age&quot;) + 1)
+    return HttpResponse(&#39;orm&#39;)
+</code></pre>
 <h2 id="02-Q"><a href="#02-Q" class="headerlink" title="02.Q()"></a>02.Q()</h2><h3 id="2-1-Q查询基本使用"><a href="#2-1-Q查询基本使用" class="headerlink" title="2.1 Q查询基本使用"></a>2.1 Q查询基本使用</h3><ul>
 <li>1、Q对象(django.db.models.Q)可以对关键字参数进行封装，从而更好地应用多个查询</li>
 <li>2、可以组合使用 &amp;（and）,|（or），~（not）操作符，当一个操作符用于两个Q的对象,它产生一个新的Q对象</li>
 <li>3、如： <strong>Q(Q(nid&#x3D;8) | Q(nid__gt&#x3D;10)) &amp; Q(caption&#x3D;’root’)</strong></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> F<span class="token punctuation">,</span>Q
+<pre><code class="python">from django.shortcuts import HttpResponse
+from app01 import models
+from django.db.models import F,Q
 
-<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 查找学生表中年级大于1小于30姓zhang的所有学生</span>
-    stus <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>
-        Q<span class="token punctuation">(</span>age__gt<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> Q<span class="token punctuation">(</span>age__lt<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        Q<span class="token punctuation">(</span>name__startswith<span class="token operator">=</span><span class="token string">'zhang'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stu'</span><span class="token punctuation">,</span>stus<span class="token punctuation">)</span>   <span class="token comment">#运行结果：[&lt;Student: zhangsan>]</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+def orm(request):
+    # 查找学生表中年级大于1小于30姓zhang的所有学生
+    stus = models.Student.objects.filter(
+        Q(age__gt=1) &amp; Q(age__lt=30),
+        Q(name__startswith=&#39;zhang&#39;)
+    )
+    print(&#39;stu&#39;,stus)   #运行结果：[&lt;Student: zhangsan&gt;]
+    return HttpResponse(&#39;orm&#39;)
+</code></pre>
 <h3 id="2-2-动态添加查询条件"><a href="#2-2-动态添加查询条件" class="headerlink" title="2.2 动态添加查询条件"></a>2.2 动态添加查询条件</h3><ul>
 <li>动态添加多个and和or查询条件</li>
 </ul>
-<h4 id="2-2-1-项目中动态添加or查询条件"><a href="#2-2-1-项目中动态添加or查询条件" class="headerlink" title="2.2.1 项目中动态添加or查询条件"></a>2.2.1 项目中动态添加or查询条件</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">table_search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span>admin_class<span class="token punctuation">,</span>object_list<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   search_key <span class="token operator">=</span> request<span class="token punctuation">.</span>GET<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'_q'</span><span class="token punctuation">,</span><span class="token string">''</span><span class="token punctuation">)</span>
-   q_obj <span class="token operator">=</span> Q<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   q_obj<span class="token punctuation">.</span>connector <span class="token operator">=</span> <span class="token string">'OR'</span>
-   <span class="token keyword">for</span> column <span class="token keyword">in</span> admin_class<span class="token punctuation">.</span>search_fields<span class="token punctuation">:</span>
-      q_obj<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'%s__contains'</span><span class="token operator">%</span>column<span class="token punctuation">,</span>search_key<span class="token punctuation">)</span><span class="token punctuation">)</span>
-   res <span class="token operator">=</span> object_list<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>q_obj<span class="token punctuation">)</span>
-   <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-2-1-项目中动态添加or查询条件"><a href="#2-2-1-项目中动态添加or查询条件" class="headerlink" title="2.2.1 项目中动态添加or查询条件"></a>2.2.1 项目中动态添加or查询条件</h4><pre><code class="python">def table_search(request,admin_class,object_list):
+   search_key = request.GET.get(&#39;_q&#39;,&#39;&#39;)
+   q_obj = Q()
+   q_obj.connector = &#39;OR&#39;
+   for column in admin_class.search_fields:
+      q_obj.children.append((&#39;%s__contains&#39;%column,search_key))
+   res = object_list.filter(q_obj)
+   return res
+</code></pre>
+<h4 id="2-2-2-or动态添加多个查询条件"><a href="#2-2-2-or动态添加多个查询条件" class="headerlink" title="2.2.2 or动态添加多个查询条件"></a>2.2.2 or动态添加多个查询条件</h4><pre><code class="python"># or动态添加多个查询条件
+&gt;&gt;&gt; from crm import models
+&gt;&gt;&gt; from django.db.models import Q
+&gt;&gt;&gt; con = Q()                                   #1. 实例化一个Q()查询类
+&gt;&gt;&gt; con.connector = &quot;OR&quot;                           #2. 指定使用‘OR’条件
+&gt;&gt;&gt; con.children.append((&#39;qq__contains&#39;,&#39;123&#39;))           #3. qq字段中包含‘123’
+&gt;&gt;&gt; con.children.append((&#39;name__contains&#39;,&#39;name0&#39;))         #4. name字段中包含‘naem0’
+&gt;&gt;&gt; con
+&lt;Q: (OR: (&#39;qq__contains&#39;, &#39;123&#39;), (&#39;name__contains&#39;, &#39;name0&#39;))&gt;   
+                            #5. 查找name字段中包含‘naem0’或qq字段包含‘123’的所有条目
+&gt;&gt;&gt; models.Customer.objects.values(&#39;qq&#39;,&#39;name&#39;).filter(con)  
+</code></pre>
+<h4 id="2-2-3-and和or结合查询"><a href="#2-2-3-and和or结合查询" class="headerlink" title="2.2.3 and和or结合查询"></a>2.2.3 and和or结合查询</h4><pre><code class="python"># and和or结合查询
+#1. 导入模块
+&gt;&gt;&gt; from crm import models
+&gt;&gt;&gt; from django.db.models import Q
 
-<h4 id="2-2-2-or动态添加多个查询条件"><a href="#2-2-2-or动态添加多个查询条件" class="headerlink" title="2.2.2 or动态添加多个查询条件"></a>2.2.2 or动态添加多个查询条件</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># or动态添加多个查询条件</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> crm <span class="token keyword">import</span> models
-<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Q
-<span class="token operator">>></span><span class="token operator">></span> con <span class="token operator">=</span> Q<span class="token punctuation">(</span><span class="token punctuation">)</span>                                   <span class="token comment">#1. 实例化一个Q()查询类</span>
-<span class="token operator">>></span><span class="token operator">></span> con<span class="token punctuation">.</span>connector <span class="token operator">=</span> <span class="token string">"OR"</span>                           <span class="token comment">#2. 指定使用‘OR’条件</span>
-<span class="token operator">>></span><span class="token operator">></span> con<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'qq__contains'</span><span class="token punctuation">,</span><span class="token string">'123'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>           <span class="token comment">#3. qq字段中包含‘123’</span>
-<span class="token operator">>></span><span class="token operator">></span> con<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'name__contains'</span><span class="token punctuation">,</span><span class="token string">'name0'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment">#4. name字段中包含‘naem0’</span>
-<span class="token operator">>></span><span class="token operator">></span> con
-<span class="token operator">&lt;</span>Q<span class="token punctuation">:</span> <span class="token punctuation">(</span>OR<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token string">'qq__contains'</span><span class="token punctuation">,</span> <span class="token string">'123'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'name__contains'</span><span class="token punctuation">,</span> <span class="token string">'name0'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">></span>   
-                            <span class="token comment">#5. 查找name字段中包含‘naem0’或qq字段包含‘123’的所有条目</span>
-<span class="token operator">>></span><span class="token operator">></span> models<span class="token punctuation">.</span>Customer<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'qq'</span><span class="token punctuation">,</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>con<span class="token punctuation">)</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#2. q1：查询id=1或者id=2的所有条目  （or条件）
+&gt;&gt;&gt; q1 = Q()
+&gt;&gt;&gt; q1.connector = &#39;OR&#39;
+&gt;&gt;&gt; q1.children.append((&#39;id&#39;,1))
+&gt;&gt;&gt; q1.children.append((&#39;id&#39;,2))
 
-<h4 id="2-2-3-and和or结合查询"><a href="#2-2-3-and和or结合查询" class="headerlink" title="2.2.3 and和or结合查询"></a>2.2.3 and和or结合查询</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># and和or结合查询</span>
-<span class="token comment">#1. 导入模块</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> crm <span class="token keyword">import</span> models
-<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Q
+#3. q2：查询id=1的所有条目  （or条件）
+&gt;&gt;&gt; q2 = Q()
+&gt;&gt;&gt; q2.connector = &#39;OR&#39;
+&gt;&gt;&gt; q2.children.append((&#39;id&#39;,1))
 
-<span class="token comment">#2. q1：查询id=1或者id=2的所有条目  （or条件）</span>
-<span class="token operator">>></span><span class="token operator">></span> q1 <span class="token operator">=</span> Q<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> q1<span class="token punctuation">.</span>connector <span class="token operator">=</span> <span class="token string">'OR'</span>
-<span class="token operator">>></span><span class="token operator">></span> q1<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> q1<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token comment">#3. q2：查询id=1的所有条目  （or条件）</span>
-<span class="token operator">>></span><span class="token operator">></span> q2 <span class="token operator">=</span> Q<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> q2<span class="token punctuation">.</span>connector <span class="token operator">=</span> <span class="token string">'OR'</span>
-<span class="token operator">>></span><span class="token operator">></span> q2<span class="token punctuation">.</span>children<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token comment">#4. con：结合q1和q2条件结果是查询id=1的所有条目     （结合q1,q2的and条件）</span>
-<span class="token operator">>></span><span class="token operator">></span> con <span class="token operator">=</span> Q<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> con<span class="token punctuation">.</span>add<span class="token punctuation">(</span>q1<span class="token punctuation">,</span><span class="token string">'AND'</span><span class="token punctuation">)</span>
-   <span class="token operator">&lt;</span>Q<span class="token punctuation">:</span> <span class="token punctuation">(</span>OR<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">></span>
-<span class="token operator">>></span><span class="token operator">></span> con<span class="token punctuation">.</span>add<span class="token punctuation">(</span>q2<span class="token punctuation">,</span><span class="token string">'AND'</span><span class="token punctuation">)</span>
-   <span class="token operator">&lt;</span>Q<span class="token punctuation">:</span> <span class="token punctuation">(</span>AND<span class="token punctuation">:</span> <span class="token punctuation">(</span>OR<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">></span>
-<span class="token operator">>></span><span class="token operator">></span> models<span class="token punctuation">.</span>Customer<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'qq'</span><span class="token punctuation">,</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>con<span class="token punctuation">)</span>
-   <span class="token operator">&lt;</span>QuerySet <span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">'qq'</span><span class="token punctuation">:</span> <span class="token string">'123456765432'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token string">'haha'</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#4. con：结合q1和q2条件结果是查询id=1的所有条目     （结合q1,q2的and条件）
+&gt;&gt;&gt; con = Q()
+&gt;&gt;&gt; con.add(q1,&#39;AND&#39;)
+   &lt;Q: (OR: (&#39;id&#39;, 1), (&#39;id&#39;, 2))&gt;
+&gt;&gt;&gt; con.add(q2,&#39;AND&#39;)
+   &lt;Q: (AND: (OR: (&#39;id&#39;, 1), (&#39;id&#39;, 2)), (&#39;id&#39;, 1))&gt;
+&gt;&gt;&gt; models.Customer.objects.values(&#39;qq&#39;,&#39;name&#39;).filter(con)
+   &lt;QuerySet [&#123;&#39;qq&#39;: &#39;123456765432&#39;, &#39;name&#39;: &#39;haha&#39;&#125;]&gt;
+</code></pre>
 
                 
                 <p class="end">__END__</p>

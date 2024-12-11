@@ -118,15 +118,15 @@
 <li>也就是在用户A获取获取 id&#x3D;1 的商品信息时对该行记录加锁，期间其他用户阻塞等待访问该记录。</li>
 </ul>
 </blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 悲观锁实现加一操作代码</span>
-<span class="token comment"># 我们可以看到，首先通过begin开启一个事物，在获得shop信息和修改数据的整个过程中都对数据加锁，保证了数据的一致性。</span>
-<span class="token triple-quoted-string string">'''
+<pre><code class="python">#### 悲观锁实现加一操作代码
+# 我们可以看到，首先通过begin开启一个事物，在获得shop信息和修改数据的整个过程中都对数据加锁，保证了数据的一致性。
+&#39;&#39;&#39;
 begin;
 select id,name,stock as old_stock from shop  where id=1 for update;
 update shop set stock=stock-1 where id=1 and stock=old_stock;
 commit
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#39;&#39;&#39;
+</code></pre>
 <h3 id="2-3-2-乐观锁：读多写少"><a href="#2-3-2-乐观锁：读多写少" class="headerlink" title="2.3.2 乐观锁：读多写少"></a>2.3.2 乐观锁：读多写少</h3><ul>
 <li><p>在更新数据的时候需要比较程序中的库存量与数据库中的库存量是否相等，如果相等则进行更新。</p>
 </li>
@@ -141,17 +141,17 @@ commit
 <li>反之程序重新获取库存量，再次进行比较，直到两个库存量的数值相等才进行数据更新。</li>
 </ul>
 </blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 乐观锁实现加一操作代码</span>
-<span class="token comment"># 我们可以看到，只有当对数量-1操作时才会加锁，只有当程序中值和数据库中的值相等时才正真执行。</span>
-<span class="token triple-quoted-string string">'''
+<pre><code class="python">#### 乐观锁实现加一操作代码
+# 我们可以看到，只有当对数量-1操作时才会加锁，只有当程序中值和数据库中的值相等时才正真执行。
+&#39;&#39;&#39;
 //不加锁
 select id,name,stock where id=1;
 //业务处理
 begin;
 update shop set stock=stock-1 where id=1 and stock=stock;
 commit;
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#39;&#39;&#39;
+</code></pre>
 <h2 id="1-4-行级锁-表级锁"><a href="#1-4-行级锁-表级锁" class="headerlink" title="1.4 行级锁 &amp; 表级锁"></a>1.4 行级锁 &amp; 表级锁</h2><ul>
 <li>行级锁（写多读少）开销大，加锁慢，锁定粒度最小，<strong>发生锁冲突概率最低</strong>，并发度最高</li>
 <li>表级锁（适合大量的读操作）开销小，加锁快，锁定粒度大、发生锁冲突最高，并发度最低</li>
@@ -196,7 +196,7 @@ commit;
                         <br>
                     
                     
-                        <a href="../../pages/2270e1/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/2270e1/" title="发布于 2021-02-11 10:59">01.列表</a>
+                        <a href="../../pages/50a8ce/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/50a8ce/" title="发布于 2021-02-11 10:59">02.字符串</a>
                     
                 </div>
             </div>

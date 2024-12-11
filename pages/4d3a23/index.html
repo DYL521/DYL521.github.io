@@ -76,93 +76,91 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-安装redis"><a href="#01-安装redis" class="headerlink" title="01.安装redis"></a>01.安装redis</h2><h3 id="1-1-安装redis"><a href="#1-1-安装redis" class="headerlink" title="1.1 安装redis"></a>1.1 安装redis</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''一、安装gcc依赖'''</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># yum install -y gcc </span>
+                <h2 id="01-安装redis"><a href="#01-安装redis" class="headerlink" title="01.安装redis"></a>01.安装redis</h2><h3 id="1-1-安装redis"><a href="#1-1-安装redis" class="headerlink" title="1.1 安装redis"></a>1.1 安装redis</h3><pre><code class="python">&#39;&#39;&#39;一、安装gcc依赖&#39;&#39;&#39;
+[root@k8s-node2 ~]# yum install -y gcc 
 
-<span class="token triple-quoted-string string">'''二、下载并解压安装包'''</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># tar -zxvf redis-5.0.3.tar.gz</span>
+&#39;&#39;&#39;二、下载并解压安装包&#39;&#39;&#39;
+[root@k8s-node2 ~]# wget http://download.redis.io/releases/redis-5.0.3.tar.gz
+[root@k8s-node2 ~]# tar -zxvf redis-5.0.3.tar.gz
 
-<span class="token triple-quoted-string string">'''三、cd切换到redis解压目录下，执行编译'''</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># cd redis-5.0.3</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># make</span>
+&#39;&#39;&#39;三、cd切换到redis解压目录下，执行编译&#39;&#39;&#39;
+[root@k8s-node2 ~]# cd redis-5.0.3
+[root@k8s-node2 ~]# make
 
-<span class="token triple-quoted-string string">'''四、安装并指定安装目录 '''</span>
-<span class="token punctuation">[</span>root@localhost redis<span class="token operator">-</span><span class="token number">5.0</span><span class="token number">.3</span><span class="token punctuation">]</span><span class="token comment"># make install PREFIX=/usr/local/redis</span>
+&#39;&#39;&#39;四、安装并指定安装目录 &#39;&#39;&#39;
+[root@localhost redis-5.0.3]# make install PREFIX=/usr/local/redis
 
-<span class="token triple-quoted-string string">'''五、前台启动服务'''</span>
-<span class="token punctuation">[</span>root@localhost redis<span class="token operator">-</span><span class="token number">5.0</span><span class="token number">.3</span><span class="token punctuation">]</span><span class="token comment"># cd /usr/local/redis/bin/</span>
-<span class="token punctuation">[</span>root@localhost <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># ./redis-server</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-2-配置后台启动"><a href="#1-2-配置后台启动" class="headerlink" title="1.2 配置后台启动"></a>1.2 配置后台启动</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 一：从 redis 的源码目录中复制 redis.conf 到 redis 的安装目录</span>
-<span class="token punctuation">[</span>root@localhost <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># cp /root/redis-5.0.3/redis.conf  /usr/local/redis/bin/</span>
-<span class="token comment"># 二：修改 redis.conf 文件，把 daemonize no 改为 daemonize yes</span>
-<span class="token punctuation">[</span>root@localhost <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># vi /usr/local/redis/bin/redis.conf</span>
+&#39;&#39;&#39;五、前台启动服务&#39;&#39;&#39;
+[root@localhost redis-5.0.3]# cd /usr/local/redis/bin/
+[root@localhost bin]# ./redis-server
+</code></pre>
+<h3 id="1-2-配置后台启动"><a href="#1-2-配置后台启动" class="headerlink" title="1.2 配置后台启动"></a>1.2 配置后台启动</h3><pre><code class="python"># 一：从 redis 的源码目录中复制 redis.conf 到 redis 的安装目录
+[root@localhost bin]# cp /root/redis-5.0.3/redis.conf  /usr/local/redis/bin/
+# 二：修改 redis.conf 文件，把 daemonize no 改为 daemonize yes
+[root@localhost bin]# vi /usr/local/redis/bin/redis.conf
 daemonize yes
-<span class="token comment"># 三：后台启动</span>
-<span class="token punctuation">[</span>root@localhost <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># ./redis-server redis.conf</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># ps -ef|grep redis</span>
-root       <span class="token number">7264</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">16</span><span class="token punctuation">:</span><span class="token number">53</span> ?        <span class="token number">00</span><span class="token punctuation">:</span><span class="token number">00</span><span class="token punctuation">:</span><span class="token number">00</span> <span class="token punctuation">.</span><span class="token operator">/</span>redis<span class="token operator">-</span>server <span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span><span class="token punctuation">:</span><span class="token number">6379</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+# 三：后台启动
+[root@localhost bin]# ./redis-server redis.conf
+[root@k8s-node2 bin]# ps -ef|grep redis
+root       7264      1  0 16:53 ?        00:00:00 ./redis-server 127.0.0.1:6379
+</code></pre>
 <h3 id="1-3-设置开机启动"><a href="#1-3-设置开机启动" class="headerlink" title="1.3 设置开机启动"></a>1.3 设置开机启动</h3><ul>
 <li>添加redis管理脚本</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vi /etc/systemd/system/redis.service</span>
-<span class="token punctuation">[</span>Unit<span class="token punctuation">]</span>
-Description<span class="token operator">=</span>redis<span class="token operator">-</span>server
-After<span class="token operator">=</span>network<span class="token punctuation">.</span>target
+<pre><code class="python">[root@k8s-node2 ~]# vi /etc/systemd/system/redis.service
+[Unit]
+Description=redis-server
+After=network.target
 
-<span class="token punctuation">[</span>Service<span class="token punctuation">]</span>
-Type<span class="token operator">=</span>forking
-ExecStart<span class="token operator">=</span><span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>redis<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>redis<span class="token operator">-</span>server <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>redis<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>redis<span class="token punctuation">.</span>conf
-PrivateTmp<span class="token operator">=</span>true
+[Service]
+Type=forking
+ExecStart=/usr/local/redis/bin/redis-server /usr/local/redis/bin/redis.conf
+PrivateTmp=true
 
-<span class="token punctuation">[</span>Install<span class="token punctuation">]</span>
-WantedBy<span class="token operator">=</span>multi<span class="token operator">-</span>user<span class="token punctuation">.</span>target<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+[Install]
+WantedBy=multi-user.target
+</code></pre>
 <ul>
 <li>设置开机自动</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># systemctl daemon-reload</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># systemctl start redis.service</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># systemctl enable redis.service</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># ln -s /usr/local/redis/bin/redis-cli /usr/bin/redis</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-4-服务操作命令"><a href="#1-4-服务操作命令" class="headerlink" title="1.4 服务操作命令"></a>1.4 服务操作命令</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl start redis.service         #启动redis服务</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl stop redis.service          #停止redis服务</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl restart redis.service         #重新启动服务</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl status redis.service         #查看服务当前状态</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl enable redis.service         #设置开机自启动</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl disable redis.service         #停止开机自启动</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-5-将redis加入环境变量"><a href="#1-5-将redis加入环境变量" class="headerlink" title="1.5 将redis加入环境变量"></a>1.5 将redis加入环境变量</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vi /etc/profile           # 在最后添加以下内容</span>
-export PATH<span class="token operator">=</span>$PATH<span class="token punctuation">:</span><span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>redis<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># source /etc/profile         # 使配置生效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">[root@k8s-node2 bin]# systemctl daemon-reload
+[root@k8s-node2 bin]# systemctl start redis.service
+[root@k8s-node2 bin]# systemctl enable redis.service
+[root@k8s-node2 bin]# ln -s /usr/local/redis/bin/redis-cli /usr/bin/redis
+</code></pre>
+<h3 id="1-4-服务操作命令"><a href="#1-4-服务操作命令" class="headerlink" title="1.4 服务操作命令"></a>1.4 服务操作命令</h3><pre><code class="python">[root@k8s-node2 ~]# systemctl start redis.service         #启动redis服务
+[root@k8s-node2 ~]# systemctl stop redis.service          #停止redis服务
+[root@k8s-node2 ~]# systemctl restart redis.service         #重新启动服务
+[root@k8s-node2 ~]# systemctl status redis.service         #查看服务当前状态
+[root@k8s-node2 ~]# systemctl enable redis.service         #设置开机自启动
+[root@k8s-node2 ~]# systemctl disable redis.service         #停止开机自启动
+</code></pre>
+<h3 id="1-5-将redis加入环境变量"><a href="#1-5-将redis加入环境变量" class="headerlink" title="1.5 将redis加入环境变量"></a>1.5 将redis加入环境变量</h3><pre><code class="python">[root@k8s-node2 ~]# vi /etc/profile           # 在最后添加以下内容
+export PATH=$PATH:/usr/local/redis/bin/
+[root@k8s-node2 ~]# source /etc/profile         # 使配置生效
+</code></pre>
 <h2 id="02-redis基本配置"><a href="#02-redis基本配置" class="headerlink" title="02.redis基本配置"></a>02.redis基本配置</h2><ul>
 <li>Redis的配置信息在&#96;&#96;&#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;redis.conf &#96;下。</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1）绑定ip：如果需要远程访问，可将此⾏注释，或绑定⼀个真实ip</span>
-bind <span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>
-<span class="token comment"># 2）端⼝，默认为6379</span>
-port <span class="token number">6379</span>
-<span class="token comment"># 3）以守护进程运⾏，则不会在命令⾏阻塞，类似于服务,推荐设置为yes</span>
+<pre><code class="python"># 1）绑定ip：如果需要远程访问，可将此⾏注释，或绑定⼀个真实ip
+bind 127.0.0.1
+# 2）端⼝，默认为6379
+port 6379
+# 3）以守护进程运⾏，则不会在命令⾏阻塞，类似于服务,推荐设置为yes
 daemonize yes
-<span class="token comment"># 4）数据⽂件</span>
-dbfilename dump<span class="token punctuation">.</span>rdb
-<span class="token comment"># 5）数据⽂件存储路径</span>
-<span class="token builtin">dir</span> <span class="token operator">/</span>var<span class="token operator">/</span>lib<span class="token operator">/</span>redis
-<span class="token comment"># 6）⽇志⽂件</span>
-logfile <span class="token string">"/var/log/redis/redis-server.log"</span>
-<span class="token comment"># 7）数据库，默认有16个</span>
-database <span class="token number">16</span>
-<span class="token comment"># 8）配置主从模式</span>
+# 4）数据⽂件
+dbfilename dump.rdb
+# 5）数据⽂件存储路径
+dir /var/lib/redis
+# 6）⽇志⽂件
+logfile &quot;/var/log/redis/redis-server.log&quot;
+# 7）数据库，默认有16个
+database 16
+# 8）配置主从模式
 slaveof
-<span class="token comment"># 9）关闭包含模式，可以远程连接</span>
-protected<span class="token operator">-</span>mode no<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
+# 9）关闭包含模式，可以远程连接
+protected-mode no
+</code></pre>
 
                 
                 <p class="end">__END__</p>

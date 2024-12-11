@@ -76,49 +76,49 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-redis其它命令"><a href="#01-redis其它命令" class="headerlink" title="01.redis其它命令"></a>01.redis其它命令</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> redis
-pool <span class="token operator">=</span> redis<span class="token punctuation">.</span>ConnectionPool<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'1.1.1.3'</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>
-r <span class="token operator">=</span> redis<span class="token punctuation">.</span>Redis<span class="token punctuation">(</span>connection_pool<span class="token operator">=</span>pool<span class="token punctuation">)</span>
+                <h2 id="01-redis其它命令"><a href="#01-redis其它命令" class="headerlink" title="01.redis其它命令"></a>01.redis其它命令</h2><pre><code class="python">import redis
+pool = redis.ConnectionPool(host=&#39;1.1.1.3&#39;, port=6379)
+r = redis.Redis(connection_pool=pool)
 
-<span class="token comment">#1 查看当前Redis所有key</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+#1 查看当前Redis所有key
+print(r.keys(&#39;*&#39;))
 
-<span class="token comment">#2 delete(*names) 删除Redis对应的key的值</span>
-r<span class="token punctuation">.</span>delete<span class="token punctuation">(</span><span class="token string">'num16'</span><span class="token punctuation">)</span>
+#2 delete(*names) 删除Redis对应的key的值
+r.delete(&#39;num16&#39;)
 
-<span class="token comment">#3 exists(name) 检测redis的name是否存在</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">'name09'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+#3 exists(name) 检测redis的name是否存在
+print(r.exists(&#39;name09&#39;))
 
-<span class="token comment">#4 keys(pattern='*') 根据模型获取redis的name</span>
-<span class="token comment"># KEYS * 匹配数据库中所有 key 。</span>
-<span class="token comment"># KEYS h?llo 匹配 hello ， hallo 和 hxllo 等。</span>
-<span class="token comment"># KEYS h*llo 匹配 hllo 和 heeeeello 等。</span>
-<span class="token comment"># KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>keys<span class="token punctuation">(</span>pattern<span class="token operator">=</span><span class="token string">'name*'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment">#打印出Redis中所有以name开通的key</span>
+#4 keys(pattern=&#39;*&#39;) 根据模型获取redis的name
+# KEYS * 匹配数据库中所有 key 。
+# KEYS h?llo 匹配 hello ， hallo 和 hxllo 等。
+# KEYS h*llo 匹配 hllo 和 heeeeello 等。
+# KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo
+print(r.keys(pattern=&#39;name*&#39;))        #打印出Redis中所有以name开通的key
 
-<span class="token comment">#5 expire(name ,time) 为某个redis的某个name设置超时时间</span>
-r<span class="token punctuation">.</span>expire<span class="token punctuation">(</span><span class="token string">'name09'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>            <span class="token comment"># 1秒后就会删除这个key值name09</span>
+#5 expire(name ,time) 为某个redis的某个name设置超时时间
+r.expire(&#39;name09&#39;,1)            # 1秒后就会删除这个key值name09
 
-<span class="token comment">#6 rename(src, dst) 对redis的name重命名为</span>
-r<span class="token punctuation">.</span>rename<span class="token punctuation">(</span><span class="token string">'num13'</span><span class="token punctuation">,</span><span class="token string">'num13new'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-redis中切换数据库"><a href="#02-redis中切换数据库" class="headerlink" title="02.redis中切换数据库"></a>02.redis中切换数据库</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># redis 127.0.0.1:6379> SET db_number 0        # 默认使用 0 号数据库</span>
+#6 rename(src, dst) 对redis的name重命名为
+r.rename(&#39;num13&#39;,&#39;num13new&#39;)
+</code></pre>
+<h2 id="02-redis中切换数据库"><a href="#02-redis中切换数据库" class="headerlink" title="02.redis中切换数据库"></a>02.redis中切换数据库</h2><pre><code class="python"># redis 127.0.0.1:6379&gt; SET db_number 0        # 默认使用 0 号数据库
  
-<span class="token comment"># redis 127.0.0.1:6379> SELECT 1               # 使用 1 号数据库</span>
+# redis 127.0.0.1:6379&gt; SELECT 1               # 使用 1 号数据库
  
-<span class="token comment"># redis 127.0.0.1:6379[1]> GET db_number       # 已经切换到 1 号数据库，注意 Redis 现在的命令提符多了个 [1]</span>
+# redis 127.0.0.1:6379[1]&gt; GET db_number       # 已经切换到 1 号数据库，注意 Redis 现在的命令提符多了个 [1]
  
-<span class="token comment"># redis 127.0.0.1:6379[1]> SET db_number 1     # 设置默认使用 1 号数据库</span>
+# redis 127.0.0.1:6379[1]&gt; SET db_number 1     # 设置默认使用 1 号数据库
  
-<span class="token comment"># redis 127.0.0.1:6379[1]> GET db_number       # 获取当前默认使用的数据库号</span>
+# redis 127.0.0.1:6379[1]&gt; GET db_number       # 获取当前默认使用的数据库号
 
-<span class="token comment">#1 move(name, db)) 将redis的某个值移动到指定的db下（对方库中有就不移动）</span>
-<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span><span class="token punctuation">:</span><span class="token number">6379</span><span class="token operator">></span> move name0 <span class="token number">4</span>
+#1 move(name, db)) 将redis的某个值移动到指定的db下（对方库中有就不移动）
+127.0.0.1:6379&gt; move name0 4
 
 
-<span class="token comment">#2 type(name) 获取name对应值的类型</span>
-<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span><span class="token punctuation">:</span><span class="token number">6379</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token builtin">type</span> name0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+#2 type(name) 获取name对应值的类型
+127.0.0.1:6379[4]&gt; type name0
+</code></pre>
 
                 
                 <p class="end">__END__</p>

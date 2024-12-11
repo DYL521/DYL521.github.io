@@ -84,25 +84,25 @@
 <li>4、队列性质：先进先出（First-in, First-out）</li>
 <li>5、双向队列：队列的两端都允许进行进队和出队操作</li>
 </ul>
-<h2 id="1-2-队列使用方法"><a href="#1-2-队列使用方法" class="headerlink" title="1.2 队列使用方法"></a>1.2 队列使用方法</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> queue <span class="token keyword">import</span> Queue
-<span class="token comment">#1. 基本FIFO队列  先进先出 FIFO即First in First Out,先进先出</span>
-<span class="token comment">#2. maxsize设置队列中，数据上限，小于或等于0则不限制，容器中大于这个数则阻塞，直到队列中的数据被消掉</span>
-q <span class="token operator">=</span> Queue<span class="token punctuation">(</span>maxsize<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<h2 id="1-2-队列使用方法"><a href="#1-2-队列使用方法" class="headerlink" title="1.2 队列使用方法"></a>1.2 队列使用方法</h2><pre><code class="python">from queue import Queue
+#1. 基本FIFO队列  先进先出 FIFO即First in First Out,先进先出
+#2. maxsize设置队列中，数据上限，小于或等于0则不限制，容器中大于这个数则阻塞，直到队列中的数据被消掉
+q = Queue(maxsize=0)
 
-<span class="token comment">#3. 写入队列数据</span>
-q<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-q<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-q<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+#3. 写入队列数据
+q.put(0)
+q.put(1)
+q.put(2)
 
-<span class="token comment">#4. 输出当前队列所有数据</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">.</span>queue<span class="token punctuation">)</span>
+#4. 输出当前队列所有数据
+print(q.queue)
 
-<span class="token comment">#5. 删除队列数据，并返回该数据</span>
-q<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span>
+#5. 删除队列数据，并返回该数据
+q.get()
 
-<span class="token comment">#6. 输也所有队列数据</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">.</span>queue<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+#6. 输也所有队列数据
+print(q.queue)
+</code></pre>
 <h2 id="1-3-队列应用场景"><a href="#1-3-队列应用场景" class="headerlink" title="1.3 队列应用场景"></a>1.3 队列应用场景</h2><ul>
 <li>1.队列主要的功能是在多个进程间共享数据，实现业务解耦，提高效率</li>
 <li>2.生产者线程只需要把任务放入队列中，消费者线程只需要到队列中取数据进行处理</li>

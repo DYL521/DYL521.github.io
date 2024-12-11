@@ -76,89 +76,89 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-redis缓存"><a href="#01-redis缓存" class="headerlink" title="01.redis缓存"></a>01.redis缓存</h1><pre class="line-numbers language-none"><code class="language-none">第一步：查询redis缓存是否存在这个key
+                <h1 id="01-redis缓存"><a href="#01-redis缓存" class="headerlink" title="01.redis缓存"></a>01.redis缓存</h1><pre><code>第一步：查询redis缓存是否存在这个key
 第二步：如果存在这个key，不用去mysql中查询，直接从redis中取出数据即可（减轻了mysql压力）
-第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了
+</code></pre>
 <h2 id="1-1-2B青年操作"><a href="#1-1-2B青年操作" class="headerlink" title="1.1 2B青年操作"></a>1.1 2B青年操作</h2><ul>
 <li><p>2B青年每一个需要使用缓存的数据，我都写一个方法获取数据，再写一个方法处理缓存。</p>
 </li>
 <li><p>若需要用到缓存的地方越来越多，每一个都需要这么写一套代码，代码冗余繁琐。</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
-<span class="token keyword">import</span> time
+<pre><code class="python"># coding:utf-8
+from django.core.cache import cache
+import time
 
-<span class="token comment"># 获取readed缓存</span>
-<span class="token keyword">def</span> <span class="token function">get_readed_cache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 判断键是否存在</span>
-    key <span class="token operator">=</span> <span class="token string">'readed'</span>
-    <span class="token keyword">if</span> cache<span class="token punctuation">.</span>has_key<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        data <span class="token operator">=</span> cache<span class="token punctuation">.</span>get<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token comment"># 不存在，则通过sql语句获取数据，并写入缓存,这里只是一个举例的sql语句</span>
-        data <span class="token operator">=</span> <span class="token string">"select name from tb"</span>
-        <span class="token comment"># 写入缓存</span>
-        cache<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> data<span class="token punctuation">,</span> <span class="token number">3600</span> <span class="token operator">-</span> <span class="token builtin">int</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">3600</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> data
+# 获取readed缓存
+def get_readed_cache():
+    # 判断键是否存在
+    key = &#39;readed&#39;
+    if cache.has_key(key):
+        data = cache.get(key)
+    else:
+        # 不存在，则通过sql语句获取数据，并写入缓存,这里只是一个举例的sql语句
+        data = &quot;select name from tb&quot;
+        # 写入缓存
+        cache.set(key, data, 3600 - int(time.time() % 3600))
+    return data
 
-<span class="token keyword">def</span> <span class="token function">test1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    data <span class="token operator">=</span> get_readed_cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> data
+def test1():
+    data = get_readed_cache()
+    return data
 
-<span class="token keyword">def</span> <span class="token function">test2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    data <span class="token operator">=</span> get_readed_cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> data
+def test2():
+    data = get_readed_cache()
+    return data
 
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    test1<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    test2<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+if __name__ == &#39;__main__&#39;:
+    test1()
+    test2()
+</code></pre>
 <h2 id="1-2-NB青年"><a href="#1-2-NB青年" class="headerlink" title="1.2 NB青年"></a>1.2 NB青年</h2><ul>
 <li>NB青年可以使用三级装饰器，在装饰器中判断key如果存在就从reids中获取，如果不存在就从数据库查询，并设置到reids中</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
+<pre><code class="python"># coding:utf-8
+from django.core.cache import cache
 
-<span class="token comment"># 获取redis缓存的装饰器</span>
-<span class="token keyword">def</span> <span class="token function">redis_cache</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> timeout<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__redis_cache</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">def</span> <span class="token function">warpper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> cache<span class="token punctuation">.</span>has_key<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 判断缓存是否存在</span>
-                data <span class="token operator">=</span> cache<span class="token punctuation">.</span>get<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                <span class="token comment"># 若不存在则执行获取数据的方法</span>
-                <span class="token comment"># 注意返回数据的类型(字符串，数字，字典，列表均可)</span>
-                data <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span>   <span class="token comment"># 从数据库查询到数据设置到redis中</span>
-                cache<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> data<span class="token punctuation">,</span> timeout<span class="token punctuation">)</span>
-            <span class="token keyword">return</span> data
-        <span class="token keyword">return</span> warpper
-    <span class="token keyword">return</span> __redis_cache
+# 获取redis缓存的装饰器
+def redis_cache(key, timeout):
+    def __redis_cache(func):
+        def warpper(*args, **kw):
+            if cache.has_key(key):  # 判断缓存是否存在
+                data = cache.get(key)
+            else:
+                # 若不存在则执行获取数据的方法
+                # 注意返回数据的类型(字符串，数字，字典，列表均可)
+                data = func(*args, **kw)   # 从数据库查询到数据设置到redis中
+                cache.set(key, data, timeout)
+            return data
+        return warpper
+    return __redis_cache
 
-<span class="token comment">#键值为test，超时时间为60秒</span>
-<span class="token decorator annotation punctuation">@redis_cache</span><span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span>
-<span class="token keyword">def</span> <span class="token function">get_test_data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 获取Blog模型随机排序前3条数据</span>
-    <span class="token comment"># (Blog模型是我自己的模型，具体代码根据自己需求获取数据)</span>
-    <span class="token comment"># values执行结果，将返回一个字典。字典可以直接存入redis</span>
-    <span class="token comment"># data = Blog.objects.values('id', 'caption').order_by('?')[:3]</span>
-    data <span class="token operator">=</span> <span class="token string">'从数据库查询到了数据'</span>
-    <span class="token keyword">return</span> data
+#键值为test，超时时间为60秒
+@redis_cache(&#39;test&#39;, 60)
+def get_test_data():
+    # 获取Blog模型随机排序前3条数据
+    # (Blog模型是我自己的模型，具体代码根据自己需求获取数据)
+    # values执行结果，将返回一个字典。字典可以直接存入redis
+    # data = Blog.objects.values(&#39;id&#39;, &#39;caption&#39;).order_by(&#39;?&#39;)[:3]
+    data = &#39;从数据库查询到了数据&#39;
+    return data
 
-<span class="token comment">#键值为test，超时时间为60秒</span>
-<span class="token decorator annotation punctuation">@redis_cache</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span>
-<span class="token keyword">def</span> <span class="token function">get_test_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 获取Blog模型随机排序前3条数据</span>
-    <span class="token comment"># (Blog模型是我自己的模型，具体代码根据自己需求获取数据)</span>
-    <span class="token comment"># values执行结果，将返回一个字典。字典可以直接存入redis</span>
-    <span class="token comment"># data = Blog.objects.values('id', 'caption').order_by('?')[:3]</span>
-    data <span class="token operator">=</span> <span class="token string">'从数据库查询到了数据'</span>
-    <span class="token keyword">return</span> data
+#键值为test，超时时间为60秒
+@redis_cache(&#39;name&#39;, 60)
+def get_test_name():
+    # 获取Blog模型随机排序前3条数据
+    # (Blog模型是我自己的模型，具体代码根据自己需求获取数据)
+    # values执行结果，将返回一个字典。字典可以直接存入redis
+    # data = Blog.objects.values(&#39;id&#39;, &#39;caption&#39;).order_by(&#39;?&#39;)[:3]
+    data = &#39;从数据库查询到了数据&#39;
+    return data
 
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    get_test_data<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+if __name__ == &#39;__main__&#39;:
+    get_test_data()
+</code></pre>
 
                 
                 <p class="end">__END__</p>

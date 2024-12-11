@@ -90,47 +90,47 @@
 </li>
 </ul>
 <p><img src="./assets/image-20210120112921195.png" style="width: 800px; margin-left: 10px;"> </img></p>
-<h2 id="1-2-python模拟单链表"><a href="#1-2-python模拟单链表" class="headerlink" title="1.2 python模拟单链表"></a>1.2 python模拟单链表</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> item<span class="token punctuation">,</span><span class="token builtin">next</span><span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>item <span class="token operator">=</span> item
-        self<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> <span class="token builtin">next</span>
+<h2 id="1-2-python模拟单链表"><a href="#1-2-python模拟单链表" class="headerlink" title="1.2 python模拟单链表"></a>1.2 python模拟单链表</h2><pre><code class="python">class Node(object):
+    def __init__(self, item,next=None):
+        self.item = item
+        self.next = next
       
-l <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span>item<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span>item<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+l = Node(1,Node(2,Node(3,Node(4))))
+print(l.item)
+print(l.next.item)
+</code></pre>
+<h2 id="1-3-单向链表反转"><a href="#1-3-单向链表反转" class="headerlink" title="1.3 单向链表反转"></a>1.3 单向链表反转</h2><pre><code class="python">#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+class Node(object):
+    def __init__(self, val):
+        self.val = val
+        self.next = None
 
-<h2 id="1-3-单向链表反转"><a href="#1-3-单向链表反转" class="headerlink" title="1.3 单向链表反转"></a>1.3 单向链表反转</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
-<span class="token comment"># -*- coding: utf-8 -*-</span>
-<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>val <span class="token operator">=</span> val
-        self<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> <span class="token boolean">None</span>
+def list_reverse(head):
+    if head == None:
+        return None
+    L, R, cur = None, None, head  # 左指针、有指针、游标
+    while cur.next != None:
+        L = R             # 左侧指针指向以前右侧指针位置
+        R = cur           # 右侧指针前进一位指向当前游标位置
+        cur = cur.next    # 游标每次向前进一位
+        R.next = L        # 右侧指针指向左侧实现反转
+    cur.next = R          # 当跳出 while 循环时 cur(原链表最后一个元素) R(原链表倒数第二个元素)
+    return cur
 
-<span class="token keyword">def</span> <span class="token function">list_reverse</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> head <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token boolean">None</span>
-    L<span class="token punctuation">,</span> R<span class="token punctuation">,</span> cur <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">,</span> head  <span class="token comment"># 左指针、有指针、游标</span>
-    <span class="token keyword">while</span> cur<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">!=</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-        L <span class="token operator">=</span> R             <span class="token comment"># 左侧指针指向以前右侧指针位置</span>
-        R <span class="token operator">=</span> cur           <span class="token comment"># 右侧指针前进一位指向当前游标位置</span>
-        cur <span class="token operator">=</span> cur<span class="token punctuation">.</span><span class="token builtin">next</span>    <span class="token comment"># 游标每次向前进一位</span>
-        R<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> L        <span class="token comment"># 右侧指针指向左侧实现反转</span>
-    cur<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> R          <span class="token comment"># 当跳出 while 循环时 cur(原链表最后一个元素) R(原链表倒数第二个元素)</span>
-    <span class="token keyword">return</span> cur
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">'''
-    原始链表：1 -> 2 -> 3 -> 4
-    反转链表：4 -> 3 -> 2 -> 1
-    '''</span>
-    l1 <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
-    l <span class="token operator">=</span> list_reverse<span class="token punctuation">(</span>l1<span class="token punctuation">)</span>
-    <span class="token keyword">print</span> l<span class="token punctuation">.</span>val         <span class="token comment"># 4  反转后链表第一个值4</span>
-    <span class="token keyword">print</span> l<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span>val    <span class="token comment"># 3  第二个值3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+if __name__ == &#39;__main__&#39;:
+    &#39;&#39;&#39;
+    原始链表：1 -&gt; 2 -&gt; 3 -&gt; 4
+    反转链表：4 -&gt; 3 -&gt; 2 -&gt; 1
+    &#39;&#39;&#39;
+    l1 = Node(1)
+    l1.next = Node(2)
+    l1.next.next = Node(3)
+    l1.next.next.next = Node(4)
+    l = list_reverse(l1)
+    print l.val         # 4  反转后链表第一个值4
+    print l.next.val    # 3  第二个值3
+</code></pre>
 <h2 id="1-4-链表时间复杂度"><a href="#1-4-链表时间复杂度" class="headerlink" title="1.4 链表时间复杂度"></a>1.4 链表时间复杂度</h2><ul>
 <li><p>从链表中取出一个元素，时间复杂度： <code>O(n)</code></p>
 <ul>

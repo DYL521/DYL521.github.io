@@ -98,42 +98,42 @@
 </ul>
 </li>
 </ul>
-<h2 id="02-paramiko基于用户名密码连接"><a href="#02-paramiko基于用户名密码连接" class="headerlink" title="02.paramiko基于用户名密码连接"></a>02.paramiko基于用户名密码连接</h2><h3 id="2-1-远程执行命令"><a href="#2-1-远程执行命令" class="headerlink" title="2.1 远程执行命令"></a>2.1 远程执行命令</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
+<h2 id="02-paramiko基于用户名密码连接"><a href="#02-paramiko基于用户名密码连接" class="headerlink" title="02.paramiko基于用户名密码连接"></a>02.paramiko基于用户名密码连接</h2><h3 id="2-1-远程执行命令"><a href="#2-1-远程执行命令" class="headerlink" title="2.1 远程执行命令"></a>2.1 远程执行命令</h3><pre><code class="python">import paramiko
 
-<span class="token comment"># 1 创建SSH对象</span>
-ssh <span class="token operator">=</span> paramiko<span class="token punctuation">.</span>SSHClient<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment"># 2 允许连接不在know_hosts文件中的主机</span>
-ssh<span class="token punctuation">.</span>set_missing_host_key_policy<span class="token punctuation">(</span>paramiko<span class="token punctuation">.</span>AutoAddPolicy<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># 3 连接服务器</span>
-ssh<span class="token punctuation">.</span>connect<span class="token punctuation">(</span>hostname<span class="token operator">=</span><span class="token string">'1.1.1.3'</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">22</span><span class="token punctuation">,</span> username<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'chnsys@2016'</span><span class="token punctuation">)</span>
+# 1 创建SSH对象
+ssh = paramiko.SSHClient()
+# 2 允许连接不在know_hosts文件中的主机
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+# 3 连接服务器
+ssh.connect(hostname=&#39;1.1.1.3&#39;, port=22, username=&#39;root&#39;, password=&#39;chnsys@2016&#39;)
 
-<span class="token comment"># 4 执行命令                                         #stdin标准输入： 自己输入的命令</span>
-stdin<span class="token punctuation">,</span> stdout<span class="token punctuation">,</span> stderr <span class="token operator">=</span> ssh<span class="token punctuation">.</span>exec_command<span class="token punctuation">(</span><span class="token string">'pwd'</span><span class="token punctuation">)</span>      <span class="token comment"># stdout标准输出：  命令执行结果</span>
-<span class="token comment"># 5 获取命令结果                                     #stderr标准错误：  命令执行报错的结果</span>
-res<span class="token punctuation">,</span> err <span class="token operator">=</span> stdout<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stderr<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
-result <span class="token operator">=</span> res <span class="token keyword">if</span> res <span class="token keyword">else</span> err
-<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                              <span class="token comment">#运行结果： /root</span>
+# 4 执行命令                                         #stdin标准输入： 自己输入的命令
+stdin, stdout, stderr = ssh.exec_command(&#39;pwd&#39;)      # stdout标准输出：  命令执行结果
+# 5 获取命令结果                                     #stderr标准错误：  命令执行报错的结果
+res, err = stdout.read(), stderr.read()
+result = res if res else err
+print(result.decode())                              #运行结果： /root
 
-<span class="token comment"># 6 关闭连接</span>
-ssh<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 6 关闭连接
+ssh.close()
+</code></pre>
+<h3 id="2-2-上传和下载"><a href="#2-2-上传和下载" class="headerlink" title="2.2 上传和下载"></a>2.2 上传和下载</h3><pre><code class="python">import paramiko
 
-<h3 id="2-2-上传和下载"><a href="#2-2-上传和下载" class="headerlink" title="2.2 上传和下载"></a>2.2 上传和下载</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
+#1 连接客户端
+transport = paramiko.Transport((&#39;10.1.0.50&#39;,22))
+transport.connect(username=&#39;root&#39;,password=&#39;chnsys@2016&#39;)
 
-<span class="token comment">#1 连接客户端</span>
-transport <span class="token operator">=</span> paramiko<span class="token punctuation">.</span>Transport<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'10.1.0.50'</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-transport<span class="token punctuation">.</span>connect<span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">,</span>password<span class="token operator">=</span><span class="token string">'chnsys@2016'</span><span class="token punctuation">)</span>
+#2 定义与客户端交互    将刚刚定义的transport当参数传递给他
+sftp = paramiko.SFTPClient.from_transport(transport)
+#3 将location.py 上传至服务器 /tmp/test.py
+sftp.put(r&#39;C:\bbb\file.txt&#39;, &#39;/tmp/file.txt&#39;)
 
-<span class="token comment">#2 定义与客户端交互    将刚刚定义的transport当参数传递给他</span>
-sftp <span class="token operator">=</span> paramiko<span class="token punctuation">.</span>SFTPClient<span class="token punctuation">.</span>from_transport<span class="token punctuation">(</span>transport<span class="token punctuation">)</span>
-<span class="token comment">#3 将location.py 上传至服务器 /tmp/test.py</span>
-sftp<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token string">r'C:\bbb\file.txt'</span><span class="token punctuation">,</span> <span class="token string">'/tmp/file.txt'</span><span class="token punctuation">)</span>
+#4 将remove_path 下载到本地 local_path
+sftp.get(&#39;/tmp/file.txt&#39;,r&#39;C:\bbb\file.txt&#39;)
 
-<span class="token comment">#4 将remove_path 下载到本地 local_path</span>
-sftp<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'/tmp/file.txt'</span><span class="token punctuation">,</span><span class="token string">r'C:\bbb\file.txt'</span><span class="token punctuation">)</span>
-
-<span class="token comment">#5 关闭连接</span>
-transport<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+#5 关闭连接
+transport.close()
+</code></pre>
 
                 
                 <p class="end">__END__</p>
@@ -174,7 +174,7 @@ transport<span class="token punctuation">.</span>close<span class="token punctua
                         <br>
                     
                     
-                        <a href="../../pages/b715aa/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/b715aa/" title="发布于 2021-02-13 08:45">03.os</a>
+                        <a href="../../pages/e10d84/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/e10d84/" title="发布于 2021-02-13 08:45">02.random</a>
                     
                 </div>
             </div>

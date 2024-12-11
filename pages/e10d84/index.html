@@ -112,46 +112,46 @@
 <td>从序列seq中选择n个随机且独立的元素</td>
 </tr>
 </tbody></table>
-<h2 id="1-2-random常用函数举例"><a href="#1-2-random常用函数举例" class="headerlink" title="1.2 random常用函数举例"></a>1.2 random常用函数举例</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> random
-<span class="token comment">#⒈ 随机整数：</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">99</span><span class="token punctuation">)</span><span class="token punctuation">)</span>             <span class="token comment"># 随机选取0-99之间的整数</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>randrange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment"># 随机选取0-101之间的偶数</span>
+<h2 id="1-2-random常用函数举例"><a href="#1-2-random常用函数举例" class="headerlink" title="1.2 random常用函数举例"></a>1.2 random常用函数举例</h2><pre><code class="python">import random
+#⒈ 随机整数：
+print(random.randint(0,99))             # 随机选取0-99之间的整数
+print(random.randrange(0, 101, 2))      # 随机选取0-101之间的偶数
 
-<span class="token comment">#⒉ 随机浮点数：</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                   <span class="token comment"># 0.972654134347</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>             <span class="token comment"># 4.14709813772</span>
+#⒉ 随机浮点数：
+print(random.random())                   # 0.972654134347
+print(random.uniform(1, 10))             # 4.14709813772
 
-<span class="token comment">#⒊ 随机字符：</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span><span class="token string">'abcdefg'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment"># c</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token string">'abcdefghij'</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># ['j', 'f', 'c']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#⒊ 随机字符：
+print(random.choice(&#39;abcdefg&#39;))         # c
+print(random.sample(&#39;abcdefghij&#39;,3))    # [&#39;j&#39;, &#39;f&#39;, &#39;c&#39;]
+</code></pre>
+<h2 id="1-3-使用random实现四位验证码"><a href="#1-3-使用random实现四位验证码" class="headerlink" title="1.3 使用random实现四位验证码"></a>1.3 使用random实现四位验证码</h2><h3 id="1-3-1-使用for循环实现"><a href="#1-3-1-使用for循环实现" class="headerlink" title="1.3.1 使用for循环实现"></a>1.3.1 使用for循环实现</h3><pre><code class="python">import random
+checkcode = &#39;&#39;
+for i in range(4):
+    current = random.randrange(0,4)
+    if current == i:
+        tmp = chr(random.randint(65,90))        #65,90表示所有大写字母
+    else:
+        tmp = random.randint(0,9)
+    checkcode += str(tmp)
+print(checkcode)                            #运行结果： 851K
+</code></pre>
+<h3 id="1-3-2-使用random-sample实现"><a href="#1-3-2-使用random-sample实现" class="headerlink" title="1.3.2 使用random.sample实现"></a>1.3.2 使用random.sample实现</h3><pre><code class="python">import random
+import string
+str_source = string.ascii_letters + string.digits
+str_list = random.sample(str_source,7)        #[&#39;i&#39;, &#39;Q&#39;, &#39;U&#39;, &#39;u&#39;, &#39;A&#39;, &#39;0&#39;, &#39;9&#39;]
 
-<h2 id="1-3-使用random实现四位验证码"><a href="#1-3-使用random实现四位验证码" class="headerlink" title="1.3 使用random实现四位验证码"></a>1.3 使用random实现四位验证码</h2><h3 id="1-3-1-使用for循环实现"><a href="#1-3-1-使用for循环实现" class="headerlink" title="1.3.1 使用for循环实现"></a>1.3.1 使用for循环实现</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> random
-checkcode <span class="token operator">=</span> <span class="token string">''</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    current <span class="token operator">=</span> random<span class="token punctuation">.</span>randrange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span>
-    <span class="token keyword">if</span> current <span class="token operator">==</span> i<span class="token punctuation">:</span>
-        tmp <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">65</span><span class="token punctuation">,</span><span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment">#65,90表示所有大写字母</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        tmp <span class="token operator">=</span> random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">)</span>
-    checkcode <span class="token operator">+=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>checkcode<span class="token punctuation">)</span>                            <span class="token comment">#运行结果： 851K</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-3-2-使用random-sample实现"><a href="#1-3-2-使用random-sample实现" class="headerlink" title="1.3.2 使用random.sample实现"></a>1.3.2 使用random.sample实现</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> random
-<span class="token keyword">import</span> string
-str_source <span class="token operator">=</span> string<span class="token punctuation">.</span>ascii_letters <span class="token operator">+</span> string<span class="token punctuation">.</span>digits
-str_list <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>str_source<span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span>        <span class="token comment">#['i', 'Q', 'U', 'u', 'A', '0', '9']</span>
-
-str_final <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>str_list<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>str_final<span class="token punctuation">)</span>            <span class="token comment"># 运行结果： jkFU2Ed</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+str_final = &#39;&#39;.join(str_list)
+print(str_final)            # 运行结果： jkFU2Ed
+</code></pre>
 <ul>
 <li>string模块</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> string<span class="token punctuation">.</span>digits
-<span class="token string">'0123456789'</span>
-<span class="token operator">>></span><span class="token operator">></span> string<span class="token punctuation">.</span>ascii_lowercase
-<span class="token string">'abcdefghijklmnopqrstuvwxyz'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">&gt;&gt;&gt; string.digits
+&#39;0123456789&#39;
+&gt;&gt;&gt; string.ascii_lowercase
+&#39;abcdefghijklmnopqrstuvwxyz&#39;
+</code></pre>
 
                 
                 <p class="end">__END__</p>
@@ -188,11 +188,11 @@ str_final <span class="token operator">=</span> <span class="token string">''</s
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/b715aa/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/b715aa/" title="发布于 2021-02-13 08:45">03.os</a>
+                        <a href="../../pages/502ef4/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/502ef4/" title="发布于 2021-02-13 08:46">09.paramiko</a>
                         <br>
                     
                     
-                        <a href="../../pages/3180c1/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/3180c1/" title="发布于 2021-02-13 08:43">01.time</a>
+                        <a href="../../pages/b715aa/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/b715aa/" title="发布于 2021-02-13 08:45">03.os</a>
                     
                 </div>
             </div>

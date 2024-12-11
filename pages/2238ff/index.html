@@ -76,18 +76,18 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-python垃圾回收机制"><a href="#01-python垃圾回收机制" class="headerlink" title="01.python垃圾回收机制"></a>01.python垃圾回收机制</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">class Student<span class="token punctuation">(</span>object<span class="token punctuation">)</span>:
-    def __del__<span class="token punctuation">(</span>self<span class="token punctuation">)</span>:                <span class="token comment"># 作用：清除无用的实例对内存的暂用</span>
-        print<span class="token punctuation">(</span><span class="token string">'__del__'</span><span class="token punctuation">)</span>
+                <h2 id="01-python垃圾回收机制"><a href="#01-python垃圾回收机制" class="headerlink" title="01.python垃圾回收机制"></a>01.python垃圾回收机制</h2><pre><code class="shell">class Student(object):
+    def __del__(self):                # 作用：清除无用的实例对内存的暂用
+        print(&#39;__del__&#39;)
 
-s1 <span class="token operator">=</span> Student<span class="token punctuation">(</span><span class="token punctuation">)</span>
-s2 <span class="token operator">=</span> s1
+s1 = Student()
+s2 = s1
 del s2
 del s1
 
-<span class="token function">import</span> <span class="token function">time</span>
-time.sleep<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+import time
+time.sleep(1000)
+</code></pre>
 <h3 id="1-1-引计数"><a href="#1-1-引计数" class="headerlink" title="1.1 引计数"></a>1.1 引计数</h3><ul>
 <li>原理<ul>
 <li>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1.</li>

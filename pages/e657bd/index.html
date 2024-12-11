@@ -79,78 +79,80 @@
                 <h2 id="01-字典常用方法"><a href="#01-字典常用方法" class="headerlink" title="01.字典常用方法"></a>01.字典常用方法</h2><h3 id="1-1-clear"><a href="#1-1-clear" class="headerlink" title="1.1 clear"></a>1.1 clear</h3><ul>
 <li><code>作用：</code>clear方法清除字典中所有的项，这是一个原地操作，所以无返回值（或则说返回None）</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-d<span class="token punctuation">[</span><span class="token string">'Tom'</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">8777</span>             <span class="token comment"># 在字典中添加数据           </span>
-d<span class="token punctuation">[</span><span class="token string">'Jack'</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">9999</span>    
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>                 <span class="token comment">#the result : &#123;'Jack': 9999, 'Tom': 8777&#125;</span>
-d<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>                <span class="token comment">#the result : &#123;&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#125;
+d[&#39;Tom&#39;]=8777             # 在字典中添加数据           
+d[&#39;Jack&#39;]=9999    
+print(d)                 #the result : &#123;&#39;Jack&#39;: 9999, &#39;Tom&#39;: 8777&#125;
+d.clear()
+print(d)                #the result : &#123;&#125;
+</code></pre>
 <h3 id="1-2-copy"><a href="#1-2-copy" class="headerlink" title="1.2 copy"></a>1.2 copy</h3><ul>
 <li><code>作用：</code>copy方法返回一个具有相同 ”键-值” 对的新字典，而不是副本</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-a <span class="token operator">=</span> d<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-a<span class="token punctuation">[</span><span class="token string">'Tom'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'改变后的值'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>                        <span class="token comment">#&#123;'Fly': 6666, 'Tom': 8777&#125;</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>                        <span class="token comment">#&#123;'Fly': 6666, 'Tom': '改变后的值'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Fly&#39;:6666&#125;
+a = d.copy()
+a[&#39;Tom&#39;] = &#39;改变后的值&#39;
+print(d)                        #&#123;&#39;Fly&#39;: 6666, &#39;Tom&#39;: 8777&#125;
+print(a)                        #&#123;&#39;Fly&#39;: 6666, &#39;Tom&#39;: &#39;改变后的值&#39;&#125;
+</code></pre>
 <h3 id="1-3-fromkeys"><a href="#1-3-fromkeys" class="headerlink" title="1.3 fromkeys"></a>1.3 fromkeys</h3><ul>
 <li><p><code>作用：</code>fromkeys方法使用给定的键建立新的字典，每个键都对应一个默认的值None。</p>
 </li>
 <li><p>首先建造一个空字典，然后调用它的fromkeys方法，建立另一个字典</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">.</span>fromkeys<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">,</span><span class="token string">'age'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment">#the result　：　&#123;'age': None, 'name': None&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code class="python">print(&#123;&#125;.fromkeys([&#39;name&#39;,&#39;age&#39;]))         #the result　：　&#123;&#39;age&#39;: None, &#39;name&#39;: None&#125;
+</code></pre>
 <h3 id="1-4-get"><a href="#1-4-get" class="headerlink" title="1.4 get"></a>1.4 get</h3><ul>
 <li><code>作用：</code>get方法是个更宽松的访问字典项的方法，如果试图访问字典中不存在的项时不会报错仅会    返回：None</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Jack'</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'Tom'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                              <span class="token comment">#the result ：     8777</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'not_exist'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                          <span class="token comment">#the result ：     None</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-5-循环字典"><a href="#1-5-循环字典" class="headerlink" title="1.5 循环字典"></a>1.5 循环字典</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Jack'</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-<span class="token comment"># 方法1：</span>
-<span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> d<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span>v<span class="token punctuation">)</span>
-<span class="token comment"># 方法2</span>
-<span class="token keyword">for</span> k <span class="token keyword">in</span> d<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
-<span class="token comment"># 方法:3</span>
-<span class="token keyword">for</span> k <span class="token keyword">in</span> d<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Jack&#39;:8888,&#39;Fly&#39;:6666&#125;
+print(d.get(&#39;Tom&#39;))                              #the result ：     8777
+print(d.get(&#39;not_exist&#39;))                          #the result ：     None
+</code></pre>
+<h3 id="1-5-循环字典"><a href="#1-5-循环字典" class="headerlink" title="1.5 循环字典"></a>1.5 循环字典</h3><pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Jack&#39;:8888,&#39;Fly&#39;:6666&#125;
+# 方法1：
+for k,v in d.items():
+    print(k,v)
+# 方法2
+for k in d.values():
+    print(k)
+# 方法:3
+for k in d.keys():
+    print(k)
+</code></pre>
 <h3 id="1-6-pop"><a href="#1-6-pop" class="headerlink" title="1.6 pop"></a>1.6 pop</h3><ul>
 <li><code>作用：</code>pop方法用于获得对应与给定键的值，然后将这个”键-值”对从字典中移除</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Jack'</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-v <span class="token operator">=</span> d<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token string">'Tom'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>                    <span class="token comment">#8777</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Jack&#39;:8888,&#39;Fly&#39;:6666&#125;
+v = d.pop(&#39;Tom&#39;)
+print(v)                    #8777
+</code></pre>
 <h3 id="1-7-setdefault"><a href="#1-7-setdefault" class="headerlink" title="1.7 setdefault"></a>1.7 setdefault</h3><ul>
 <li>作用：setdefault方法在某种程度上类似于get方法，能够获得与给定键相关联的值</li>
 <li>除此之外，setdefault还能在字典中不含有给定键的情况下设定相应的键值</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Jack'</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-d<span class="token punctuation">.</span>setdefault<span class="token punctuation">(</span><span class="token string">'Tom'</span><span class="token punctuation">)</span>                          <span class="token comment">#the result ： 8777</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>setdefault<span class="token punctuation">(</span><span class="token string">'Test'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                     <span class="token comment">#the result ： None</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>                                  <span class="token comment">#&#123;'Fly': 6666, 'Jack': 8888, 'Tom': 8777, 'Test': None&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Jack&#39;:8888,&#39;Fly&#39;:6666&#125;
+d.setdefault(&#39;Tom&#39;)                          #the result ： 8777
+print(d.setdefault(&#39;Test&#39;))                     #the result ： None
+print(d)                                  #&#123;&#39;Fly&#39;: 6666, &#39;Jack&#39;: 8888, &#39;Tom&#39;: 8777, &#39;Test&#39;: None&#125;
+</code></pre>
 <h3 id="1-8-update"><a href="#1-8-update" class="headerlink" title="1.8 update"></a>1.8 update</h3><ul>
 <li><code>作用</code>：update方法可以利用一个字典项更新另一个字典，提供的字典中的项会被添加到旧的字典中，如有相同的键则会被覆盖</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">8777</span><span class="token punctuation">,</span><span class="token string">'Jack'</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token punctuation">,</span><span class="token string">'Fly'</span><span class="token punctuation">:</span><span class="token number">6666</span><span class="token punctuation">&#125;</span>
-a <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'Tom'</span><span class="token punctuation">:</span><span class="token number">110</span><span class="token punctuation">,</span><span class="token string">'Test'</span><span class="token punctuation">:</span><span class="token number">119</span><span class="token punctuation">&#125;</span>
-d<span class="token punctuation">.</span>update<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>                        <span class="token comment">#the result ：&#123;'Fly': 6666, 'Test': 119, 'Jack': 8888, 'Tom': 110&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="python">d = &#123;&#39;Tom&#39;:8777,&#39;Jack&#39;:8888,&#39;Fly&#39;:6666&#125;
+a = &#123;&#39;Tom&#39;:110,&#39;Test&#39;:119&#125;
+d.update(a)
+print(d)                        #the result ：&#123;&#39;Fly&#39;: 6666, &#39;Test&#39;: 119, &#39;Jack&#39;: 8888, &#39;Tom&#39;: 110&#125;
+</code></pre>
+<h3 id="1-9-将两个列表组合成字典"><a href="#1-9-将两个列表组合成字典" class="headerlink" title="1.9 将两个列表组合成字典"></a>1.9 将两个列表组合成字典</h3><pre><code class="python">keys = [&#39;a&#39;, &#39;b&#39;]
+values = [1, 2]
+#1、zip生成字典
+print(dict(zip(keys,values)))                              # &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;
+#2、for循环推倒字典
+print(&#123;keys[i]: values[i] for i in range(len(keys))&#125;)              # &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;
+</code></pre>
 
-<h3 id="1-9-将两个列表组合成字典"><a href="#1-9-将两个列表组合成字典" class="headerlink" title="1.9 将两个列表组合成字典"></a>1.9 将两个列表组合成字典</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">keys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">]</span>
-values <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span>
-<span class="token comment">#1、zip生成字典</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span>keys<span class="token punctuation">,</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                              <span class="token comment"># &#123;'a': 1, 'b': 2&#125;</span>
-<span class="token comment">#2、for循环推倒字典</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>keys<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">:</span> values<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>keys<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>              <span class="token comment"># &#123;'a': 1, 'b': 2&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
                 <p class="end">__END__</p>
             </div>

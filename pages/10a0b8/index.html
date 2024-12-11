@@ -84,154 +84,154 @@
 <li>模型类被定义在”应用&#x2F;models.py”文件中。</li>
 <li>模型类必须继承自Model类，位于包django.db.models中。</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+<pre><code class="python">from django.db import models
 
-<span class="token comment">#定义图书模型类BookInfo</span>
-<span class="token keyword">class</span> <span class="token class-name">BookInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    btitle <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'名称'</span><span class="token punctuation">)</span>
-    bpub_date <span class="token operator">=</span> models<span class="token punctuation">.</span>DateField<span class="token punctuation">(</span>verbose_name<span class="token operator">=</span><span class="token string">'发布日期'</span><span class="token punctuation">)</span>
-    bread <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'阅读量'</span><span class="token punctuation">)</span>
-    bcomment <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'评论量'</span><span class="token punctuation">)</span>
-    is_delete <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'逻辑删除'</span><span class="token punctuation">)</span>
+#定义图书模型类BookInfo
+class BookInfo(models.Model):
+    btitle = models.CharField(max_length=20, verbose_name=&#39;名称&#39;)
+    bpub_date = models.DateField(verbose_name=&#39;发布日期&#39;)
+    bread = models.IntegerField(default=0, verbose_name=&#39;阅读量&#39;)
+    bcomment = models.IntegerField(default=0, verbose_name=&#39;评论量&#39;)
+    is_delete = models.BooleanField(default=False, verbose_name=&#39;逻辑删除&#39;)
 
-    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-        db_table <span class="token operator">=</span> <span class="token string">'tb_books'</span>  <span class="token comment"># 指明数据库表名</span>
-        verbose_name <span class="token operator">=</span> <span class="token string">'图书'</span>  <span class="token comment"># 在admin站点中显示的名称</span>
-        verbose_name_plural <span class="token operator">=</span> verbose_name  <span class="token comment"># 显示的复数名称</span>
+    class Meta:
+        db_table = &#39;tb_books&#39;  # 指明数据库表名
+        verbose_name = &#39;图书&#39;  # 在admin站点中显示的名称
+        verbose_name_plural = verbose_name  # 显示的复数名称
 
-    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""定义每个数据对象的显示信息"""</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>btitle
+    def __str__(self):
+        &quot;&quot;&quot;定义每个数据对象的显示信息&quot;&quot;&quot;
+        return self.btitle
 
-<span class="token comment">#定义英雄模型类HeroInfo</span>
-<span class="token keyword">class</span> <span class="token class-name">HeroInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    GENDER_CHOICES <span class="token operator">=</span> <span class="token punctuation">(</span>
-        <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'female'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">)</span>
-    hname <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'名称'</span><span class="token punctuation">)</span> 
-    hgender <span class="token operator">=</span> models<span class="token punctuation">.</span>SmallIntegerField<span class="token punctuation">(</span>choices<span class="token operator">=</span>GENDER_CHOICES<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'性别'</span><span class="token punctuation">)</span>  
-    hcomment <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">,</span> null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'描述信息'</span><span class="token punctuation">)</span> 
-    hbook <span class="token operator">=</span> models<span class="token punctuation">.</span>ForeignKey<span class="token punctuation">(</span>BookInfo<span class="token punctuation">,</span> on_delete<span class="token operator">=</span>models<span class="token punctuation">.</span>CASCADE<span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'图书'</span><span class="token punctuation">)</span>  <span class="token comment"># 外键</span>
-    is_delete <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'逻辑删除'</span><span class="token punctuation">)</span>
+#定义英雄模型类HeroInfo
+class HeroInfo(models.Model):
+    GENDER_CHOICES = (
+        (0, &#39;female&#39;),
+        (1, &#39;male&#39;)
+    )
+    hname = models.CharField(max_length=20, verbose_name=&#39;名称&#39;) 
+    hgender = models.SmallIntegerField(choices=GENDER_CHOICES, default=0, verbose_name=&#39;性别&#39;)  
+    hcomment = models.CharField(max_length=200, null=True, verbose_name=&#39;描述信息&#39;) 
+    hbook = models.ForeignKey(BookInfo, on_delete=models.CASCADE, verbose_name=&#39;图书&#39;)  # 外键
+    is_delete = models.BooleanField(default=False, verbose_name=&#39;逻辑删除&#39;)
 
-    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-        db_table <span class="token operator">=</span> <span class="token string">'tb_heros'</span>
-        verbose_name <span class="token operator">=</span> <span class="token string">'英雄'</span>
-        verbose_name_plural <span class="token operator">=</span> verbose_name
+    class Meta:
+        db_table = &#39;tb_heros&#39;
+        verbose_name = &#39;英雄&#39;
+        verbose_name_plural = verbose_name
 
-    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>hname<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    def __str__(self):
+        return self.hname
+</code></pre>
+<h2 id="02-源信息Meta"><a href="#02-源信息Meta" class="headerlink" title="02.源信息Meta"></a>02.源信息Meta</h2><pre><code class="python">from django.db import models
 
-<h2 id="02-源信息Meta"><a href="#02-源信息Meta" class="headerlink" title="02.源信息Meta"></a>02.源信息Meta</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+class UserInfo(models.Model):
+        username = models.CharField(max_length=32)
+        password = models.CharField(max_length=32)
+        class Meta:
+            #1 数据库中生成的表名称 默认 app名称 + 下划线 + 类名
+            db_table = &quot;table_name&quot;     #自己指定创建的表名
 
-<span class="token keyword">class</span> <span class="token class-name">UserInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        username <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
-        password <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
-        <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-            <span class="token comment">#1 数据库中生成的表名称 默认 app名称 + 下划线 + 类名</span>
-            db_table <span class="token operator">=</span> <span class="token string">"table_name"</span>     <span class="token comment">#自己指定创建的表名</span>
+            #2 Django Admin 中显示的表名称
+            verbose_name=&#39;user&#39;          #在Django admin后台显示时表名是users
 
-            <span class="token comment">#2 Django Admin 中显示的表名称</span>
-            verbose_name<span class="token operator">=</span><span class="token string">'user'</span>          <span class="token comment">#在Django admin后台显示时表名是users</span>
+            #3 verbose_name加s
+            verbose_name_plural=&#39;user&#39;  #若果这个字段也是user那么4中表名才显示user
 
-            <span class="token comment">#3 verbose_name加s</span>
-            verbose_name_plural<span class="token operator">=</span><span class="token string">'user'</span>  <span class="token comment">#若果这个字段也是user那么4中表名才显示user</span>
+            #4 联合唯一索引
+            unique_together = ((&quot;name&quot;, &quot;password&quot;),)
 
-            <span class="token comment">#4 联合唯一索引</span>
-            unique_together <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+            #5 联合索引   (缺点是最左前缀，写SQL语句基于password时不能命中索引，查找慢)
+            #  如：select * from tb where password = ‘xx’    就无法命中索引
+            index_together = [
+                (&quot;name&quot;, &quot;password&quot;),
+            ]
+# 更多：https://docs.djangoproject.com/en/1.10/ref/models/options/
+</code></pre>
+<h2 id="03-字段"><a href="#03-字段" class="headerlink" title="03.字段"></a>03.字段</h2><h3 id="3-1-常用字段"><a href="#3-1-常用字段" class="headerlink" title="3.1 常用字段"></a>3.1 常用字段</h3><pre><code class="python">from django.db import models
 
-            <span class="token comment">#5 联合索引   (缺点是最左前缀，写SQL语句基于password时不能命中索引，查找慢)</span>
-            <span class="token comment">#  如：select * from tb where password = ‘xx’    就无法命中索引</span>
-            index_together <span class="token operator">=</span> <span class="token punctuation">[</span>
-                <span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            <span class="token punctuation">]</span>
-<span class="token comment"># 更多：https://docs.djangoproject.com/en/1.10/ref/models/options/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+class UserGroup(models.Model):
+    uid = models.AutoField(primary_key=True)
 
-<h2 id="03-字段"><a href="#03-字段" class="headerlink" title="03.字段"></a>03.字段</h2><h3 id="3-1-常用字段"><a href="#3-1-常用字段" class="headerlink" title="3.1 常用字段"></a>3.1 常用字段</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+    name = models.CharField(max_length=32,null=True, blank=True)
+    email = models.EmailField(max_length=32)
+    text = models.TextField()
 
-<span class="token keyword">class</span> <span class="token class-name">UserGroup</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    uid <span class="token operator">=</span> models<span class="token punctuation">.</span>AutoField<span class="token punctuation">(</span>primary_key<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    ctime = models.DateTimeField(auto_now_add=True)      # 只有添加时才会更新时间
+    uptime = models.DateTimeField(auto_now=True)         # 只要修改就会更新时间
 
-    name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span>null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> blank<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-    email <span class="token operator">=</span> models<span class="token punctuation">.</span>EmailField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
-    text <span class="token operator">=</span> models<span class="token punctuation">.</span>TextField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ip1 = models.IPAddressField()               # 字符串类型，Django Admin以及ModelForm中提供验证 IPV4 机制
+    ip2 = models.GenericIPAddressField()           # 字符串类型，Django Admin以及ModelForm中提供验证 Ipv4和Ipv6
 
-    ctime <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span>auto_now_add<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>      <span class="token comment"># 只有添加时才会更新时间</span>
-    uptime <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span>auto_now<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>         <span class="token comment"># 只要修改就会更新时间</span>
+    active = models.BooleanField(default=True)
 
-    ip1 <span class="token operator">=</span> models<span class="token punctuation">.</span>IPAddressField<span class="token punctuation">(</span><span class="token punctuation">)</span>               <span class="token comment"># 字符串类型，Django Admin以及ModelForm中提供验证 IPV4 机制</span>
-    ip2 <span class="token operator">=</span> models<span class="token punctuation">.</span>GenericIPAddressField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment"># 字符串类型，Django Admin以及ModelForm中提供验证 Ipv4和Ipv6</span>
+    data01 = models.DateTimeField()              # 日期+时间格式 YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ
+    data02 = models.DateField()                 # 日期格式      YYYY-MM-DD
+    data03 = models.TimeField()                 # 时间格式      HH:MM[:ss[.uuuuuu]]
 
-    active <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-
-    data01 <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment"># 日期+时间格式 YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ</span>
-    data02 <span class="token operator">=</span> models<span class="token punctuation">.</span>DateField<span class="token punctuation">(</span><span class="token punctuation">)</span>                 <span class="token comment"># 日期格式      YYYY-MM-DD</span>
-    data03 <span class="token operator">=</span> models<span class="token punctuation">.</span>TimeField<span class="token punctuation">(</span><span class="token punctuation">)</span>                 <span class="token comment"># 时间格式      HH:MM[:ss[.uuuuuu]]</span>
-
-    age <span class="token operator">=</span> models<span class="token punctuation">.</span>PositiveIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment"># 正小整数 0 ～ 32767</span>
-    balance <span class="token operator">=</span> models<span class="token punctuation">.</span>SmallIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment"># 小整数 -32768 ～ 32767</span>
-    money <span class="token operator">=</span> models<span class="token punctuation">.</span>PositiveIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>         <span class="token comment"># 正整数 0 ～ 2147483647</span>
-    bignum <span class="token operator">=</span> models<span class="token punctuation">.</span>BigIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment"># 长整型(有符号的) -9223372036854775808 ～ 9223372036854775807</span>
+    age = models.PositiveIntegerField()           # 正小整数 0 ～ 32767
+    balance = models.SmallIntegerField()          # 小整数 -32768 ～ 32767
+    money = models.PositiveIntegerField()         # 正整数 0 ～ 2147483647
+    bignum = models.BigIntegerField()           # 长整型(有符号的) -9223372036854775808 ～ 9223372036854775807
   
-    user_type_choices <span class="token operator">=</span> <span class="token punctuation">(</span>
-        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"超级用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"普通用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"普普通用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span>
-    user_type_id <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>choices<span class="token operator">=</span>user_type_choices<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    user_type_choices = (
+        (1, &quot;超级用户&quot;),
+        (2, &quot;普通用户&quot;),
+        (3, &quot;普普通用户&quot;),
+    )
+    user_type_id = models.IntegerField(choices=user_type_choices, default=1)
+</code></pre>
+<h3 id="3-2-不常用字段"><a href="#3-2-不常用字段" class="headerlink" title="3.2 不常用字段"></a>3.2 不常用字段</h3><pre><code class="python">URLField(CharField)
+    - 字符串类型，Django Admin以及ModelForm中提供验证 URL
 
-<h3 id="3-2-不常用字段"><a href="#3-2-不常用字段" class="headerlink" title="3.2 不常用字段"></a>3.2 不常用字段</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">URLField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供验证 URL
+SlugField(CharField)
+    - 字符串类型，Django Admin以及ModelForm中提供验证支持 字母、数字、下划线、连接符（减号）
 
-SlugField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供验证支持 字母、数字、下划线、连接符（减号）
+CommaSeparatedIntegerField(CharField)
+    - 字符串类型，格式必须为逗号分割的数字
 
-CommaSeparatedIntegerField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串类型，格式必须为逗号分割的数字
+UUIDField(Field)
+    - 字符串类型，Django Admin以及ModelForm中提供对UUID格式的验证
 
-UUIDField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供对UUID格式的验证
+FilePathField(Field)
+    - 字符串，Django Admin以及ModelForm中提供读取文件夹下文件的功能
+    - 参数：
+            path,                      文件夹路径
+            match=None,                正则匹配
+            recursive=False,           递归下面的文件夹
+            allow_files=True,          允许文件
+            allow_folders=False,       允许文件夹
 
-FilePathField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串，Django Admin以及ModelForm中提供读取文件夹下文件的功能
-    <span class="token operator">-</span> 参数：
-            path<span class="token punctuation">,</span>                      文件夹路径
-            <span class="token keyword">match</span><span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                正则匹配
-            recursive<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>           递归下面的文件夹
-            allow_files<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>          允许文件
-            allow_folders<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>       允许文件夹
+FileField(Field)
+    - 字符串，路径保存在数据库，文件上传到指定目录
+    - 参数：
+        upload_to = &quot;&quot;      上传文件的保存路径
+        storage = None      存储组件，默认django.core.files.storage.FileSystemStorage
 
-FileField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串，路径保存在数据库，文件上传到指定目录
-    <span class="token operator">-</span> 参数：
-        upload_to <span class="token operator">=</span> <span class="token string">""</span>      上传文件的保存路径
-        storage <span class="token operator">=</span> <span class="token boolean">None</span>      存储组件，默认django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>files<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>FileSystemStorage
-
-ImageField<span class="token punctuation">(</span>FileField<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 字符串，路径保存在数据库，文件上传到指定目录
-    <span class="token operator">-</span> 参数：
-        upload_to <span class="token operator">=</span> <span class="token string">""</span>      上传文件的保存路径
-        storage <span class="token operator">=</span> <span class="token boolean">None</span>      存储组件，默认django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>files<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>FileSystemStorage
-        width_field<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>   上传图片的高度保存的数据库字段名（字符串）
-        height_field<span class="token operator">=</span><span class="token boolean">None</span>   上传图片的宽度保存的数据库字段名（字符串）
+ImageField(FileField)
+    - 字符串，路径保存在数据库，文件上传到指定目录
+    - 参数：
+        upload_to = &quot;&quot;      上传文件的保存路径
+        storage = None      存储组件，默认django.core.files.storage.FileSystemStorage
+        width_field=None,   上传图片的高度保存的数据库字段名（字符串）
+        height_field=None   上传图片的宽度保存的数据库字段名（字符串）
 
 
-DurationField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 长整数，时间间隔，数据库中按照bigint存储，ORM中获取的值为datetime<span class="token punctuation">.</span>timedelta类型
+DurationField(Field)
+    - 长整数，时间间隔，数据库中按照bigint存储，ORM中获取的值为datetime.timedelta类型
 
-FloatField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 浮点型
+FloatField(Field)
+    - 浮点型
 
-DecimalField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> <span class="token number">10</span>进制小数
-    <span class="token operator">-</span> 参数：
+DecimalField(Field)
+    - 10进制小数
+    - 参数：
         max_digits，小数总长度
         decimal_places，小数位长度
 
-BinaryField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
-    <span class="token operator">-</span> 二进制类型<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+BinaryField(Field)
+    - 二进制类型
+</code></pre>
 <h2 id="04-参数"><a href="#04-参数" class="headerlink" title="04.参数"></a>04.参数</h2><table>
 <thead>
 <tr>

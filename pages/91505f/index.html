@@ -89,9 +89,9 @@
 <h2 id="1-2-安装-Ansible"><a href="#1-2-安装-Ansible" class="headerlink" title="1.2 安装 Ansible"></a>1.2 安装 Ansible</h2><ul>
 <li><code>在 192.168.56.66 中安装</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install ansible</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># pip -y install ansible</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">[root@k8s-node2 ~]# yum -y install ansible
+[root@k8s-node2 ~]# pip -y install ansible
+</code></pre>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="https://releases.ansible.com/ansible/">https://releases.ansible.com/ansible/</a></p>
 </li>
@@ -124,17 +124,17 @@
 <li>Ansible 中的某些设置可通过配置文件（<code>/etc/ansible/ansible.cfg</code>）进行调整。</li>
 <li>对于大多数用户来说，默认配置应该足够了。</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/ansible/ansible.cfg </span>
-<span class="token punctuation">[</span>defaults<span class="token punctuation">]</span>
-inventory <span class="token operator">=</span> /etc/ansible/hosts     <span class="token comment"># 指定被管理端主机清单</span>
-host_key_checking <span class="token operator">=</span> False        <span class="token comment"># 关闭主机检查</span>
-<span class="token assign-left variable">forks</span><span class="token operator">=</span> <span class="token number">5</span>                    <span class="token comment"># 指定执行时 ansible 并发数</span>
-sudo_user <span class="token operator">=</span> root              <span class="token comment"># 提权为 root （新版：become_user）</span>
-remote_port <span class="token operator">=</span> <span class="token number">22</span>               <span class="token comment"># 连接端口</span>
-<span class="token function">timeout</span> <span class="token operator">=</span> <span class="token number">10</span>
-log_path <span class="token operator">=</span> /var/log/ansible.log
-private_key_file <span class="token operator">=</span> /root/.ssh/id_rsa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">[root@k8s-node2 ~]# vim /etc/ansible/ansible.cfg 
+[defaults]
+inventory = /etc/ansible/hosts     # 指定被管理端主机清单
+host_key_checking = False        # 关闭主机检查
+forks= 5                    # 指定执行时 ansible 并发数
+sudo_user = root              # 提权为 root （新版：become_user）
+remote_port = 22               # 连接端口
+timeout = 10
+log_path = /var/log/ansible.log
+private_key_file = /root/.ssh/id_rsa
+</code></pre>
 
                 
                 <p class="end">__END__</p>

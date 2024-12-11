@@ -119,108 +119,108 @@
 </li>
 <li>实现聊天功能</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 后端的django代码</span>
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render
-<span class="token keyword">from</span> dwebsocket<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> accept_websocket<span class="token punctuation">,</span>require_websocket
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>http <span class="token keyword">import</span> HttpResponse
+<pre><code class="python"># 后端的django代码
+from django.shortcuts import render
+from dwebsocket.decorators import accept_websocket,require_websocket
+from django.http import HttpResponse
 
 
-<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token string">'index.html'</span><span class="token punctuation">)</span>
+def index(request):
+    return render(request, &#39;index.html&#39;)
 
-<span class="token keyword">from</span> dwebsocket<span class="token punctuation">.</span>backends<span class="token punctuation">.</span>default<span class="token punctuation">.</span>websocket <span class="token keyword">import</span> DefaultWebSocket  <span class="token comment"># request.websocket就是DefaultWebSocket对象</span>
+from dwebsocket.backends.default.websocket import DefaultWebSocket  # request.websocket就是DefaultWebSocket对象
 
-tmp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token comment"># 只有加了这个装饰器，这个视图函数才能处理websocket请求</span>
-<span class="token decorator annotation punctuation">@accept_websocket</span>
-<span class="token keyword">def</span> <span class="token function">echo</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> <span class="token keyword">not</span> request<span class="token punctuation">.</span>is_websocket<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment">#判断是不是websocket连接</span>
-        <span class="token keyword">try</span><span class="token punctuation">:</span>  <span class="token comment">#如果是普通的http方法</span>
-            message <span class="token operator">=</span> request<span class="token punctuation">.</span>GET<span class="token punctuation">[</span><span class="token string">'message'</span><span class="token punctuation">]</span>
-            <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span>message<span class="token punctuation">)</span>
-        <span class="token keyword">except</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span><span class="token string">'index.html'</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">'''1.实现消息推送'''</span>
-        tmp<span class="token punctuation">.</span>append<span class="token punctuation">(</span>request<span class="token punctuation">.</span>websocket<span class="token punctuation">)</span>  <span class="token comment"># 把所有连接的websocket连接都加入列表中</span>
-        <span class="token comment">#  request.websocket = &lt;dwebsocket.backends.default.websocket.DefaultWebSocket object at 0x00000272E69A4320></span>
-        <span class="token comment"># failed:Invalid frame header：你的视图没有阻塞，请求过一次后服务器端就关闭连接了</span>
-        <span class="token comment"># 所以使用for循环 request.websocket 对象就会调用 __iter__()方法，利用迭代器进行阻塞</span>
-        <span class="token keyword">for</span> message <span class="token keyword">in</span> request<span class="token punctuation">.</span>websocket<span class="token punctuation">:</span>
-            <span class="token keyword">for</span> ws <span class="token keyword">in</span> tmp<span class="token punctuation">:</span>
-                ws<span class="token punctuation">.</span>send<span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+tmp = []
+# 只有加了这个装饰器，这个视图函数才能处理websocket请求
+@accept_websocket
+def echo(request):
+    if not request.is_websocket():  #判断是不是websocket连接
+        try:  #如果是普通的http方法
+            message = request.GET[&#39;message&#39;]
+            return HttpResponse(message)
+        except:
+            return render(request,&#39;index.html&#39;)
+    else:
+        &#39;&#39;&#39;1.实现消息推送&#39;&#39;&#39;
+        tmp.append(request.websocket)  # 把所有连接的websocket连接都加入列表中
+        #  request.websocket = &lt;dwebsocket.backends.default.websocket.DefaultWebSocket object at 0x00000272E69A4320&gt;
+        # failed:Invalid frame header：你的视图没有阻塞，请求过一次后服务器端就关闭连接了
+        # 所以使用for循环 request.websocket 对象就会调用 __iter__()方法，利用迭代器进行阻塞
+        for message in request.websocket:
+            for ws in tmp:
+                ws.send(message)
 
-        <span class="token triple-quoted-string string">'''2.实现聊天室思路'''</span>
-        <span class="token comment"># d = &#123;&#125;                                # 使用了一个dict来保存数据，</span>
-        <span class="token comment"># d['zhangsan'] = request.websocket     # key值是用户身份，value值是dict类型的&#123;username:websocket&#125;。</span>
-        <span class="token comment"># d['zhangsan'].send(message)           # 发送消息到客户端</span>
-        <span class="token comment"># d['lisi'].send(message)   ==>  request.websocket.send(message)</span>
+        &#39;&#39;&#39;2.实现聊天室思路&#39;&#39;&#39;
+        # d = &#123;&#125;                                # 使用了一个dict来保存数据，
+        # d[&#39;zhangsan&#39;] = request.websocket     # key值是用户身份，value值是dict类型的&#123;username:websocket&#125;。
+        # d[&#39;zhangsan&#39;].send(message)           # 发送消息到客户端
+        # d[&#39;lisi&#39;].send(message)   ==&gt;  request.websocket.send(message)
 
-        <span class="token comment"># 这只是个思路，如果正式使用的话，肯定会对group封装，也不会只保存在内存中，需要保存到redis中去</span>
-        <span class="token comment"># 并且对每个websocket对象设置有效期，过期清除，避免长期挂起状态消耗系统资源等</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        # 这只是个思路，如果正式使用的话，肯定会对group封装，也不会只保存在内存中，需要保存到redis中去
+        # 并且对每个websocket对象设置有效期，过期清除，避免长期挂起状态消耗系统资源等
+</code></pre>
+<pre><code class="html"># 前端VUE代码
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;button @click=&quot;send&quot;&gt;发消息&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
 
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"># 前端VUE代码
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>send<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>发消息<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+&lt;script&gt;
+  export default &#123;
+    data () &#123;
+      return &#123;
+        path:&quot;ws://127.0.0.1:8000/echo?username=zhangsan&amp;token=xxxx&quot;,
+        socket:&quot;&quot;
+      &#125;
+    &#125;,
+    mounted () &#123;
+      // 初始化
+      this.init()
+    &#125;,
+    methods: &#123;
+      init: function () &#123;
+        if(typeof(WebSocket) === &quot;undefined&quot;)&#123;
+          alert(&quot;您的浏览器不支持socket&quot;)
+        &#125;else&#123;
+          // 实例化socket
+          this.socket = new WebSocket(this.path)
+          // 监听socket连接
+          this.socket.onopen = this.open
+          // 监听socket错误信息
+          this.socket.onerror = this.error
+          // 监听socket消息
+          this.socket.onmessage = this.getMessage
+        &#125;
+      &#125;,
+      open: function () &#123;
+        console.log(&quot;socket连接成功&quot;)
+      &#125;,
+      error: function () &#123;
+        console.log(&quot;连接错误&quot;)
+      &#125;,
+      getMessage: function (msg) &#123;
+        console.log(msg.data)         // 打印后台返回的数据
+      &#125;,
+      send: function () &#123;
+        var params = &#39;hahahahhahaha&#39;;
+        this.socket.send(params)      // 发送给后台的数据
+      &#125;,
+      close: function () &#123;
+        console.log(&quot;socket已经关闭&quot;)
+      &#125;
+    &#125;,
+    destroyed () &#123;
+      // 销毁监听
+      this.socket.onclose = this.close
+    &#125;
+  &#125;
+&lt;/script&gt;
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
-  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">data</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
-        <span class="token literal-property property">path</span><span class="token operator">:</span><span class="token string">"ws://127.0.0.1:8000/echo?username=zhangsan&amp;token=xxxx"</span><span class="token punctuation">,</span>
-        <span class="token literal-property property">socket</span><span class="token operator">:</span><span class="token string">""</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token function">mounted</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token comment">// 初始化</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token literal-property property">methods</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token function-variable function">init</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>WebSocket<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">"undefined"</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-          <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"您的浏览器不支持socket"</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-          <span class="token comment">// 实例化socket</span>
-          <span class="token keyword">this</span><span class="token punctuation">.</span>socket <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebSocket</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>path<span class="token punctuation">)</span>
-          <span class="token comment">// 监听socket连接</span>
-          <span class="token keyword">this</span><span class="token punctuation">.</span>socket<span class="token punctuation">.</span>onopen <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>open
-          <span class="token comment">// 监听socket错误信息</span>
-          <span class="token keyword">this</span><span class="token punctuation">.</span>socket<span class="token punctuation">.</span>onerror <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>error
-          <span class="token comment">// 监听socket消息</span>
-          <span class="token keyword">this</span><span class="token punctuation">.</span>socket<span class="token punctuation">.</span>onmessage <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>getMessage
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token function-variable function">open</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"socket连接成功"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"连接错误"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token function-variable function">getMessage</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">msg</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>data<span class="token punctuation">)</span>         <span class="token comment">// 打印后台返回的数据</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token function-variable function">send</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">var</span> params <span class="token operator">=</span> <span class="token string">'hahahahhahaha'</span><span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>socket<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span>      <span class="token comment">// 发送给后台的数据</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token function-variable function">close</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"socket已经关闭"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token function">destroyed</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token comment">// 销毁监听</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>socket<span class="token punctuation">.</span>onclose <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>close
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+&lt;style&gt;
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
-
-</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&lt;/style&gt;
+</code></pre>
 
                 
                 <p class="end">__END__</p>

@@ -100,145 +100,137 @@
 <h2 id="1-2-Nginx反向代理"><a href="#1-2-Nginx反向代理" class="headerlink" title="1.2 Nginx反向代理"></a>1.2 Nginx反向代理</h2><h3 id="1-2-1-web01和web02安装nginx"><a href="#1-2-1-web01和web02安装nginx" class="headerlink" title="1.2.1 web01和web02安装nginx"></a>1.2.1 web01和web02安装nginx</h3><ul>
 <li>web01配置</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
-<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">[root@linux-node4 ~]# yum -y install nginx
+[root@linux-node4 ~]# echo web01 &gt; /usr/share/nginx/html/index.html
+</code></pre>
 <ul>
 <li>web02配置</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
-<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">[root@linux-node4 ~]# yum -y install nginx
+[root@linux-node4 ~]# echo web01 &gt; /usr/share/nginx/html/index.html
+</code></pre>
 <ul>
 <li>测试nginx服务</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/    <span class="token comment"># web01</span>
-http://192.168.56.63/    <span class="token comment"># web02</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">http://192.168.56.62/    # web01
+http://192.168.56.63/    # web02
+</code></pre>
 <h3 id="1-2-2-nginx反向代理配置"><a href="#1-2-2-nginx反向代理配置" class="headerlink" title="1.2.2 nginx反向代理配置"></a>1.2.2 nginx反向代理配置</h3><ul>
 <li><code>安装nginx服务器</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code class="shell">[root@linux-node4 ~]# yum -y install nginx
+</code></pre>
 <ul>
 <li>配置反向代理</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">stream <span class="token punctuation">&#123;</span>
-    log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
-    access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
-    upstream django-apiserver <span class="token punctuation">&#123;</span>
-                server <span class="token number">192.168</span>.56.62:80<span class="token punctuation">;</span>
-                server <span class="token number">192.168</span>.56.63:80<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
+<pre><code class="shell">stream &#123;
+    log_format  main  &#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;;
+    access_log  /var/log/nginx/django-access.log  main;
+    upstream django-apiserver &#123;
+                server 192.168.56.62:80;
+                server 192.168.56.63:80;
+            &#125;
    
-    server <span class="token punctuation">&#123;</span>
-       listen <span class="token number">88</span><span class="token punctuation">;</span>
-       proxy_pass django-apiserver<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    server &#123;
+       listen 88;
+       proxy_pass django-apiserver;
+    &#125;
+&#125;
+</code></pre>
 <ul>
 <li><code>完整配置如下</code>(看一下即可，都是nginx默认配置)</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
-user  nginx<span class="token punctuation">;</span>
-worker_processes  <span class="token number">1</span><span class="token punctuation">;</span>
-error_log  /var/log/nginx/error.log warn<span class="token punctuation">;</span>
-pid        /var/run/nginx.pid<span class="token punctuation">;</span>
-events <span class="token punctuation">&#123;</span>
-    worker_connections  <span class="token number">1024</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+<pre><code class="shell">[root@lb-master ~]# cat /etc/nginx/nginx.conf 
+user  nginx;
+worker_processes  1;
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+events &#123;
+    worker_connections  1024;
+&#125;
 
-stream <span class="token punctuation">&#123;</span>
-    log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
-    access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
-    upstream django-apiserver <span class="token punctuation">&#123;</span>
-                server <span class="token number">192.168</span>.56.62:80<span class="token punctuation">;</span>
-                server <span class="token number">192.168</span>.56.63:80<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
+stream &#123;
+    log_format  main  &#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;;
+    access_log  /var/log/nginx/django-access.log  main;
+    upstream django-apiserver &#123;
+                server 192.168.56.62:80;
+                server 192.168.56.63:80;
+            &#125;
    
-    server <span class="token punctuation">&#123;</span>
-       listen <span class="token number">80</span><span class="token punctuation">;</span>
-       proxy_pass django-apiserver<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    server &#123;
+       listen 80;
+       proxy_pass django-apiserver;
+    &#125;
+&#125;
 
-http <span class="token punctuation">&#123;</span>
-    include       /etc/nginx/mime.types<span class="token punctuation">;</span>
-    default_type  application/octet-stream<span class="token punctuation">;</span>
-    log_format  main  <span class="token string">'$remote_addr - $remote_user [$time_local] "$request" '</span>
-                      <span class="token string">'$status $body_bytes_sent "$http_referer" '</span>
-                      <span class="token string">'"$http_user_agent" "$http_x_forwarded_for"'</span><span class="token punctuation">;</span>
-    access_log  /var/log/nginx/access.log  main<span class="token punctuation">;</span>
-    sendfile        on<span class="token punctuation">;</span>
-    <span class="token comment">#tcp_nopush     on;</span>
-    keepalive_timeout  <span class="token number">65</span><span class="token punctuation">;</span>
-    <span class="token comment">#gzip  on;</span>
-    include /etc/nginx/conf.d/*.conf<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+http &#123;
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    access_log  /var/log/nginx/access.log  main;
+    sendfile        on;
+    #tcp_nopush     on;
+    keepalive_timeout  65;
+    #gzip  on;
+    include /etc/nginx/conf.d/*.conf;
+&#125;
+</code></pre>
 <ul>
 <li><code>测试反向代理可用性</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
-http://192.168.56.63/        <span class="token comment"># web02</span>
-<span class="token comment"># 可以停止一个nginx服务，测试可用性</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="1-3-nginx-upstream五中配置"><a href="#1-3-nginx-upstream五中配置" class="headerlink" title="1.3 nginx upstream五中配置"></a>1.3 nginx upstream五中配置</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、轮询（默认）
+<pre><code class="shell">http://192.168.56.62/        # web01
+http://192.168.56.63/        # web02
+# 可以停止一个nginx服务，测试可用性
+</code></pre>
+<h1 id="1-3-nginx-upstream五中配置"><a href="#1-3-nginx-upstream五中配置" class="headerlink" title="1.3 nginx upstream五中配置"></a>1.3 nginx upstream五中配置</h1><pre><code class="python">1、轮询（默认）
 每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。
 
-upstream backserver <span class="token punctuation">&#123;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.14</span><span class="token punctuation">;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.15</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+upstream backserver &#123;
+    server 192.168.0.14;
+    server 192.168.0.15;
+&#125;
 
-<span class="token number">2</span>、权重 weight
+2、权重 weight
 指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。
 
-upstream backserver <span class="token punctuation">&#123;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.14</span> weight<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.15</span> weight<span class="token operator">=</span><span class="token number">7</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+upstream backserver &#123;
+    server 192.168.0.14 weight=3;
+    server 192.168.0.15 weight=7;
+&#125;
 
-<span class="token number">3</span>、ip_hash（ IP绑定）
+3、ip_hash（ IP绑定）
 上述方式存在一个问题就是说，在负载均衡系统中，假如用户在某台服务器上登录了，那么该用户第二次请求的时候，因为我们是负载均衡系统，
 每次请求都会重新定位到服务器集群中的某一个，那么已经登录某一个服务器的用户再重新定位到另一个服务器，其登录信息将会丢失，这样显然是不妥的。
 我们可以采用ip_hash指令解决这个问题，如果客户已经访问了某个服务器，当用户再次访问时，会将该请求通过哈希算法，自动定位到该服务器。
-每个请求按访问ip的<span class="token builtin">hash</span>结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。
+每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。
 
-upstream backserver <span class="token punctuation">&#123;</span>
-    ip_hash<span class="token punctuation">;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.14</span><span class="token punctuation">:</span><span class="token number">88</span><span class="token punctuation">;</span>
-    server <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.15</span><span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+upstream backserver &#123;
+    ip_hash;
+    server 192.168.0.14:88;
+    server 192.168.0.15:80;
+&#125;
 
-<span class="token number">4</span>、fair（第三方插件）
+4、fair（第三方插件）
 按后端服务器的响应时间来分配请求，响应时间短的优先分配。
 
-upstream backserver <span class="token punctuation">&#123;</span>
-    server server1<span class="token punctuation">;</span>
-    server server2<span class="token punctuation">;</span>
-    fair<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+upstream backserver &#123;
+    server server1;
+    server server2;
+    fair;
+&#125;
 
-<span class="token number">5</span>、url_hash（第三方插件）
-按访问url的<span class="token builtin">hash</span>结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。
+5、url_hash（第三方插件）
+按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。
 
-upstream backserver <span class="token punctuation">&#123;</span>
-    server squid1<span class="token punctuation">:</span><span class="token number">3128</span><span class="token punctuation">;</span>
-    server squid2<span class="token punctuation">:</span><span class="token number">3128</span><span class="token punctuation">;</span>
-    <span class="token builtin">hash</span> $request_uri<span class="token punctuation">;</span>
-    hash_method crc32<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-
-
-
-
-
-
+upstream backserver &#123;
+    server squid1:3128;
+    server squid2:3128;
+    hash $request_uri;
+    hash_method crc32;
+&#125;
+</code></pre>
 
                 
                 <p class="end">__END__</p>

@@ -76,20 +76,20 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="00-匿名函数"><a href="#00-匿名函数" class="headerlink" title="00.匿名函数"></a>00.匿名函数</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">:</span>x<span class="token operator">+</span>y<span class="token operator">+</span>z
-<span class="token keyword">def</span> <span class="token function">F</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x<span class="token operator">+</span>y<span class="token operator">+</span>z
+                <h2 id="00-匿名函数"><a href="#00-匿名函数" class="headerlink" title="00.匿名函数"></a>00.匿名函数</h2><pre><code class="python">f = lambda x,y,z:x+y+z
+def F(x,y,z):
+    return x+y+z
 
-f <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">:</span>x <span class="token keyword">if</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token keyword">else</span> x <span class="token operator">+</span> <span class="token number">100</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                    <span class="token comment"># 110</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+f = lambda x:x if x % 2 != 0 else x + 100
+print(f(10))                    # 110
+</code></pre>
 <ul>
 <li>三元运算</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">name <span class="token operator">=</span> <span class="token string">'Tom'</span> <span class="token keyword">if</span> <span class="token number">1</span> <span class="token operator">==</span> <span class="token number">1</span> <span class="token keyword">else</span> <span class="token string">'fly'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
-<span class="token comment"># 运行结果： Tom</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">name = &#39;Tom&#39; if 1 == 1 else &#39;fly&#39;
+print(name)
+# 运行结果： Tom
+</code></pre>
 <h2 id="01-filter"><a href="#01-filter" class="headerlink" title="01.filter"></a>01.<code>filter</code></h2><ul>
 <li>filter()函数可以对序列做过滤处理，就是说可以使用一个自定的函数过滤一个序列，把序列的每一项传到自定义的过滤函数里处理，并返回结果做过滤。</li>
 <li>最终一次性返回过滤后的结果。</li>
@@ -100,87 +100,87 @@ f <span class="token operator">=</span> <span class="token keyword">lambda</span
 </li>
 <li>利用 filter、lambda表达式 获取l1中元素小于33的所有元素 l1 &#x3D; [11, 22, 33, 44, 55]</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">l1<span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">33</span><span class="token punctuation">,</span><span class="token number">44</span><span class="token punctuation">,</span><span class="token number">55</span><span class="token punctuation">]</span>
-a <span class="token operator">=</span> <span class="token builtin">filter</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">&lt;</span><span class="token number">33</span><span class="token punctuation">,</span> l1<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding:utf8 -*-</span>
-<span class="token keyword">def</span> <span class="token function">F</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> x<span class="token operator">&lt;</span><span class="token number">33</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> x
-b <span class="token operator">=</span> <span class="token builtin">filter</span><span class="token punctuation">(</span>F<span class="token punctuation">,</span>l1<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token number">111</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 输入 '102304'  ==> ['1', '2', '3', '4']</span>
-l1<span class="token operator">=</span> <span class="token string">'102304'</span>
-a <span class="token operator">=</span> <span class="token builtin">filter</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x <span class="token operator">!=</span><span class="token string">'0'</span><span class="token punctuation">,</span> l1<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">l1= [11,22,33,44,55]
+a = filter(lambda x: x&lt;33, l1)
+print(list(a))
+</code></pre>
+<pre><code class="python"># -*- coding:utf8 -*-
+def F(x):
+    if x&lt;33:
+        return x
+b = filter(F,l1)
+print(list(b))111
+</code></pre>
+<pre><code class="python"># 输入 &#39;102304&#39;  ==&gt; [&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;]
+l1= &#39;102304&#39;
+a = filter(lambda x: x !=&#39;0&#39;, l1)
+print(list(a))
+</code></pre>
 <h2 id="02-map"><a href="#02-map" class="headerlink" title="02.map"></a>02.<code>map</code></h2><ul>
 <li>第一个参数接收一个函数名，第二个参数接收一个可迭代对象</li>
 <li>利用map，lambda表达式将所有偶数元素加100</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding:utf8 -*-</span>
-l1<span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">33</span><span class="token punctuation">,</span><span class="token number">44</span><span class="token punctuation">,</span><span class="token number">55</span><span class="token punctuation">]</span>
-ret <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>x<span class="token operator">-</span><span class="token number">100</span> <span class="token keyword">if</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token keyword">else</span> x <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">,</span>l1<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>ret<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># 运行结果： [-89, 122, -67, 144, -45]</span>
+<pre><code class="python"># -*- coding:utf8 -*-
+l1= [11,22,33,44,55]
+ret = map(lambda x:x-100 if x % 2 != 0 else x + 100,l1)
+print(list(ret))
+# 运行结果： [-89, 122, -67, 144, -45]
 
-<span class="token comment"># lambda x:x-100 if x % 2 != 0 else x + 100</span>
-<span class="token comment"># 如果 "if x % 2 != 0" 条件成立返回 x-100</span>
-<span class="token comment"># 不成立：返回 x+100</span>
-<span class="token keyword">def</span> <span class="token function">F</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> x<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> x<span class="token operator">-</span><span class="token number">100</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> x<span class="token operator">+</span><span class="token number">100</span>
-ret <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span>F<span class="token punctuation">,</span>l1<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>ret<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+# lambda x:x-100 if x % 2 != 0 else x + 100
+# 如果 &quot;if x % 2 != 0&quot; 条件成立返回 x-100
+# 不成立：返回 x+100
+def F(x):
+    if x%2 != 0:
+        return x-100
+    else:
+        return x+100
+ret = map(F,l1)
+print(list(ret))
+</code></pre>
 <h2 id="03-reduce"><a href="#03-reduce" class="headerlink" title="03.reduce"></a>03.<code>reduce</code></h2><ul>
 <li>字符串反转</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding:utf8 -*-</span>
-<span class="token triple-quoted-string string">'''使用reduce将字符串反转'''</span>
-s <span class="token operator">=</span> <span class="token string">'Hello World'</span>
-<span class="token keyword">from</span> functools <span class="token keyword">import</span> <span class="token builtin">reduce</span>
+<pre><code class="python"># -*- coding:utf8 -*-
+&#39;&#39;&#39;使用reduce将字符串反转&#39;&#39;&#39;
+s = &#39;Hello World&#39;
+from functools import reduce
 
-result <span class="token operator">=</span> <span class="token builtin">reduce</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">,</span>y<span class="token punctuation">:</span>y<span class="token operator">+</span>x<span class="token punctuation">,</span>s<span class="token punctuation">)</span>
-<span class="token comment"># # 1、第一次：x=H,y=e  => y+x = eH</span>
-<span class="token comment"># # 2、第二次：x=l,y=eH  => y+x = leH</span>
-<span class="token comment"># # 3、第三次：x=l,y=leH  => y+x = lleH</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span> result <span class="token punctuation">)</span>      <span class="token comment"># dlroW olleH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+result = reduce(lambda x,y:y+x,s)
+# # 1、第一次：x=H,y=e  =&gt; y+x = eH
+# # 2、第二次：x=l,y=eH  =&gt; y+x = leH
+# # 3、第三次：x=l,y=leH  =&gt; y+x = lleH
+print( result )      # dlroW olleH
+</code></pre>
 <h2 id="04-sorted"><a href="#04-sorted" class="headerlink" title="04.sorted"></a>04.<code>sorted</code></h2><ul>
 <li>经典面试题只 列表排序</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">students <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'john'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'jane'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'dave'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token comment"># [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>students<span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> s<span class="token punctuation">:</span> s<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>    <span class="token comment"># 按年龄排序</span>
-<span class="token comment"># 结果：[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]</span>
+<pre><code class="python">students = [(&#39;john&#39;, &#39;A&#39;, 15), (&#39;jane&#39;, &#39;B&#39;, 12), (&#39;dave&#39;, &#39;B&#39;, 10)]
+# [(&#39;dave&#39;, &#39;B&#39;, 10), (&#39;jane&#39;, &#39;B&#39;, 12), (&#39;john&#39;, &#39;A&#39;, 15)]
+print( sorted(students, key=lambda s: s[2], reverse=False) )    # 按年龄排序
+# 结果：[(&#39;dave&#39;, &#39;B&#39;, 10), (&#39;jane&#39;, &#39;B&#39;, 12), (&#39;john&#39;, &#39;A&#39;, 15)]
 
-<span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># ('john', 'A', 15)</span>
-    <span class="token keyword">return</span> x<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>students<span class="token punctuation">,</span> key<span class="token operator">=</span>f<span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>    <span class="token comment"># 按年龄排序</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+def f(x):
+    # (&#39;john&#39;, &#39;A&#39;, 15)
+    return x[2]
+print( sorted(students, key=f, reverse=False) )    # 按年龄排序
+</code></pre>
 <ul>
 <li>对字典的value排序</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'k1'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'k3'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'k2'</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">&#125;</span>
-<span class="token comment"># d.items() = [('k1', 1), ('k3', 3), ('k2', 2)]</span>
-a <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>            <span class="token comment"># [('k1', 1), ('k2', 2), ('k3', 3)]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">d = &#123;&#39;k1&#39;:1, &#39;k3&#39;: 3, &#39;k2&#39;:2&#125;
+# d.items() = [(&#39;k1&#39;, 1), (&#39;k3&#39;, 3), (&#39;k2&#39;, 2)]
+a = sorted(d.items(), key=lambda x: x[1])
+print(a)            # [(&#39;k1&#39;, 1), (&#39;k2&#39;, 2), (&#39;k3&#39;, 3)]
+</code></pre>
 <ul>
 <li>两个列表编一个字典</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">L1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'k1'</span><span class="token punctuation">,</span><span class="token string">'k2'</span><span class="token punctuation">,</span><span class="token string">'k3'</span><span class="token punctuation">]</span>
-L2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'v1'</span><span class="token punctuation">,</span><span class="token string">'v2'</span><span class="token punctuation">,</span><span class="token string">'v3'</span><span class="token punctuation">]</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span>L1<span class="token punctuation">,</span>L2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># zip(L1,L2) : [('k1', 'v1'), ('k2', 'v2'), ('k3', 'v3')]</span>
-<span class="token comment"># dict( [('k1', 'v1'), ('k2', 'v2'), ('k3', 'v3')] )  = &#123;'k1': 'v1', 'k2': 'v2', 'k3': 'v3'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="python">L1 = [&#39;k1&#39;,&#39;k2&#39;,&#39;k3&#39;]
+L2 = [&#39;v1&#39;,&#39;v2&#39;,&#39;v3&#39;]
+print( list(zip(L1,L2)))
+# zip(L1,L2) : [(&#39;k1&#39;, &#39;v1&#39;), (&#39;k2&#39;, &#39;v2&#39;), (&#39;k3&#39;, &#39;v3&#39;)]
+# dict( [(&#39;k1&#39;, &#39;v1&#39;), (&#39;k2&#39;, &#39;v2&#39;), (&#39;k3&#39;, &#39;v3&#39;)] )  = &#123;&#39;k1&#39;: &#39;v1&#39;, &#39;k2&#39;: &#39;v2&#39;, &#39;k3&#39;: &#39;v3&#39;&#125;
+</code></pre>
 
                 
                 <p class="end">__END__</p>

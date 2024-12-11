@@ -77,56 +77,56 @@
             <div class="toc"></div>
             <div class="article-body">
                 <h2 id="01-基本测试"><a href="#01-基本测试" class="headerlink" title="01.基本测试"></a>01.基本测试</h2><h3 id="1-1-测试分词功能"><a href="#1-1-测试分词功能" class="headerlink" title="1.1 测试分词功能"></a>1.1 测试分词功能</h3><p><a target="_blank" rel="noopener" href="http://192.168.56.66:5601/">http://192.168.56.66:5601</a></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /*          <span class="token comment">## 获取所有数据</span>
+<pre><code class="shell">GET /*          ## 获取所有数据
 
-DELETE /*        <span class="token comment">## 删除所有数据</span>
+DELETE /*        ## 删除所有数据
 
-GET /_analyze     <span class="token comment">## 测试分词</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-  <span class="token string">"text"</span><span class="token builtin class-name">:</span> <span class="token string">"2001A第一帅是谁？"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+GET /_analyze     ## 测试分词
+&#123;
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: &quot;2001A第一帅是谁？&quot;
+&#125;
+</code></pre>
 <p><img src="./assets/image-20210111202234040.png" style="width: 700px; margin-left: 50px;"> </img></p>
-<h3 id="1-2-测试添加数据"><a href="#1-2-测试添加数据" class="headerlink" title="1.2 测试添加数据"></a>1.2 测试添加数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PUT test1/type1/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"kitty"</span>,
-  <span class="token string">"age"</span>:12
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<h3 id="1-2-测试添加数据"><a href="#1-2-测试添加数据" class="headerlink" title="1.2 测试添加数据"></a>1.2 测试添加数据</h3><pre><code class="shell">PUT test1/type1/1
+&#123;
+  &quot;name&quot;:&quot;kitty&quot;,
+  &quot;age&quot;:12
+&#125;
+</code></pre>
 <p><img src="./assets/image-20210111204251160.png" style="width: 800px; margin-left: 50px;"> </img></p>
 <h2 id="02-商品文档的基础操作-CRUD"><a href="#02-商品文档的基础操作-CRUD" class="headerlink" title="02.商品文档的基础操作(CRUD)"></a>02.商品文档的基础操作(CRUD)</h2><h3 id="2-1-新增商品"><a href="#2-1-新增商品" class="headerlink" title="2.1 新增商品"></a>2.1 新增商品</h3><ul>
 <li>标准语法</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">put /index/type/id
-<span class="token punctuation">&#123;</span>
-	k-v类型的数据
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">put /index/type/id
+&#123;
+    k-v类型的数据
+&#125;
+</code></pre>
 <ul>
 <li>添加第一条数据</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiangjiao"</span>,
-  <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">"haochi tian"</span>,
-  <span class="token string">"price"</span>:40,
-  <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"feilvbin"</span>,
-  <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"xiangjiao"</span>,<span class="token string">"haochi"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">put /goods/fruit/1
+&#123;
+  &quot;name&quot;:&quot;xiangjiao&quot;,
+  &quot;describe&quot;:&quot;haochi tian&quot;,
+  &quot;price&quot;:40,
+  &quot;producer&quot;:&quot;feilvbin&quot;,
+  &quot;tags&quot;:[&quot;xiangjiao&quot;,&quot;haochi&quot;]
+&#125;
+</code></pre>
 <ul>
 <li>添加第二条数据</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/2
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"pingguo"</span>,
-  <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">" cui"</span>,
-  <span class="token string">"price"</span>:60,
-  <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"zhongguo"</span>,
-  <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"haokan"</span>,<span class="token string">"xiang"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">put /goods/fruit/2
+&#123;
+  &quot;name&quot;:&quot;pingguo&quot;,
+  &quot;describe&quot;:&quot; cui&quot;,
+  &quot;price&quot;:60,
+  &quot;producer&quot;:&quot;zhongguo&quot;,
+  &quot;tags&quot;:[&quot;haokan&quot;,&quot;xiang&quot;]
+&#125;
+</code></pre>
 <ul>
 <li>其中 goods表示要创建的索引名称(数据库),fruit表示要创建的数据类别（表）,1表示插入的数据的主键,这里需要明确一个概念就是倒排索引</li>
 </ul>
@@ -136,71 +136,71 @@ GET /_analyze     <span class="token comment">## 测试分词</span>
 <h3 id="2-2-查询一条数据"><a href="#2-2-查询一条数据" class="headerlink" title="2.2 查询一条数据"></a>2.2 查询一条数据</h3><ul>
 <li>标准语法:</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /index /type/id</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code class="shell">## GET /index /type/id
+</code></pre>
 <ul>
 <li>测试查询</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /goods/fruit/1</span>
-<span class="token comment">## 查询结果如下:</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"_index"</span> <span class="token builtin class-name">:</span> <span class="token string">"goods"</span>,
-  <span class="token string">"_type"</span> <span class="token builtin class-name">:</span> <span class="token string">"fruit"</span>,
-  <span class="token string">"_id"</span> <span class="token builtin class-name">:</span> <span class="token string">"1"</span>,
-  <span class="token string">"_version"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,               ----------------表示当前的操作版本号
-  <span class="token string">"found"</span> <span class="token builtin class-name">:</span> true,
-  <span class="token string">"_source"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>                ------------------表示元数据,内部信息就是当前的这条记录信息
-    <span class="token string">"name"</span> <span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>,
-    <span class="token string">"describe"</span> <span class="token builtin class-name">:</span> <span class="token string">"haochi tian"</span>,
-    <span class="token string">"price"</span> <span class="token builtin class-name">:</span> <span class="token number">40</span>,
-    <span class="token string">"producer"</span> <span class="token builtin class-name">:</span> <span class="token string">"feilvbin"</span>,
-    <span class="token string">"tags"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-      <span class="token string">"xiangjiao"</span>,
-      <span class="token string">"haochi"</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">## 注意:带下划线的都是es自带的属性</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">## GET /goods/fruit/1
+## 查询结果如下:
+&#123;
+  &quot;_index&quot; : &quot;goods&quot;,
+  &quot;_type&quot; : &quot;fruit&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 1,               ----------------表示当前的操作版本号
+  &quot;found&quot; : true,
+  &quot;_source&quot; : &#123;                ------------------表示元数据,内部信息就是当前的这条记录信息
+    &quot;name&quot; : &quot;xiangjiao&quot;,
+    &quot;describe&quot; : &quot;haochi tian&quot;,
+    &quot;price&quot; : 40,
+    &quot;producer&quot; : &quot;feilvbin&quot;,
+    &quot;tags&quot; : [
+      &quot;xiangjiao&quot;,
+      &quot;haochi&quot;
+    ]
+  &#125;
+&#125;
+## 注意:带下划线的都是es自带的属性
+</code></pre>
 <h3 id="2-3-修改商品"><a href="#2-3-修改商品" class="headerlink" title="2.3 修改商品"></a>2.3 修改商品</h3><ul>
 <li>标准语法</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## POST /index/type/id/_update</span>
+<pre><code class="shell">## POST /index/type/id/_update
 
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"doc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"field"</span><span class="token builtin class-name">:</span> <span class="token string">"vaule"</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#123;
+    &quot;doc&quot;: &#123;
+        &quot;field&quot;: &quot;vaule&quot;
+    &#125;
+&#125;
+</code></pre>
 <ul>
 <li>测试修改</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## POST /goods/fruit/1/_update</span>
+<pre><code class="shell">## POST /goods/fruit/1/_update
 
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"doc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"yutou"</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#123;
+  &quot;doc&quot;: &#123;
+    &quot;name&quot;:&quot;yutou&quot;
+  &#125;
+&#125;
+</code></pre>
 <ul>
 <li>可以同时修改多条属性的值,值与值之间用”,”号间隔,还有一种非主流的写法也是可以的</li>
 </ul>
 <h3 id="2-4-删除操作"><a href="#2-4-删除操作" class="headerlink" title="2.4 删除操作"></a>2.4 删除操作</h3><ul>
 <li>标准语法:</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## DELETE /index/type/id</span>
+<pre><code class="shell">## DELETE /index/type/id
 
-DELETE /goods/fruit/1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+DELETE /goods/fruit/1
+</code></pre>
 <h2 id="03-es查询操作"><a href="#03-es查询操作" class="headerlink" title="03.es查询操作"></a>03.es查询操作</h2><h3 id="3-1-全部查询"><a href="#3-1-全部查询" class="headerlink" title="3.1 全部查询"></a>3.1 全部查询</h3><ul>
 <li>标准语法:</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /index/type/_search</span>
+<pre><code class="shell">## GET /index/type/_search
 
-GET /goods/fruit/_search                     <span class="token comment">## 查询所有</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+GET /goods/fruit/_search                     ## 查询所有
+</code></pre>
 <ul>
 <li><p>查询结果说明</p>
 <ul>
@@ -215,148 +215,148 @@ GET /goods/fruit/_search                     <span class="token comment">## 查�
 <li><p>查询结果</p>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
-  <span class="token string">"took"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,                  <span class="token comment">## 耗费了几毫秒</span>
-  <span class="token string">"timed_out"</span> <span class="token builtin class-name">:</span> false,            <span class="token comment">## 是否超时，这里是没有</span>
-  <span class="token string">"_shards"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"total"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-    <span class="token string">"successful"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-    <span class="token string">"skipped"</span> <span class="token builtin class-name">:</span> <span class="token number">0</span>,
-    <span class="token string">"failed"</span> <span class="token builtin class-name">:</span> <span class="token number">0</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"hits"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"total"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"value"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-      <span class="token string">"relation"</span> <span class="token builtin class-name">:</span> <span class="token string">"eq"</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token string">"max_score"</span> <span class="token builtin class-name">:</span> <span class="token number">0.6931472</span>,
-    <span class="token string">"hits"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-      <span class="token punctuation">&#123;</span>
-        <span class="token string">"_index"</span> <span class="token builtin class-name">:</span> <span class="token string">"goods"</span>,
-        <span class="token string">"_type"</span> <span class="token builtin class-name">:</span> <span class="token string">"fruit"</span>,
-        <span class="token string">"_id"</span> <span class="token builtin class-name">:</span> <span class="token string">"1"</span>,
-        <span class="token string">"_score"</span> <span class="token builtin class-name">:</span> <span class="token number">0.6931472</span>,
-        <span class="token string">"_source"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token string">"name"</span> <span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>,
-          <span class="token string">"describe"</span> <span class="token builtin class-name">:</span> <span class="token string">"haochi tian"</span>,
-          <span class="token string">"price"</span> <span class="token builtin class-name">:</span> <span class="token number">40</span>,
-          <span class="token string">"producer"</span> <span class="token builtin class-name">:</span> <span class="token string">"feilvbin"</span>,
-          <span class="token string">"tags"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"xiangjiao"</span>,
-            <span class="token string">"haochi"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">&#123;
+  &quot;took&quot; : 1,                  ## 耗费了几毫秒
+  &quot;timed_out&quot; : false,            ## 是否超时，这里是没有
+  &quot;_shards&quot; : &#123;
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  &#125;,
+  &quot;hits&quot; : &#123;
+    &quot;total&quot; : &#123;
+      &quot;value&quot; : 1,
+      &quot;relation&quot; : &quot;eq&quot;
+    &#125;,
+    &quot;max_score&quot; : 0.6931472,
+    &quot;hits&quot; : [
+      &#123;
+        &quot;_index&quot; : &quot;goods&quot;,
+        &quot;_type&quot; : &quot;fruit&quot;,
+        &quot;_id&quot; : &quot;1&quot;,
+        &quot;_score&quot; : 0.6931472,
+        &quot;_source&quot; : &#123;
+          &quot;name&quot; : &quot;xiangjiao&quot;,
+          &quot;describe&quot; : &quot;haochi tian&quot;,
+          &quot;price&quot; : 40,
+          &quot;producer&quot; : &quot;feilvbin&quot;,
+          &quot;tags&quot; : [
+            &quot;xiangjiao&quot;,
+            &quot;haochi&quot;
+          ]
+        &#125;
+      &#125;
+    ]
+  &#125;
+&#125;
+</code></pre>
 <h3 id="3-2-条件查询"><a href="#3-2-条件查询" class="headerlink" title="3.2 条件查询"></a>3.2 条件查询</h3><ul>
 <li>name&#x3D;xiangjiao的</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 方法1</span>
-GET goods/fruit/_search/?q<span class="token operator">=</span>name:xiangjiao         <span class="token comment">## 查询名字为xiangjiao的</span>
-<span class="token comment">## 方法2</span>
+<pre><code class="shell">## 方法1
+GET goods/fruit/_search/?q=name:xiangjiao         ## 查询名字为xiangjiao的
+## 方法2
 GET goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match&quot;: &#123;
+      &quot;name&quot;: &quot;xiangjiao&quot;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <h3 id="3-3-按条件查询和排序"><a href="#3-3-按条件查询和排序" class="headerlink" title="3.3 按条件查询和排序"></a>3.3 按条件查询和排序</h3><ul>
 <li>查询 name&#x3D;pingguo 使用价格进行正向排序</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"pingguo"</span>
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"sort"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-	  <span class="token punctuation">&#123;</span>
-	    <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-	      <span class="token string">"order"</span><span class="token builtin class-name">:</span> <span class="token string">"desc"</span>
-	    <span class="token punctuation">&#125;</span>
-	  <span class="token punctuation">&#125;</span>
-	<span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET goods/fruit/_search
+&#123;
+    &quot;query&quot;: &#123;
+        &quot;match&quot;: &#123;
+            &quot;name&quot;: &quot;pingguo&quot;
+        &#125;
+    &#125;,
+    &quot;sort&quot;: [
+      &#123;
+        &quot;price&quot;: &#123;
+          &quot;order&quot;: &quot;desc&quot;
+        &#125;
+      &#125;
+    ]
+&#125;
+</code></pre>
 <h3 id="3-4-分页查询"><a href="#3-4-分页查询" class="headerlink" title="3.4 分页查询"></a>3.4 分页查询</h3><ul>
 <li>注意: 这里的检索结果是倒排索引,不是按照id排序的,是按照倒排的方式来进行检索的,再强调下,不是根据id排序</li>
 <li>每页显示两条数据</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-	<span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+    &quot;query&quot;: &#123;
+        &quot;match_all&quot;: &#123;&#125;
+    &#125;,
+    &quot;from&quot;: 0,
+    &quot;size&quot;: 2
+&#125;
+</code></pre>
 <h3 id="3-5-只显示指定字段"><a href="#3-5-只显示指定字段" class="headerlink" title="3.5 只显示指定字段"></a>3.5 只显示指定字段</h3><ul>
 <li>检索出来的内容也就只包含了name和price字段的内容</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token string">"name"</span>,<span class="token string">"price"</span><span class="token punctuation">]</span>, 
-	<span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-	<span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+    &quot;query&quot;: &#123;
+        &quot;match_all&quot;: &#123;&#125;
+    &#125;,
+    &quot;_source&quot;: [&quot;name&quot;,&quot;price&quot;], 
+    &quot;from&quot;: 0,
+    &quot;size&quot;: 2
+&#125;
+</code></pre>
 <h3 id="3-6-多条件匹配查询"><a href="#3-6-多条件匹配查询" class="headerlink" title="3.6 多条件匹配查询"></a>3.6 多条件匹配查询</h3><ul>
 <li>查询 name&#x3D;xiangjiao 并且 price&#x3D;25</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"must"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token string">"25"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;must&quot;: [
+        &#123;
+          &quot;match&quot;: &#123;
+            &quot;name&quot;: &quot;xiangjiao&quot;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;match&quot;: &#123;
+            &quot;price&quot;: &quot;25&quot;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <ul>
 <li>查询 name&#x3D;xiangjiao  或者 price&#x3D;45</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"should"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token string">"45"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;should&quot;: [
+        &#123;
+          &quot;match&quot;: &#123;
+            &quot;name&quot;: &quot;xiangjiao&quot;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;match&quot;: &#123;
+            &quot;price&quot;: &quot;45&quot;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <h3 id="3-7-过滤查询"><a href="#3-7-过滤查询" class="headerlink" title="3.7 过滤查询"></a>3.7 过滤查询</h3><ul>
 <li><p>注意:filter于must&#x2F;must_not&#x2F;should是并列关系,同属于bool的子属性  </p>
 </li>
@@ -365,40 +365,42 @@ GET goods/fruit/_search
 <li><p>查询 <code>name=xiangjiao 或者 价格在 10~40</code>之间的水果</p>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"should"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>,
-      <span class="token string">"filter"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"range"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"gte"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>,
-            <span class="token string">"lte"</span><span class="token builtin class-name">:</span> <span class="token number">40</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>  
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;should&quot;: [
+        &#123;
+          &quot;match&quot;: &#123;
+            &quot;name&quot;: &quot;xiangjiao&quot;
+          &#125;
+        &#125;
+      ],
+      &quot;filter&quot;: &#123;
+        &quot;range&quot;: &#123;
+          &quot;price&quot;: &#123;
+            &quot;gte&quot;: 10,
+            &quot;lte&quot;: 40
+          &#125;
+        &#125;  
+      &#125;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <h3 id="3-8-全文检索"><a href="#3-8-全文检索" class="headerlink" title="3.8 全文检索"></a>3.8 全文检索</h3><ul>
 <li>查询 name&#x3D;pingguo 或者  name&#x3D;xiangjiao的</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"pingguo xiangjiao"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="shell">GET /goods/fruit/_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match&quot;: &#123;
+      &quot;name&quot;: &quot;pingguo xiangjiao&quot;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+
                 
                 <p class="end">__END__</p>
             </div>
@@ -434,11 +436,11 @@ GET goods/fruit/_search
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/b66577/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/b66577/" title="发布于 2021-02-12 03:04">01.ES安装</a>
+                        <a href="../../pages/d236d3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
                         <br>
                     
                     
-                        <a href="../../pages/d236d3/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
+                        <a href="../../pages/51290c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/51290c/" title="发布于 2021-02-12 03:04">05.python使用ES</a>
                     
                 </div>
             </div>
