@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -108,179 +109,179 @@
 <h3 id="1-2-1-配置nginx负载"><a href="#1-2-1-配置nginx负载" class="headerlink" title="1.2.1 配置nginx负载"></a>1.2.1 配置nginx负载</h3><ul>
 <li>安装nginx服务</li>
 </ul>
-<pre><code class="shell">[root@linux-node4 ~]# yum -y install nginx
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span></code></pre>
+
 <ul>
 <li>配置反向代理</li>
 </ul>
-<pre><code class="shell">[root@lb-master ~]# vim /etc/nginx/nginx.conf
-stream &#123;
-    log_format  main  &#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;;
-    access_log  /var/log/nginx/django-access.log  main;
-    upstream django-apiserver &#123;
-                server 192.168.56.62:80;
-                server 192.168.56.63:80;
-            &#125;
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/nginx/nginx.conf</span>
+stream <span class="token punctuation">&#123;</span>
+    log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
+    access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
+    upstream django-apiserver <span class="token punctuation">&#123;</span>
+                server <span class="token number">192.168</span>.56.62:80<span class="token punctuation">;</span>
+                server <span class="token number">192.168</span>.56.63:80<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
    
-    server &#123;
-       listen 88;
-       proxy_pass django-apiserver;
-    &#125;
-&#125;
-</code></pre>
+    server <span class="token punctuation">&#123;</span>
+       listen <span class="token number">88</span><span class="token punctuation">;</span>
+       proxy_pass django-apiserver<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="1-2-2-完整配置如下"><a href="#1-2-2-完整配置如下" class="headerlink" title="1.2.2 完整配置如下"></a>1.2.2 完整配置如下</h3><ul>
 <li><code>看一下即可，都是nginx默认配置</code></li>
 </ul>
-<pre><code class="shell">[root@lb-master ~]# cat /etc/nginx/nginx.conf 
-user  nginx;
-worker_processes  1;
-error_log  /var/log/nginx/error.log warn;
-pid        /var/run/nginx.pid;
-events &#123;
-    worker_connections  1024;
-&#125;
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
+user  nginx<span class="token punctuation">;</span>
+worker_processes  <span class="token number">1</span><span class="token punctuation">;</span>
+error_log  /var/log/nginx/error.log warn<span class="token punctuation">;</span>
+pid        /var/run/nginx.pid<span class="token punctuation">;</span>
+events <span class="token punctuation">&#123;</span>
+    worker_connections  <span class="token number">1024</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-stream &#123;
-    log_format  main  &#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;;
-    access_log  /var/log/nginx/django-access.log  main;
-    upstream django-apiserver &#123;
-                server 192.168.56.62:80;
-                server 192.168.56.63:80;
-            &#125;
+stream <span class="token punctuation">&#123;</span>
+    log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
+    access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
+    upstream django-apiserver <span class="token punctuation">&#123;</span>
+                server <span class="token number">192.168</span>.56.62:80<span class="token punctuation">;</span>
+                server <span class="token number">192.168</span>.56.63:80<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
    
-    server &#123;
-       listen 80;
-       proxy_pass django-apiserver;
-    &#125;
-&#125;
+    server <span class="token punctuation">&#123;</span>
+       listen <span class="token number">80</span><span class="token punctuation">;</span>
+       proxy_pass django-apiserver<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-http &#123;
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
-    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
-                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
-                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
-    access_log  /var/log/nginx/access.log  main;
-    sendfile        on;
-    #tcp_nopush     on;
-    keepalive_timeout  65;
-    #gzip  on;
-    include /etc/nginx/conf.d/*.conf;
-&#125;
-</code></pre>
+http <span class="token punctuation">&#123;</span>
+    include       /etc/nginx/mime.types<span class="token punctuation">;</span>
+    default_type  application/octet-stream<span class="token punctuation">;</span>
+    log_format  main  <span class="token string">'$remote_addr - $remote_user [$time_local] "$request" '</span>
+                      <span class="token string">'$status $body_bytes_sent "$http_referer" '</span>
+                      <span class="token string">'"$http_user_agent" "$http_x_forwarded_for"'</span><span class="token punctuation">;</span>
+    access_log  /var/log/nginx/access.log  main<span class="token punctuation">;</span>
+    sendfile        on<span class="token punctuation">;</span>
+    <span class="token comment">#tcp_nopush     on;</span>
+    keepalive_timeout  <span class="token number">65</span><span class="token punctuation">;</span>
+    <span class="token comment">#gzip  on;</span>
+    include /etc/nginx/conf.d/*.conf<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="1-2-3-测试反向代理可用性"><a href="#1-2-3-测试反向代理可用性" class="headerlink" title="1.2.3 测试反向代理可用性"></a>1.2.3 测试反向代理可用性</h3><ul>
 <li>测试集群可用性</li>
 </ul>
-<pre><code class="shell">http://192.168.56.62/        # web01
-http://192.168.56.63/        # web02
-# 可以停止一个nginx服务，测试可用性
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
+http://192.168.56.63/        <span class="token comment"># web02</span>
+<span class="token comment"># 可以停止一个nginx服务，测试可用性</span></code></pre>
+
 <ul>
 <li>服务管理</li>
 </ul>
-<pre><code class="shell">[root@lb-slave ~]# systemctl start nginx
-[root@lb-slave ~]# systemctl enable nginx
-</code></pre>
-<h2 id="2-3-keepalive安装与配置"><a href="#2-3-keepalive安装与配置" class="headerlink" title="2.3 keepalive安装与配置"></a>2.3 keepalive安装与配置</h2><h3 id="2-3-1-安装keepalive"><a href="#2-3-1-安装keepalive" class="headerlink" title="2.3.1 安装keepalive"></a>2.3.1 安装keepalive</h3><pre><code class="shell">[root@lb-master ~]# yum -y install keepalived
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl start nginx</span>
+<span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl enable nginx</span></code></pre>
+
+<h2 id="2-3-keepalive安装与配置"><a href="#2-3-keepalive安装与配置" class="headerlink" title="2.3 keepalive安装与配置"></a>2.3 keepalive安装与配置</h2><h3 id="2-3-1-安装keepalive"><a href="#2-3-1-安装keepalive" class="headerlink" title="2.3.1 安装keepalive"></a>2.3.1 安装keepalive</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># yum -y install keepalived</span></code></pre>
+
 <h3 id="2-3-2-keepalive-master配置修改"><a href="#2-3-2-keepalive-master配置修改" class="headerlink" title="2.3.2 keepalive-master配置修改"></a>2.3.2 keepalive-master配置修改</h3><ul>
 <li>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</li>
 <li><code>192.168.56.61</code></li>
 </ul>
-<pre><code class="shell">[root@lb-master ~]# vim /etc/keepalived/keepalived.conf 
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
 
-global_defs &#123; 
-   notification_email &#123; 
+global_defs <span class="token punctuation">&#123;</span> 
+   notification_email <span class="token punctuation">&#123;</span> 
      acassen@firewall.loc 
      failover@firewall.loc 
      sysadmin@firewall.loc 
-   &#125; 
+   <span class="token punctuation">&#125;</span> 
    notification_email_from Alexandre.Cassen@firewall.loc  
-   smtp_server 127.0.0.1 
-   smtp_connect_timeout 30 
+   smtp_server <span class="token number">127.0</span>.0.1 
+   smtp_connect_timeout <span class="token number">30</span> 
    router_id NGINX_MASTER
-&#125; 
+<span class="token punctuation">&#125;</span> 
 
-# 健康监测nginx
-vrrp_script check_nginx &#123;
-    script &quot;/etc/keepalived/check_nginx.sh&quot;      # 设置检查nginx是否存活的脚本位置
-&#125;
+<span class="token comment"># 健康监测nginx</span>
+vrrp_script check_nginx <span class="token punctuation">&#123;</span>
+    script <span class="token string">"/etc/keepalived/check_nginx.sh"</span>      <span class="token comment"># 设置检查nginx是否存活的脚本位置</span>
+<span class="token punctuation">&#125;</span>
 
-# keepalive热备组配置
-vrrp_instance VI_1 &#123; 
-    state MASTER            # 配置当前keepalive为master角色
-    interface eth0           # 网卡名字，必须和实际网卡名称一致，默认是ens33
-    virtual_router_id 51       # VRRP 路由 ID实例，每个实例是唯一的 
-    priority 100            # 优先级，备服务器设置 90 
-    advert_int 1            # 指定VRRP 心跳包通告间隔时间，默认1秒 
-    authentication &#123; 
+<span class="token comment"># keepalive热备组配置</span>
+vrrp_instance VI_1 <span class="token punctuation">&#123;</span> 
+    state MASTER            <span class="token comment"># 配置当前keepalive为master角色</span>
+    interface eth0           <span class="token comment"># 网卡名字，必须和实际网卡名称一致，默认是ens33</span>
+    virtual_router_id <span class="token number">51</span>       <span class="token comment"># VRRP 路由 ID实例，每个实例是唯一的 </span>
+    priority <span class="token number">100</span>            <span class="token comment"># 优先级，备服务器设置 90 </span>
+    advert_int <span class="token number">1</span>            <span class="token comment"># 指定VRRP 心跳包通告间隔时间，默认1秒 </span>
+    authentication <span class="token punctuation">&#123;</span> 
         auth_type PASS      
-        auth_pass 1111       # 设置keepalive的master和slave之间简单的秘钥认证
-    &#125;  
-    virtual_ipaddress &#123; 
-        192.168.56.60/24     # 设置keepalive虚拟IP地址
-    &#125; 
-    track_script &#123;
+        auth_pass <span class="token number">1111</span>       <span class="token comment"># 设置keepalive的master和slave之间简单的秘钥认证</span>
+    <span class="token punctuation">&#125;</span>  
+    virtual_ipaddress <span class="token punctuation">&#123;</span> 
+        <span class="token number">192.168</span>.56.60/24     <span class="token comment"># 设置keepalive虚拟IP地址</span>
+    <span class="token punctuation">&#125;</span> 
+    track_script <span class="token punctuation">&#123;</span>
         check_nginx
-    &#125; 
-&#125;
-</code></pre>
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="2-3-3-keepalive-slave配置修改"><a href="#2-3-3-keepalive-slave配置修改" class="headerlink" title="2.3.3 keepalive-slave配置修改"></a>2.3.3 keepalive-slave配置修改</h3><ul>
 <li><p>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</p>
 </li>
 <li><p><code>192.168.56.64</code></p>
 </li>
 </ul>
-<pre><code class="shell">[root@lb-master ~]# vim /etc/keepalived/keepalived.conf 
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
  
-global_defs &#123; 
-   notification_email &#123; 
+global_defs <span class="token punctuation">&#123;</span> 
+   notification_email <span class="token punctuation">&#123;</span> 
      acassen@firewall.loc 
      failover@firewall.loc 
      sysadmin@firewall.loc 
-   &#125; 
+   <span class="token punctuation">&#125;</span> 
    notification_email_from Alexandre.Cassen@firewall.loc  
-   smtp_server 127.0.0.1 
-   smtp_connect_timeout 30 
+   smtp_server <span class="token number">127.0</span>.0.1 
+   smtp_connect_timeout <span class="token number">30</span> 
    router_id NGINX_BACKUP
-&#125; 
+<span class="token punctuation">&#125;</span> 
 
-vrrp_script check_nginx &#123;
-    script &quot;/etc/keepalived/check_nginx.sh&quot;
-&#125;
+vrrp_script check_nginx <span class="token punctuation">&#123;</span>
+    script <span class="token string">"/etc/keepalived/check_nginx.sh"</span>
+<span class="token punctuation">&#125;</span>
 
-vrrp_instance VI_1 &#123; 
-    state BACKUP            # 设置keepalive角色为backend
-    interface eth0           # 设置虚拟网卡名称
-    virtual_router_id 51       # VRRP 路由 ID实例，每个实例是唯一的，master和slave保持一致即可
-    priority 90             # 优先级，备服务器设置 90 
-    advert_int 1            # 指定VRRP 心跳包通告间隔时间，默认1秒 
-    authentication &#123; 
+vrrp_instance VI_1 <span class="token punctuation">&#123;</span> 
+    state BACKUP            <span class="token comment"># 设置keepalive角色为backend</span>
+    interface eth0           <span class="token comment"># 设置虚拟网卡名称</span>
+    virtual_router_id <span class="token number">51</span>       <span class="token comment"># VRRP 路由 ID实例，每个实例是唯一的，master和slave保持一致即可</span>
+    priority <span class="token number">90</span>             <span class="token comment"># 优先级，备服务器设置 90 </span>
+    advert_int <span class="token number">1</span>            <span class="token comment"># 指定VRRP 心跳包通告间隔时间，默认1秒 </span>
+    authentication <span class="token punctuation">&#123;</span> 
         auth_type PASS      
-        auth_pass 1111 
-    &#125;  
-    virtual_ipaddress &#123; 
-        192.168.56.60/24     # 设置虚拟网卡地址
-    &#125; 
-    track_script &#123;
+        auth_pass <span class="token number">1111</span> 
+    <span class="token punctuation">&#125;</span>  
+    virtual_ipaddress <span class="token punctuation">&#123;</span> 
+        <span class="token number">192.168</span>.56.60/24     <span class="token comment"># 设置虚拟网卡地址</span>
+    <span class="token punctuation">&#125;</span> 
+    track_script <span class="token punctuation">&#123;</span>
         check_nginx
-    &#125; 
-&#125;
-</code></pre>
-<h3 id="2-3-4-添加nginx健康监测脚本"><a href="#2-3-4-添加nginx健康监测脚本" class="headerlink" title="2.3.4 添加nginx健康监测脚本"></a>2.3.4 添加nginx健康监测脚本</h3><pre><code class="shell">[root@lb-master keepalived]# vim /etc/keepalived/check_nginx.sh
-#!/bin/bash
-count=$(ps -ef |grep nginx |egrep -cv &quot;grep|$$&quot;)
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span></code></pre>
 
-if [ &quot;$count&quot; -eq 0 ];then
-    exit 1
-else
-    exit 0
-fi
-[root@lb-master keepalived]# chmod +x /etc/keepalived/check_nginx.sh         # 给脚本添加一个可执行权限
-</code></pre>
-<h3 id="2-3-5-启动keepalive"><a href="#2-3-5-启动keepalive" class="headerlink" title="2.3.5 启动keepalive"></a>2.3.5 启动keepalive</h3><pre><code class="shell">[root@lb-master ~]#  systemctl start keepalived
-[root@lb-master ~]#  systemctl enable keepalived
-</code></pre>
+<h3 id="2-3-4-添加nginx健康监测脚本"><a href="#2-3-4-添加nginx健康监测脚本" class="headerlink" title="2.3.4 添加nginx健康监测脚本"></a>2.3.4 添加nginx健康监测脚本</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/check_nginx.sh</span>
+<span class="token comment">#!/bin/bash</span>
+<span class="token assign-left variable">count</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> <span class="token parameter variable">-ef</span> <span class="token operator">|</span><span class="token function">grep</span> nginx <span class="token operator">|</span><span class="token function">egrep</span> <span class="token parameter variable">-cv</span> <span class="token string">"grep|<span class="token variable">$$</span>"</span><span class="token variable">)</span></span>
+
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"<span class="token variable">$count</span>"</span> <span class="token parameter variable">-eq</span> <span class="token number">0</span> <span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token keyword">then</span>
+    <span class="token builtin class-name">exit</span> <span class="token number">1</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">exit</span> <span class="token number">0</span>
+<span class="token keyword">fi</span>
+<span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># chmod +x /etc/keepalived/check_nginx.sh         # 给脚本添加一个可执行权限</span></code></pre>
+
+<h3 id="2-3-5-启动keepalive"><a href="#2-3-5-启动keepalive" class="headerlink" title="2.3.5 启动keepalive"></a>2.3.5 启动keepalive</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl start keepalived</span>
+<span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl enable keepalived</span></code></pre>
+
 <h2 id="2-4-测试keepalive高可用"><a href="#2-4-测试keepalive高可用" class="headerlink" title="2.4 测试keepalive高可用"></a>2.4 测试keepalive高可用</h2><ul>
 <li>测试使用 <a target="_blank" rel="noopener" href="http://192.168.56.60:88/">http://192.168.56.60:88/</a> 虚拟IP访问<ul>
 <li>在浏览器中访问: <a target="_blank" rel="noopener" href="http://192.168.56.60/">http://192.168.56.60</a>   <a target="_blank" rel="noopener" href="http://192.168.56.61/">http://192.168.56.61</a>   <a target="_blank" rel="noopener" href="http://192.168.56.64/">http://192.168.56.64</a>  都可以访问web1和web2服务</li>

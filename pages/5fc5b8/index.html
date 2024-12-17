@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -134,72 +135,70 @@
 </ol>
 </li>
 </ul>
-<h3 id="2-2-settings-py中注册中间件"><a href="#2-2-settings-py中注册中间件" class="headerlink" title="2.2 settings.py中注册中间件"></a>2.2 settings.py中注册中间件</h3><pre><code>MIDDLEWARE = [
+<h3 id="2-2-settings-py中注册中间件"><a href="#2-2-settings-py中注册中间件" class="headerlink" title="2.2 settings.py中注册中间件"></a>2.2 settings.py中注册中间件</h3><pre class="language-none"><code class="language-none">MIDDLEWARE &#x3D; [
     &#39;middle.m1.Row1&#39;,
     &#39;middle.m1.Row2&#39;,
     &#39;middle.m1.Row3&#39;,
-]
-</code></pre>
+]</code></pre>
+
 <h3 id="2-3-写处理函数test"><a href="#2-3-写处理函数test" class="headerlink" title="2.3 写处理函数test"></a>2.3 写处理函数test</h3><ul>
 <li>在views.py文件中写处理函数test</li>
 </ul>
-<pre><code>def test(request):
+<pre class="language-none"><code class="language-none">def test(request):
     # int(&#39;fds&#39;)    #当views函数出现异常，中间件中的process_exception执行
     print(&#39;没带钱|&#39;)
-    return HttpResponse(&#39;ok&#39;)
-</code></pre>
+    return HttpResponse(&#39;ok&#39;)</code></pre>
+
 <h3 id="2-4-定义中间件"><a href="#2-4-定义中间件" class="headerlink" title="2.4 定义中间件"></a>2.4 定义中间件</h3><ul>
 <li>在&#x2F;project&#x2F;middle&#x2F;m1.py文件中定义中间件</li>
 </ul>
-<pre><code class="python">from django.utils.deprecation import MiddlewareMixin
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>deprecation <span class="token keyword">import</span> MiddlewareMixin
 
-class Row1(MiddlewareMixin):
-    def process_request(self,request):
-        print(&#39;process_request_1&#39;)
+<span class="token keyword">class</span> <span class="token class-name">Row1</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_1'</span><span class="token punctuation">)</span>
 
-    def process_view(self,request, view_func, view_func_args, view_func_kwargs):
-        #view_func_args:   url中传递的非字典的值会用这个变量接收
-        #view_func_kwargs: url中传递的字典会传递到这个变量接收（如：nid=1）
-        print(&#39;process_view_1&#39;)
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#view_func_args:   url中传递的非字典的值会用这个变量接收</span>
+        <span class="token comment">#view_func_kwargs: url中传递的字典会传递到这个变量接收（如：nid=1）</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_1'</span><span class="token punctuation">)</span>
 
-    def process_response(self,request, response):    #response就是拿到的返回信息
-        print(&#39;response_1&#39;)
-        return response
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token comment">#response就是拿到的返回信息</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_1'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
 
-    def process_exception(self, request, exception):
-        &#39;&#39;&#39;只有当views函数中异常这个函数才会执行&#39;&#39;&#39;
-        if isinstance(exception, ValueError):
-            return HttpResponse(&#39;&gt;&gt;出现异常了&#39;)
+    <span class="token keyword">def</span> <span class="token function">process_exception</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> exception<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">'''只有当views函数中异常这个函数才会执行'''</span>
+        <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>exception<span class="token punctuation">,</span> ValueError<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'>>出现异常了'</span><span class="token punctuation">)</span>
 
         
-class Row2(MiddlewareMixin):
-    def process_request(self,request):
-        print(&#39;process_request_2&#39;)
-        #1 如果在Row2中的process_request中有返回值，那么就不会到达Row3
-        #2 Row2直接将返回值交给自己的process_response再交给Row1的process_response
-        #3 最后客户端页面显示的就是‘走’请求没机会到达views函数，不会打印‘没带钱’
-        # return HttpResponse(&#39;走&#39;)
+<span class="token keyword">class</span> <span class="token class-name">Row2</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_2'</span><span class="token punctuation">)</span>
+        <span class="token comment">#1 如果在Row2中的process_request中有返回值，那么就不会到达Row3</span>
+        <span class="token comment">#2 Row2直接将返回值交给自己的process_response再交给Row1的process_response</span>
+        <span class="token comment">#3 最后客户端页面显示的就是‘走’请求没机会到达views函数，不会打印‘没带钱’</span>
+        <span class="token comment"># return HttpResponse('走')</span>
 
-    def process_view(self,request, view_func, view_func_args, view_func_kwargs):
-        print(&#39;process_view_2&#39;)
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_2'</span><span class="token punctuation">)</span>
 
-    def process_response(self,request, response):
-        print(&#39;response_2&#39;)
-        return response
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_2'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
 
     
-class Row3(MiddlewareMixin):
-    def process_request(self,request):
-        print(&#39;process_request_3&#39;)
+<span class="token keyword">class</span> <span class="token class-name">Row3</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_3'</span><span class="token punctuation">)</span>
 
-    def process_view(self,request, view_func, view_func_args, view_func_kwargs):
-        print(&#39;process_view_3&#39;)
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_3'</span><span class="token punctuation">)</span>
 
-    def process_response(self,request, response):
-        print(&#39;response_3&#39;)
-        return response
-</code></pre>
-
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_3'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response</code></pre>
                 
                 <p class="end">__END__</p>
             </div>

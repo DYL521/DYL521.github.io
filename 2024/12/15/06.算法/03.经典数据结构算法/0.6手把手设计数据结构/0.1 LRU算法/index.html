@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -94,205 +95,202 @@
 <li>2、我们要才cache中快速找到某个key，得到对应 的val</li>
 <li>3、每次访问某个key，必须将这个元素变为最近使用，也就是支持任意位置插入和查找；</li>
 </ul>
-<h1 id="2、代码实现"><a href="#2、代码实现" class="headerlink" title="2、代码实现"></a>2、代码实现</h1><pre><code class="python">class Node:
-    def __init__(self, k: int, v: int):
-        self.key = k
-        self.val = v
-        self.next = None
-        self.prev = None
+<h1 id="2、代码实现"><a href="#2、代码实现" class="headerlink" title="2、代码实现"></a>2、代码实现</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> v<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>key <span class="token operator">=</span> k
+        self<span class="token punctuation">.</span>val <span class="token operator">=</span> v
+        self<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> <span class="token boolean">None</span>
+        self<span class="token punctuation">.</span>prev <span class="token operator">=</span> <span class="token boolean">None</span>
 
-class DoubleList:
-    def __init__(self):
-        # 头尾虚节点
-        self.head = Node(0, 0)
-        self.tail = Node(0, 0)
-        # 链表元素数
-        self._size = 0
+<span class="token keyword">class</span> <span class="token class-name">DoubleList</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 头尾虚节点</span>
+        self<span class="token punctuation">.</span>head <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>tail <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token comment"># 链表元素数</span>
+        self<span class="token punctuation">.</span>_size <span class="token operator">=</span> <span class="token number">0</span>
 
-        # 初始化双向链表的数据
-        self.head.next = self.tail
-        self.tail.prev = self.head
+        <span class="token comment"># 初始化双向链表的数据</span>
+        self<span class="token punctuation">.</span>head<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>tail
+        self<span class="token punctuation">.</span>tail<span class="token punctuation">.</span>prev <span class="token operator">=</span> self<span class="token punctuation">.</span>head
 
-    # 在链表尾部添加节点 x，时间 O(1)
-    def addLast(self, x):
-        x.prev = self.tail.prev
-        x.next = self.tail
-        self.tail.prev.next = x
-        self.tail.prev = x
-        self._size += 1
+    <span class="token comment"># 在链表尾部添加节点 x，时间 O(1)</span>
+    <span class="token keyword">def</span> <span class="token function">addLast</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x<span class="token punctuation">.</span>prev <span class="token operator">=</span> self<span class="token punctuation">.</span>tail<span class="token punctuation">.</span>prev
+        x<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>tail
+        self<span class="token punctuation">.</span>tail<span class="token punctuation">.</span>prev<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> x
+        self<span class="token punctuation">.</span>tail<span class="token punctuation">.</span>prev <span class="token operator">=</span> x
+        self<span class="token punctuation">.</span>_size <span class="token operator">+=</span> <span class="token number">1</span>
 
-    # 删除链表中的 x 节点（x 一定存在）
-    # 由于是双链表且给的是目标 Node 节点，时间 O(1)
-    def remove(self, x):
-        x.prev.next = x.next
-        x.next.prev = x.prev
-        self._size -= 1
+    <span class="token comment"># 删除链表中的 x 节点（x 一定存在）</span>
+    <span class="token comment"># 由于是双链表且给的是目标 Node 节点，时间 O(1)</span>
+    <span class="token keyword">def</span> <span class="token function">remove</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x<span class="token punctuation">.</span>prev<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> x<span class="token punctuation">.</span><span class="token builtin">next</span>
+        x<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span>prev <span class="token operator">=</span> x<span class="token punctuation">.</span>prev
+        self<span class="token punctuation">.</span>_size <span class="token operator">-=</span> <span class="token number">1</span>
 
-    # 删除链表中第一个节点，并返回该节点，时间 O(1)
-    def removeFirst(self):
-        if self.head.next == self.tail:
-            return None
-        first = self.head.next
-        self.remove(first)
-        return first
+    <span class="token comment"># 删除链表中第一个节点，并返回该节点，时间 O(1)</span>
+    <span class="token keyword">def</span> <span class="token function">removeFirst</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>head<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">==</span> self<span class="token punctuation">.</span>tail<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">None</span>
+        first <span class="token operator">=</span> self<span class="token punctuation">.</span>head<span class="token punctuation">.</span><span class="token builtin">next</span>
+        self<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>first<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> first
 
-    # 返回链表长度，时间 O(1)
-    def size(self):
-        return self._size
+    <span class="token comment"># 返回链表长度，时间 O(1)</span>
+    <span class="token keyword">def</span> <span class="token function">size</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_size
     
 
-class LRUCache:
-    def __init__(self, capacity: int):
-        # key -&gt; Node(key, val)
-        self.map = &#123;&#125;
-        # Node(k1, v1) &lt;-&gt; Node(k2, v2)...
-        self.cache = DoubleList()
-        # 最大容量
-        self.cap = capacity
+<span class="token keyword">class</span> <span class="token class-name">LRUCache</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> capacity<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># key -> Node(key, val)</span>
+        self<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token comment"># Node(k1, v1) &lt;-> Node(k2, v2)...</span>
+        self<span class="token punctuation">.</span>cache <span class="token operator">=</span> DoubleList<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># 最大容量</span>
+        self<span class="token punctuation">.</span>cap <span class="token operator">=</span> capacity
 
-    def get(self, key: int) -&gt; int:
-        if key not in self.map:
-            return -1
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> key <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
         
-        # 将该数据提升为最近使用的
-        self.makeRecently(key)
-        return self.map[key].val
+        <span class="token comment"># 将该数据提升为最近使用的</span>
+        self<span class="token punctuation">.</span>makeRecently<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">.</span>val
 
-    def put(self, key: int, val: int) -&gt; None:
-        if key in self.map:
-            # 删除旧的数据
-            self.deleteKey(key)
-            # 新插入的数据为最近使用的数据
-            self.addRecently(key, val)
-            return
+    <span class="token keyword">def</span> <span class="token function">put</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> val<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> key <span class="token keyword">in</span> self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">:</span>
+            <span class="token comment"># 删除旧的数据</span>
+            self<span class="token punctuation">.</span>deleteKey<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+            <span class="token comment"># 新插入的数据为最近使用的数据</span>
+            self<span class="token punctuation">.</span>addRecently<span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+            <span class="token keyword">return</span>
         
-        if self.cap == self.cache.size():
-            # 删除最久未使用的元素
-            self.removeLeastRecently()
-        # 添加为最近使用的元素
-        self.addRecently(key, val)
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>cap <span class="token operator">==</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment"># 删除最久未使用的元素</span>
+            self<span class="token punctuation">.</span>removeLeastRecently<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># 添加为最近使用的元素</span>
+        self<span class="token punctuation">.</span>addRecently<span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span>
 
-    def makeRecently(self, key: int):
-        x = self.map[key]
-        # 先从链表中删除这个节点
-        self.cache.remove(x)
-        # 重新插到队尾
-        self.cache.addLast(x)
+    <span class="token keyword">def</span> <span class="token function">makeRecently</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token comment"># 先从链表中删除这个节点</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token comment"># 重新插到队尾</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>addLast<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
 
-    def addRecently(self, key: int, val: int):
-        x = Node(key, val)
-        # 链表尾部就是最近使用的元素
-        self.cache.addLast(x)
-        # 别忘了在 map 中添加 key 的映射
-        self.map[key] = x
+    <span class="token keyword">def</span> <span class="token function">addRecently</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> val<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> Node<span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+        <span class="token comment"># 链表尾部就是最近使用的元素</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>addLast<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token comment"># 别忘了在 map 中添加 key 的映射</span>
+        self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> x
 
-    def deleteKey(self, key: int):
-        x = self.map[key]
-        # 从链表中删除
-        self.cache.remove(x)
-        # 从 map 中删除
-        self.map.pop(key)
+    <span class="token keyword">def</span> <span class="token function">deleteKey</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token comment"># 从链表中删除</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token comment"># 从 map 中删除</span>
+        self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">.</span>pop<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
 
-    def removeLeastRecently(self):
-        # 链表头部的第一个元素就是最久未使用的
-        deletedNode = self.cache.removeFirst()
-        # 同时别忘了从 map 中删除它的 key
-        deletedKey = deletedNode.key
-        self.map.pop(deletedKey)
-</code></pre>
+    <span class="token keyword">def</span> <span class="token function">removeLeastRecently</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 链表头部的第一个元素就是最久未使用的</span>
+        deletedNode <span class="token operator">=</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>removeFirst<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># 同时别忘了从 map 中删除它的 key</span>
+        deletedKey <span class="token operator">=</span> deletedNode<span class="token punctuation">.</span>key
+        self<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">.</span>pop<span class="token punctuation">(</span>deletedKey<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>我们最后用 Java 的内置类型 LinkedHashMap 来实现 LRU 算法，逻辑和之前完全一致：</p>
 <ul>
 <li>java LinkedHashMap实现</li>
 </ul>
-<pre><code class="java">class LRUCache &#123;
-    int cap;
-    LinkedHashMap&lt;Integer, Integer&gt; cache = new LinkedHashMap&lt;&gt;();
-    public LRUCache(int capacity) &#123; 
-        this.cap = capacity;
-    &#125;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">LRUCache</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> cap<span class="token punctuation">;</span>
+    <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">LRUCache</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cap <span class="token operator">=</span> capacity<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    public int get(int key) &#123;
-        if (!cache.containsKey(key)) &#123;
-            return -1;
-        &#125;
-        // 将 key 变为最近使用
-        makeRecently(key);
-        return cache.get(key);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cache<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 将 key 变为最近使用</span>
+        <span class="token function">makeRecently</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> cache<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    public void put(int key, int val) &#123;
-        if (cache.containsKey(key)) &#123;
-            // 修改 key 的值
-            cache.put(key, val);
-            // 将 key 变为最近使用
-            makeRecently(key);
-            return;
-        &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">,</span> <span class="token keyword">int</span> val<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>cache<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 修改 key 的值</span>
+            cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将 key 变为最近使用</span>
+            <span class="token function">makeRecently</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
         
-        if (cache.size() &gt;= this.cap) &#123;
-            // 链表头部就是最久未使用的 key
-            int oldestKey = cache.keySet().iterator().next();
-            cache.remove(oldestKey);
-        &#125;
-        // 将新的 key 添加链表尾部
-        cache.put(key, val);
-    &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>cache<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>cap<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 链表头部就是最久未使用的 key</span>
+            <span class="token keyword">int</span> oldestKey <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token function">keySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            cache<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>oldestKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 将新的 key 添加链表尾部</span>
+        cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    private void makeRecently(int key) &#123;
-        int val = cache.get(key);
-        // 删除 key，重新插入到队尾
-        cache.remove(key);
-        cache.put(key, val);
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">makeRecently</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> val <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 删除 key，重新插入到队尾</span>
+        cache<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <ul>
-<li>pyhton OrderedDict 实现</li>
-</ul>
-<pre><code class="python">from collections import OrderedDict
+<li>pyhton OrderedDict 实现<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> OrderedDict
 
 
-class LRU:
-    d = OrderedDict()
+<span class="token keyword">class</span> <span class="token class-name">LRU</span><span class="token punctuation">:</span>
+    d <span class="token operator">=</span> OrderedDict<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def __init__(self, capacity):
-        self.capacity = capacity
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> capacity<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>capacity <span class="token operator">=</span> capacity
 
-    def get(self, key):
-        if key not in self.d:
-            return -1
-        self.makeRecently(key)
-        return self.d.get(key)
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> key <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>d<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
+        self<span class="token punctuation">.</span>makeRecently<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
 
-    def put(self, key, value):
-        if key in self.d:
-            self.d[key] = value
-            self.makeRecently(key)  # &#123;1:1,2:2,3:3&#125;
-        else:
-            # 判断容量
-            if len(self.d) &gt;= self.capacity:
-                old_key, old_value = self.d.popitem(last=False)
-                self.d.pop(old_key)
-            self.d[key] = value
+    <span class="token keyword">def</span> <span class="token function">put</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> key <span class="token keyword">in</span> self<span class="token punctuation">.</span>d<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>d<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
+            self<span class="token punctuation">.</span>makeRecently<span class="token punctuation">(</span>key<span class="token punctuation">)</span>  <span class="token comment"># &#123;1:1,2:2,3:3&#125;</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment"># 判断容量</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>d<span class="token punctuation">)</span> <span class="token operator">>=</span> self<span class="token punctuation">.</span>capacity<span class="token punctuation">:</span>
+                old_key<span class="token punctuation">,</span> old_value <span class="token operator">=</span> self<span class="token punctuation">.</span>d<span class="token punctuation">.</span>popitem<span class="token punctuation">(</span>last<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>d<span class="token punctuation">.</span>pop<span class="token punctuation">(</span>old_key<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>d<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
 
-    def makeRecently(self, key):
-        &quot;&quot;&quot;
+    <span class="token keyword">def</span> <span class="token function">makeRecently</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
         把这个标记为最近使用的key
-        &quot;&quot;&quot;
-        if key not in self.d:
-            return -1
-        self.d.move_to_end(key)
+        """</span>
+        <span class="token keyword">if</span> key <span class="token keyword">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>d<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
+        self<span class="token punctuation">.</span>d<span class="token punctuation">.</span>move_to_end<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
 
 
-if __name__ == &#39;__main__&#39;:
-    d = OrderedDict()
-    d[1] = 1
-    d[2] = 2
-    d[3] = 3
-    print(d)
-    d.popitem()
-    print(d)
-</code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    d <span class="token operator">=</span> OrderedDict<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    d<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    d<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span>
+    d<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+    d<span class="token punctuation">.</span>popitem<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span></code></pre></li>
+</ul>
 
                 
                 <p class="end">__END__</p>
@@ -340,7 +338,7 @@ if __name__ == &#39;__main__&#39;:
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" class="prev-prefix">« </a> 上一篇：    <a href="../../0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" title="发布于 2024-12-15 06:53">0.5二叉树的扩展延伸</a>
+                        <a href="../../0.7%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E5%9B%BE%E7%AE%97%E6%B3%95/" class="prev-prefix">« </a> 上一篇：    <a href="../../0.7%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E5%9B%BE%E7%AE%97%E6%B3%95/" title="发布于 2024-12-15 06:53">0.7手把手刷图算法</a>
                         <br>
                     
                     

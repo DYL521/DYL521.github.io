@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -80,65 +81,64 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-Django-Admin基本使用"><a href="#01-Django-Admin基本使用" class="headerlink" title="01.Django Admin基本使用"></a>01.Django Admin基本使用</h2><h3 id="1-1-models-py创建表结构"><a href="#1-1-models-py创建表结构" class="headerlink" title="1.1 models.py创建表结构"></a>1.1 models.py创建表结构</h3><pre><code class="python">from django.db import models
+                <h2 id="01-Django-Admin基本使用"><a href="#01-Django-Admin基本使用" class="headerlink" title="01.Django Admin基本使用"></a>01.Django Admin基本使用</h2><h3 id="1-1-models-py创建表结构"><a href="#1-1-models-py创建表结构" class="headerlink" title="1.1 models.py创建表结构"></a>1.1 models.py创建表结构</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
-class User(models.Model):
-    username = models.CharField(max_length=32,verbose_name=&#39;用户名&#39;)
-    pwd = models.CharField(max_length=64,verbose_name=&#39;密码&#39;)
-    ctime = models.DateTimeField(auto_now=True)
-    ut = models.ForeignKey(to=&#39;UserType&#39;,to_field=&#39;id&#39;,verbose_name=&#39;用户类型&#39;)
-    m2m = models.ManyToManyField(&quot;Group&quot;)
-    def __str__(self):
-        return self.username
-    class Meta:
-        verbose_name_plural = &#39;用户表&#39;
+<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    username <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span>verbose_name<span class="token operator">=</span><span class="token string">'用户名'</span><span class="token punctuation">)</span>
+    pwd <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>verbose_name<span class="token operator">=</span><span class="token string">'密码'</span><span class="token punctuation">)</span>
+    ctime <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span>auto_now<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    ut <span class="token operator">=</span> models<span class="token punctuation">.</span>ForeignKey<span class="token punctuation">(</span>to<span class="token operator">=</span><span class="token string">'UserType'</span><span class="token punctuation">,</span>to_field<span class="token operator">=</span><span class="token string">'id'</span><span class="token punctuation">,</span>verbose_name<span class="token operator">=</span><span class="token string">'用户类型'</span><span class="token punctuation">)</span>
+    m2m <span class="token operator">=</span> models<span class="token punctuation">.</span>ManyToManyField<span class="token punctuation">(</span><span class="token string">"Group"</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>username
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        verbose_name_plural <span class="token operator">=</span> <span class="token string">'用户表'</span>
 
-class UserType(models.Model):
-    user_type_name = models.CharField(max_length=32)
-    def __str__(self):
-        return self.user_type_name
+<span class="token keyword">class</span> <span class="token class-name">UserType</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    user_type_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>user_type_name
 
-class Group(models.Model):
-    group_name = models.CharField(max_length=32)
-    def __str__(self):
-        return self.group_name
-</code></pre>
-<h3 id="1-2-admin-py中注册表"><a href="#1-2-admin-py中注册表" class="headerlink" title="1.2 admin.py中注册表"></a>1.2 admin.py中注册表</h3><pre><code class="python">from django.contrib import admin
-from app01 import models
+<span class="token keyword">class</span> <span class="token class-name">Group</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    group_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>group_name</code></pre>
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = (&#39;username&#39;,&#39;pwd&#39;,&#39;ut&#39;,&#39;ctime&#39;,)
+<h3 id="1-2-admin-py中注册表"><a href="#1-2-admin-py中注册表" class="headerlink" title="1.2 admin.py中注册表"></a>1.2 admin.py中注册表</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
-admin.site.register(models.User,UserAdmin)
-admin.site.register(models.UserType)
-admin.site.register(models.Group)
-</code></pre>
-<h2 id="02-Admin自定制常用参数"><a href="#02-Admin自定制常用参数" class="headerlink" title="02.Admin自定制常用参数"></a>02.Admin自定制常用参数</h2><pre><code class="python">from django.contrib import admin
-from app01 import models
+<span class="token keyword">class</span> <span class="token class-name">UserAdmin</span><span class="token punctuation">(</span>admin<span class="token punctuation">.</span>ModelAdmin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    list_display <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span><span class="token string">'pwd'</span><span class="token punctuation">,</span><span class="token string">'ut'</span><span class="token punctuation">,</span><span class="token string">'ctime'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = (&#39;username&#39;,&#39;pwd&#39;,&#39;ut&#39;,&#39;ctime&#39;,)
-    list_filter = (&#39;source&#39;,&#39;consultant&#39;,&#39;date&#39;)     #过滤字段
-    search_fields = (&#39;qq&#39;,&#39;name&#39;)               #搜索匹配字段
-    raw_id_fields = (&#39;consult_course&#39;,)
-    filter_horizontal = (&#39;tags&#39;,)            #多对多字段显示
-    list_per_page = 1                    #每页显示几条数据
-    list_editable = (&#39;source&#39;,)             #可编辑的字段
-    readonly_fields = (&#39;qq&#39;,)              #只读字段
-    exclude = (&#39;name&#39;,)                  # 添加和修改时那些界面不显示
-    date_hierarchy = &#39;ctime&#39;               # 详细时间分层筛选　
-    actions = [&#39;test_action&#39;,]              #之定义的action函数
-    def test_action(self, request, arg2):      # 自定义action函数
-        &#39;&#39;&#39;
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>register<span class="token punctuation">(</span>models<span class="token punctuation">.</span>User<span class="token punctuation">,</span>UserAdmin<span class="token punctuation">)</span>
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>register<span class="token punctuation">(</span>models<span class="token punctuation">.</span>UserType<span class="token punctuation">)</span>
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>register<span class="token punctuation">(</span>models<span class="token punctuation">.</span>Group<span class="token punctuation">)</span></code></pre>
+
+<h2 id="02-Admin自定制常用参数"><a href="#02-Admin自定制常用参数" class="headerlink" title="02.Admin自定制常用参数"></a>02.Admin自定制常用参数</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
+
+<span class="token keyword">class</span> <span class="token class-name">UserAdmin</span><span class="token punctuation">(</span>admin<span class="token punctuation">.</span>ModelAdmin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    list_display <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span><span class="token string">'pwd'</span><span class="token punctuation">,</span><span class="token string">'ut'</span><span class="token punctuation">,</span><span class="token string">'ctime'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+    list_filter <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'source'</span><span class="token punctuation">,</span><span class="token string">'consultant'</span><span class="token punctuation">,</span><span class="token string">'date'</span><span class="token punctuation">)</span>     <span class="token comment">#过滤字段</span>
+    search_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'qq'</span><span class="token punctuation">,</span><span class="token string">'name'</span><span class="token punctuation">)</span>               <span class="token comment">#搜索匹配字段</span>
+    raw_id_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'consult_course'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+    filter_horizontal <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'tags'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>            <span class="token comment">#多对多字段显示</span>
+    list_per_page <span class="token operator">=</span> <span class="token number">1</span>                    <span class="token comment">#每页显示几条数据</span>
+    list_editable <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'source'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>             <span class="token comment">#可编辑的字段</span>
+    readonly_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'qq'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>              <span class="token comment">#只读字段</span>
+    exclude <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>                  <span class="token comment"># 添加和修改时那些界面不显示</span>
+    date_hierarchy <span class="token operator">=</span> <span class="token string">'ctime'</span>               <span class="token comment"># 详细时间分层筛选　</span>
+    actions <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'test_action'</span><span class="token punctuation">,</span><span class="token punctuation">]</span>              <span class="token comment">#之定义的action函数</span>
+    <span class="token keyword">def</span> <span class="token function">test_action</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span><span class="token punctuation">:</span>      <span class="token comment"># 自定义action函数</span>
+        <span class="token triple-quoted-string string">'''
         :param self:         crm.CustomerAdmin类本身
         :param request:      客户端request请求
         :param arg2:         前端选中的数据实例
-        &#39;&#39;&#39;
+        '''</span>
 
-admin.site.register(models.User,UserAdmin)
-admin.site.site_header = &#39;重写DjangoAdmin管理系统&#39;      # 修改系统显示名称
-admin.site.site_title = &#39;我的后台管理界面&#39;            # 修改页面 title
-</code></pre>
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>register<span class="token punctuation">(</span>models<span class="token punctuation">.</span>User<span class="token punctuation">,</span>UserAdmin<span class="token punctuation">)</span>
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>site_header <span class="token operator">=</span> <span class="token string">'重写DjangoAdmin管理系统'</span>      <span class="token comment"># 修改系统显示名称</span>
+admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>site_title <span class="token operator">=</span> <span class="token string">'我的后台管理界面'</span>            <span class="token comment"># 修改页面 title</span></code></pre>
 
                 
                 <p class="end">__END__</p>

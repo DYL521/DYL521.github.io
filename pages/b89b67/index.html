@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -88,19 +89,19 @@
 </ul>
 <h3 id="1-2-未使用pipeline执行N条命令"><a href="#1-2-未使用pipeline执行N条命令" class="headerlink" title="1.2 未使用pipeline执行N条命令"></a>1.2 未使用pipeline执行N条命令</h3><p><img src="E:/_000/XSX/02_项目课/day03/assets/image-20201005225859400.png" style="width: 600px; margin-left: 50px;"> </img></p>
 <h3 id="1-3-使用了pipeline执行N条命令"><a href="#1-3-使用了pipeline执行N条命令" class="headerlink" title="1.3 使用了pipeline执行N条命令"></a>1.3 使用了pipeline执行N条命令</h3><p><img src="E:/_000/XSX/02_项目课/day03/assets/image-20201005230053553.png" style="width: 600px; margin-left: 50px;"> </img></p>
-<h2 id="02-pipeline性能代码展示"><a href="#02-pipeline性能代码展示" class="headerlink" title="02.pipeline性能代码展示"></a>02.pipeline性能代码展示</h2><pre><code class="python">In [1]: from django_redis import get_redis_connection       # 导入get_redis_connection模块
-In [2]: redis_client = get_redis_connection(&#39;default&#39;)      # 连接redis 0号库
+<h2 id="02-pipeline性能代码展示"><a href="#02-pipeline性能代码展示" class="headerlink" title="02.pipeline性能代码展示"></a>02.pipeline性能代码展示</h2><pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">from</span> django_redis <span class="token keyword">import</span> get_redis_connection       <span class="token comment"># 导入get_redis_connection模块</span>
+In <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">:</span> redis_client <span class="token operator">=</span> get_redis_connection<span class="token punctuation">(</span><span class="token string">'default'</span><span class="token punctuation">)</span>      <span class="token comment"># 连接redis 0号库</span>
     
-&#39;&#39;&#39;方法1：使用普通方法执行&#39;&#39;&#39;
-In [3]: for i in range(99999):
-   ...:     redis_client.set(i,i)
+<span class="token triple-quoted-string string">'''方法1：使用普通方法执行'''</span>
+In <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">99999</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     redis_client<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span>i<span class="token punctuation">)</span>
 
-&#39;&#39;&#39;方法2：使用pipeline执行&#39;&#39;&#39;
-In [4]: p1 = redis_client.pipeline()           # 实例化一个pipeline对象             
-In [5]: for i in range(99999):
-   ...:     p1.set(i,i)                        # 把要执行的命令打包到pipeline
-In [6]: p1.execute()
-</code></pre>
+<span class="token triple-quoted-string string">'''方法2：使用pipeline执行'''</span>
+In <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">:</span> p1 <span class="token operator">=</span> redis_client<span class="token punctuation">.</span>pipeline<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment"># 实例化一个pipeline对象             </span>
+In <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">99999</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     p1<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span>i<span class="token punctuation">)</span>                        <span class="token comment"># 把要执行的命令打包到pipeline</span>
+In <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">:</span> p1<span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

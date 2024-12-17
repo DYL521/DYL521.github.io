@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -89,168 +90,168 @@
 <h3 id="1-3-为什么使用装饰器？（Why）"><a href="#1-3-为什么使用装饰器？（Why）" class="headerlink" title="1.3 为什么使用装饰器？（Why）"></a>1.3 为什么使用装饰器？（Why）</h3><ul>
 <li>结合应用场景说需求</li>
 </ul>
-<h3 id="1-4-如何使用装饰器？（How）"><a href="#1-4-如何使用装饰器？（How）" class="headerlink" title="1.4 如何使用装饰器？（How）"></a>1.4 如何使用装饰器？（How）</h3><h4 id="1-4-1-装饰器求函数运行时间"><a href="#1-4-1-装饰器求函数运行时间" class="headerlink" title="1.4.1 装饰器求函数运行时间"></a>1.4.1 装饰器求函数运行时间</h4><pre><code class="python">import time
-def timer(func):   #timer(test1)  func=test1
-    def deco(*args,**kwargs):
-        start_time = time.time()
-        func(*args,**kwargs)      #run test1
-        stop_time = time.time()
-        print(&quot;running time is %s&quot;%(stop_time-start_time))
-    return deco
+<h3 id="1-4-如何使用装饰器？（How）"><a href="#1-4-如何使用装饰器？（How）" class="headerlink" title="1.4 如何使用装饰器？（How）"></a>1.4 如何使用装饰器？（How）</h3><h4 id="1-4-1-装饰器求函数运行时间"><a href="#1-4-1-装饰器求函数运行时间" class="headerlink" title="1.4.1 装饰器求函数运行时间"></a>1.4.1 装饰器求函数运行时间</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">timer</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>   <span class="token comment">#timer(test1)  func=test1</span>
+    <span class="token keyword">def</span> <span class="token function">deco</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        start_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span>      <span class="token comment">#run test1</span>
+        stop_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running time is %s"</span><span class="token operator">%</span><span class="token punctuation">(</span>stop_time<span class="token operator">-</span>start_time<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> deco
 
-@timer     # test1=timer(test1)
-def test1():
-    time.sleep(3)
-    print(&quot;in the test1&quot;)
-test1()
-</code></pre>
-<h4 id="1-4-2-三级装饰器"><a href="#1-4-2-三级装饰器" class="headerlink" title="1.4.2 三级装饰器"></a>1.4.2 三级装饰器</h4><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-import time
-def auth(auth_type):
-    print(&quot;auth func:&quot;,auth_type)
-    def outer_wrapper(func):
-        def wrapper(*args, **kwargs):
-            print(&quot;wrapper func args:&quot;, *args, **kwargs)
-            print(&#39;运行前&#39;)
-            func(*args, **kwargs)
-            print(&#39;运行后&#39;)
-        return wrapper
-    return outer_wrapper
+<span class="token decorator annotation punctuation">@timer</span>     <span class="token comment"># test1=timer(test1)</span>
+<span class="token keyword">def</span> <span class="token function">test1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"in the test1"</span><span class="token punctuation">)</span>
+test1<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
-@auth(auth_type=&quot;local&quot;) # home = wrapper()
-def home():
-    print(&quot;welcome to home  page&quot;)
-    return &quot;from home&quot;
-home()
-</code></pre>
+<h4 id="1-4-2-三级装饰器"><a href="#1-4-2-三级装饰器" class="headerlink" title="1.4.2 三级装饰器"></a>1.4.2 三级装饰器</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">auth</span><span class="token punctuation">(</span>auth_type<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"auth func:"</span><span class="token punctuation">,</span>auth_type<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">outer_wrapper</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"wrapper func args:"</span><span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'运行前'</span><span class="token punctuation">)</span>
+            func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'运行后'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> wrapper
+    <span class="token keyword">return</span> outer_wrapper
+
+<span class="token decorator annotation punctuation">@auth</span><span class="token punctuation">(</span>auth_type<span class="token operator">=</span><span class="token string">"local"</span><span class="token punctuation">)</span> <span class="token comment"># home = wrapper()</span>
+<span class="token keyword">def</span> <span class="token function">home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"welcome to home  page"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token string">"from home"</span>
+home<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
 <h3 id="1-5-装饰器在项目中应用场景"><a href="#1-5-装饰器在项目中应用场景" class="headerlink" title="1.5 装饰器在项目中应用场景"></a>1.5 装饰器在项目中应用场景</h3><ul>
 <li><code>身份验证</code></li>
 <li>写入日志</li>
 <li>redis缓存</li>
 </ul>
-<h4 id="1-5-1-身份验证"><a href="#1-5-1-身份验证" class="headerlink" title="1.5.1 身份验证"></a>1.5.1 身份验证</h4><pre><code class="python">user,passwd = &#39;aaa&#39;,&#39;123&#39;
-def auth(func):
-    def wrapper(username,password,*args,**kwargs):
-        if user == username and password == passwd:
-            print(&quot;User has passed authentication&quot;)
-            res = func(username,password,*args,**kwargs)   #这里执行func()相当于执行调用的函数如home()
-            return res          #为了获得home()函数返回值，可以将执行结果赋值给res然后返回print(home())结果是&quot;from home&quot;而不是&quot;None&quot;了
-        else:
-            raise ValueError(&quot;非合法用户&quot;)
-    return wrapper
+<h4 id="1-5-1-身份验证"><a href="#1-5-1-身份验证" class="headerlink" title="1.5.1 身份验证"></a>1.5.1 身份验证</h4><pre class="language-python" data-language="python"><code class="language-python">user<span class="token punctuation">,</span>passwd <span class="token operator">=</span> <span class="token string">'aaa'</span><span class="token punctuation">,</span><span class="token string">'123'</span>
+<span class="token keyword">def</span> <span class="token function">auth</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span>username<span class="token punctuation">,</span>password<span class="token punctuation">,</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> user <span class="token operator">==</span> username <span class="token keyword">and</span> password <span class="token operator">==</span> passwd<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"User has passed authentication"</span><span class="token punctuation">)</span>
+            res <span class="token operator">=</span> func<span class="token punctuation">(</span>username<span class="token punctuation">,</span>password<span class="token punctuation">,</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span>   <span class="token comment">#这里执行func()相当于执行调用的函数如home()</span>
+            <span class="token keyword">return</span> res          <span class="token comment">#为了获得home()函数返回值，可以将执行结果赋值给res然后返回print(home())结果是"from home"而不是"None"了</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"非合法用户"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> wrapper
 
-@auth
-def home(username,password):
-    print(&quot;welcome to home page&quot;)
-    return &quot;from home&quot;
+<span class="token decorator annotation punctuation">@auth</span>
+<span class="token keyword">def</span> <span class="token function">home</span><span class="token punctuation">(</span>username<span class="token punctuation">,</span>password<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"welcome to home page"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token string">"from home"</span>
 
-home(&#39;aaa&#39;,&#39;123&#39;)
-</code></pre>
-<h4 id="1-5-2-记录日志"><a href="#1-5-2-记录日志" class="headerlink" title="1.5.2 记录日志"></a>1.5.2 记录日志</h4><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-from functools import wraps
-import traceback
-def decoratore(func):
-    @wraps(func)
-    def log(*args,**kwargs):
-        try:
-            print(&quot;当前运行方法&quot;,func.__name__)
-            return func(*args,**kwargs)
-        except Exception as e:
-            print(traceback.format_exc())  # 这里应该调用log模块来记录到日志里
-    return log
+home<span class="token punctuation">(</span><span class="token string">'aaa'</span><span class="token punctuation">,</span><span class="token string">'123'</span><span class="token punctuation">)</span></code></pre>
 
-@decoratore
-def test():
-    int(&#39;a&#39;)
-    pass
+<h4 id="1-5-2-记录日志"><a href="#1-5-2-记录日志" class="headerlink" title="1.5.2 记录日志"></a>1.5.2 记录日志</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">from</span> functools <span class="token keyword">import</span> wraps
+<span class="token keyword">import</span> traceback
+<span class="token keyword">def</span> <span class="token function">decoratore</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token decorator annotation punctuation">@wraps</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"当前运行方法"</span><span class="token punctuation">,</span>func<span class="token punctuation">.</span>__name__<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>traceback<span class="token punctuation">.</span>format_exc<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 这里应该调用log模块来记录到日志里</span>
+    <span class="token keyword">return</span> log
 
-if __name__ == &#39;__main__&#39;:
-    test()
+<span class="token decorator annotation punctuation">@decoratore</span>
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
+    <span class="token keyword">pass</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    test<span class="token punctuation">(</span><span class="token punctuation">)</span>
     
-    &#39;&#39;&#39; 上面运行结果
+    <span class="token triple-quoted-string string">''' 上面运行结果
     当前运行方法 test
     Traceback (most recent call last):
-      File &quot;C:/Users/tom/Desktop/alipay_demo/aaa/t2.py&quot;, line 11, in log
+      File "C:/Users/tom/Desktop/alipay_demo/aaa/t2.py", line 11, in log
         return func(*args,**kwargs)
-      File &quot;C:/Users/tom/Desktop/alipay_demo/aaa/t2.py&quot;, line 18, in test
-        int(&#39;a&#39;)
-    ValueError: invalid literal for int() with base 10: &#39;a&#39;
+      File "C:/Users/tom/Desktop/alipay_demo/aaa/t2.py", line 18, in test
+        int('a')
+    ValueError: invalid literal for int() with base 10: 'a'
      22222
-    &#39;&#39;&#39;
-</code></pre>
-<h4 id="1-5-3-redis缓存"><a href="#1-5-3-redis缓存" class="headerlink" title="1.5.3 redis缓存"></a>1.5.3 redis缓存</h4><pre><code class="python">第一步：查询redis缓存是否存在这个key
+    '''</span></code></pre>
+
+<h4 id="1-5-3-redis缓存"><a href="#1-5-3-redis缓存" class="headerlink" title="1.5.3 redis缓存"></a>1.5.3 redis缓存</h4><pre class="language-python" data-language="python"><code class="language-python">第一步：查询redis缓存是否存在这个key
 第二步：如果存在这个key，不用去mysql中查询，直接从redis中取出数据即可（减轻了mysql压力）
-第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了
-</code></pre>
+第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了</code></pre>
+
 <h5 id="1-5-3-1-2B青年实现"><a href="#1-5-3-1-2B青年实现" class="headerlink" title="1.5.3.1 2B青年实现"></a>1.5.3.1 2B青年实现</h5><ul>
 <li>2B青年每一个需要使用缓存的数据，我都写一个方法获取数据，再写一个方法处理缓存。</li>
 <li>若需要用到缓存的地方越来越多，每一个都需要这么写一套代码，代码冗余繁琐。</li>
 </ul>
-<pre><code class="python"># coding:utf-8
-from django.core.cache import cache
-import time
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
+<span class="token keyword">import</span> time
 
-# 获取readed缓存
-def get_readed_cache():
-    # 判断键是否存在
-    key = &#39;readed&#39;
-    if cache.has_key(key):
-        data = cache.get(key)
-    else:
-        # 不存在，则通过sql语句获取数据，并写入缓存,这里只是一个举例的sql语句
-        data = &quot;select name from tb&quot;
-        # 写入缓存
-        cache.set(key, data, 3600 - int(time.time() % 3600))
-    return data
+<span class="token comment"># 获取readed缓存</span>
+<span class="token keyword">def</span> <span class="token function">get_readed_cache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 判断键是否存在</span>
+    key <span class="token operator">=</span> <span class="token string">'readed'</span>
+    <span class="token keyword">if</span> cache<span class="token punctuation">.</span>has_key<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        data <span class="token operator">=</span> cache<span class="token punctuation">.</span>get<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token comment"># 不存在，则通过sql语句获取数据，并写入缓存,这里只是一个举例的sql语句</span>
+        data <span class="token operator">=</span> <span class="token string">"select name from tb"</span>
+        <span class="token comment"># 写入缓存</span>
+        cache<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> data<span class="token punctuation">,</span> <span class="token number">3600</span> <span class="token operator">-</span> <span class="token builtin">int</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">3600</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> data
 
-def test1():
-    data = get_readed_cache()
-    return data
+<span class="token keyword">def</span> <span class="token function">test1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    data <span class="token operator">=</span> get_readed_cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> data
 
-def test2():
-    data = get_readed_cache()
-    return data
+<span class="token keyword">def</span> <span class="token function">test2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    data <span class="token operator">=</span> get_readed_cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> data
 
-if __name__ == &#39;__main__&#39;:
-    test1()
-    test2()
-</code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    test1<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    test2<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
 <h5 id="1-5-3-2-NB青年"><a href="#1-5-3-2-NB青年" class="headerlink" title="1.5.3.2 NB青年"></a>1.5.3.2 NB青年</h5><ul>
 <li>NB青年可以使用三级装饰器，在装饰器中判断key如果存在就从reids中获取，如果不存在就从数据库查询，并设置到reids中</li>
 </ul>
-<pre><code class="python"># coding:utf-8
-from django.core.cache import cache
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
 
-# 获取redis缓存的装饰器
-def redis_cache(key, timeout):
-    def __redis_cache(func):
-        def warpper(*args, **kw):
-            if cache.has_key(key):  # 判断缓存是否存在
-                data = cache.get(key)
-            else:
-                # 若不存在则执行获取数据的方法
-                # 注意返回数据的类型(字符串，数字，字典，列表均可)
-                data = func(*args, **kw)   # 从数据库查询到数据设置到redis中
-                cache.set(key, data, timeout)
-            return data
-        return warpper
-    return __redis_cache
+<span class="token comment"># 获取redis缓存的装饰器</span>
+<span class="token keyword">def</span> <span class="token function">redis_cache</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> timeout<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__redis_cache</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">def</span> <span class="token function">warpper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> cache<span class="token punctuation">.</span>has_key<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 判断缓存是否存在</span>
+                data <span class="token operator">=</span> cache<span class="token punctuation">.</span>get<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token comment"># 若不存在则执行获取数据的方法</span>
+                <span class="token comment"># 注意返回数据的类型(字符串，数字，字典，列表均可)</span>
+                data <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span>   <span class="token comment"># 从数据库查询到数据设置到redis中</span>
+                cache<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> data<span class="token punctuation">,</span> timeout<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> data
+        <span class="token keyword">return</span> warpper
+    <span class="token keyword">return</span> __redis_cache
 
-#键值为test，超时时间为60秒
-@redis_cache(&#39;test&#39;, 60)
-def get_test_data():
-    # 获取Blog模型随机排序前3条数据
-    # (Blog模型是我自己的模型，具体代码根据自己需求获取数据)
-    # values执行结果，将返回一个字典。字典可以直接存入redis
-    # data = Blog.objects.values(&#39;id&#39;, &#39;caption&#39;).order_by(&#39;?&#39;)[:3]
-    data = &#39;从数据库查询到了数据&#39;
-    return data
+<span class="token comment">#键值为test，超时时间为60秒</span>
+<span class="token decorator annotation punctuation">@redis_cache</span><span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">get_test_data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 获取Blog模型随机排序前3条数据</span>
+    <span class="token comment"># (Blog模型是我自己的模型，具体代码根据自己需求获取数据)</span>
+    <span class="token comment"># values执行结果，将返回一个字典。字典可以直接存入redis</span>
+    <span class="token comment"># data = Blog.objects.values('id', 'caption').order_by('?')[:3]</span>
+    data <span class="token operator">=</span> <span class="token string">'从数据库查询到了数据'</span>
+    <span class="token keyword">return</span> data
 
-if __name__ == &#39;__main__&#39;:
-    get_test_data()
-</code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    get_test_data<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

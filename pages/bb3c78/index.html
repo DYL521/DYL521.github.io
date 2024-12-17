@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -76,44 +77,44 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="自动部署Tomcat"><a href="#自动部署Tomcat" class="headerlink" title="自动部署Tomcat"></a>自动部署Tomcat</h1><h2 id="01-部署文件"><a href="#01-部署文件" class="headerlink" title="01.部署文件"></a>01.部署文件</h2><pre><code class="shell">[root@k8s-node2 ~]# vim tomcat-palybook.yaml
-</code></pre>
-<pre><code class="shell">---
+                <h1 id="自动部署Tomcat"><a href="#自动部署Tomcat" class="headerlink" title="自动部署Tomcat"></a>自动部署Tomcat</h1><h2 id="01-部署文件"><a href="#01-部署文件" class="headerlink" title="01.部署文件"></a>01.部署文件</h2><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim tomcat-palybook.yaml</span></code></pre>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash">---
 - hosts: webservers 
   gather_facts: no
   vars:
-    tomcat_version: 8.5.61
+    tomcat_version: <span class="token number">8.5</span>.61
     tomcat_install_dir: /usr/local
   tasks:
-    - name: Install jdk1.8  #### 第一：安装 jdk 环境
-      yum: name=java-1.8.0-openjdk state=present
+    - name: Install jdk1.8  <span class="token comment">#### 第一：安装 jdk 环境</span>
+      yum: <span class="token assign-left variable">name</span><span class="token operator">=</span>java-1.8.0-openjdk <span class="token assign-left variable">state</span><span class="token operator">=</span>present
 
-    - name: Download tomcat  #### 第二：下载 Tomcat
-      get_url: url=http://mirrors.hust.edu.cn/apache/tomcat/tomcat-8/v&#123;&#123; tomcat_version &#125;&#125;/bin/apache-tomcat-&#123;&#123; tomcat_version &#125;&#125;.tar.gz dest=/tmp
+    - name: Download tomcat  <span class="token comment">#### 第二：下载 Tomcat</span>
+      get_url: <span class="token assign-left variable">url</span><span class="token operator">=</span>http://mirrors.hust.edu.cn/apache/tomcat/tomcat-8/v<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>/bin/apache-tomcat-<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>.tar.gz <span class="token assign-left variable">dest</span><span class="token operator">=</span>/tmp
 
-    - name: Unarchive tomcat-&#123;&#123; tomcat_version &#125;&#125;.tar.gz  #### 第三：Tomcat是二进制包，解压即可使用
+    - name: Unarchive tomcat-<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>.tar.gz  <span class="token comment">#### 第三：Tomcat是二进制包，解压即可使用</span>
       unarchive:
-        src: /tmp/apache-tomcat-&#123;&#123; tomcat_version &#125;&#125;.tar.gz 
-        dest: &quot;&#123;&#123; tomcat_install_dir &#125;&#125;&quot;
-        copy: no     # 如果是yes，ansible会到目标机器本地区拷贝，no 就会通过ansible服务机器上拷贝
+        src: /tmp/apache-tomcat-<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>.tar.gz 
+        dest: <span class="token string">"&#123;&#123; tomcat_install_dir &#125;&#125;"</span>
+        copy: no     <span class="token comment"># 如果是yes，ansible会到目标机器本地区拷贝，no 就会通过ansible服务机器上拷贝</span>
 
-    - name: Start tomcat   #### 第四：启动 Tomcat
-      shell: cd &#123;&#123; tomcat_install_dir &#125;&#125; &amp;&amp;
-        mv apache-tomcat-&#123;&#123; tomcat_version &#125;&#125; tomcat8 &amp;&amp;
-        cd tomcat8/bin &amp;&amp; nohup ./startup.sh &amp;
-</code></pre>
+    - name: Start tomcat   <span class="token comment">#### 第四：启动 Tomcat</span>
+      shell: <span class="token builtin class-name">cd</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_install_dir <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token operator">&amp;&amp;</span>
+        <span class="token function">mv</span> apache-tomcat-<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> tomcat8 <span class="token operator">&amp;&amp;</span>
+        <span class="token builtin class-name">cd</span> tomcat8/bin <span class="token operator">&amp;&amp;</span> <span class="token function">nohup</span> ./startup.sh <span class="token operator">&amp;</span></code></pre>
+
 <h2 id="02-部署"><a href="#02-部署" class="headerlink" title="02.部署"></a>02.部署</h2><ul>
 <li>执行部署 Tomcat</li>
 </ul>
-<pre><code class="shell">[root@k8s-node2 ~]# ansible-playbook tomcat-palybook.yaml --syntax-check       # 语法检查
-[root@k8s-node2 ~]# ansible-playbook tomcat-palybook.yaml                 # 执行
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml --syntax-check       # 语法检查</span>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml                 # 执行</span></code></pre>
+
 <ul>
 <li>查看Tomcat是否运行</li>
 </ul>
-<pre><code>[root@k8s-node2 ~]# ls /usr/local/tomcat8/
-[root@k8s-node2 ~]# ps -ef|grep tomcat
-</code></pre>
+<pre class="language-none"><code class="language-none">[root@k8s-node2 ~]# ls &#x2F;usr&#x2F;local&#x2F;tomcat8&#x2F;
+[root@k8s-node2 ~]# ps -ef|grep tomcat</code></pre>
+
 <ul>
 <li>访问Tomcat</li>
 </ul>

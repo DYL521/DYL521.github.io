@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -84,24 +85,24 @@
 <li><p>json.dumps( data,ensure_ascii&#x3D;False, indent&#x3D;4)</p>
 </li>
 </ul>
-<pre><code class="python">#json序列化代码
-import json
-info = &#123;
-    &#39;name&#39;:&quot;tom&quot;,
-    &quot;age&quot; :&quot;100&quot;
-&#125;
-f = open(&quot;test.txt&quot;,&#39;w&#39;)
-# print(json.dumps(info))
-f.write(json.dumps(info))
-f.close()
-</code></pre>
-<pre><code class="python">#json反序列化代码
-import json
-f = open(&quot;test.txt&quot;,&quot;r&quot;)
-data = json.loads(f.read())
-f.close()
-print(data[&quot;age&quot;])
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#json序列化代码</span>
+<span class="token keyword">import</span> json
+info <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">"tom"</span><span class="token punctuation">,</span>
+    <span class="token string">"age"</span> <span class="token punctuation">:</span><span class="token string">"100"</span>
+<span class="token punctuation">&#125;</span>
+f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span>
+<span class="token comment"># print(json.dumps(info))</span>
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#json反序列化代码</span>
+<span class="token keyword">import</span> json
+f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">"r"</span><span class="token punctuation">)</span>
+data <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">"age"</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+
 <h2 id="02-pickle序列化"><a href="#02-pickle序列化" class="headerlink" title="02.pickle序列化"></a>02.pickle序列化</h2><ul>
 <li><p>python的pickle模块实现了python的所有数据序列和反序列化。</p>
 </li>
@@ -112,43 +113,43 @@ print(data[&quot;age&quot;])
 <li><p><code>pickle序列化代码</code></p>
 </li>
 </ul>
-<pre><code class="python">#pickle序列化代码
-import pickle
-info = &#123;
-    &#39;name&#39;:&quot;tom&quot;,
-    &quot;age&quot; :&quot;100&quot;
-&#125;
-f = open(&quot;test.txt&quot;,&#39;wb&#39;)
-f.write(pickle.dumps(info))
-f.close()
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#pickle序列化代码</span>
+<span class="token keyword">import</span> pickle
+info <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">"tom"</span><span class="token punctuation">,</span>
+    <span class="token string">"age"</span> <span class="token punctuation">:</span><span class="token string">"100"</span>
+<span class="token punctuation">&#125;</span>
+f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">'wb'</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
 <ul>
 <li><code>pickle反序列化代码</code></li>
 </ul>
-<pre><code>#pickle反序列化代码
+<pre class="language-none"><code class="language-none">#pickle反序列化代码
 import pickle
-f = open(&quot;test.txt&quot;,&quot;rb&quot;)
-data = pickle.loads(f.read())
+f &#x3D; open(&quot;test.txt&quot;,&quot;rb&quot;)
+data &#x3D; pickle.loads(f.read())
 f.close()
-print(data[&quot;age&quot;])
-</code></pre>
-<h2 id="03-解决序列化datetime类型"><a href="#03-解决序列化datetime类型" class="headerlink" title="03.解决序列化datetime类型"></a>03.解决序列化datetime类型</h2><pre><code class="python">import json,datetime
+print(data[&quot;age&quot;])</code></pre>
 
-class JsonCustomEncoder(json.JSONEncoder):
-    def default(self, field):
-        if isinstance(field, datetime.datetime):
-            return field.strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)
-        elif isinstance(field, datetime.date):
-            return field.strftime(&#39;%Y-%m-%d&#39;)
-        else:
-            return json.JSONEncoder.default(self, field)
+<h2 id="03-解决序列化datetime类型"><a href="#03-解决序列化datetime类型" class="headerlink" title="03.解决序列化datetime类型"></a>03.解决序列化datetime类型</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json<span class="token punctuation">,</span>datetime
 
-t = datetime.datetime.now()
+<span class="token keyword">class</span> <span class="token class-name">JsonCustomEncoder</span><span class="token punctuation">(</span>json<span class="token punctuation">.</span>JSONEncoder<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">default</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>field<span class="token punctuation">,</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> field<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%Y-%m-%d %H:%M:%S'</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>field<span class="token punctuation">,</span> datetime<span class="token punctuation">.</span>date<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> field<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> json<span class="token punctuation">.</span>JSONEncoder<span class="token punctuation">.</span>default<span class="token punctuation">(</span>self<span class="token punctuation">,</span> field<span class="token punctuation">)</span>
 
-print(type(t),t)
-f = open(&#39;ttt&#39;,&#39;w&#39;)                              #指定将内容写入到ttt文件中
-f.write(json.dumps(t,cls=JsonCustomEncoder))      #使用时候只要在json.dumps增加个cls参数即可
-</code></pre>
+t <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">,</span>t<span class="token punctuation">)</span>
+f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'ttt'</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span>                              <span class="token comment">#指定将内容写入到ttt文件中</span>
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>t<span class="token punctuation">,</span>cls<span class="token operator">=</span>JsonCustomEncoder<span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment">#使用时候只要在json.dumps增加个cls参数即可</span></code></pre>
+
 <ul>
 <li><code>JSON和pickle模块的区别</code><ul>
 <li>1.JSON只能处理基本数据类型。pickle能处理所有Python的数据类型。</li>

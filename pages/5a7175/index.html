@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -117,30 +118,30 @@
 </ul>
 </li>
 </ul>
-<pre><code class="python">from  multiprocessing import Process,Pool
-import time,os
-def foo(i):
-    time.sleep(2)
-    print(&quot;in the process&quot;,os.getpid()) #打印子进程的pid
-    return i+100
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span>  multiprocessing <span class="token keyword">import</span> Process<span class="token punctuation">,</span>Pool
+<span class="token keyword">import</span> time<span class="token punctuation">,</span>os
+<span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"in the process"</span><span class="token punctuation">,</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#打印子进程的pid</span>
+    <span class="token keyword">return</span> i<span class="token operator">+</span><span class="token number">100</span>
 
-def call(arg):
-    print(&#39;--&gt;exec done:&#39;,arg,os.getpid())
+<span class="token keyword">def</span> <span class="token function">call</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'-->exec done:'</span><span class="token punctuation">,</span>arg<span class="token punctuation">,</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-if __name__ == &#39;__main__&#39;:
-    pool = Pool(3)                      #进程池最多允许5个进程放入进程池
-    print(&quot;主进程pid：&quot;,os.getpid())     #打印父进程的pid
-    for i in range(10):
-        #用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数
-        pool.apply_async(func=foo, args=(i,),callback=call)
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>                      <span class="token comment">#进程池最多允许5个进程放入进程池</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"主进程pid："</span><span class="token punctuation">,</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>     <span class="token comment">#打印父进程的pid</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment">#用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数</span>
+        pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>func<span class="token operator">=</span>foo<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span>callback<span class="token operator">=</span>call<span class="token punctuation">)</span>
 
-        #用法2 串行 启动进程不在用Process而是直接用pool.apply()
-        # pool.apply(func=foo, args=(i,))
+        <span class="token comment">#用法2 串行 启动进程不在用Process而是直接用pool.apply()</span>
+        <span class="token comment"># pool.apply(func=foo, args=(i,))</span>
 
-    print(&#39;end&#39;)
-    pool.close()    #关闭pool
-    pool.join()     #进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。
-</code></pre>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">)</span>
+    pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token comment">#关闭pool</span>
+    pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment">#进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。</span></code></pre>
+
 <h3 id="1-4-僵尸进程"><a href="#1-4-僵尸进程" class="headerlink" title="1.4 僵尸进程"></a>1.4 僵尸进程</h3><ul>
 <li><p><code>1）僵尸进程定义</code></p>
 <ul>
@@ -157,20 +158,20 @@ if __name__ == &#39;__main__&#39;:
 <li><p><code>2）用python写一个僵尸进程</code></p>
 </li>
 </ul>
-<pre><code class="python">#!/usr/bin/env python
-#coding=utf8
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token comment">#coding=utf8</span>
  
-import os, sys, time
-#产生子进程
-pid = os.fork()
+<span class="token keyword">import</span> os<span class="token punctuation">,</span> sys<span class="token punctuation">,</span> time
+<span class="token comment">#产生子进程</span>
+pid <span class="token operator">=</span> os<span class="token punctuation">.</span>fork<span class="token punctuation">(</span><span class="token punctuation">)</span>
  
-if pid == 0:
-    #子进程退出
-    sys.exit(0)
-#父进程休息30秒
-time.sleep(30)
-# 先产生一个子进程，子进程退出，父进程休息30秒,那就会产生一个僵尸进程
-</code></pre>
+<span class="token keyword">if</span> pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+    <span class="token comment">#子进程退出</span>
+    sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment">#父进程休息30秒</span>
+time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token comment"># 先产生一个子进程，子进程退出，父进程休息30秒,那就会产生一个僵尸进程</span></code></pre>
+
 <ul>
 <li><p><code>ps -ef| grep defunct</code> 在linux下查看僵尸进程</p>
 <ul>
@@ -178,43 +179,47 @@ time.sleep(30)
 root     110401  96083  0 19:11 pts/2    00:00:00 python defunct.py
 root     110402 110401  0 19:11 pts/2    00:00:00 [python] &lt;defunct&gt;
 root     110406  96105  0 19:11 pts/3    00:00:00 grep --color=auto defunct
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-5-Python中使用过的进程模块？"><a href="#1-5-Python中使用过的进程模块？" class="headerlink" title="1.5 Python中使用过的进程模块？"></a>1.5 Python中使用过的进程模块？</h3><h4 id="1-5-1-multiprocessing"><a href="#1-5-1-multiprocessing" class="headerlink" title="1.5.1 multiprocessing"></a>1.5.1 multiprocessing</h4><ul>
-<li><code>multiprocessing</code>是一个使用类似于线程模块的API支持产生进程的包。 </li>
-<li>多处理包提供本地和远程并发，通过使用子进程而不是线程有效地侧向执行全局解释器锁。 </li>
-<li>因此，多处理模块允许程序员充分利用给定机器上的多个处理器。 它可以在Unix和Windows上运行。</li>
-<li><code>进程池抓取页面</code></li>
-</ul>
-<pre><code class="python"># -*- coding: utf-8 -*-
+<pre class="language-none"><code class="language-none">
+### 1.5 Python中使用过的进程模块？
+
+#### 1.5.1 multiprocessing
+
+- &#96;multiprocessing&#96;是一个使用类似于线程模块的API支持产生进程的包。 
+- 多处理包提供本地和远程并发，通过使用子进程而不是线程有效地侧向执行全局解释器锁。 
+- 因此，多处理模块允许程序员充分利用给定机器上的多个处理器。 它可以在Unix和Windows上运行。
+- &#96;&#96;进程池抓取页面&#96;&#96;
+
+&#96;&#96;&#96;python
+# -*- coding: utf-8 -*-
 import requests
 from multiprocessing import Pool
 
 def fetch_request(url):
-    result = requests.get(url)
+    result &#x3D; requests.get(url)
     print(result.text)
 
 def call(arg):
     print(&#39;--&gt;exec done:&#39;,&quot;测试进程池执行后回调功能&quot;)
 
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;https://www.google.com/&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
-    &#39;http://dig.chouti.com/&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
+url_list &#x3D; [
+    &#39;https:&#x2F;&#x2F;www.baidu.com&#39;,
+    &#39;https:&#x2F;&#x2F;www.google.com&#x2F;&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
+    &#39;http:&#x2F;&#x2F;dig.chouti.com&#x2F;&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
 ]
 
-if __name__ == &#39;__main__&#39;:
-    pool = Pool(10)        # 创建线程池
+if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
+    pool &#x3D; Pool(10)        # 创建线程池
     for url in url_list:
         #用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数
-        pool.apply_async(func=fetch_request, args=(url,),callback=call)
+        pool.apply_async(func&#x3D;fetch_request, args&#x3D;(url,),callback&#x3D;call)
     print(&#39;end&#39;)
     pool.close()    #关闭pool
-    pool.join()     #进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。
+    pool.join()     #进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。</code></pre>
 </code></pre>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="1-5-2-concurrent-futures"><a href="#1-5-2-concurrent-futures" class="headerlink" title="1.5.2 concurrent.futures"></a>1.5.2 concurrent.futures</h4><ul>
 <li><p><code>1、简介</code> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/concurrent.futures.html">参考官网</a></p>
 <ul>
@@ -243,26 +248,26 @@ if __name__ == &#39;__main__&#39;:
 <li><p>3、concurrent.futures.ProcessPoolExecutor 抓取网页</p>
 </li>
 </ul>
-<pre><code class="python">import requests
-from concurrent.futures import ProcessPoolExecutor
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
 
-def fetch_request(url):
-    result = requests.get(url)
-    print(result.text)
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
 
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;https://www.google.com/&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
-    &#39;http://dig.chouti.com/&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
-]
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
 
-if __name__ == &#39;__main__&#39;:
-    pool = ProcessPoolExecutor(10)        # 创建线程池
-    for url in url_list:
-        pool.submit(fetch_request,url)    # 去线程池中获取一个进程，进程去执行fetch_request方法
-    pool.shutdown(wait = True)
-    # shutdown相当于一个开关，它会读取程序中所设定的进程总数，直至每开启一个进程，它读取设定的总数就会减一，直至为0时便会打印主线程
-</code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    pool <span class="token operator">=</span> ProcessPoolExecutor<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>        <span class="token comment"># 创建线程池</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+        pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>    <span class="token comment"># 去线程池中获取一个进程，进程去执行fetch_request方法</span>
+    pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span>wait <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
+    <span class="token comment"># shutdown相当于一个开关，它会读取程序中所设定的进程总数，直至每开启一个进程，它读取设定的总数就会减一，直至为0时便会打印主线程</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

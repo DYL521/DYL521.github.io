@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -83,121 +84,121 @@
 <h1 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/dunwu/nginx-tutorial/blob/master/docs/nginx-ops.md">https://github.com/dunwu/nginx-tutorial/blob/master/docs/nginx-ops.md</a></li>
 </ul>
-<h1 id="2、nginx-的常用命令"><a href="#2、nginx-的常用命令" class="headerlink" title="2、nginx 的常用命令"></a>2、nginx 的常用命令</h1><pre><code class="shell">nginx -s stop # 快速关闭nginx
-nginx -s quit # 平稳关闭nginx，保存相关信息，有安排的结束web服务
-nginx -s reload # 因改变nginx配置文件，需要重新加载配置
-nginx -s reopen # 重新打开日志文件
-nginx -t        # 不运行，仅仅测试配置文件的语法等等
-nginx -v        # 显示nginx的版本
-</code></pre>
-<h1 id="3、nginx实战"><a href="#3、nginx实战" class="headerlink" title="3、nginx实战"></a>3、nginx实战</h1><h2 id="3-1-http反向代理"><a href="#3-1-http反向代理" class="headerlink" title="3.1 http反向代理"></a>3.1 http反向代理</h2><pre><code class="shell">#运行用户
-#user somebody;
+<h1 id="2、nginx-的常用命令"><a href="#2、nginx-的常用命令" class="headerlink" title="2、nginx 的常用命令"></a>2、nginx 的常用命令</h1><pre class="language-bash" data-language="bash"><code class="language-bash">nginx <span class="token parameter variable">-s</span> stop <span class="token comment"># 快速关闭nginx</span>
+nginx <span class="token parameter variable">-s</span> quit <span class="token comment"># 平稳关闭nginx，保存相关信息，有安排的结束web服务</span>
+nginx <span class="token parameter variable">-s</span> reload <span class="token comment"># 因改变nginx配置文件，需要重新加载配置</span>
+nginx <span class="token parameter variable">-s</span> reopen <span class="token comment"># 重新打开日志文件</span>
+nginx <span class="token parameter variable">-t</span>        <span class="token comment"># 不运行，仅仅测试配置文件的语法等等</span>
+nginx <span class="token parameter variable">-v</span>        <span class="token comment"># 显示nginx的版本</span></code></pre>
 
-#启动进程,通常设置成和cpu的数量相等
-worker_processes  1;
+<h1 id="3、nginx实战"><a href="#3、nginx实战" class="headerlink" title="3、nginx实战"></a>3、nginx实战</h1><h2 id="3-1-http反向代理"><a href="#3-1-http反向代理" class="headerlink" title="3.1 http反向代理"></a>3.1 http反向代理</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#运行用户</span>
+<span class="token comment">#user somebody;</span>
 
-#全局错误日志
-error_log  D:/Tools/nginx-1.10.1/logs/error.log;
-error_log  D:/Tools/nginx-1.10.1/logs/notice.log  notice;
-error_log  D:/Tools/nginx-1.10.1/logs/info.log  info;
+<span class="token comment">#启动进程,通常设置成和cpu的数量相等</span>
+worker_processes  <span class="token number">1</span><span class="token punctuation">;</span>
 
-#PID文件，记录当前启动的nginx的进程ID
-pid        D:/Tools/nginx-1.10.1/logs/nginx.pid;
+<span class="token comment">#全局错误日志</span>
+error_log  D:/Tools/nginx-1.10.1/logs/error.log<span class="token punctuation">;</span>
+error_log  D:/Tools/nginx-1.10.1/logs/notice.log  notice<span class="token punctuation">;</span>
+error_log  D:/Tools/nginx-1.10.1/logs/info.log  info<span class="token punctuation">;</span>
 
-#工作模式及连接数上限
-events &#123;
-    worker_connections 1024;    #单个后台worker process进程的最大并发链接数
-&#125;
+<span class="token comment">#PID文件，记录当前启动的nginx的进程ID</span>
+pid        D:/Tools/nginx-1.10.1/logs/nginx.pid<span class="token punctuation">;</span>
 
-#设定http服务器，利用它的反向代理功能提供负载均衡支持
-http &#123;
-    #设定mime类型(邮件支持类型),类型由mime.types文件定义
-    include       D:/Tools/nginx-1.10.1/conf/mime.types;
-    default_type  application/octet-stream;
+<span class="token comment">#工作模式及连接数上限</span>
+events <span class="token punctuation">&#123;</span>
+    worker_connections <span class="token number">1024</span><span class="token punctuation">;</span>    <span class="token comment">#单个后台worker process进程的最大并发链接数</span>
+<span class="token punctuation">&#125;</span>
 
-    #设定日志
-    log_format  main  &#39;[$remote_addr] - [$remote_user] [$time_local] &quot;$request&quot; &#39;
-                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
-                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+<span class="token comment">#设定http服务器，利用它的反向代理功能提供负载均衡支持</span>
+http <span class="token punctuation">&#123;</span>
+    <span class="token comment">#设定mime类型(邮件支持类型),类型由mime.types文件定义</span>
+    include       D:/Tools/nginx-1.10.1/conf/mime.types<span class="token punctuation">;</span>
+    default_type  application/octet-stream<span class="token punctuation">;</span>
 
-    access_log    D:/Tools/nginx-1.10.1/logs/access.log main;
-    rewrite_log     on;
+    <span class="token comment">#设定日志</span>
+	log_format  main  <span class="token string">'[$remote_addr] - [$remote_user] [$time_local] "$request" '</span>
+                      <span class="token string">'$status $body_bytes_sent "$http_referer" '</span>
+                      <span class="token string">'"$http_user_agent" "$http_x_forwarded_for"'</span><span class="token punctuation">;</span>
 
-    #sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，对于普通应用，
-    #必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.
-    sendfile        on;
-    #tcp_nopush     on;
+    access_log    D:/Tools/nginx-1.10.1/logs/access.log main<span class="token punctuation">;</span>
+    rewrite_log     on<span class="token punctuation">;</span>
 
-    #连接超时时间
-    keepalive_timeout  120;
-    tcp_nodelay        on;
+    <span class="token comment">#sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，对于普通应用，</span>
+    <span class="token comment">#必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.</span>
+    sendfile        on<span class="token punctuation">;</span>
+    <span class="token comment">#tcp_nopush     on;</span>
 
-    #gzip压缩开关
-    #gzip  on;
+    <span class="token comment">#连接超时时间</span>
+    keepalive_timeout  <span class="token number">120</span><span class="token punctuation">;</span>
+    tcp_nodelay        on<span class="token punctuation">;</span>
 
-    #设定实际的服务器列表
-    upstream zp_server1&#123;
-        server 127.0.0.1:8089;
-    &#125;
+	<span class="token comment">#gzip压缩开关</span>
+	<span class="token comment">#gzip  on;</span>
 
-    #HTTP服务器
-    server &#123;
-        #监听80端口，80端口是知名端口号，用于HTTP协议
-        listen       80;
+    <span class="token comment">#设定实际的服务器列表</span>
+    upstream zp_server1<span class="token punctuation">&#123;</span>
+        server <span class="token number">127.0</span>.0.1:8089<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-        #定义使用www.xx.com访问
-        server_name  www.helloworld.com;
+    <span class="token comment">#HTTP服务器</span>
+    server <span class="token punctuation">&#123;</span>
+        <span class="token comment">#监听80端口，80端口是知名端口号，用于HTTP协议</span>
+        listen       <span class="token number">80</span><span class="token punctuation">;</span>
 
-        #首页
-        index index.html
+        <span class="token comment">#定义使用www.xx.com访问</span>
+        server_name  www.helloworld.com<span class="token punctuation">;</span>
 
-        #指向webapp的目录
-        root D:\01_Workspace\Project\github\zp\SpringNotes\spring-security\spring-shiro\src\main\webapp;
+		<span class="token comment">#首页</span>
+		index index.html
 
-        #编码格式
-        charset utf-8;
+		<span class="token comment">#指向webapp的目录</span>
+		root D:<span class="token punctuation">\</span>01_Workspace<span class="token punctuation">\</span>Project<span class="token punctuation">\</span>github<span class="token punctuation">\</span>zp<span class="token punctuation">\</span>SpringNotes<span class="token punctuation">\</span>spring-security<span class="token punctuation">\</span>spring-shiro<span class="token punctuation">\</span>src<span class="token punctuation">\</span>main<span class="token punctuation">\</span>webapp<span class="token punctuation">;</span>
 
-        #代理配置参数
-        proxy_connect_timeout 180;
-        proxy_send_timeout 180;
-        proxy_read_timeout 180;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarder-For $remote_addr;
+		<span class="token comment">#编码格式</span>
+		charset utf-8<span class="token punctuation">;</span>
 
-        #反向代理的路径（和upstream绑定），location 后面设置映射的路径
-        location / &#123;
-            proxy_pass http://zp_server1;
-        &#125;
+		<span class="token comment">#代理配置参数</span>
+        proxy_connect_timeout <span class="token number">180</span><span class="token punctuation">;</span>
+        proxy_send_timeout <span class="token number">180</span><span class="token punctuation">;</span>
+        proxy_read_timeout <span class="token number">180</span><span class="token punctuation">;</span>
+        proxy_set_header Host <span class="token variable">$host</span><span class="token punctuation">;</span>
+        proxy_set_header X-Forwarder-For <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
 
-        #静态文件，nginx自己处理
-        location ~ ^/(images|javascript|js|css|flash|media|static)/ &#123;
-            root D:\01_Workspace\Project\github\zp\SpringNotes\spring-security\spring-shiro\src\main\webapp\views;
-            #过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。
-            expires 30d;
-        &#125;
+        <span class="token comment">#反向代理的路径（和upstream绑定），location 后面设置映射的路径</span>
+        location / <span class="token punctuation">&#123;</span>
+            proxy_pass http://zp_server1<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        #设定查看Nginx状态的地址
-        location /NginxStatus &#123;
-            stub_status           on;
-            access_log            on;
-            auth_basic            &quot;NginxStatus&quot;;
-            auth_basic_user_file  conf/htpasswd;
-        &#125;
+        <span class="token comment">#静态文件，nginx自己处理</span>
+        location ~ ^/<span class="token punctuation">(</span>images<span class="token operator">|</span>javascript<span class="token operator">|</span>js<span class="token operator">|</span>css<span class="token operator">|</span>flash<span class="token operator">|</span>media<span class="token operator">|</span>static<span class="token punctuation">)</span>/ <span class="token punctuation">&#123;</span>
+            root D:<span class="token punctuation">\</span>01_Workspace<span class="token punctuation">\</span>Project<span class="token punctuation">\</span>github<span class="token punctuation">\</span>zp<span class="token punctuation">\</span>SpringNotes<span class="token punctuation">\</span>spring-security<span class="token punctuation">\</span>spring-shiro<span class="token punctuation">\</span>src<span class="token punctuation">\</span>main<span class="token punctuation">\</span>webapp<span class="token punctuation">\</span>views<span class="token punctuation">;</span>
+            <span class="token comment">#过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。</span>
+            expires 30d<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        #禁止访问 .htxxx 文件
-        location ~ /\.ht &#123;
-            deny all;
-        &#125;
+        <span class="token comment">#设定查看Nginx状态的地址</span>
+        location /NginxStatus <span class="token punctuation">&#123;</span>
+            stub_status           on<span class="token punctuation">;</span>
+            access_log            on<span class="token punctuation">;</span>
+            auth_basic            <span class="token string">"NginxStatus"</span><span class="token punctuation">;</span>
+            auth_basic_user_file  conf/htpasswd<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        #错误处理页面（可选择性配置）
-        #error_page   404              /404.html;
-        #error_page   500 502 503 504  /50x.html;
-        #location = /50x.html &#123;
-        #    root   html;
-        #&#125;
-    &#125;
-&#125;
-</code></pre>
+        <span class="token comment">#禁止访问 .htxxx 文件</span>
+        location ~ /<span class="token punctuation">\</span>.ht <span class="token punctuation">&#123;</span>
+            deny all<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+		<span class="token comment">#错误处理页面（可选择性配置）</span>
+		<span class="token comment">#error_page   404              /404.html;</span>
+		<span class="token comment">#error_page   500 502 503 504  /50x.html;</span>
+        <span class="token comment">#location = /50x.html &#123;</span>
+        <span class="token comment">#    root   html;</span>
+        <span class="token comment">#&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>好了，让我们来试试吧：</p>
 <p>1、启动 webapp，注意启动绑定的端口要和 nginx 中的 upstream 设置的端口保持一致。<br>2、更改 host：在 C:\Windows\System32\drivers\etc 目录下的 host 文件中添加一条 DNS 记录<br>127.0.0.1 <a target="_blank" rel="noopener" href="http://www.helloworld.com/">www.helloworld.com</a><br>3、启动前文中 startup.bat 的命令<br>在浏览器中访问 <a target="_blank" rel="noopener" href="http://www.helloworld.com,不出意外,已经可以访问了./">www.helloworld.com，不出意外，已经可以访问了。</a></p>
 <h2 id="3-2-https-反向代理"><a href="#3-2-https-反向代理" class="headerlink" title="3.2 https 反向代理"></a>3.2 https 反向代理</h2><p>配置https时，需要注意:</p>
@@ -206,86 +207,86 @@ http &#123;
 <li>ssl标准需要引入安全证书，需要在nginx.conf中你需要指定证书和它对应的 key</li>
 <li>其他和http反向代理一样，只是Server部分有些不同</li>
 </ul>
-<pre><code class="shell">code snippet
-  #HTTP服务器
-  server &#123;
-      #监听443端口。443为知名端口号，主要用于HTTPS协议
-      listen       443 ssl;
+<pre class="language-bash" data-language="bash"><div class="caption"><span>nginx.conf</span></div><code class="language-bash">code snippet
+  <span class="token comment">#HTTP服务器</span>
+  server <span class="token punctuation">&#123;</span>
+      <span class="token comment">#监听443端口。443为知名端口号，主要用于HTTPS协议</span>
+      listen       <span class="token number">443</span> ssl<span class="token punctuation">;</span>
 
-      #定义使用www.xx.com访问
-      server_name  www.helloworld.com;
+      <span class="token comment">#定义使用www.xx.com访问</span>
+      server_name  www.helloworld.com<span class="token punctuation">;</span>
 
-      #ssl证书文件位置(常见证书文件格式为：crt/pem)
-      ssl_certificate      cert.pem;
-      #ssl证书key位置
-      ssl_certificate_key  cert.key;
+      <span class="token comment">#ssl证书文件位置(常见证书文件格式为：crt/pem)</span>
+      ssl_certificate      cert.pem<span class="token punctuation">;</span>
+      <span class="token comment">#ssl证书key位置</span>
+      ssl_certificate_key  cert.key<span class="token punctuation">;</span>
 
-      #ssl配置参数（选择性配置）
-      ssl_session_cache    shared:SSL:1m;
-      ssl_session_timeout  5m;
-      #数字签名，此处使用MD5
-      ssl_ciphers  HIGH:!aNULL:!MD5;
-      ssl_prefer_server_ciphers  on;
+      <span class="token comment">#ssl配置参数（选择性配置）</span>
+      ssl_session_cache    shared:SSL:1m<span class="token punctuation">;</span>
+      ssl_session_timeout  5m<span class="token punctuation">;</span>
+      <span class="token comment">#数字签名，此处使用MD5</span>
+      ssl_ciphers  HIGH:<span class="token operator">!</span>aNULL:<span class="token operator">!</span>MD5<span class="token punctuation">;</span>
+      ssl_prefer_server_ciphers  on<span class="token punctuation">;</span>
 
-      location / &#123;
-          root   /root;
-          index  index.html index.htm;
-      &#125;
-  &#125;
-code snippet
-</code></pre>
+      location / <span class="token punctuation">&#123;</span>
+          root   /root<span class="token punctuation">;</span>
+          index  index.html index.htm<span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+code snippet</code></pre>
+
 <h2 id="3-2-负载均衡"><a href="#3-2-负载均衡" class="headerlink" title="3.2 负载均衡"></a>3.2 负载均衡</h2><blockquote>
 <p> 前面的例子中，仅仅只代理了一台服务器； 实际上网站运行都是多个服务器；<br> nginx就可以用来实现简单的负载均衡功能。<br>  主要有四种算法:<br>  1、加权轮询；2、轮询；3、最少链接； 4、加权最小链接；  5、ip hash</p>
 </blockquote>
-<pre><code class="shell">http &#123;
-     #设定mime类型,类型由mime.type文件定义
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
-    #设定日志格式
-    access_log    /var/log/nginx/access.log;
+<pre class="language-bash" data-language="bash"><code class="language-bash">http <span class="token punctuation">&#123;</span>
+     <span class="token comment">#设定mime类型,类型由mime.type文件定义</span>
+    include       /etc/nginx/mime.types<span class="token punctuation">;</span>
+    default_type  application/octet-stream<span class="token punctuation">;</span>
+    <span class="token comment">#设定日志格式</span>
+    access_log    /var/log/nginx/access.log<span class="token punctuation">;</span>
 
-    #设定负载均衡的服务器列表
-    upstream load_balance_server &#123;
-        #weigth参数表示权值，权值越高被分配到的几率越大
-        server 192.168.1.11:80   weight=5;
-        server 192.168.1.12:80   weight=1;
-        server 192.168.1.13:80   weight=6;
-    &#125;
+    <span class="token comment">#设定负载均衡的服务器列表</span>
+    upstream load_balance_server <span class="token punctuation">&#123;</span>
+        <span class="token comment">#weigth参数表示权值，权值越高被分配到的几率越大</span>
+        server <span class="token number">192.168</span>.1.11:80   <span class="token assign-left variable">weight</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+        server <span class="token number">192.168</span>.1.12:80   <span class="token assign-left variable">weight</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+        server <span class="token number">192.168</span>.1.13:80   <span class="token assign-left variable">weight</span><span class="token operator">=</span><span class="token number">6</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-   #HTTP服务器
-   server &#123;
-        #侦听80端口
-        listen       80;
+   <span class="token comment">#HTTP服务器</span>
+   server <span class="token punctuation">&#123;</span>
+        <span class="token comment">#侦听80端口</span>
+        listen       <span class="token number">80</span><span class="token punctuation">;</span>
 
-        #定义使用www.xx.com访问
-        server_name  www.helloworld.com;
+        <span class="token comment">#定义使用www.xx.com访问</span>
+        server_name  www.helloworld.com<span class="token punctuation">;</span>
 
-        #对所有请求进行负载均衡请求
-        location / &#123;
-            root        /root;                 #定义服务器的默认网站根目录位置
-            index       index.html index.htm;  #定义首页索引文件的名称
-            proxy_pass  http://load_balance_server ;#请求转向load_balance_server 定义的服务器列表
+        <span class="token comment">#对所有请求进行负载均衡请求</span>
+        location / <span class="token punctuation">&#123;</span>
+            root        /root<span class="token punctuation">;</span>                 <span class="token comment">#定义服务器的默认网站根目录位置</span>
+            index       index.html index.htm<span class="token punctuation">;</span>  <span class="token comment">#定义首页索引文件的名称</span>
+            proxy_pass  http://load_balance_server <span class="token punctuation">;</span><span class="token comment">#请求转向load_balance_server 定义的服务器列表</span>
 
-            #以下是一些反向代理的配置(可选择性配置)
-            #proxy_redirect off;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_connect_timeout 90;          #nginx跟后端服务器连接超时时间(代理连接超时)
-            proxy_send_timeout 90;             #后端服务器数据回传时间(代理发送超时)
-            proxy_read_timeout 90;             #连接成功后，后端服务器响应时间(代理接收超时)
-            proxy_buffer_size 4k;              #设置代理服务器（nginx）保存用户头信息的缓冲区大小
-            proxy_buffers 4 32k;               #proxy_buffers缓冲区，网页平均在32k以下的话，这样设置
-            proxy_busy_buffers_size 64k;       #高负荷下缓冲大小（proxy_buffers*2）
-            proxy_temp_file_write_size 64k;    #设定缓存文件夹大小，大于这个值，将从upstream服务器传
+            <span class="token comment">#以下是一些反向代理的配置(可选择性配置)</span>
+            <span class="token comment">#proxy_redirect off;</span>
+            proxy_set_header Host <span class="token variable">$host</span><span class="token punctuation">;</span>
+            proxy_set_header X-Real-IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+            <span class="token comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span>
+            proxy_set_header X-Forwarded-For <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+            proxy_connect_timeout <span class="token number">90</span><span class="token punctuation">;</span>          <span class="token comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span>
+            proxy_send_timeout <span class="token number">90</span><span class="token punctuation">;</span>             <span class="token comment">#后端服务器数据回传时间(代理发送超时)</span>
+            proxy_read_timeout <span class="token number">90</span><span class="token punctuation">;</span>             <span class="token comment">#连接成功后，后端服务器响应时间(代理接收超时)</span>
+            proxy_buffer_size 4k<span class="token punctuation">;</span>              <span class="token comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span>
+            proxy_buffers <span class="token number">4</span> 32k<span class="token punctuation">;</span>               <span class="token comment">#proxy_buffers缓冲区，网页平均在32k以下的话，这样设置</span>
+            proxy_busy_buffers_size 64k<span class="token punctuation">;</span>       <span class="token comment">#高负荷下缓冲大小（proxy_buffers*2）</span>
+            proxy_temp_file_write_size 64k<span class="token punctuation">;</span>    <span class="token comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span>
 
-            client_max_body_size 10m;          #允许客户端请求的最大单文件字节数
-            client_body_buffer_size 128k;      #缓冲区代理缓冲用户端请求的最大字节数
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+            client_max_body_size 10m<span class="token punctuation">;</span>          <span class="token comment">#允许客户端请求的最大单文件字节数</span>
+            client_body_buffer_size 128k<span class="token punctuation">;</span>      <span class="token comment">#缓冲区代理缓冲用户端请求的最大字节数</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -146,107 +147,107 @@
 <h3 id="2-1-for循环"><a href="#2-1-for循环" class="headerlink" title="2.1 for循环"></a>2.1 for循环</h3><ul>
 <li>第四：性能最差</li>
 </ul>
-<pre><code class="shell">import requests
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;http://dig.chouti.com/&#39;,
-]
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> requests
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span>,
+    <span class="token string">'http://dig.chouti.com/'</span>,
+<span class="token punctuation">]</span>
 
-for url in url_list:
-    result = requests.get(url)
-    print(result.text)
-</code></pre>
+<span class="token keyword">for</span> <span class="token for-or-select variable">url</span> <span class="token keyword">in</span> url_list:
+    result <span class="token operator">=</span> requests.get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    print<span class="token punctuation">(</span>result.text<span class="token punctuation">)</span></code></pre>
+
 <h3 id="2-2-进程池"><a href="#2-2-进程池" class="headerlink" title="2.2 进程池"></a>2.2 进程池</h3><ul>
 <li><code>缺点：</code>启用进程非常浪费资源</li>
 </ul>
-<h4 id="2-2-1-multiprocessing-Pool"><a href="#2-2-1-multiprocessing-Pool" class="headerlink" title="2.2.1 multiprocessing.Pool"></a>2.2.1 multiprocessing.Pool</h4><pre><code class="python"># -*- coding: utf-8 -*-
-import requests
-from multiprocessing import Pool
+<h4 id="2-2-1-multiprocessing-Pool"><a href="#2-2-1-multiprocessing-Pool" class="headerlink" title="2.2.1 multiprocessing.Pool"></a>2.2.1 multiprocessing.Pool</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">import</span> requests
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
 
-def fetch_request(url):
-    result = requests.get(url)
-    print(result.text)
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
 
-def call(arg):
-    print(&#39;--&gt;exec done:&#39;,&quot;测试进程池执行后回调功能&quot;)
+<span class="token keyword">def</span> <span class="token function">call</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'-->exec done:'</span><span class="token punctuation">,</span><span class="token string">"测试进程池执行后回调功能"</span><span class="token punctuation">)</span>
 
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;https://www.google.com/&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
-    &#39;http://dig.chouti.com/&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
-]
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
 
-if __name__ ` &#39;__main__&#39;:
-    pool = Pool(10)        # 创建线程池
-    for url in url_list:
-        #用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数
-        pool.apply_async(func=fetch_request, args=(url,),callback=call)
-    print(&#39;end&#39;)
-    pool.close()    #关闭pool
-    pool.join()     #进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。
-</code></pre>
-<h4 id="2-2-2-ProcessPoolExecutor"><a href="#2-2-2-ProcessPoolExecutor" class="headerlink" title="2.2.2 ProcessPoolExecutor"></a>2.2.2 ProcessPoolExecutor</h4><pre><code class="python">import requests
-from concurrent.futures import ProcessPoolExecutor
+<span class="token keyword">if</span> __name__ ` <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>        <span class="token comment"># 创建线程池</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+        <span class="token comment">#用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数</span>
+        pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>func<span class="token operator">=</span>fetch_request<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span>callback<span class="token operator">=</span>call<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">)</span>
+    pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token comment">#关闭pool</span>
+    pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment">#进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。</span></code></pre>
 
-def fetch_request(url):
-    result = requests.get(url)
-    print(result.text)
+<h4 id="2-2-2-ProcessPoolExecutor"><a href="#2-2-2-ProcessPoolExecutor" class="headerlink" title="2.2.2 ProcessPoolExecutor"></a>2.2.2 ProcessPoolExecutor</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
 
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;https://www.google.com/&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
-    &#39;http://dig.chouti.com/&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
-]
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
 
-if __name__ ` &#39;__main__&#39;:
-    pool = ProcessPoolExecutor(10)        # 创建线程池
-    for url in url_list:
-        pool.submit(fetch_request,url)    # 去线程池中获取一个进程，进程去执行fetch_request方法
-    pool.shutdown(wait=True)
-</code></pre>
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">if</span> __name__ ` <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    pool <span class="token operator">=</span> ProcessPoolExecutor<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>        <span class="token comment"># 创建线程池</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+        pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>    <span class="token comment"># 去线程池中获取一个进程，进程去执行fetch_request方法</span>
+    pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span>wait<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+
 <h3 id="2-3-线程池"><a href="#2-3-线程池" class="headerlink" title="2.3 线程池"></a>2.3 线程池</h3><ul>
 <li><code>缺点：</code> 创建一个新线程将消耗大量的计算资源，并且在阻塞过程中无法执行其他任务。</li>
 <li><code>例：</code> 比如线程池中10个线程同时去10个url获取数据，当数据还没来时这些线程全部都在等待，不做事。</li>
 </ul>
-<pre><code class="python">import requests
-from concurrent.futures import ThreadPoolExecutor
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
 
-def fetch_request(url):
-    result = requests.get(url)
-    print(result.text)
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
 
-url_list = [
-    &#39;https://www.baidu.com&#39;,
-    &#39;https://www.google.com/&#39;,         #google页面会卡住，知道页面超时后这个进程才结束
-    &#39;http://dig.chouti.com/&#39;,          #chouti页面内容会直接返回，不会等待Google页面的返回
-]
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
 
-pool = ThreadPoolExecutor(10)            # 创建一个线程池，最多开10个线程
-for url in url_list:
-    pool.submit(fetch_request,url)       # 去线程池中获取一个线程，线程去执行fetch_request方法
+pool <span class="token operator">=</span> ThreadPoolExecutor<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>            <span class="token comment"># 创建一个线程池，最多开10个线程</span>
+<span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+    pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>       <span class="token comment"># 去线程池中获取一个线程，线程去执行fetch_request方法</span>
 
-pool.shutdown(True)                      # 主线程自己关闭，让子线程自己拿任务执行
-</code></pre>
+pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">)</span>                      <span class="token comment"># 主线程自己关闭，让子线程自己拿任务执行</span></code></pre>
+
 <h3 id="2-4-协程"><a href="#2-4-协程" class="headerlink" title="2.4 协程"></a>2.4 协程</h3><ul>
 <li><code>特点 ：</code>gevent只用起一个线程，当请求发出去后gevent就不管,永远就只有一个线程工作，谁先回来先处理</li>
 </ul>
-<pre><code class="python">import gevent
-from gevent import monkey
-monkey.patch_all(select=False)  # 注意，这个导包顺序不要变
-import requests
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> gevent
+<span class="token keyword">from</span> gevent <span class="token keyword">import</span> monkey
+monkey<span class="token punctuation">.</span>patch_all<span class="token punctuation">(</span>select<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>  <span class="token comment"># 注意，这个导包顺序不要变</span>
+<span class="token keyword">import</span> requests
 
-# 这些请求谁先回来就先处理谁
-def fetch_async(method, url, req_kwargs):
-    response = requests.request(method=method, url=url, `req_kwargs)
-    print(response.url, response.content)
+<span class="token comment"># 这些请求谁先回来就先处理谁</span>
+<span class="token keyword">def</span> <span class="token function">fetch_async</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> url<span class="token punctuation">,</span> req_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    response <span class="token operator">=</span> requests<span class="token punctuation">.</span>request<span class="token punctuation">(</span>method<span class="token operator">=</span>method<span class="token punctuation">,</span> url<span class="token operator">=</span>url<span class="token punctuation">,</span> `req_kwargs<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>url<span class="token punctuation">,</span> response<span class="token punctuation">.</span>content<span class="token punctuation">)</span>
 
-# ##### 发送请求 #####
-gevent.joinall([
-    gevent.spawn(fetch_async, method=&#39;get&#39;, url=&#39;https://www.baidu.com/&#39;, req_kwargs=&#123;&#125;),
-    gevent.spawn(fetch_async, method=&#39;get&#39;, url=&#39;https://www.google.com/&#39;, req_kwargs=&#123;&#125;),
-    gevent.spawn(fetch_async, method=&#39;get&#39;, url=&#39;https://github.com/&#39;, req_kwargs=&#123;&#125;),
-])
-</code></pre>
+<span class="token comment"># ##### 发送请求 #####</span>
+gevent<span class="token punctuation">.</span>joinall<span class="token punctuation">(</span><span class="token punctuation">[</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://www.baidu.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://github.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -81,18 +82,18 @@
 <li>运行时间超过<code>long_query_time</code>值的SQL语句，则会被记录到慢查询日志中。</li>
 <li><code>long_query_time</code>的默认值为<code>10</code>，意思是记录运行<code>10</code>秒以上的语句。</li>
 </ul>
-<h2 id="1-2-查找那些语句慢"><a href="#1-2-查找那些语句慢" class="headerlink" title="1.2 查找那些语句慢"></a>1.2 查找那些语句慢</h2><pre><code class="shell"># 比如，得到返回记录集最多的10个SQL。
-mysqldumpslow -s r -t 10 /database/mysql/mysql06_slow.log
+<h2 id="1-2-查找那些语句慢"><a href="#1-2-查找那些语句慢" class="headerlink" title="1.2 查找那些语句慢"></a>1.2 查找那些语句慢</h2><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 比如，得到返回记录集最多的10个SQL。</span>
+mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">10</span> /database/mysql/mysql06_slow.log
 
-# 得到访问次数最多的10个SQL
-mysqldumpslow -s c -t 10 /database/mysql/mysql06_slow.log
+<span class="token comment"># 得到访问次数最多的10个SQL</span>
+mysqldumpslow <span class="token parameter variable">-s</span> c <span class="token parameter variable">-t</span> <span class="token number">10</span> /database/mysql/mysql06_slow.log
 
-# 得到按照时间排序的前10条里面含有左连接的查询语句。
-mysqldumpslow -s t -t 10 -g “left join” /database/mysql/mysql06_slow.log
+<span class="token comment"># 得到按照时间排序的前10条里面含有左连接的查询语句。</span>
+mysqldumpslow <span class="token parameter variable">-s</span> t <span class="token parameter variable">-t</span> <span class="token number">10</span> <span class="token parameter variable">-g</span> “left join” /database/mysql/mysql06_slow.log
 
-# 另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现刷屏的情况。
-mysqldumpslow -s r -t 20 /mysqldata/mysql/mysql06-slow.log | more
-</code></pre>
+<span class="token comment"># 另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现刷屏的情况。</span>
+mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">20</span> /mysqldata/mysql/mysql06-slow.log <span class="token operator">|</span> <span class="token function">more</span></code></pre>
+
 <h2 id="1-3-explain分析慢查询原因"><a href="#1-3-explain分析慢查询原因" class="headerlink" title="1.3 explain分析慢查询原因"></a>1.3 explain分析慢查询原因</h2><ul>
 <li><p>使用 EXPLAIN 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。</p>
 </li>
@@ -101,22 +102,24 @@ mysqldumpslow -s r -t 20 /mysqldata/mysql/mysql06-slow.log | more
 <li><p>explain的执行效果</p>
 </li>
 </ul>
-<pre><code class="shell">mysql&gt; explain select * from subject where id = 1 \G
+<pre class="language-bash" data-language="bash"><code class="language-bash">mysql<span class="token operator">></span> explain <span class="token keyword">select</span> * from subject where <span class="token function">id</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">\</span>G
 ******************************************************
-           id: 1
+           id: <span class="token number">1</span>
   select_type: SIMPLE
-        table: user             # 表示访问那个表
+        table: user             <span class="token comment"># 表示访问那个表</span>
    partitions: NULL
          type: const
 possible_keys: PRIMARY
-          key: PRIMARY           # 使用了主键索引，如果为null代表没有使用索引
-      key_len: 4                # 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度
+          key: PRIMARY           <span class="token comment"># 使用了主键索引，如果为null代表没有使用索引</span>
+      key_len: <span class="token number">4</span>                <span class="token comment"># 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度</span>
           ref: const
-         rows: 1
-     filtered: 100.00             # 查询的表行占表的百分比
+         rows: <span class="token number">1</span>
+     filtered: <span class="token number">100.00</span>             <span class="token comment"># 查询的表行占表的百分比</span>
         Extra: NULL
-******************************************************
-</code></pre>
+******************************************************</code></pre>
+
+
+
 
                 
                 <p class="end">__END__</p>
@@ -153,11 +156,11 @@ possible_keys: PRIMARY
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/ee7415/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/ee7415/" title="发布于 2021-02-22 04:00">07.MySQL主从同步</a>
+                        <a href="../../pages/ed510c/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/ed510c/" title="发布于 2021-02-22 04:00">04.MySQL索引</a>
                         <br>
                     
                     
-                        <a href="../../pages/2bf5a2/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/2bf5a2/" title="发布于 2021-02-18 09:56">09.ModelViewSet</a>
+                        <a href="../../pages/a36fa8/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a36fa8/" title="发布于 2021-02-22 04:00">06.MySQL优化</a>
                     
                 </div>
             </div>

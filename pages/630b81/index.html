@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -84,43 +85,43 @@
 <li><strong>作用：</strong>从数据库中取出一个汇总的集合</li>
 <li><code>aggregate求最大值、最小值、平局值等</code></li>
 </ul>
-<pre><code class="python">from django.db.models import Count,Avg,Max,Sum
-def orm(request):
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span>Avg<span class="token punctuation">,</span>Max<span class="token punctuation">,</span>Sum
+<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    stus = models.Student.objects.aggregate(
-        stu_num=Count(&#39;age&#39;),     #计算学生表中有多少条age条目
-        stu_avg=Avg(&#39;age&#39;),       #计算学生的平均年纪
-        stu_max=Max(&#39;age&#39;),       #找到年纪最大的学生
-        stu_sum=Sum(&#39;age&#39;))       #将表中的所有年纪相加
+    stus <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>aggregate<span class="token punctuation">(</span>
+        stu_num<span class="token operator">=</span>Count<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>     <span class="token comment">#计算学生表中有多少条age条目</span>
+        stu_avg<span class="token operator">=</span>Avg<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>       <span class="token comment">#计算学生的平均年纪</span>
+        stu_max<span class="token operator">=</span>Max<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>       <span class="token comment">#找到年纪最大的学生</span>
+        stu_sum<span class="token operator">=</span>Sum<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>       <span class="token comment">#将表中的所有年纪相加</span>
 
-    print(&#39;stu&#39;,stus)
-    return HttpResponse(&#39;ok&#39;)
-#运行结果：&#123;&#39;stu_sum&#39;: 69, &#39;stu_max&#39;: 24, &#39;stu_avg&#39;: 23.0, &#39;stu_num&#39;: 3&#125;
-</code></pre>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stu'</span><span class="token punctuation">,</span>stus<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
+<span class="token comment">#运行结果：&#123;'stu_sum': 69, 'stu_max': 24, 'stu_avg': 23.0, 'stu_num': 3&#125;</span></code></pre>
+
 <h2 id="02-annotate实现聚合group-by查询"><a href="#02-annotate实现聚合group-by查询" class="headerlink" title="02.annotate实现聚合group by查询"></a>02.annotate实现聚合group by查询</h2><ul>
 <li>**作用:**对查询结果进行分组，比如分组求出各年龄段的人数</li>
 <li><strong>注:</strong>   annotate后面加filter过滤相当于原生sql语句中的having</li>
 </ul>
-<pre><code class="python">from django.db.models import Count, Avg, Max, Min, Sum
-def orm(request):
-    #1 按年纪分组查找学生表中各个年龄段学生人数：（22岁两人，24岁一人）
-    # 查询结果：[&#123;&#39;stu_num&#39;: 2, &#39;age&#39;: 22&#125;, &#123;&#39;stu_num&#39;: 1, &#39;age&#39;: 24&#125;]
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span> Avg<span class="token punctuation">,</span> Max<span class="token punctuation">,</span> Min<span class="token punctuation">,</span> Sum
+<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#1 按年纪分组查找学生表中各个年龄段学生人数：（22岁两人，24岁一人）</span>
+    <span class="token comment"># 查询结果：[&#123;'stu_num': 2, 'age': 22&#125;, &#123;'stu_num': 1, 'age': 24&#125;]</span>
 
-    stus1 = models.Student.objects.values(&#39;age&#39;).annotate(stu_num=Count(&#39;age&#39;))
+    stus1 <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>stu_num<span class="token operator">=</span>Count<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    #2 按年纪分组查找学生表中各个年龄段学生人数，并过滤出年纪大于22的：
-    # 查询结果：[&#123;&#39;stu_num&#39;: 1, &#39;age&#39;: 24&#125;] （年级大于22岁的仅一人，年级为24岁）
+    <span class="token comment">#2 按年纪分组查找学生表中各个年龄段学生人数，并过滤出年纪大于22的：</span>
+    <span class="token comment"># 查询结果：[&#123;'stu_num': 1, 'age': 24&#125;] （年级大于22岁的仅一人，年级为24岁）</span>
 
-    stus2 = models.Student.objects.values(&#39;age&#39;).annotate(stu_num=Count(&#39;age&#39;)).filter(age__gt=22)
+    stus2 <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>stu_num<span class="token operator">=</span>Count<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>age__gt<span class="token operator">=</span><span class="token number">22</span><span class="token punctuation">)</span>
 
-    #3 先按年纪分组，然后查询出各个年龄段学生的平均成绩
-    # 查询结果：[&#123;&#39;stu_Avg&#39;: 86.5, &#39;age&#39;: 22&#125;, &#123;&#39;stu_Avg&#39;: 99.0, &#39;age&#39;: 24&#125;]
-    # 22岁平均成绩：86.5      24岁平均成绩：99
+    <span class="token comment">#3 先按年纪分组，然后查询出各个年龄段学生的平均成绩</span>
+    <span class="token comment"># 查询结果：[&#123;'stu_Avg': 86.5, 'age': 22&#125;, &#123;'stu_Avg': 99.0, 'age': 24&#125;]</span>
+    <span class="token comment"># 22岁平均成绩：86.5      24岁平均成绩：99</span>
 
-    stus3 = models.Student.objects.values(&#39;age&#39;).annotate(stu_Avg=Avg(&#39;grade&#39;))
+    stus3 <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>stu_Avg<span class="token operator">=</span>Avg<span class="token punctuation">(</span><span class="token string">'grade'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    return HttpResponse(&#39;ok&#39;)
-</code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
+
 <h2 id="03-aggregate和annotate区别"><a href="#03-aggregate和annotate区别" class="headerlink" title="03.aggregate和annotate区别"></a>03.aggregate和annotate区别</h2><ul>
 <li><ol>
 <li>Aggregate作用是从数据库取出一个汇总的数据（比如，数量，最大，最小，平均等）</li>

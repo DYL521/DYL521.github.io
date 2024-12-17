@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -93,41 +94,42 @@
 <p><img src="./assets/1579670855433.png" style="width: 600px; margin-left: 50px;"> </img></p>
 <hr>
 <h2 id="1-2-优化系统配置"><a href="#1-2-优化系统配置" class="headerlink" title="1.2 优化系统配置"></a>1.2 优化系统配置</h2><h3 id="1-2-1-配置网卡"><a href="#1-2-1-配置网卡" class="headerlink" title="1.2.1 配置网卡"></a>1.2.1 配置网卡</h3><p>[root@linux-node1 ~]#  <span style="color: red"> vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0 </span></p>
-<pre><code class="shell">TYPE=Ethernet             # 网卡类型
-BOOTPROTO=static          # 使用静态ip地址
-DEFROUTE=yes
-PEERDNS=no
-PEERROUTES=yes
-IPV4_FAILURE_FATAL=no
-NAME=eth0                 # 网卡名称
-# UUID=3dacb9a3-62a4-41cc-b9ab-44a20ee9157e
-DEVICE=eth0               # 网卡设备名称
-ONBOOT=yes                # 启用网卡
-IPADDR=192.168.56.11      # 静态ip(必须与上面NAT中配置的地址同一网段)
-NETMASK=255.255.255.0     # 子网掩码
-GATEWAY=192.168.56.2      # 网关地址(VMware默认网关地址为 xxx.xxx.xxx.2 网段地址) 
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">TYPE</span><span class="token operator">=</span>Ethernet             <span class="token comment"># 网卡类型</span>
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>static          <span class="token comment"># 使用静态ip地址</span>
+<span class="token assign-left variable">DEFROUTE</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">PEERDNS</span><span class="token operator">=</span>no
+<span class="token assign-left variable">PEERROUTES</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">IPV4_FAILURE_FATAL</span><span class="token operator">=</span>no
+<span class="token assign-left variable">NAME</span><span class="token operator">=</span>eth0                 <span class="token comment"># 网卡名称</span>
+<span class="token comment"># UUID=3dacb9a3-62a4-41cc-b9ab-44a20ee9157e</span>
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth0               <span class="token comment"># 网卡设备名称</span>
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes                <span class="token comment"># 启用网卡</span>
+<span class="token assign-left variable">IPADDR</span><span class="token operator">=</span><span class="token number">192.168</span>.56.11      <span class="token comment"># 静态ip(必须与上面NAT中配置的地址同一网段)</span>
+<span class="token assign-left variable">NETMASK</span><span class="token operator">=</span><span class="token number">255.255</span>.255.0     <span class="token comment"># 子网掩码</span>
+<span class="token assign-left variable">GATEWAY</span><span class="token operator">=</span><span class="token number">192.168</span>.56.2      <span class="token comment"># 网关地址(VMware默认网关地址为 xxx.xxx.xxx.2 网段地址) </span></code></pre>
+
+<h3 id="1-2-2-重启网卡并关闭防火墙"><a href="#1-2-2-重启网卡并关闭防火墙" class="headerlink" title="1.2.2 重启网卡并关闭防火墙"></a>1.2.2 重启网卡并关闭防火墙</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1.配置网卡'''</span>
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl restart network          # 重启网卡使配置生效</span>
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl disable NetworkManager     # 禁用NetworkManager</span>
+<span class="token triple-quoted-string string">'''2.禁用防火墙'''</span>
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl disable firewalld        # 禁用防火墙</span>
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># firewall-cmd --state             # 防火墙是否关闭</span>
+<span class="token triple-quoted-string string">'''3.关闭selinux防火墙'''</span>
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /etc/selinux/config           # 关闭内核防火墙(重启生效)</span>
+SELINUX<span class="token operator">=</span>disabled
+<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># getenforce                    # selinux是否关闭</span>
 </code></pre>
-<h3 id="1-2-2-重启网卡并关闭防火墙"><a href="#1-2-2-重启网卡并关闭防火墙" class="headerlink" title="1.2.2 重启网卡并关闭防火墙"></a>1.2.2 重启网卡并关闭防火墙</h3><pre><code class="python">&#39;&#39;&#39;1.配置网卡&#39;&#39;&#39;
-[root@linux-node1 ~]# systemctl restart network          # 重启网卡使配置生效
-[root@linux-node1 ~]# systemctl disable NetworkManager     # 禁用NetworkManager
-&#39;&#39;&#39;2.禁用防火墙&#39;&#39;&#39;
-[root@linux-node1 ~]# systemctl disable firewalld        # 禁用防火墙
-[root@linux-node1 ~]# firewall-cmd --state             # 防火墙是否关闭
-&#39;&#39;&#39;3.关闭selinux防火墙&#39;&#39;&#39;
-[root@linux-node1 ~]# vim /etc/selinux/config           # 关闭内核防火墙(重启生效)
-SELINUX=disabled
-[root@linux-node1 ~]# getenforce                    # selinux是否关闭
-</code></pre>
+
 <h3 id="1-2-3-设置主机名"><a href="#1-2-3-设置主机名" class="headerlink" title="1.2.3 设置主机名"></a>1.2.3 设置主机名</h3><p>[root@linux-node1 ~]#  <span style="color: red"> vi &#x2F;etc&#x2F;hostname</span></p>
-<pre><code class="python">linux-node1.example.com
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">linux<span class="token operator">-</span>node1<span class="token punctuation">.</span>example<span class="token punctuation">.</span>com</code></pre>
+
 <h3 id="1-2-4-设置主机名解析"><a href="#1-2-4-设置主机名解析" class="headerlink" title="1.2.4 设置主机名解析"></a>1.2.4 设置主机名解析</h3><p>[root@linux-node1 ~]#  <span style="color: red"> vi &#x2F;etc&#x2F;hosts </span></p>
-<pre><code class="shell">192.168.56.11 linux-node1 linux-node1.example.com
-192.168.56.12 linux-node2 linux-node2.example.com
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token number">192.168</span>.56.11 linux-node1 linux-node1.example.com
+<span class="token number">192.168</span>.56.12 linux-node2 linux-node2.example.com</code></pre>
+
 <h3 id="1-2-5-设置DNS"><a href="#1-2-5-设置DNS" class="headerlink" title="1.2.5 设置DNS"></a>1.2.5 设置DNS</h3><p>[root@linux-node1 ~]#  <span style="color: red"> vi &#x2F;etc&#x2F;resolv.conf  </span></p>
-<pre><code class="python">nameserver 192.168.56.2
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">nameserver <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.2</span></code></pre>
+
 <h3 id="1-2-6-安装最新epel-yum源"><a href="#1-2-6-安装最新epel-yum源" class="headerlink" title="1.2.6 安装最新epel yum源"></a>1.2.6 安装最新epel yum源</h3><p>[root@linux-node1 ~]#  <span style="color: red"> rpm -ivh <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm">https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm</a> </span></p>
 <h3 id="1-2-7-yum安装-一些基础包"><a href="#1-2-7-yum安装-一些基础包" class="headerlink" title="1.2.7 yum安装 一些基础包"></a>1.2.7 yum安装 一些基础包</h3><p>[root@linux-node1 ~]# <span style="color: red"> yum -y install net-tools vim lrzsz tree screen lsof tcpdump nc mtr nmap</span></p>
 <h3 id="1-2-8-重启系统"><a href="#1-2-8-重启系统" class="headerlink" title="1.2.8 重启系统"></a>1.2.8 重启系统</h3><p>[root@linux-node1 ~]# <span style="color: red"> yum update -y &amp;&amp; reboot  </span></p>
@@ -135,29 +137,29 @@ SELINUX=disabled
 <li>像Windows机器一样，Linux也需要配置网卡才能连接网络</li>
 <li>Centos网卡默认位置在：<span style="color: red"> vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0 </span></li>
 </ul>
-<pre><code class="shell">TYPE=Ethernet             # 网卡类型
-BOOTPROTO=static          # 使用静态ip地址
-DEFROUTE=yes
-PEERDNS=no
-PEERROUTES=yes
-IPV4_FAILURE_FATAL=no
-NAME=eth0                 # 网卡名称
-# UUID=3dacb9a3-62a4-41cc-b9ab-44a20ee9157e
-DEVICE=eth0               # 网卡设备名称
-ONBOOT=yes                # 启用网卡
-IPADDR=192.168.56.11      # 静态ip(必须与上面NAT中配置的地址同一网段)
-NETMASK=255.255.255.0     # 子网掩码
-GATEWAY=192.168.56.2      # 网关地址(VMware默认网关地址为 xxx.xxx.xxx.2 网段地址) 
-</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">TYPE</span><span class="token operator">=</span>Ethernet             <span class="token comment"># 网卡类型</span>
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>static          <span class="token comment"># 使用静态ip地址</span>
+<span class="token assign-left variable">DEFROUTE</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">PEERDNS</span><span class="token operator">=</span>no
+<span class="token assign-left variable">PEERROUTES</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">IPV4_FAILURE_FATAL</span><span class="token operator">=</span>no
+<span class="token assign-left variable">NAME</span><span class="token operator">=</span>eth0                 <span class="token comment"># 网卡名称</span>
+<span class="token comment"># UUID=3dacb9a3-62a4-41cc-b9ab-44a20ee9157e</span>
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth0               <span class="token comment"># 网卡设备名称</span>
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes                <span class="token comment"># 启用网卡</span>
+<span class="token assign-left variable">IPADDR</span><span class="token operator">=</span><span class="token number">192.168</span>.56.11      <span class="token comment"># 静态ip(必须与上面NAT中配置的地址同一网段)</span>
+<span class="token assign-left variable">NETMASK</span><span class="token operator">=</span><span class="token number">255.255</span>.255.0     <span class="token comment"># 子网掩码</span>
+<span class="token assign-left variable">GATEWAY</span><span class="token operator">=</span><span class="token number">192.168</span>.56.2      <span class="token comment"># 网关地址(VMware默认网关地址为 xxx.xxx.xxx.2 网段地址) </span></code></pre>
+
 <ul>
 <li>网络服务管理命令</li>
 </ul>
-<pre><code class="python">[root@k8s-node2 ~]# systemctl status networking       # 查看当前网络服务状态
-[root@k8s-node2 ~]# systemctl start networking       # 开启网络
-[root@k8s-node2 ~]# systemctl stop networking        # 关闭网络服务
-[root@k8s-node2 ~]# systemctl restart networking      # 重启网络服务
-[root@k8s-node2 ~]# systemctl enable sshd           # 设置网络开机自启动
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl status networking       # 查看当前网络服务状态</span>
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl start networking       # 开启网络</span>
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl stop networking        # 关闭网络服务</span>
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl restart networking      # 重启网络服务</span>
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># systemctl enable sshd           # 设置网络开机自启动</span></code></pre>
+
 <h2 id="2-2-防火墙"><a href="#2-2-防火墙" class="headerlink" title="2.2 防火墙"></a>2.2 防火墙</h2><ul>
 <li>Linux的防火墙体系主要工作在网络层，针对TCP&#x2F;IP数据包实施过滤和限制，属于典型的包过滤防火墙（或称网络层防火墙）。</li>
 <li>Linux的防火墙体系基于内核编码实现，因此具有非常稳定的性能和高效率，也因此被更加广泛采纳和应用。</li>

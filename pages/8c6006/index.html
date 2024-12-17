@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -104,76 +105,76 @@
 </ol>
 </li>
 </ul>
-<h3 id="1-4-设置cookie时常用参数"><a href="#1-4-设置cookie时常用参数" class="headerlink" title="1.4 设置cookie时常用参数"></a>1.4 设置cookie时常用参数</h3><pre><code class="python">def cookie(request):
-    #1 获取cookie中username111得值
-    request.COOKIES.get(&#39;username111&#39;)
+<h3 id="1-4-设置cookie时常用参数"><a href="#1-4-设置cookie时常用参数" class="headerlink" title="1.4 设置cookie时常用参数"></a>1.4 设置cookie时常用参数</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">cookie</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#1 获取cookie中username111得值</span>
+    request<span class="token punctuation">.</span>COOKIES<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'username111'</span><span class="token punctuation">)</span>
 
-    #2 设置cookie的值，关闭浏览器失效
-    response.set_cookie(&#39;key&#39;,&quot;value&quot;)
-    # 设置cookie, N秒只后失效
-    response.set_cookie(&#39;username111&#39;,&quot;value&quot;,max_age=10)
+    <span class="token comment">#2 设置cookie的值，关闭浏览器失效</span>
+    response<span class="token punctuation">.</span>set_cookie<span class="token punctuation">(</span><span class="token string">'key'</span><span class="token punctuation">,</span><span class="token string">"value"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 设置cookie, N秒只后失效</span>
+    response<span class="token punctuation">.</span>set_cookie<span class="token punctuation">(</span><span class="token string">'username111'</span><span class="token punctuation">,</span><span class="token string">"value"</span><span class="token punctuation">,</span>max_age<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
 
-    #3 设置cookie, 截止时间失效（expires后面指定那个时间点失效）
-    import datetime
-    current_date = datetime.datetime.utcnow()
-    exp_date = current_date + datetime.timedelta(seconds=5)         #seconds指定再过多少秒过期
-    response.set_cookie(&#39;username111&#39;,&quot;value&quot;,expires=exp_date)
+    <span class="token comment">#3 设置cookie, 截止时间失效（expires后面指定那个时间点失效）</span>
+    <span class="token keyword">import</span> datetime
+    current_date <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>utcnow<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    exp_date <span class="token operator">=</span> current_date <span class="token operator">+</span> datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>seconds<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>         <span class="token comment">#seconds指定再过多少秒过期</span>
+    response<span class="token punctuation">.</span>set_cookie<span class="token punctuation">(</span><span class="token string">'username111'</span><span class="token punctuation">,</span><span class="token string">"value"</span><span class="token punctuation">,</span>expires<span class="token operator">=</span>exp_date<span class="token punctuation">)</span>
 
-    #4 设置cookie是可以使用关键字salt对cookie加密（加密解密的salt中值必须相同）
-    obj = HttpResponse(&#39;s&#39;)
+    <span class="token comment">#4 设置cookie是可以使用关键字salt对cookie加密（加密解密的salt中值必须相同）</span>
+    obj <span class="token operator">=</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'s'</span><span class="token punctuation">)</span>
 
-    obj.set_signed_cookie(&#39;username&#39;,&quot;kangbazi&quot;,salt=&quot;asdfasdf&quot;)
-    request.get_signed_cookie(&#39;username&#39;,salt=&quot;asdfasdf&quot;)
+    obj<span class="token punctuation">.</span>set_signed_cookie<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span><span class="token string">"kangbazi"</span><span class="token punctuation">,</span>salt<span class="token operator">=</span><span class="token string">"asdfasdf"</span><span class="token punctuation">)</span>
+    request<span class="token punctuation">.</span>get_signed_cookie<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span>salt<span class="token operator">=</span><span class="token string">"asdfasdf"</span><span class="token punctuation">)</span>
 
-    #5 设置cookie生效路径
-    path = &#39;/&#39;
+    <span class="token comment">#5 设置cookie生效路径</span>
+    path <span class="token operator">=</span> <span class="token string">'/'</span>
 
-    #6 删除cookie中is_login的值
-    response.delete_cookie(&#39;is_login&#39;)
-    return response
-</code></pre>
-<h2 id="02-使用cookie实现用户登录、注销"><a href="#02-使用cookie实现用户登录、注销" class="headerlink" title="02.使用cookie实现用户登录、注销"></a>02.<strong>使用cookie实现用户登录、注销</strong></h2><h3 id="2-1-views-py"><a href="#2-1-views-py" class="headerlink" title="2.1 views.py"></a>2.1 views.py</h3><pre><code class="python">from django.shortcuts import render,HttpResponse,redirect
+    <span class="token comment">#6 删除cookie中is_login的值</span>
+    response<span class="token punctuation">.</span>delete_cookie<span class="token punctuation">(</span><span class="token string">'is_login'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> response</code></pre>
 
-def index(request):
-    username = request.COOKIES.get(&#39;username&#39;)        # 获取cookie
-    if not username:
-        return redirect(&#39;/login/&#39;)
-    return HttpResponse(username)
+<h2 id="02-使用cookie实现用户登录、注销"><a href="#02-使用cookie实现用户登录、注销" class="headerlink" title="02.使用cookie实现用户登录、注销"></a>02.<strong>使用cookie实现用户登录、注销</strong></h2><h3 id="2-1-views-py"><a href="#2-1-views-py" class="headerlink" title="2.1 views.py"></a>2.1 views.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse<span class="token punctuation">,</span>redirect
 
-def login(request):
-    if request.method == &quot;GET&quot;:
-        return render(request,&#39;login.html&#39;)
-    if request.method == &quot;POST&quot;:
-        u = request.POST.get(&#39;username&#39;)
-        p = request.POST.get(&#39;pwd&#39;)
-        if u == &#39;tom&#39; and p == &#39;123&#39;:
-            res = redirect(&#39;/index/&#39;)
-            res.set_cookie(&#39;username&#39;,u,max_age=500)        # 设置500s免登陆
-            return res
-        else:
-            return render(request,&#39;login.html&#39;)
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    username <span class="token operator">=</span> request<span class="token punctuation">.</span>COOKIES<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">)</span>        <span class="token comment"># 获取cookie</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> username<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> redirect<span class="token punctuation">(</span><span class="token string">'/login/'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span>username<span class="token punctuation">)</span>
 
-def logout(req):
-    response = redirect(&#39;/login/&#39;)
-    #清理cookie里保存username
-    response.delete_cookie(&#39;username&#39;)
-    return response
-</code></pre>
-<h3 id="2-2-login-html"><a href="#2-2-login-html" class="headerlink" title="2.2 login.html"></a>2.2 login.html</h3><pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> request<span class="token punctuation">.</span>method <span class="token operator">==</span> <span class="token string">"GET"</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span><span class="token string">'login.html'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> request<span class="token punctuation">.</span>method <span class="token operator">==</span> <span class="token string">"POST"</span><span class="token punctuation">:</span>
+        u <span class="token operator">=</span> request<span class="token punctuation">.</span>POST<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">)</span>
+        p <span class="token operator">=</span> request<span class="token punctuation">.</span>POST<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'pwd'</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> u <span class="token operator">==</span> <span class="token string">'tom'</span> <span class="token keyword">and</span> p <span class="token operator">==</span> <span class="token string">'123'</span><span class="token punctuation">:</span>
+            res <span class="token operator">=</span> redirect<span class="token punctuation">(</span><span class="token string">'/index/'</span><span class="token punctuation">)</span>
+            res<span class="token punctuation">.</span>set_cookie<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span>u<span class="token punctuation">,</span>max_age<span class="token operator">=</span><span class="token number">500</span><span class="token punctuation">)</span>        <span class="token comment"># 设置500s免登陆</span>
+            <span class="token keyword">return</span> res
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span><span class="token string">'login.html'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">logout</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    response <span class="token operator">=</span> redirect<span class="token punctuation">(</span><span class="token string">'/login/'</span><span class="token punctuation">)</span>
+    <span class="token comment">#清理cookie里保存username</span>
+    response<span class="token punctuation">.</span>delete_cookie<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> response</code></pre>
+
+<h3 id="2-2-login-html"><a href="#2-2-login-html" class="headerlink" title="2.2 login.html"></a>2.2 login.html</h3><pre class="language-none"><code class="language-none">&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;en&quot;&gt;
 &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Title&lt;/title&gt;
-&lt;/head&gt;
+    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Title&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
 &lt;body&gt;
-    &lt;form action=&quot;/login/&quot; method=&quot;POST&quot;&gt;
-        &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;用户名&quot;&gt;
-        &lt;input type=&quot;text&quot; name=&quot;pwd&quot; placeholder=&quot;密码&quot;&gt;
-        &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;
-    &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+    &lt;form action&#x3D;&quot;&#x2F;login&#x2F;&quot; method&#x3D;&quot;POST&quot;&gt;
+        &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;username&quot; placeholder&#x3D;&quot;用户名&quot;&gt;
+        &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;pwd&quot; placeholder&#x3D;&quot;密码&quot;&gt;
+        &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;提交&quot;&gt;
+    &lt;&#x2F;form&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
 <h2 id="03-CSRF原理"><a href="#03-CSRF原理" class="headerlink" title="03.CSRF原理"></a>03.CSRF原理</h2><ul>
 <li>1、当用户第一次发送get请求时，服务端不仅给客户端返回get内容，而且中间包含一个随机字符串</li>
 <li>2、这个字符串是加密的，只有服务端自己可以反解</li>

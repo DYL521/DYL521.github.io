@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -82,63 +83,75 @@
 <li>awk的处理文件和数据处理方式是逐行扫描，寻找到匹配的行，并在这些行上进行你想要的操作</li>
 <li>如果没有指定处理动作，则把匹配的行显示到屏幕上</li>
 </ol>
-<h3 id="1-2-awk常用指令"><a href="#1-2-awk常用指令" class="headerlink" title="1.2 awk常用指令"></a>1.2 awk常用指令</h3><pre><code class="python">//              # 匹配代码块，可以是字符串或正则表达式
-&#123;&#125;              # 命令代码块，包含一条或多条命令
-$0              # 表示整个当前行
-$1              # 每行第一个字段
-NF              # 字段数量变量
-NR              # 每行的记录号，多文件记录递增
-/[0-9][0-9]+/      # 两个或两个以上数字
-/[0-9][0-9]*/      # 一个或一个以上数字
--F&#39;[:#/]&#39;         # 定义三个分隔符
-FNR             # 与NR类似，不过多文件记录不递增，每个文件都从1开始
-\t              # 制表符
-\n              # 换行符
-FS              # BEGIN时定义分隔符
-RS              # 输入的记录分隔符， 默认为换行符(即文本是按一行一行输入)
-~               # 匹配，与==相比不是精确比较
-!~              # 不匹配，不精确比较
-==              # 等于，必须全部相等，精确比较
-!=              # 不等于，精确比较
-&amp;&amp;　            # 逻辑与
-||              # 逻辑或
-+               # 匹配时表示1个或1个以上
-</code></pre>
-<h2 id="02-awk使用"><a href="#02-awk使用" class="headerlink" title="02.awk使用"></a>02.awk使用</h2><h3 id="2-1-awk常用指令"><a href="#2-1-awk常用指令" class="headerlink" title="2.1 awk常用指令"></a>2.1 awk常用指令</h3><pre><code class="python">cat /etc/passwd |awk -F &#39;:&#39; &#39;&#123;print $1&#125;&#39;             # 以冒号为分隔打印第一列数据
-cat /etc/passwd | awk -F &#39;:&#39; &#39;&#123;print $1&quot;\t&quot;$7&#125;&#39;      # 打印第一列和第七列数据，并以制表符分隔
-awk -F &#39;:&#39; &#39;/root/&#123;print $1&#125;&#39; /etc/passwd            # 搜索/etc/passwd有root关键字的所有行，只显示第一行
-w|awk &#39;NR==1&#123;print $6&#125;&#39;                              # 显示第一行第六列的数据
-awk -F: &#39;NR==5 || NR==6&#123;print&#125;&#39; /etc/passwd          # 打印第五行和第六行数据
-awk &#39;!/mysql/&#39; /etc/passwd                           # 匹配所有 不包含 &quot;mysql&quot;关键字的行
-awk &#39;/mysql|mail/&#123;print&#125;&#39; /etc/passwd                # 匹配包含mysql 或者 mail的行
-</code></pre>
-<h3 id="2-2-awk基本语法"><a href="#2-2-awk基本语法" class="headerlink" title="2.2 awk基本语法"></a>2.2 awk基本语法</h3><pre><code class="python">tail -n3 /etc/services |awk -F&#39;[ /]+&#39; &#39;&#123;print $2&#125;&#39;    # 以&quot;空格&quot;或&quot;斜线&quot;分隔
-awk -v a=123 &#39;BEGIN&#123;print a&#125;&#39;                         # 变量赋值
-tail -n3 /etc/services |awk &#39;BEGIN&#123;print &quot;服务\t\t端口\t\t\t描述&quot;&#125;&#123;print $0&#125;END&#123;print &quot;===结束===&quot;&#125;&#39; 
-# BEGIN&#123;&#125; END&#123;&#125;结合使用
-</code></pre>
-<h3 id="2-3-正则匹配"><a href="#2-3-正则匹配" class="headerlink" title="2.3 正则匹配"></a>2.3 正则匹配</h3><pre><code class="python">tail /etc/services |awk &#39;/^blp5/&#123;print $0&#125;&#39;          # 匹配开头是 blp5 的行
-tail /etc/services |awk &#39;/^[a-z0-9]&#123;8&#125; /&#123;print $0&#125;&#39;  # 匹配第一个字段是 8 个字符的行
-tail /etc/services |awk &#39;/blp5/ &amp;&amp; /tcp/&#123;print $0&#125;&#39;  # 匹配记录中包含 blp5 或 tcp 的行
-awk &#39;! /^#|^$/&#39; /etc/nginx/nginx.conf                # 不匹配开头是#和空行
-tail /etc/services |awk &#39;/^blp5/,/^com/&#39;             # 匹配以 &quot;blp5开头&quot; 到 &quot;com开头&quot; 之间的所有行
-</code></pre>
-<h3 id="2-4-NF"><a href="#2-4-NF" class="headerlink" title="2.4 NF"></a>2.4 NF</h3><pre><code class="python">echo &quot;a b c d e f&quot; |awk &#39;&#123;print NF&#125;&#39;                    # 打印行数
-echo &quot;a b c d e f&quot; |awk &#39;&#123;print $1&#125;&#39;                    # 打印第一行
-echo &quot;a b c d e f&quot; |awk &#39;&#123;print $NF&#125;&#39;                   # 打印最后一行
-echo &quot;a b c d e f&quot; |awk &#39;&#123;print $(NF-1)&#125;&#39;               # 打印倒数第二行
-echo &quot;a b c d e f&quot; |awk &#39;&#123;$NF=&quot;&quot;;$(NF-1)=&quot;&quot;;print $0&#125;&#39;  # 排除最后两个字段
-</code></pre>
-<h3 id="2-5-NR"><a href="#2-5-NR" class="headerlink" title="2.5 NR"></a>2.5 NR</h3><pre><code class="python">tail -n5 /etc/services |awk &#39;&#123;print NR,$0&#125;&#39;             # 打印行号+内容
-tail -n5 /etc/services |awk &#39;NR==3&#123;print $2&#125;&#39;           # 打印第三行第二列的值
-tail -n5 /etc/services |awk &#39;NR&lt;=3&#123;print NR,$0&#125;&#39;        # 打印前三行
-</code></pre>
-<h3 id="2-6-操作符"><a href="#2-6-操作符" class="headerlink" title="2.6 操作符"></a>2.6 操作符</h3><pre><code class="python">&#39;&#39;&#39;数字 0，空字符串和未定义的值 &#39;&#39;&#39;
-seq 3 |awk &#39;&#123;print $0*2&#125;&#39;                               # 乘法
-seq 3 |awk &#39;&#123;print $0/2&#125;&#39;                               # 除法
-seq 5 |awk &#39;$0%2==0&#123;print $0&#125;&#39;                          # 取余
-seq 5 |shuf |awk &#39;&#123;print $0|&quot;sort&quot;&#125;&#39;                    # 先打乱再排序
-</code></pre>
+<h3 id="1-2-awk常用指令"><a href="#1-2-awk常用指令" class="headerlink" title="1.2 awk常用指令"></a>1.2 awk常用指令</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token operator">//</span>              <span class="token comment"># 匹配代码块，可以是字符串或正则表达式</span>
+<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>              <span class="token comment"># 命令代码块，包含一条或多条命令</span>
+$<span class="token number">0</span>              <span class="token comment"># 表示整个当前行</span>
+$<span class="token number">1</span>              <span class="token comment"># 每行第一个字段</span>
+NF              <span class="token comment"># 字段数量变量</span>
+NR              <span class="token comment"># 每行的记录号，多文件记录递增</span>
+<span class="token operator">/</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token operator">/</span>      <span class="token comment"># 两个或两个以上数字</span>
+<span class="token operator">/</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token operator">/</span>      <span class="token comment"># 一个或一个以上数字</span>
+<span class="token operator">-</span><span class="token string-interpolation"><span class="token string">F'[:#/]'</span></span>         <span class="token comment"># 定义三个分隔符</span>
+FNR             <span class="token comment"># 与NR类似，不过多文件记录不递增，每个文件都从1开始</span>
+\t              <span class="token comment"># 制表符</span>
+\n              <span class="token comment"># 换行符</span>
+FS              <span class="token comment"># BEGIN时定义分隔符</span>
+RS              <span class="token comment"># 输入的记录分隔符， 默认为换行符(即文本是按一行一行输入)</span>
+<span class="token operator">~</span>               <span class="token comment"># 匹配，与==相比不是精确比较</span>
+!<span class="token operator">~</span>              <span class="token comment"># 不匹配，不精确比较</span>
+<span class="token operator">==</span>              <span class="token comment"># 等于，必须全部相等，精确比较</span>
+<span class="token operator">!=</span>              <span class="token comment"># 不等于，精确比较</span>
+<span class="token operator">&amp;</span><span class="token operator">&amp;</span>　            <span class="token comment"># 逻辑与</span>
+<span class="token operator">|</span><span class="token operator">|</span>              <span class="token comment"># 逻辑或</span>
+<span class="token operator">+</span>               <span class="token comment"># 匹配时表示1个或1个以上</span></code></pre>
+
+
+
+<h2 id="02-awk使用"><a href="#02-awk使用" class="headerlink" title="02.awk使用"></a>02.awk使用</h2><h3 id="2-1-awk常用指令"><a href="#2-1-awk常用指令" class="headerlink" title="2.1 awk常用指令"></a>2.1 awk常用指令</h3><pre class="language-python" data-language="python"><code class="language-python">cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd <span class="token operator">|</span>awk <span class="token operator">-</span>F <span class="token string">':'</span> <span class="token string">'&#123;print $1&#125;'</span>             <span class="token comment"># 以冒号为分隔打印第一列数据</span>
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd <span class="token operator">|</span> awk <span class="token operator">-</span>F <span class="token string">':'</span> <span class="token string">'&#123;print $1"\t"$7&#125;'</span>      <span class="token comment"># 打印第一列和第七列数据，并以制表符分隔</span>
+awk <span class="token operator">-</span>F <span class="token string">':'</span> <span class="token string">'/root/&#123;print $1&#125;'</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd            <span class="token comment"># 搜索/etc/passwd有root关键字的所有行，只显示第一行</span>
+w<span class="token operator">|</span>awk <span class="token string">'NR==1&#123;print $6&#125;'</span>                              <span class="token comment"># 显示第一行第六列的数据</span>
+awk <span class="token operator">-</span>F<span class="token punctuation">:</span> <span class="token string">'NR==5 || NR==6&#123;print&#125;'</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd          <span class="token comment"># 打印第五行和第六行数据</span>
+awk <span class="token string">'!/mysql/'</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd                           <span class="token comment"># 匹配所有 不包含 "mysql"关键字的行</span>
+awk <span class="token string">'/mysql|mail/&#123;print&#125;'</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd                <span class="token comment"># 匹配包含mysql 或者 mail的行</span></code></pre>
+
+
+
+<h3 id="2-2-awk基本语法"><a href="#2-2-awk基本语法" class="headerlink" title="2.2 awk基本语法"></a>2.2 awk基本语法</h3><pre class="language-python" data-language="python"><code class="language-python">tail <span class="token operator">-</span>n3 <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token operator">-</span><span class="token string-interpolation"><span class="token string">F'[ /]+'</span></span> <span class="token string">'&#123;print $2&#125;'</span>    <span class="token comment"># 以"空格"或"斜线"分隔</span>
+awk <span class="token operator">-</span>v a<span class="token operator">=</span><span class="token number">123</span> <span class="token string">'BEGIN&#123;print a&#125;'</span>                         <span class="token comment"># 变量赋值</span>
+tail <span class="token operator">-</span>n3 <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'BEGIN&#123;print "服务\t\t端口\t\t\t描述"&#125;&#123;print $0&#125;END&#123;print "===结束==="&#125;'</span> 
+<span class="token comment"># BEGIN&#123;&#125; END&#123;&#125;结合使用</span></code></pre>
+
+
+
+<h3 id="2-3-正则匹配"><a href="#2-3-正则匹配" class="headerlink" title="2.3 正则匹配"></a>2.3 正则匹配</h3><pre class="language-python" data-language="python"><code class="language-python">tail <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'/^blp5/&#123;print $0&#125;'</span>          <span class="token comment"># 匹配开头是 blp5 的行</span>
+tail <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'/^[a-z0-9]&#123;8&#125; /&#123;print $0&#125;'</span>  <span class="token comment"># 匹配第一个字段是 8 个字符的行</span>
+tail <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'/blp5/ &amp;&amp; /tcp/&#123;print $0&#125;'</span>  <span class="token comment"># 匹配记录中包含 blp5 或 tcp 的行</span>
+awk <span class="token string">'! /^#|^$/'</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>nginx<span class="token punctuation">.</span>conf                <span class="token comment"># 不匹配开头是#和空行</span>
+tail <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'/^blp5/,/^com/'</span>             <span class="token comment"># 匹配以 "blp5开头" 到 "com开头" 之间的所有行</span></code></pre>
+
+
+
+<h3 id="2-4-NF"><a href="#2-4-NF" class="headerlink" title="2.4 NF"></a>2.4 NF</h3><pre class="language-python" data-language="python"><code class="language-python">echo <span class="token string">"a b c d e f"</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print NF&#125;'</span>                    <span class="token comment"># 打印行数</span>
+echo <span class="token string">"a b c d e f"</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print $1&#125;'</span>                    <span class="token comment"># 打印第一行</span>
+echo <span class="token string">"a b c d e f"</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print $NF&#125;'</span>                   <span class="token comment"># 打印最后一行</span>
+echo <span class="token string">"a b c d e f"</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print $(NF-1)&#125;'</span>               <span class="token comment"># 打印倒数第二行</span>
+echo <span class="token string">"a b c d e f"</span> <span class="token operator">|</span>awk <span class="token string">'&#123;$NF="";$(NF-1)="";print $0&#125;'</span>  <span class="token comment"># 排除最后两个字段</span></code></pre>
+
+
+
+<h3 id="2-5-NR"><a href="#2-5-NR" class="headerlink" title="2.5 NR"></a>2.5 NR</h3><pre class="language-python" data-language="python"><code class="language-python">tail <span class="token operator">-</span>n5 <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'&#123;print NR,$0&#125;'</span>             <span class="token comment"># 打印行号+内容</span>
+tail <span class="token operator">-</span>n5 <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'NR==3&#123;print $2&#125;'</span>           <span class="token comment"># 打印第三行第二列的值</span>
+tail <span class="token operator">-</span>n5 <span class="token operator">/</span>etc<span class="token operator">/</span>services <span class="token operator">|</span>awk <span class="token string">'NR&lt;=3&#123;print NR,$0&#125;'</span>        <span class="token comment"># 打印前三行</span></code></pre>
+
+
+
+<h3 id="2-6-操作符"><a href="#2-6-操作符" class="headerlink" title="2.6 操作符"></a>2.6 操作符</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''数字 0，空字符串和未定义的值 '''</span>
+seq <span class="token number">3</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print $0*2&#125;'</span>                               <span class="token comment"># 乘法</span>
+seq <span class="token number">3</span> <span class="token operator">|</span>awk <span class="token string">'&#123;print $0/2&#125;'</span>                               <span class="token comment"># 除法</span>
+seq <span class="token number">5</span> <span class="token operator">|</span>awk <span class="token string">'$0%2==0&#123;print $0&#125;'</span>                          <span class="token comment"># 取余</span>
+seq <span class="token number">5</span> <span class="token operator">|</span>shuf <span class="token operator">|</span>awk <span class="token string">'&#123;print $0|"sort"&#125;'</span>                    <span class="token comment"># 先打乱再排序</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

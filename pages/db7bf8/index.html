@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -77,37 +78,39 @@
             <div class="toc"></div>
             <div class="article-body">
                 <h2 id="01-创建表"><a href="#01-创建表" class="headerlink" title="01.创建表"></a>01.创建表</h2><h3 id="1-1-表MUL"><a href="#1-1-表MUL" class="headerlink" title="1.1 表MUL"></a>1.1 表MUL</h3><p><img src="./assets/Xshot-0007.png" style="width: 600px; margin-left: 20px;"> </img></p>
-<h3 id="1-2-创建表"><a href="#1-2-创建表" class="headerlink" title="1.2 创建表"></a>1.2 创建表</h3><pre><code class="mysql"># --学生表
-CREATE TABLE `Student`(
-    `s_id` VARCHAR(20),
-    `s_name` VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
-    `s_birth` VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
-    `s_sex` VARCHAR(10) NOT NULL DEFAULT &#39;&#39;,
-    PRIMARY KEY(`s_id`)
+<h3 id="1-2-创建表"><a href="#1-2-创建表" class="headerlink" title="1.2 创建表"></a>1.2 创建表</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql"># --学生表
+CREATE TABLE &#96;Student&#96;(
+	&#96;s_id&#96; VARCHAR(20),
+	&#96;s_name&#96; VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
+	&#96;s_birth&#96; VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
+	&#96;s_sex&#96; VARCHAR(10) NOT NULL DEFAULT &#39;&#39;,
+	PRIMARY KEY(&#96;s_id&#96;)
 );
 # --课程表
-CREATE TABLE `Course`(
-    `c_id`  VARCHAR(20),
-    `c_name` VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
-    `t_id` VARCHAR(20) NOT NULL,
-    PRIMARY KEY(`c_id`)
+CREATE TABLE &#96;Course&#96;(
+	&#96;c_id&#96;  VARCHAR(20),
+	&#96;c_name&#96; VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
+	&#96;t_id&#96; VARCHAR(20) NOT NULL,
+	PRIMARY KEY(&#96;c_id&#96;)
 );
 # --教师表
-CREATE TABLE `Teacher`(
-    `t_id` VARCHAR(20),
-    `t_name` VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
-    PRIMARY KEY(`t_id`)
+CREATE TABLE &#96;Teacher&#96;(
+	&#96;t_id&#96; VARCHAR(20),
+	&#96;t_name&#96; VARCHAR(20) NOT NULL DEFAULT &#39;&#39;,
+	PRIMARY KEY(&#96;t_id&#96;)
 );
 # --成绩表
-CREATE TABLE `Score`(
-    `s_id` VARCHAR(20),
-    `c_id`  VARCHAR(20),
-    `s_score` INT(3),
-    PRIMARY KEY(`s_id`,`c_id`)
-);
-</code></pre>
+CREATE TABLE &#96;Score&#96;(
+	&#96;s_id&#96; VARCHAR(20),
+	&#96;c_id&#96;  VARCHAR(20),
+	&#96;s_score&#96; INT(3),
+	PRIMARY KEY(&#96;s_id&#96;,&#96;c_id&#96;)
+);</code></pre>
+
+
+
 <h2 id="02-创建表"><a href="#02-创建表" class="headerlink" title="02.创建表"></a>02.创建表</h2><h3 id="2-0-创建数据展示"><a href="#2-0-创建数据展示" class="headerlink" title="2.0 创建数据展示"></a>2.0 创建数据展示</h3><p><img src="./assets/image-20210224165251085.png" style="width: 700px; margin-left: 20px;"> </img></p>
-<h3 id="2-1-学生表"><a href="#2-1-学生表" class="headerlink" title="2.1 学生表"></a>2.1 <code>学生表</code></h3><pre><code class="mysql">--插入学生表测试数据
+<h3 id="2-1-学生表"><a href="#2-1-学生表" class="headerlink" title="2.1 学生表"></a>2.1 <code>学生表</code></h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">--插入学生表测试数据
 insert into Student values(&#39;01&#39; , &#39;赵雷&#39; , &#39;1990-01-01&#39; , &#39;男&#39;);
 insert into Student values(&#39;02&#39; , &#39;钱电&#39; , &#39;1990-12-21&#39; , &#39;男&#39;);
 insert into Student values(&#39;03&#39; , &#39;孙风&#39; , &#39;1990-05-20&#39; , &#39;男&#39;);
@@ -115,19 +118,19 @@ insert into Student values(&#39;04&#39; , &#39;李云&#39; , &#39;1990-08-06&#39
 insert into Student values(&#39;05&#39; , &#39;周梅&#39; , &#39;1991-12-01&#39; , &#39;女&#39;);
 insert into Student values(&#39;06&#39; , &#39;吴兰&#39; , &#39;1992-03-01&#39; , &#39;女&#39;);
 insert into Student values(&#39;07&#39; , &#39;郑竹&#39; , &#39;1989-07-01&#39; , &#39;女&#39;);
-insert into Student values(&#39;08&#39; , &#39;王菊&#39; , &#39;1990-01-20&#39; , &#39;女&#39;);
-</code></pre>
-<h3 id="2-2-课程表"><a href="#2-2-课程表" class="headerlink" title="2.2 课程表"></a>2.2 <code>课程表</code></h3><pre><code class="mysql">--课程表测试数据
+insert into Student values(&#39;08&#39; , &#39;王菊&#39; , &#39;1990-01-20&#39; , &#39;女&#39;);</code></pre>
+
+<h3 id="2-2-课程表"><a href="#2-2-课程表" class="headerlink" title="2.2 课程表"></a>2.2 <code>课程表</code></h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">--课程表测试数据
 insert into Course values(&#39;01&#39; , &#39;语文&#39; , &#39;02&#39;);
 insert into Course values(&#39;02&#39; , &#39;数学&#39; , &#39;01&#39;);
-insert into Course values(&#39;03&#39; , &#39;英语&#39; , &#39;03&#39;);
-</code></pre>
-<h3 id="2-3-教师表"><a href="#2-3-教师表" class="headerlink" title="2.3 教师表"></a>2.3 <code>教师表</code></h3><pre><code class="mysql">--教师表测试数据
+insert into Course values(&#39;03&#39; , &#39;英语&#39; , &#39;03&#39;);</code></pre>
+
+<h3 id="2-3-教师表"><a href="#2-3-教师表" class="headerlink" title="2.3 教师表"></a>2.3 <code>教师表</code></h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">--教师表测试数据
 insert into Teacher values(&#39;01&#39; , &#39;张三&#39;);
 insert into Teacher values(&#39;02&#39; , &#39;李四&#39;);
-insert into Teacher values(&#39;03&#39; , &#39;王五&#39;);
-</code></pre>
-<h3 id="2-4-成绩表"><a href="#2-4-成绩表" class="headerlink" title="2.4 成绩表"></a>2.4 <code>成绩表</code></h3><pre><code class="mysql">--成绩表测试数据
+insert into Teacher values(&#39;03&#39; , &#39;王五&#39;);</code></pre>
+
+<h3 id="2-4-成绩表"><a href="#2-4-成绩表" class="headerlink" title="2.4 成绩表"></a>2.4 <code>成绩表</code></h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">--成绩表测试数据
 insert into Score values(&#39;01&#39; , &#39;01&#39; , 80);
 insert into Score values(&#39;01&#39; , &#39;02&#39; , 90);
 insert into Score values(&#39;01&#39; , &#39;03&#39; , 99);
@@ -145,132 +148,132 @@ insert into Score values(&#39;05&#39; , &#39;02&#39; , 87);
 insert into Score values(&#39;06&#39; , &#39;01&#39; , 31);
 insert into Score values(&#39;06&#39; , &#39;03&#39; , 34);
 insert into Score values(&#39;07&#39; , &#39;02&#39; , 89);
-insert into Score values(&#39;07&#39; , &#39;03&#39; , 98);
-</code></pre>
+insert into Score values(&#39;07&#39; , &#39;03&#39; , 98);</code></pre>
+
 <h2 id="03-常见查询"><a href="#03-常见查询" class="headerlink" title="03.常见查询"></a>03.常见查询</h2><h3 id="3-1-查询”01”课程比”02”课程成绩高的学生的信息及课程分数"><a href="#3-1-查询”01”课程比”02”课程成绩高的学生的信息及课程分数" class="headerlink" title="3.1 查询”01”课程比”02”课程成绩高的学生的信息及课程分数"></a>3.1 查询”01”课程比”02”课程成绩高的学生的信息及课程分数</h3><p><img src="./assets/image-20210224172109019.png" style="width: 500px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 筛选出课程号01这门课的成绩比02这门课成绩高的学生，输出这些学生的信息及课程分（表：Student，Score)——表联结
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 筛选出课程号01这门课的成绩比02这门课成绩高的学生，输出这些学生的信息及课程分（表：Student，Score)——表联结
 select a.*, b.s_score as 01_score, c.s_score as 02_score
-from Student as a inner join Score as b on a.s_id = b.s_id and b.c_id = &#39;01&#39;
-inner join Score as c on a.s_id = c.s_id and c.c_id = &#39;02&#39; 
-where b.s_score &gt; c.s_score;
-</code></pre>
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id and b.c_id &#x3D; &#39;01&#39;
+inner join Score as c on a.s_id &#x3D; c.s_id and c.c_id &#x3D; &#39;02&#39; 
+where b.s_score &gt; c.s_score;</code></pre>
+
 <h3 id="3-2-查询平均成绩大于等于60分的同学的学生编号和学生姓名和平均成绩"><a href="#3-2-查询平均成绩大于等于60分的同学的学生编号和学生姓名和平均成绩" class="headerlink" title="3.2 查询平均成绩大于等于60分的同学的学生编号和学生姓名和平均成绩"></a>3.2 查询平均成绩大于等于60分的同学的学生编号和学生姓名和平均成绩</h3><p><img src="./assets/image-20210224172734647.png" style="width: 250px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 要求平均成绩，就需要用group by对学生分组，然后利用聚合函数avg求出平均成绩，由于where语句中不能包含聚合函数，故再利用having语句和60分比较。
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 要求平均成绩，就需要用group by对学生分组，然后利用聚合函数avg求出平均成绩，由于where语句中不能包含聚合函数，故再利用having语句和60分比较。
 -- 输出的结果学生编号和学生姓名在student表中，成绩在score表中，故需要用到内联结。
 select a.s_id, a.s_name, avg(s_score) as avg_score
-from Student as a inner join Score as b on a.s_id = b.s_id
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id
 group by a.s_id,a.s_name
-having avg(b.s_score) &gt;= 60;
-</code></pre>
+having avg(b.s_score) &gt;&#x3D; 60;</code></pre>
+
 <h3 id="3-3-查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩"><a href="#3-3-查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩" class="headerlink" title="3.3 查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩"></a>3.3 查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩</h3><p><img src="./assets/image-20210224173217832.png" style="width: 400px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析]学生编号、学生姓名在表student中；选课数可通过在表score中通过group by 学生编号后利用count(c_id)算出；所有课程的总成绩则用sum可以算出。
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析]学生编号、学生姓名在表student中；选课数可通过在表score中通过group by 学生编号后利用count(c_id)算出；所有课程的总成绩则用sum可以算出。
 -- 因为要用到表student和表score，故需要对表进行联结。
 select a.s_id, a.s_name, count(b.c_id), sum(b.s_score)
-from Student as a inner join Score as b on a.s_id = b.s_id
-group by a.s_id,a.s_name;
-</code></pre>
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id
+group by a.s_id,a.s_name;</code></pre>
+
 <h3 id="3-4-查询”李”姓老师的数量"><a href="#3-4-查询”李”姓老师的数量" class="headerlink" title="3.4 查询”李”姓老师的数量"></a>3.4 查询”李”姓老师的数量</h3><p><img src="./assets/image-20210224173817479.png" style="width: 150px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 这里用到知识点字符串模糊查询，如：where 姓名 like &#39;猴%&#39; 即可查到猴什么什么。
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 这里用到知识点字符串模糊查询，如：where 姓名 like &#39;猴%&#39; 即可查到猴什么什么。
 -- 关于字符串模糊查询的知识点可查看我的另一篇文章《SQL学习笔记——汇总分析》
 select count(t_name) as number
 from Teacher
-where t_name like &#39;李%&#39;;
-</code></pre>
+where t_name like &#39;李%&#39;;</code></pre>
+
 <h3 id="3-5-学过”张三”老师授课的同学"><a href="#3-5-学过”张三”老师授课的同学" class="headerlink" title="3.5 学过”张三”老师授课的同学"></a>3.5 学过”张三”老师授课的同学</h3><p><img src="./assets/image-20210224173941427.png" style="width: 300px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 老师的信息在表teacher中，可通过teacher.t_id与表course联结，
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 老师的信息在表teacher中，可通过teacher.t_id与表course联结，
 -- 再通过course.c_id与表score联结，
 -- 再再通过score.s_id与表student联结，查找出上过张三老师课的同学的信息。
 select s.*
-from Teacher as a inner join Course as b on a.t_id = b.t_id
-inner join Score as c on b.c_id = c.c_id
-inner join Student as s on c.s_id = s.s_id
-where a.t_name = &#39;张三&#39;;
-</code></pre>
+from Teacher as a inner join Course as b on a.t_id &#x3D; b.t_id
+inner join Score as c on b.c_id &#x3D; c.c_id
+inner join Student as s on c.s_id &#x3D; s.s_id
+where a.t_name &#x3D; &#39;张三&#39;;</code></pre>
+
 <h3 id="3-6-学过编号为”01”并且也学过编号为”02”的课程的同学的信息"><a href="#3-6-学过编号为”01”并且也学过编号为”02”的课程的同学的信息" class="headerlink" title="3.6 学过编号为”01”并且也学过编号为”02”的课程的同学的信息"></a>3.6 学过编号为”01”并且也学过编号为”02”的课程的同学的信息</h3><p><img src="./assets/image-20210224174220338.png" style="width: 300px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析]由于既要学过01课程的，又要学过02课程的，所以共需要联结两次才能达到筛选效果
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析]由于既要学过01课程的，又要学过02课程的，所以共需要联结两次才能达到筛选效果
 select *
 from Student
-where s_id in (select a.s_id from Student as a inner join Score as b on a.s_id = b.s_id and b.c_id = &#39;01&#39; 
-                      inner join Score as c on b.s_id = c.s_id and c.c_id = &#39;02&#39;);
-</code></pre>
+where s_id in (select a.s_id from Student as a inner join Score as b on a.s_id &#x3D; b.s_id and b.c_id &#x3D; &#39;01&#39; 
+                      inner join Score as c on b.s_id &#x3D; c.s_id and c.c_id &#x3D; &#39;02&#39;);</code></pre>
+
 <h3 id="3-7-学过编号为”01”但是没有学过编号为”02”的课程的同学的信息"><a href="#3-7-学过编号为”01”但是没有学过编号为”02”的课程的同学的信息" class="headerlink" title="3.7 学过编号为”01”但是没有学过编号为”02”的课程的同学的信息"></a>3.7 学过编号为”01”但是没有学过编号为”02”的课程的同学的信息</h3><p><img src="./assets/image-20210224174524943.png" style="width: 350px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 在上述语句中用and联结，注意不能直接将“=”换成“&lt;&gt;”
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 在上述语句中用and联结，注意不能直接将“&#x3D;”换成“&lt;&gt;”
 select *
 from Student 
-where s_id in (select a.s_id from Student as a inner join Score as b on a.s_id = b.s_id and b.c_id = &#39;01&#39;)
-and s_id not in (select a.s_id from Student as a inner join Score as c on a.s_id = c.s_id and c.c_id = &#39;02&#39;);
-</code></pre>
+where s_id in (select a.s_id from Student as a inner join Score as b on a.s_id &#x3D; b.s_id and b.c_id &#x3D; &#39;01&#39;)
+and s_id not in (select a.s_id from Student as a inner join Score as c on a.s_id &#x3D; c.s_id and c.c_id &#x3D; &#39;02&#39;);</code></pre>
+
 <h3 id="3-8-查询没有学全所有课程的同学的信息"><a href="#3-8-查询没有学全所有课程的同学的信息" class="headerlink" title="3.8 查询没有学全所有课程的同学的信息"></a>3.8 查询没有学全所有课程的同学的信息</h3><p><img src="./assets/image-20210224175601180.png" style="width: 340px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析]没学全所有课程的情况很多，如学0门，学1门，学2门。所以这里先筛选出学全所有课程的同学再取反，即没有学全所有课程的同学。
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析]没学全所有课程的情况很多，如学0门，学1门，学2门。所以这里先筛选出学全所有课程的同学再取反，即没有学全所有课程的同学。
 select *
 from Student
 where s_id not in (select s_id 
                    from Score 
                    group by s_id 
-                   having count(c_id) = (select count(distinct c_id) from Course));
-</code></pre>
+                   having count(c_id) &#x3D; (select count(distinct c_id) from Course));</code></pre>
+
 <h3 id="3-9-查询没学过”张三”老师讲授的任一门课程的学生姓名"><a href="#3-9-查询没学过”张三”老师讲授的任一门课程的学生姓名" class="headerlink" title="3.9 查询没学过”张三”老师讲授的任一门课程的学生姓名"></a>3.9 查询没学过”张三”老师讲授的任一门课程的学生姓名</h3><p><img src="./assets/image-20210224175704239.png" style="width: 130px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">select s_name
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">select s_name
 from Student
 where s_id not in (select s_id from Score 
-                 where c_id = (select c_id from Course
-                      where t_id = (select t_id from Teacher 
-                           where t_name = &#39;张三&#39;))); 
-</code></pre>
+                 where c_id &#x3D; (select c_id from Course
+                      where t_id &#x3D; (select t_id from Teacher 
+                           where t_name &#x3D; &#39;张三&#39;))); </code></pre>
+
 <h3 id="3-10-查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩"><a href="#3-10-查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩" class="headerlink" title="3.10 查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩"></a>3.10 查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩</h3><p><img src="./assets/image-20210224175815318.png" style="width: 320px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">select a.s_id,a.s_name,avg(b.s_score)
-from Student as a inner join Score as b on a.s_id = b.s_id and b.s_score &lt; 60
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">select a.s_id,a.s_name,avg(b.s_score)
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id and b.s_score &lt; 60
 group by a.s_id,a.s_name
-having count(b.s_score) &gt;= 2;
-</code></pre>
+having count(b.s_score) &gt;&#x3D; 2;</code></pre>
+
 <h3 id="3-11-检索”01”课程分数小于60，按分数降序排列的学生信息"><a href="#3-11-检索”01”课程分数小于60，按分数降序排列的学生信息" class="headerlink" title="3.11 检索”01”课程分数小于60，按分数降序排列的学生信息"></a>3.11 检索”01”课程分数小于60，按分数降序排列的学生信息</h3><p><img src="./assets/image-20210224175905759.png" style="width: 450px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 内联结+子查询筛选+排序
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 内联结+子查询筛选+排序
 select a.*,b.c_id,b.s_score
-from Student as a inner join Score as b on a.s_id = b.s_id and b.c_id = 01
-where a.s_id in (select s_id from Score where s_score &lt; 60  order by s_score desc);
-</code></pre>
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id and b.c_id &#x3D; 01
+where a.s_id in (select s_id from Score where s_score &lt; 60  order by s_score desc);</code></pre>
+
 <h3 id="3-12-按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩（重要！）"><a href="#3-12-按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩（重要！）" class="headerlink" title="3.12 按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩（重要！）"></a>3.12 按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩（重要！）</h3><p><img src="./assets/image-20210224180211455.png" style="width: 350px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">select a.s_id,(select s_score from Score where s_id = a.s_id and c_id = &#39;01&#39;) as 语文,
-              (select s_score from Score where s_id = a.s_id and c_id = &#39;02&#39;) as 数学,
-              (select s_score from Score where s_id = a.s_id and c_id = &#39;03&#39;) as 英语,
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">select a.s_id,(select s_score from Score where s_id &#x3D; a.s_id and c_id &#x3D; &#39;01&#39;) as 语文,
+              (select s_score from Score where s_id &#x3D; a.s_id and c_id &#x3D; &#39;02&#39;) as 数学,
+              (select s_score from Score where s_id &#x3D; a.s_id and c_id &#x3D; &#39;03&#39;) as 英语,
               round(avg(s_score),2) as 平均分 
 from Score as a 
 group by a.s_id 
-order by 平均分 desc;
-</code></pre>
+order by 平均分 desc;</code></pre>
+
 <h3 id="3-13-查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率–及格为-60，中等为：70-80，优良为：80-90，优秀为：-90（重要！）"><a href="#3-13-查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率–及格为-60，中等为：70-80，优良为：80-90，优秀为：-90（重要！）" class="headerlink" title="3.13 查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率–及格为&gt;&#x3D;60，中等为：70-80，优良为：80-90，优秀为：&gt;&#x3D;90（重要！）"></a>3.13 查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率–及格为&gt;&#x3D;60，中等为：70-80，优良为：80-90，优秀为：&gt;&#x3D;90（重要！）</h3><p><img src="./assets/image-20210224180559144.png" style="width: 880px; margin-left: 20px;"> </img></p>
-<pre><code class="mysql">-- [分析] 用到case语句，后面记得按课程号分组来显示全部结果
+<pre class="language-mysql" data-language="mysql"><code class="language-mysql">-- [分析] 用到case语句，后面记得按课程号分组来显示全部结果
 select a.c_id,a.c_name,max(b.s_score),min(b.s_score),avg(b.s_score),
-       round(100*(sum(case when b.s_score &gt;= 60 then 1 else 0 end)/sum(case when b.s_score then 1 else 0 end)),2) as 及格率,
-       round(100*(sum(case when b.s_score between 70 and 80 then 1 else 0 end)/sum(case when b.s_score then 1 end)),2) as 中等率,
-           round(100*(sum(case when b.s_score between 80 and 90 then 1 else 0 end)/sum(case when b.s_score then 1 end)),2) as 优良率,
-       round(100*(sum(case when b.s_score &gt;= 90 then 1 else 0 end)/sum(case when b.s_score then 1 end)),2) as 优秀率
-from Course as a inner join Score as b on a.c_id = b.c_id
-group by a.c_id,a.c_name;
-</code></pre>
-<h3 id="3-14-查询学生的总成绩并进行排名"><a href="#3-14-查询学生的总成绩并进行排名" class="headerlink" title="3.14 查询学生的总成绩并进行排名"></a>3.14 查询学生的总成绩并进行排名</h3><pre><code class="mysql">select s_id,sum(s_score)
+       round(100*(sum(case when b.s_score &gt;&#x3D; 60 then 1 else 0 end)&#x2F;sum(case when b.s_score then 1 else 0 end)),2) as 及格率,
+       round(100*(sum(case when b.s_score between 70 and 80 then 1 else 0 end)&#x2F;sum(case when b.s_score then 1 end)),2) as 中等率,
+		   round(100*(sum(case when b.s_score between 80 and 90 then 1 else 0 end)&#x2F;sum(case when b.s_score then 1 end)),2) as 优良率,
+       round(100*(sum(case when b.s_score &gt;&#x3D; 90 then 1 else 0 end)&#x2F;sum(case when b.s_score then 1 end)),2) as 优秀率
+from Course as a inner join Score as b on a.c_id &#x3D; b.c_id
+group by a.c_id,a.c_name;</code></pre>
+
+<h3 id="3-14-查询学生的总成绩并进行排名"><a href="#3-14-查询学生的总成绩并进行排名" class="headerlink" title="3.14 查询学生的总成绩并进行排名"></a>3.14 查询学生的总成绩并进行排名</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">select s_id,sum(s_score)
 from Score
 group by s_id
-order by sum(s_score) desc;
-</code></pre>
+order by sum(s_score) desc;</code></pre>
+
 <p><img src="./assets/image-20210224181845064.png" style="width: 220px; margin-left: 20px;"> </img></p>
-<h3 id="3-15-查询不同老师所教不同课程平均分从高到低显示"><a href="#3-15-查询不同老师所教不同课程平均分从高到低显示" class="headerlink" title="3.15 查询不同老师所教不同课程平均分从高到低显示"></a>3.15 查询不同老师所教不同课程平均分从高到低显示</h3><pre><code class="mysql">select a.t_id,avg(b.s_score)
-from Course as a inner join Score as b on a.c_id = b.c_id
+<h3 id="3-15-查询不同老师所教不同课程平均分从高到低显示"><a href="#3-15-查询不同老师所教不同课程平均分从高到低显示" class="headerlink" title="3.15 查询不同老师所教不同课程平均分从高到低显示"></a>3.15 查询不同老师所教不同课程平均分从高到低显示</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">select a.t_id,avg(b.s_score)
+from Course as a inner join Score as b on a.c_id &#x3D; b.c_id
 group by a.t_id
-order by avg(b.s_score) desc;
-</code></pre>
+order by avg(b.s_score) desc;</code></pre>
+
 <p><img src="./assets/image-20210224182034577.png" style="width: 260px; margin-left: 20px;"> </img></p>
-<h3 id="3-16-查询所有课程的成绩第2名到第3名的学生信息及该课程成绩"><a href="#3-16-查询所有课程的成绩第2名到第3名的学生信息及该课程成绩" class="headerlink" title="3.16 查询所有课程的成绩第2名到第3名的学生信息及该课程成绩"></a>3.16 查询所有课程的成绩第2名到第3名的学生信息及该课程成绩</h3><pre><code class="mysql">select a.*,sum(b.s_score)
-from Student as a inner join Score as b on a.s_id = b.s_id
+<h3 id="3-16-查询所有课程的成绩第2名到第3名的学生信息及该课程成绩"><a href="#3-16-查询所有课程的成绩第2名到第3名的学生信息及该课程成绩" class="headerlink" title="3.16 查询所有课程的成绩第2名到第3名的学生信息及该课程成绩"></a>3.16 查询所有课程的成绩第2名到第3名的学生信息及该课程成绩</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">select a.*,sum(b.s_score)
+from Student as a inner join Score as b on a.s_id &#x3D; b.s_id
 group by s_id
 order by sum(b.s_score) desc
-limit 1,2;
-</code></pre>
+limit 1,2;</code></pre>
+
 <p><img src="./assets/image-20210224182336461.png" style="width: 430px; margin-left: 20px;"> </img></p>
-<h3 id="3-17-查询学生平均成绩及其名次"><a href="#3-17-查询学生平均成绩及其名次" class="headerlink" title="3.17 查询学生平均成绩及其名次"></a>3.17 查询学生平均成绩及其名次</h3><pre><code class="mysql">select s_id,avg(s_score),rank() over (order by avg(s_score) desc) as rank_score
+<h3 id="3-17-查询学生平均成绩及其名次"><a href="#3-17-查询学生平均成绩及其名次" class="headerlink" title="3.17 查询学生平均成绩及其名次"></a>3.17 查询学生平均成绩及其名次</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql">select s_id,avg(s_score),rank() over (order by avg(s_score) desc) as rank_score
 from Score
-group by s_id;
-</code></pre>
+group by s_id;</code></pre>
+
 
                 
                 <p class="end">__END__</p>

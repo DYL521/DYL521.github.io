@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -123,43 +124,43 @@
 <li><strong>3. 后序遍历：</strong> ACBFGED  （先左后右最后根）</li>
 </ul>
 <p><img src="./assets/image-20210304111624345.png" style="width: 400px; margin-left: 20px;"> </img></p>
-<h3 id="2-2-生成树结构"><a href="#2-2-生成树结构" class="headerlink" title="2.2 生成树结构"></a>2.2 生成树结构</h3><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-class Node:
-    def __init__(self,value=None,left=None,right=None):
-        self.value=value
-        self.left=left    #左子树
-        self.right=right  #右子树
+<h3 id="2-2-生成树结构"><a href="#2-2-生成树结构" class="headerlink" title="2.2 生成树结构"></a>2.2 生成树结构</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>value<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>left<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>right<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value<span class="token operator">=</span>value
+        self<span class="token punctuation">.</span>left<span class="token operator">=</span>left    <span class="token comment">#左子树</span>
+        self<span class="token punctuation">.</span>right<span class="token operator">=</span>right  <span class="token comment">#右子树</span>
 
-if __name__==&#39;__main__&#39;:
-    root=Node(&#39;D&#39;,Node(&#39;B&#39;,Node(&#39;A&#39;),Node(&#39;C&#39;)),Node(&#39;E&#39;,right=Node(&#39;G&#39;,Node(&#39;F&#39;))))
-</code></pre>
-<h3 id="2-3-前序遍历"><a href="#2-3-前序遍历" class="headerlink" title="2.3 前序遍历"></a>2.3 前序遍历</h3><h4 id="2-3-1-前序遍历"><a href="#2-3-1-前序遍历" class="headerlink" title="2.3.1 前序遍历"></a>2.3.1 前序遍历</h4><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-class Node:
-    def __init__(self,value=None,left=None,right=None):
-        self.value=value
-        self.left=left    #左子树
-        self.right=right  #右子树
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span>right<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
-def preTraverse(root):
-     &#39;&#39;&#39;
+<h3 id="2-3-前序遍历"><a href="#2-3-前序遍历" class="headerlink" title="2.3 前序遍历"></a>2.3 前序遍历</h3><h4 id="2-3-1-前序遍历"><a href="#2-3-1-前序遍历" class="headerlink" title="2.3.1 前序遍历"></a>2.3.1 前序遍历</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>value<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>left<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>right<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value<span class="token operator">=</span>value
+        self<span class="token punctuation">.</span>left<span class="token operator">=</span>left    <span class="token comment">#左子树</span>
+        self<span class="token punctuation">.</span>right<span class="token operator">=</span>right  <span class="token comment">#右子树</span>
+
+<span class="token keyword">def</span> <span class="token function">preTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+     <span class="token triple-quoted-string string">'''
      前序遍历
-     &#39;&#39;&#39;
-     if root==None:
-         return
-     print(root.value)
-     preTraverse(root.left)
-     preTraverse(root.right)
+     '''</span>
+     <span class="token keyword">if</span> root<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+         <span class="token keyword">return</span>
+     <span class="token keyword">print</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+     preTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+     preTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
 
-if __name__==&#39;__main__&#39;:
-    root=Node(&#39;D&#39;,Node(&#39;B&#39;,Node(&#39;A&#39;),Node(&#39;C&#39;)),Node(&#39;E&#39;,right=Node(&#39;G&#39;,Node(&#39;F&#39;))))
-    print(&#39;前序遍历：&#39;)
-    preTraverse(root)   #  DBACEGF
-</code></pre>
-<h4 id="2-3-2-前序遍历步骤推演"><a href="#2-3-2-前序遍历步骤推演" class="headerlink" title="2.3.2 前序遍历步骤推演"></a>2.3.2 前序遍历步骤推演</h4><pre><code class="python">前序排列原理：
-#####此时执行preTraverse(root.left) 函数
-&#39;&#39;&#39;
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span>right<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'前序遍历：'</span><span class="token punctuation">)</span>
+    preTraverse<span class="token punctuation">(</span>root<span class="token punctuation">)</span>   <span class="token comment">#  DBACEGF</span></code></pre>
+
+<h4 id="2-3-2-前序遍历步骤推演"><a href="#2-3-2-前序遍历步骤推演" class="headerlink" title="2.3.2 前序遍历步骤推演"></a>2.3.2 前序遍历步骤推演</h4><pre class="language-python" data-language="python"><code class="language-python">前序排列原理：
+<span class="token comment">#####此时执行preTraverse(root.left) 函数</span>
+<span class="token triple-quoted-string string">'''
 1、第一步 root=Node(D) print D，D入栈[D]
 2、第二步 root=Node(D).left=Node(B) print B, B入栈[D,B]
 3、第三步 root=Node(B).left=Node(A) print A, A入栈[D,B,A]
@@ -169,93 +170,92 @@ if __name__==&#39;__main__&#39;:
 7、第七步 Node(B).right==Node(C) print C,C入栈[D,C]
 8、第八步 Node(C).left==None, Node(C).right==None,访问完C的左右节点后函数返回C出栈，返回上级调用[D]
 9、第九步 此时返回上级调用执行preTraverse(D.right)=Node(E) print E,D出栈，E入栈[E] 
-&#39;&#39;&#39;
+'''</span>
 
-&#39;&#39;&#39;此时输出结果：DBACE&#39;&#39;&#39;
-</code></pre>
-<h3 id="2-4-中序遍历"><a href="#2-4-中序遍历" class="headerlink" title="2.4 中序遍历"></a>2.4 中序遍历</h3><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-class Node:
-    def __init__(self,value=None,left=None,right=None):
-        self.value=value
-        self.left=left    #左子树
-        self.right=right  #右子树
+<span class="token triple-quoted-string string">'''此时输出结果：DBACE'''</span></code></pre>
 
-def midTraverse(root):
-    &#39;&#39;&#39;
+<h3 id="2-4-中序遍历"><a href="#2-4-中序遍历" class="headerlink" title="2.4 中序遍历"></a>2.4 中序遍历</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>value<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>left<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>right<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value<span class="token operator">=</span>value
+        self<span class="token punctuation">.</span>left<span class="token operator">=</span>left    <span class="token comment">#左子树</span>
+        self<span class="token punctuation">.</span>right<span class="token operator">=</span>right  <span class="token comment">#右子树</span>
+
+<span class="token keyword">def</span> <span class="token function">midTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
     中序遍历
-    &#39;&#39;&#39;
-    if root == None:
-        return
-    midTraverse(root.left)
-    print(root.value)
-    midTraverse(root.right)
+    '''</span>
+    <span class="token keyword">if</span> root <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    midTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+    midTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
 
-if __name__==&#39;__main__&#39;:
-    root=Node(&#39;D&#39;,Node(&#39;B&#39;,Node(&#39;A&#39;),Node(&#39;C&#39;)),Node(&#39;E&#39;,right=Node(&#39;G&#39;,Node(&#39;F&#39;))))
-    print(&#39;中序遍历：&#39;)
-    midTraverse(root)   #  ACBFGED
-</code></pre>
-<h3 id="2-5-后序遍历"><a href="#2-5-后序遍历" class="headerlink" title="2.5 后序遍历"></a>2.5 后序遍历</h3><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-class Node:
-    def __init__(self,value=None,left=None,right=None):
-        self.value=value
-        self.left=left    #左子树
-        self.right=right   #右子树
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span>right<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'中序遍历：'</span><span class="token punctuation">)</span>
+    midTraverse<span class="token punctuation">(</span>root<span class="token punctuation">)</span>   <span class="token comment">#  ACBFGED</span></code></pre>
 
-def afterTraverse(root):
-    &#39;&#39;&#39;
+<h3 id="2-5-后序遍历"><a href="#2-5-后序遍历" class="headerlink" title="2.5 后序遍历"></a>2.5 后序遍历</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>value<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>left<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>right<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value<span class="token operator">=</span>value
+        self<span class="token punctuation">.</span>left<span class="token operator">=</span>left    <span class="token comment">#左子树</span>
+        self<span class="token punctuation">.</span>right<span class="token operator">=</span>right   <span class="token comment">#右子树</span>
+
+<span class="token keyword">def</span> <span class="token function">afterTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
     后序遍历
-    &#39;&#39;&#39;
-    if root == None:
-        return
-    afterTraverse(root.left)
-    afterTraverse(root.right)
-    print(root.value)
+    '''</span>
+    <span class="token keyword">if</span> root <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    afterTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+    afterTraverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
 
-if __name__==&#39;__main__&#39;:
-    root=Node(&#39;D&#39;,Node(&#39;B&#39;,Node(&#39;A&#39;),Node(&#39;C&#39;)),Node(&#39;E&#39;,right=Node(&#39;G&#39;,Node(&#39;F&#39;))))
-    print(&#39;后序遍历：&#39;)
-    afterTraverse(root)   #  ACBFGED
-</code></pre>
-<h3 id="2-6-分层打印二叉树"><a href="#2-6-分层打印二叉树" class="headerlink" title="2.6 分层打印二叉树"></a>2.6 分层打印二叉树</h3><pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-class Node:
-    def __init__(self,value=None,left=None,right=None):
-        self.value=value
-        self.left=left    #左子树
-        self.right=right  #右子树
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span>right<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'后序遍历：'</span><span class="token punctuation">)</span>
+    afterTraverse<span class="token punctuation">(</span>root<span class="token punctuation">)</span>   <span class="token comment">#  ACBFGED</span></code></pre>
 
-def layered_print( root):
-    if not root:
-        return []
-    curLayer = [root]                           # 当前层的所有节点
-    while curLayer:
-        layerValue = []                         # 当前层的值
-        nextLayer = []                          # 下一层的所有节点
-        for node in curLayer:                   # 循环当前层所有节点并并获取所有value值
-            layerValue.append(node.value)
-            if node.left:
-                nextLayer.append(node.left)        # 将当前层的左节点加入列表
-            if node.right:
-                nextLayer.append(node.right)        # 将当前层的右节点加入列表
+<h3 id="2-6-分层打印二叉树"><a href="#2-6-分层打印二叉树" class="headerlink" title="2.6 分层打印二叉树"></a>2.6 分层打印二叉树</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>value<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>left<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>right<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value<span class="token operator">=</span>value
+        self<span class="token punctuation">.</span>left<span class="token operator">=</span>left    <span class="token comment">#左子树</span>
+        self<span class="token punctuation">.</span>right<span class="token operator">=</span>right  <span class="token comment">#右子树</span>
+
+<span class="token keyword">def</span> <span class="token function">layered_print</span><span class="token punctuation">(</span> root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> root<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    curLayer <span class="token operator">=</span> <span class="token punctuation">[</span>root<span class="token punctuation">]</span>                           <span class="token comment"># 当前层的所有节点</span>
+    <span class="token keyword">while</span> curLayer<span class="token punctuation">:</span>
+        layerValue <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>                         <span class="token comment"># 当前层的值</span>
+        nextLayer <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>                          <span class="token comment"># 下一层的所有节点</span>
+        <span class="token keyword">for</span> node <span class="token keyword">in</span> curLayer<span class="token punctuation">:</span>                   <span class="token comment"># 循环当前层所有节点并并获取所有value值</span>
+            layerValue<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> node<span class="token punctuation">.</span>left<span class="token punctuation">:</span>
+                nextLayer<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>        <span class="token comment"># 将当前层的左节点加入列表</span>
+            <span class="token keyword">if</span> node<span class="token punctuation">.</span>right<span class="token punctuation">:</span>
+                nextLayer<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>        <span class="token comment"># 将当前层的右节点加入列表</span>
               
-        print layerValue                           # 打印当前层的值
-        curLayer = nextLayer                      # 将循环下移一层
+        <span class="token keyword">print</span> layerValue                           <span class="token comment"># 打印当前层的值</span>
+        curLayer <span class="token operator">=</span> nextLayer                      <span class="token comment"># 将循环下移一层</span>
 
 
-&#39;&#39;&#39;
-[&#39;D&#39;]
-[&#39;B&#39;, &#39;E&#39;]
-[&#39;A&#39;, &#39;C&#39;, &#39;G&#39;]
-[&#39;F&#39;]
-&#39;&#39;&#39;
+<span class="token triple-quoted-string string">'''
+['D']
+['B', 'E']
+['A', 'C', 'G']
+['F']
+'''</span>
 
-if __name__==&#39;__main__&#39;:
-    root=Node(&#39;D&#39;,Node(&#39;B&#39;,Node(&#39;A&#39;),Node(&#39;C&#39;)),Node(&#39;E&#39;,right=Node(&#39;G&#39;,Node(&#39;F&#39;))))
-    layered_print(root)
-</code></pre>
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span>right<span class="token operator">=</span>Node<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    layered_print<span class="token punctuation">(</span>root<span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>

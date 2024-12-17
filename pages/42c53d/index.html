@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -88,147 +89,147 @@
 </ul>
 </li>
 </ul>
-<h3 id="1-2-定义ModelSerializer语法"><a href="#1-2-定义ModelSerializer语法" class="headerlink" title="1.2 定义ModelSerializer语法"></a>1.2 定义ModelSerializer语法</h3><pre><code class="python">from rest_framework import serializers
+<h3 id="1-2-定义ModelSerializer语法"><a href="#1-2-定义ModelSerializer语法" class="headerlink" title="1.2 定义ModelSerializer语法"></a>1.2 定义ModelSerializer语法</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 
-class BookInfoSerializer(serializers.ModelSerializer):
-    &quot;&quot;&quot;图书序列化器类&quot;&quot;&quot;
-    class Meta:
-        model = BookInfo
-        fields = &#39;__all__&#39;
-        # exclude = (&#39;is_delete&#39;,)
-        extra_kwargs = &#123;
-            &#39;bread&#39;: &#123;&#39;min_value&#39;: 0, &#39;required&#39;: True&#125;,
-            &#39;bcomment&#39;: &#123;&#39;min_value&#39;: 0, &#39;required&#39;: True&#125;,
-            &#39;btitle&#39;: &#123;&#39;min_length&#39;: 3&#125;
-        &#125;
+<span class="token keyword">class</span> <span class="token class-name">BookInfoSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>ModelSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""图书序列化器类"""</span>
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> BookInfo
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span>
+        <span class="token comment"># exclude = ('is_delete',)</span>
+        extra_kwargs <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'bread'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">'min_value'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'required'</span><span class="token punctuation">:</span> <span class="token boolean">True</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token string">'bcomment'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">'min_value'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'required'</span><span class="token punctuation">:</span> <span class="token boolean">True</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token string">'btitle'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">'min_length'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span></code></pre>
+
+<h3 id="1-3-查看自动生成字段"><a href="#1-3-查看自动生成字段" class="headerlink" title="1.3 查看自动生成字段"></a>1.3 查看自动生成字段</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>django2<span class="token punctuation">.</span><span class="token number">2</span><span class="token punctuation">)</span> C<span class="token punctuation">:</span>\tmp\drf_demo<span class="token operator">></span>python manage<span class="token punctuation">.</span>py shell <span class="token operator">-</span>i ipython
+In <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">from</span> book<span class="token punctuation">.</span>serializers <span class="token keyword">import</span> BookInfoSerializer2
+In <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">:</span> book <span class="token operator">=</span> BookInfoSerializer2<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">:</span> book
+BookInfoSerializer2<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token builtin">id</span> <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'ID'</span><span class="token punctuation">,</span> read_only<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    heroinfo_set <span class="token operator">=</span> HeroInfoSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">id</span> <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'ID'</span><span class="token punctuation">,</span> read_only<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        hname <span class="token operator">=</span> CharField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'名字'</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+        hgender <span class="token operator">=</span> ChoiceField<span class="token punctuation">(</span>choices<span class="token operator">=</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'男'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'女'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">'性别'</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        hcomment <span class="token operator">=</span> CharField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'描述信息'</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+    btitle <span class="token operator">=</span> CharField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'名称'</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+    bpub_date <span class="token operator">=</span> DateField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'发布日期'</span><span class="token punctuation">)</span>
+    bread <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'阅读量'</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+    bcomment <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'评论量'</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+    is_delete <span class="token operator">=</span> BooleanField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'逻辑删除'</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
 </code></pre>
-<h3 id="1-3-查看自动生成字段"><a href="#1-3-查看自动生成字段" class="headerlink" title="1.3 查看自动生成字段"></a>1.3 查看自动生成字段</h3><pre><code class="python">(django2.2) C:\tmp\drf_demo&gt;python manage.py shell -i ipython
-In [1]: from book.serializers import BookInfoSerializer2
-In [2]: book = BookInfoSerializer2()
-In [3]: book
-BookInfoSerializer2():
-    id = IntegerField(label=&#39;ID&#39;, read_only=True)
-    heroinfo_set = HeroInfoSerializer(many=True):
-        id = IntegerField(label=&#39;ID&#39;, read_only=True)
-        hname = CharField(label=&#39;名字&#39;, max_length=20)
-        hgender = ChoiceField(choices=((0, &#39;男&#39;), (1, &#39;女&#39;)), label=&#39;性别&#39;, required=False)
-        hcomment = CharField(label=&#39;描述信息&#39;, max_length=200, required=False)
-    btitle = CharField(label=&#39;名称&#39;, max_length=20)
-    bpub_date = DateField(label=&#39;发布日期&#39;)
-    bread = IntegerField(label=&#39;阅读量&#39;, required=False)
-    bcomment = IntegerField(label=&#39;评论量&#39;, required=False)
-    is_delete = BooleanField(label=&#39;逻辑删除&#39;, required=False)
-</code></pre>
-<h2 id="02-ModelSerializer使用"><a href="#02-ModelSerializer使用" class="headerlink" title="02.ModelSerializer使用"></a>02.ModelSerializer使用</h2><h3 id="2-1-book-serializers-py"><a href="#2-1-book-serializers-py" class="headerlink" title="2.1 book&#x2F;serializers.py"></a>2.1 book&#x2F;serializers.py</h3><pre><code class="python"># -*- coding: utf-8 -*-
-from rest_framework import serializers
-from book.models import BookInfo,HeroInfo
 
-class HeroInfoSerializer(serializers.Serializer):
-    &quot;&quot;&quot;英雄数据序列化器&quot;&quot;&quot;
-    GENDER_CHOICES = (
-        (0, &#39;男&#39;),
-        (1, &#39;女&#39;)
-    )
-    id = serializers.IntegerField(label=&#39;ID&#39;, read_only=True)
-    hname = serializers.CharField(label=&#39;名字&#39;, max_length=20)
-    hgender = serializers.ChoiceField(label=&#39;性别&#39;, choices=GENDER_CHOICES, required=False)
-    hcomment = serializers.CharField(label=&#39;描述信息&#39;, max_length=200, required=False)
+<h2 id="02-ModelSerializer使用"><a href="#02-ModelSerializer使用" class="headerlink" title="02.ModelSerializer使用"></a>02.ModelSerializer使用</h2><h3 id="2-1-book-serializers-py"><a href="#2-1-book-serializers-py" class="headerlink" title="2.1 book&#x2F;serializers.py"></a>2.1 book&#x2F;serializers.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
+<span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo<span class="token punctuation">,</span>HeroInfo
 
-    class Meta:
-        model = HeroInfo
+<span class="token keyword">class</span> <span class="token class-name">HeroInfoSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>Serializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""英雄数据序列化器"""</span>
+    GENDER_CHOICES <span class="token operator">=</span> <span class="token punctuation">(</span>
+        <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'男'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'女'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+    <span class="token builtin">id</span> <span class="token operator">=</span> serializers<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'ID'</span><span class="token punctuation">,</span> read_only<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    hname <span class="token operator">=</span> serializers<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'名字'</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+    hgender <span class="token operator">=</span> serializers<span class="token punctuation">.</span>ChoiceField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'性别'</span><span class="token punctuation">,</span> choices<span class="token operator">=</span>GENDER_CHOICES<span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+    hcomment <span class="token operator">=</span> serializers<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">'描述信息'</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> HeroInfo
 
 
-class BookInfoSerializer2(serializers.ModelSerializer):
-    # 字段名名, 必须是模型可以 . 引用到的变量
-    # BookInfo().   &quot;heroinfo_set&quot;  才能作为字段名,  如果是集合, 需要加many=True,
-    heroinfo_set = HeroInfoSerializer(many=True)   # 
-    &quot;&quot;&quot;图书序列化器类&quot;&quot;&quot;
-    class Meta:
-        model = BookInfo
-        fields = &#39;__all__&#39;
-</code></pre>
-<h3 id="2-2-查询结果"><a href="#2-2-查询结果" class="headerlink" title="2.2 查询结果"></a>2.2 查询结果</h3><pre><code class="python">[
-    &#123;
-        &quot;id&quot;: 1,
-        &quot;heroinfo_set&quot;: [
-            &#123;
-                &quot;id&quot;: 1,
-                &quot;hname&quot;: &quot;孙悟空&quot;,
-                &quot;hgender&quot;: 1,
-                &quot;hcomment&quot;: &quot;七十二变&quot;
-            &#125;,
-            &#123;
-                &quot;id&quot;: 2,
-                &quot;hname&quot;: &quot;猪八戒&quot;,
-                &quot;hgender&quot;: 1,
-                &quot;hcomment&quot;: &quot;天蓬元帅&quot;
-            &#125;
-        ],
-        &quot;btitle&quot;: &quot;西游记&quot;,
-        &quot;bpub_date&quot;: &quot;2020-08-11&quot;,
-        &quot;bread&quot;: 666,
-        &quot;bcomment&quot;: 123,
-        &quot;is_delete&quot;: false
-    &#125;,
-    &#123;
-        &quot;id&quot;: 2,
-        &quot;heroinfo_set&quot;: [],
-        &quot;btitle&quot;: &quot;水浒传&quot;,
-        &quot;bpub_date&quot;: &quot;2020-08-11&quot;,
-        &quot;bread&quot;: 200,
-        &quot;bcomment&quot;: 100,
-        &quot;is_delete&quot;: false
-    &#125;,
-    &#123;
-        &quot;id&quot;: 3,
-        &quot;heroinfo_set&quot;: [],
-        &quot;btitle&quot;: &quot;红楼梦&quot;,
-        &quot;bpub_date&quot;: &quot;2020-08-11&quot;,
-        &quot;bread&quot;: 0,
-        &quot;bcomment&quot;: 0,
-        &quot;is_delete&quot;: false
-    &#125;,
-    &#123;
-        &quot;id&quot;: 4,
-        &quot;heroinfo_set&quot;: [],
-        &quot;btitle&quot;: &quot;三国演义2&quot;,
-        &quot;bpub_date&quot;: &quot;2018-08-19&quot;,
-        &quot;bread&quot;: 0,
-        &quot;bcomment&quot;: 0,
-        &quot;is_delete&quot;: false
-    &#125;
-]
-</code></pre>
-<h2 id="03-多对多序列化"><a href="#03-多对多序列化" class="headerlink" title="03.多对多序列化"></a>03.多对多序列化</h2><pre><code class="python"># -*- coding: utf-8 -*-
-from rest_framework import serializers
-from course.models import *
+<span class="token keyword">class</span> <span class="token class-name">BookInfoSerializer2</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>ModelSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 字段名名, 必须是模型可以 . 引用到的变量</span>
+    <span class="token comment"># BookInfo().   "heroinfo_set"  才能作为字段名,  如果是集合, 需要加many=True,</span>
+    heroinfo_set <span class="token operator">=</span> HeroInfoSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>   <span class="token comment"># </span>
+    <span class="token triple-quoted-string string">"""图书序列化器类"""</span>
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> BookInfo
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span></code></pre>
+
+<h3 id="2-2-查询结果"><a href="#2-2-查询结果" class="headerlink" title="2.2 查询结果"></a>2.2 查询结果</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                <span class="token string">"hname"</span><span class="token punctuation">:</span> <span class="token string">"孙悟空"</span><span class="token punctuation">,</span>
+                <span class="token string">"hgender"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                <span class="token string">"hcomment"</span><span class="token punctuation">:</span> <span class="token string">"七十二变"</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+                <span class="token string">"hname"</span><span class="token punctuation">:</span> <span class="token string">"猪八戒"</span><span class="token punctuation">,</span>
+                <span class="token string">"hgender"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                <span class="token string">"hcomment"</span><span class="token punctuation">:</span> <span class="token string">"天蓬元帅"</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"西游记"</span><span class="token punctuation">,</span>
+        <span class="token string">"bpub_date"</span><span class="token punctuation">:</span> <span class="token string">"2020-08-11"</span><span class="token punctuation">,</span>
+        <span class="token string">"bread"</span><span class="token punctuation">:</span> <span class="token number">666</span><span class="token punctuation">,</span>
+        <span class="token string">"bcomment"</span><span class="token punctuation">:</span> <span class="token number">123</span><span class="token punctuation">,</span>
+        <span class="token string">"is_delete"</span><span class="token punctuation">:</span> false
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"水浒传"</span><span class="token punctuation">,</span>
+        <span class="token string">"bpub_date"</span><span class="token punctuation">:</span> <span class="token string">"2020-08-11"</span><span class="token punctuation">,</span>
+        <span class="token string">"bread"</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+        <span class="token string">"bcomment"</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+        <span class="token string">"is_delete"</span><span class="token punctuation">:</span> false
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"红楼梦"</span><span class="token punctuation">,</span>
+        <span class="token string">"bpub_date"</span><span class="token punctuation">:</span> <span class="token string">"2020-08-11"</span><span class="token punctuation">,</span>
+        <span class="token string">"bread"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token string">"bcomment"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token string">"is_delete"</span><span class="token punctuation">:</span> false
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+        <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"三国演义2"</span><span class="token punctuation">,</span>
+        <span class="token string">"bpub_date"</span><span class="token punctuation">:</span> <span class="token string">"2018-08-19"</span><span class="token punctuation">,</span>
+        <span class="token string">"bread"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token string">"bcomment"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token string">"is_delete"</span><span class="token punctuation">:</span> false
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span></code></pre>
+
+<h2 id="03-多对多序列化"><a href="#03-多对多序列化" class="headerlink" title="03.多对多序列化"></a>03.多对多序列化</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
+<span class="token keyword">from</span> course<span class="token punctuation">.</span>models <span class="token keyword">import</span> <span class="token operator">*</span>
 
 
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = &#39;__all__&#39;  # 所有字段
+<span class="token keyword">class</span> <span class="token class-name">CourseSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>ModelSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> Course
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span>  <span class="token comment"># 所有字段</span>
 
 
-class SectionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sections
-        fields = &#39;__all__&#39;
+<span class="token keyword">class</span> <span class="token class-name">SectionsSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>ModelSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> Sections
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span>
 
 
-class ChaptersSerializer(serializers.ModelSerializer):
-    sections = SectionsSerializer(many=True)
+<span class="token keyword">class</span> <span class="token class-name">ChaptersSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>ModelSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sections <span class="token operator">=</span> SectionsSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
 
-    class Meta:
-        model = Chapters
-        fields = &#39;__all__&#39;
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        model <span class="token operator">=</span> Chapters
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span>
 
 
-class CourseDeepSerializer(CourseSerializer):
-    # 字段名名, 必须是模型可以 . 引用到的变量
-    # Course().   &quot;chapters&quot;  才能作为字段名,  如果是集合, 需要加many=True,
-    chapters = ChaptersSerializer(many=True)
-</code></pre>
+<span class="token keyword">class</span> <span class="token class-name">CourseDeepSerializer</span><span class="token punctuation">(</span>CourseSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 字段名名, 必须是模型可以 . 引用到的变量</span>
+    <span class="token comment"># Course().   "chapters"  才能作为字段名,  如果是集合, 需要加many=True,</span>
+    chapters <span class="token operator">=</span> ChaptersSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>

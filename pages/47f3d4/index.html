@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -85,13 +86,13 @@
 <li><p><strong>作用：</strong>一个队列中，一次性、顺序性、排他性的执行一系列命令</p>
 </li>
 </ul>
-<pre><code class="shell"># Multi 命令用于标记一个事务块的开始事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性( atomic )地执行
-&gt; multi        # 开始一个redis事物
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Multi 命令用于标记一个事务块的开始事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性( atomic )地执行</span>
+<span class="token operator">></span> multi        <span class="token comment"># 开始一个redis事物</span>
 incr books
 incr books
-&gt; exec         # 执行事物
-&gt; discard       # 丢弃事物
-</code></pre>
+<span class="token operator">></span> <span class="token builtin class-name">exec</span>         <span class="token comment"># 执行事物</span>
+<span class="token operator">></span> discard       <span class="token comment"># 丢弃事物</span></code></pre>
+
 <h2 id="1-2-watch乐观锁"><a href="#1-2-watch乐观锁" class="headerlink" title="1.2 watch乐观锁"></a>1.2 watch乐观锁</h2><ul>
 <li><p><strong>实质：<code>WATCH 只会在数据被其他客户端抢先修改了的情况下通知执行命令的这个客户端</code>（通过 WatchError 异常）<code>但不会阻止其他客户端对数据的修改</code></strong></p>
 </li>
@@ -113,30 +114,30 @@ incr books
 <blockquote>
 <p><strong><code>使用reids的 watch + multi 指令实现超卖</code></strong></p>
 </blockquote>
-<pre><code class="shell">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-import redis
-def sale(rs):
-    while True:
-        with rs.pipeline() as p:
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token function">import</span> redis
+def sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span>:
+    <span class="token keyword">while</span> True:
+        with rs.pipeline<span class="token punctuation">(</span><span class="token punctuation">)</span> as p:
             try:
-                p.watch(&#39;apple&#39;)                      # 监听key值为apple的数据数量改变
-                count = int(rs.get(&#39;apple&#39;))
-                print(&#39;拿取到了苹果的数量: %d&#39; % count)
-                p.multi()                           # 事务开始
-                if count&gt; 0 :                        # 如果此时还有库存
-                    p.set(&#39;apple&#39;, count - 1)
-                    p.execute()                      # 执行事务
-                p.unwatch()
-                break                              # 当库存成功减一或没有库存时跳出执行循环
-            except Exception as e:                       # 当出现watch监听值出现修改时，WatchError异常抛出
-                print(&#39;[Error]: %s&#39; % e)
-                continue                            # 继续尝试执行
+                p.watch<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">)</span>                      <span class="token comment"># 监听key值为apple的数据数量改变</span>
+                count <span class="token operator">=</span> int<span class="token punctuation">(</span>rs.get<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">))</span>
+                print<span class="token punctuation">(</span><span class="token string">'拿取到了苹果的数量: %d'</span> % count<span class="token punctuation">)</span>
+                p.multi<span class="token punctuation">(</span><span class="token punctuation">)</span>                           <span class="token comment"># 事务开始</span>
+                <span class="token keyword">if</span> count<span class="token operator">></span> <span class="token number">0</span> <span class="token builtin class-name">:</span>                        <span class="token comment"># 如果此时还有库存</span>
+                    p.set<span class="token punctuation">(</span><span class="token string">'apple'</span>, count - <span class="token number">1</span><span class="token punctuation">)</span>
+                    p.execute<span class="token punctuation">(</span><span class="token punctuation">)</span>                      <span class="token comment"># 执行事务</span>
+                p.unwatch<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token builtin class-name">break</span>                              <span class="token comment"># 当库存成功减一或没有库存时跳出执行循环</span>
+            except Exception as e:                       <span class="token comment"># 当出现watch监听值出现修改时，WatchError异常抛出</span>
+                print<span class="token punctuation">(</span><span class="token string">'[Error]: %s'</span> % e<span class="token punctuation">)</span>
+                <span class="token builtin class-name">continue</span>                            <span class="token comment"># 继续尝试执行</span>
 
-rs = redis.Redis(host=&#39;127.0.0.1&#39;, port=6379)                   # 连接redis
-rs.set(&#39;apple&#39;,1000)                                    # 首先在redis中设置某商品apple 对应数量value值为1000
-sale(rs)
-</code></pre>
+rs <span class="token operator">=</span> redis.Redis<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'127.0.0.1'</span>, <span class="token assign-left variable">port</span><span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>                   <span class="token comment"># 连接redis</span>
+rs.set<span class="token punctuation">(</span><span class="token string">'apple'</span>,1000<span class="token punctuation">)</span>                                    <span class="token comment"># 首先在redis中设置某商品apple 对应数量value值为1000</span>
+sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span></code></pre>
+
 <h2 id="1-3-setnx分布式锁"><a href="#1-3-setnx分布式锁" class="headerlink" title="1.3 setnx分布式锁"></a>1.3 setnx分布式锁</h2><ul>
 <li><p>1.分布式锁本质是占一个坑，当别的进程也要来占坑时发现已经被占，就会放弃或者稍后重试</p>
 </li>
@@ -145,104 +146,104 @@ sale(rs)
 <li><p>3.先来先占，用完了在调用del指令释放坑</p>
 </li>
 </ul>
-<pre><code class="shell">&gt; setnx lock:codehole true
-.... do something critical ....
-&gt; del lock:codehole
-</code></pre>
-<h3 id="1-3-1-setnx-watch-multi解决超卖问题"><a href="#1-3-1-setnx-watch-multi解决超卖问题" class="headerlink" title="1.3.1 setnx+watch+multi解决超卖问题"></a>1.3.1 setnx+watch+multi解决超卖问题</h3><pre><code class="shell">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-import redis
-import uuid
-import time
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">></span> setnx lock:codehole <span class="token boolean">true</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span> <span class="token keyword">do</span> something critical <span class="token punctuation">..</span><span class="token punctuation">..</span>
+<span class="token operator">></span> del lock:codehole</code></pre>
 
-# 1.初始化连接函数
-def get_conn(host,port=6379):
-    rs = redis.Redis(host=host, port=port)
-    return rs
+<h3 id="1-3-1-setnx-watch-multi解决超卖问题"><a href="#1-3-1-setnx-watch-multi解决超卖问题" class="headerlink" title="1.3.1 setnx+watch+multi解决超卖问题"></a>1.3.1 setnx+watch+multi解决超卖问题</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token function">import</span> redis
+<span class="token function">import</span> uuid
+<span class="token function">import</span> <span class="token function">time</span>
 
-# 2. 构建redis锁
-def acquire_lock(rs, lock_name, expire_time=10):
-    &#39;&#39;&#39;
+<span class="token comment"># 1.初始化连接函数</span>
+def get_conn<span class="token punctuation">(</span>host,port<span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>:
+    rs <span class="token operator">=</span> redis.Redis<span class="token punctuation">(</span>host<span class="token operator">=</span>host, <span class="token assign-left variable">port</span><span class="token operator">=</span>port<span class="token punctuation">)</span>
+    <span class="token builtin class-name">return</span> rs
+
+<span class="token comment"># 2. 构建redis锁</span>
+def acquire_lock<span class="token punctuation">(</span>rs, lock_name, <span class="token assign-left variable">expire_time</span><span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>:
+    <span class="token string">''</span>'
     rs: 连接对象
     lock_name: 锁标识
     acquire_time: 过期超时时间
-    return -&gt; False 获锁失败 or True 获锁成功
-    &#39;&#39;&#39;
-    identifier = str(uuid.uuid4())
-    end = time.time() + expire_time
-    while time.time() &lt; end:
-        # 当获取锁的行为超过有效时间，则退出循环，本次取锁失败，返回False
-        if rs.setnx(lock_name, identifier): # 尝试取得锁
-            return identifier
-        time.sleep(0.001)
-        return False
+    <span class="token builtin class-name">return</span> -<span class="token operator">></span> False 获锁失败 or True 获锁成功
+    <span class="token string">''</span>'
+    identifier <span class="token operator">=</span> str<span class="token punctuation">(</span>uuid.uuid4<span class="token punctuation">(</span><span class="token punctuation">))</span>
+    end <span class="token operator">=</span> time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> + expire_time
+    <span class="token keyword">while</span> time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> end:
+        <span class="token comment"># 当获取锁的行为超过有效时间，则退出循环，本次取锁失败，返回False</span>
+        <span class="token keyword">if</span> rs.setnx<span class="token punctuation">(</span>lock_name, identifier<span class="token punctuation">)</span>: <span class="token comment"># 尝试取得锁</span>
+            <span class="token builtin class-name">return</span> identifier
+        time.sleep<span class="token punctuation">(</span><span class="token number">0.001</span><span class="token punctuation">)</span>
+        <span class="token builtin class-name">return</span> False
 
-# 3. 释放锁
-def release_lock(rs, lockname, identifier):
-    &#39;&#39;&#39;
+<span class="token comment"># 3. 释放锁</span>
+def release_lock<span class="token punctuation">(</span>rs, lockname, identifier<span class="token punctuation">)</span>:
+    <span class="token string">''</span>'
     rs: 连接对象
     lockname: 锁标识
     identifier: 锁的value值，用来校验
-    &#39;&#39;&#39;
-    pipe = rs.pipeline(True)
+    <span class="token string">''</span>'
+    pipe <span class="token operator">=</span> rs.pipeline<span class="token punctuation">(</span>True<span class="token punctuation">)</span>
     try:
-        pipe.watch(lockname)
-        if rs.get(lockname).decode() == identifier:  # 防止其他进程同名锁被误删
-            pipe.multi()           # 开启事务
-            pipe.delete(lockname)
-            pipe.execute()
-            return True            # 删除锁
-        pipe.unwatch()              # 取消事务
+        pipe.watch<span class="token punctuation">(</span>lockname<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> rs.get<span class="token punctuation">(</span>lockname<span class="token punctuation">)</span>.decode<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> identifier:  <span class="token comment"># 防止其他进程同名锁被误删</span>
+            pipe.multi<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment"># 开启事务</span>
+            pipe.delete<span class="token punctuation">(</span>lockname<span class="token punctuation">)</span>
+            pipe.execute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token builtin class-name">return</span> True            <span class="token comment"># 删除锁</span>
+        pipe.unwatch<span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment"># 取消事务</span>
     except Exception as e:
         pass
-    return False                    # 删除失败
+    <span class="token builtin class-name">return</span> False                    <span class="token comment"># 删除失败</span>
 
 
-&#39;&#39;&#39;在业务函数中使用上面的锁&#39;&#39;&#39;
-def sale(rs):
-    start = time.time()            # 程序启动时间
-    with rs.pipeline() as p:
-        &#39;&#39;&#39;
+<span class="token string">''</span>'在业务函数中使用上面的锁<span class="token string">''</span>'
+def sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span>:
+    start <span class="token operator">=</span> time.time<span class="token punctuation">(</span><span class="token punctuation">)</span>            <span class="token comment"># 程序启动时间</span>
+    with rs.pipeline<span class="token punctuation">(</span><span class="token punctuation">)</span> as p:
+        <span class="token string">''</span>'
         通过管道方式进行连接
         多条命令执行结束，一次性获取结果
-        &#39;&#39;&#39;
-        while True:
-            lock = acquire_lock(rs, &#39;lock&#39;)
-            if not lock: # 持锁失败
-                continue
+        <span class="token string">''</span>'
+        <span class="token keyword">while</span> True:
+            lock <span class="token operator">=</span> acquire_lock<span class="token punctuation">(</span>rs, <span class="token string">'lock'</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> not lock: <span class="token comment"># 持锁失败</span>
+                <span class="token builtin class-name">continue</span>
             try:
-                count = int(rs.get(&#39;apple&#39;)) # 取量
-                p.set(&#39;apple&#39;, count-1)      # 减量
-                p.execute()
-                print(&#39;当前库存量: %s&#39; % count)
-                break
+                count <span class="token operator">=</span> int<span class="token punctuation">(</span>rs.get<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">))</span> <span class="token comment"># 取量</span>
+                p.set<span class="token punctuation">(</span><span class="token string">'apple'</span>, count-1<span class="token punctuation">)</span>      <span class="token comment"># 减量</span>
+                p.execute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                print<span class="token punctuation">(</span><span class="token string">'当前库存量: %s'</span> % count<span class="token punctuation">)</span>
+                <span class="token builtin class-name">break</span>
             finally:
-                release_lock(rs, &#39;lock&#39;, lock)
-        print(&#39;[time]: %.2f&#39; % (time.time() - start))
+                release_lock<span class="token punctuation">(</span>rs, <span class="token string">'lock'</span>, lock<span class="token punctuation">)</span>
+        print<span class="token punctuation">(</span><span class="token string">'[time]: %.2f'</span> % <span class="token punctuation">(</span>time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> - start<span class="token punctuation">))</span>
 
-rs = redis.Redis(host=&#39;127.0.0.1&#39;, port=6379)      # 连接redis
-rs.set(&#39;apple&#39;,1000)                               # # 首先在redis中设置某商品apple 对应数量value值为1000
-sale(rs)
-</code></pre>
-<h3 id="1-3-2-优化：给分布式锁加超时时间防止死锁"><a href="#1-3-2-优化：给分布式锁加超时时间防止死锁" class="headerlink" title="1.3.2 优化：给分布式锁加超时时间防止死锁"></a>1.3.2 优化：给分布式锁加超时时间防止死锁</h3><pre><code class="python">def acquire_expire_lock(rs, lock_name, expire_time=10, locked_time=10):
-    &#39;&#39;&#39;
+rs <span class="token operator">=</span> redis.Redis<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'127.0.0.1'</span>, <span class="token assign-left variable">port</span><span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>      <span class="token comment"># 连接redis</span>
+rs.set<span class="token punctuation">(</span><span class="token string">'apple'</span>,1000<span class="token punctuation">)</span>                               <span class="token comment"># # 首先在redis中设置某商品apple 对应数量value值为1000</span>
+sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span></code></pre>
+
+<h3 id="1-3-2-优化：给分布式锁加超时时间防止死锁"><a href="#1-3-2-优化：给分布式锁加超时时间防止死锁" class="headerlink" title="1.3.2 优化：给分布式锁加超时时间防止死锁"></a>1.3.2 优化：给分布式锁加超时时间防止死锁</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">acquire_expire_lock</span><span class="token punctuation">(</span>rs<span class="token punctuation">,</span> lock_name<span class="token punctuation">,</span> expire_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> locked_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
     rs: 连接对象
     lock_name: 锁标识
     acquire_time: 过期超时时间
     locked_time: 锁的有效时间
-    return -&gt; False 获锁失败 or True 获锁成功
-    &#39;&#39;&#39;
-    identifier = str(uuid.uuid4())
-    end = time.time() + expire_time
-    while time.time() &lt; end:
-        # 当获取锁的行为超过有效时间，则退出循环，本次取锁失败，返回False
-        if rs.setnx(lock_name, identifier): # 尝试取得锁
-            # print(&#39;锁已设置: %s&#39; % identifier)
-            rs.expire(lock_name, locked_time)
-            return identifier
-        time.sleep(.001)
-    return False
-</code></pre>
+    return -> False 获锁失败 or True 获锁成功
+    '''</span>
+    identifier <span class="token operator">=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>uuid<span class="token punctuation">.</span>uuid4<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    end <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> expire_time
+    <span class="token keyword">while</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> end<span class="token punctuation">:</span>
+        <span class="token comment"># 当获取锁的行为超过有效时间，则退出循环，本次取锁失败，返回False</span>
+        <span class="token keyword">if</span> rs<span class="token punctuation">.</span>setnx<span class="token punctuation">(</span>lock_name<span class="token punctuation">,</span> identifier<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 尝试取得锁</span>
+            <span class="token comment"># print('锁已设置: %s' % identifier)</span>
+            rs<span class="token punctuation">.</span>expire<span class="token punctuation">(</span>lock_name<span class="token punctuation">,</span> locked_time<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> identifier
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">.001</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>
@@ -279,11 +280,11 @@ sale(rs)
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/8d2805/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/8d2805/" title="发布于 2021-02-09 11:43">02.redis数据同步</a>
+                        <a href="../../pages/9dbe1a/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/9dbe1a/" title="发布于 2021-02-09 11:43">04.雪崩穿透击穿</a>
                         <br>
                     
                     
-                        <a href="../../pages/9dbe1a/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/9dbe1a/" title="发布于 2021-02-09 11:43">04.雪崩穿透击穿</a>
+                        <a href="../../pages/90d2c7/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/90d2c7/" title="发布于 2021-02-09 11:43">01.列表</a>
                     
                 </div>
             </div>

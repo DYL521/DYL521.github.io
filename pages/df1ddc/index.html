@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -80,183 +81,182 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-一对多创建表"><a href="#01-一对多创建表" class="headerlink" title="01.一对多创建表"></a>01.一对多创建表</h2><h3 id="1-1-创建一对多表"><a href="#1-1-创建一对多表" class="headerlink" title="1.1 创建一对多表"></a>1.1 创建一对多表</h3><pre><code class="python">from django.db import models
+                <h2 id="01-一对多创建表"><a href="#01-一对多创建表" class="headerlink" title="01.一对多创建表"></a>01.一对多创建表</h2><h3 id="1-1-创建一对多表"><a href="#1-1-创建一对多表" class="headerlink" title="1.1 创建一对多表"></a>1.1 创建一对多表</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
-class UserInfo(models.Model):
-    name = models.CharField(max_length=64,unique=True)
-    ut = models.ForeignKey(to=&#39;UserType&#39;, on_delete=models.CASCADE)
+<span class="token keyword">class</span> <span class="token class-name">UserInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>unique<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    ut <span class="token operator">=</span> models<span class="token punctuation">.</span>ForeignKey<span class="token punctuation">(</span>to<span class="token operator">=</span><span class="token string">'UserType'</span><span class="token punctuation">,</span> on_delete<span class="token operator">=</span>models<span class="token punctuation">.</span>CASCADE<span class="token punctuation">)</span>
 
-    class Meta:
-        db_table = &#39;tb_userinfo&#39;           # 指明数据库表名
-        verbose_name = &#39;用户信息&#39;        # 在admin站点中显示的名称
-        verbose_name_plural = verbose_name   # 显示的复数名称
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        db_table <span class="token operator">=</span> <span class="token string">'tb_userinfo'</span>           <span class="token comment"># 指明数据库表名</span>
+        verbose_name <span class="token operator">=</span> <span class="token string">'用户信息'</span>        <span class="token comment"># 在admin站点中显示的名称</span>
+        verbose_name_plural <span class="token operator">=</span> verbose_name   <span class="token comment"># 显示的复数名称</span>
 
-    def __str__(self):
-        &quot;&quot;&quot;定义每个数据对象的显示信息&quot;&quot;&quot;
-        return self.name
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""定义每个数据对象的显示信息"""</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>name
 
-class UserType(models.Model):
-    type_name = models.CharField(max_length=64,unique=True)
+<span class="token keyword">class</span> <span class="token class-name">UserType</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    type_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>unique<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
 
-    class Meta:
-        db_table = &#39;tb_usertype&#39;                # 指明数据库表名
-        verbose_name = &#39;用户类型&#39;             # 在admin站点中显示的名称
-        verbose_name_plural = verbose_name   # 显示的复数名称
-</code></pre>
-<h3 id="1-2-ForeignKey可选参数"><a href="#1-2-ForeignKey可选参数" class="headerlink" title="1.2 ForeignKey可选参数"></a>1.2 ForeignKey可选参数</h3><pre><code class="python">1、to,                                # 要进行关联的表名
-2、to_field=None,                        # 要关联的表中的字段名称
-3、on_delete=None,                        # 当删除关联表中的数据时，当前表与其关联的行的行为
-      - models.CASCADE             # ，删除关联数据，与之关联也删除
-      - models.DO_NOTHING           # ，删除关联数据，引发错误IntegrityError
-      - models.PROTECT             # ，删除关联数据，引发错误ProtectedError
-      - models.SET_NULL            # ，删除关联数据，与之关联的值设置为null（前提FK字段需要设置为可空）
-      - models.SET_DEFAULT          # ，删除关联数据，与之关联的值设置为默认值（前提FK字段需要设置默认值）
-      - models.SET               # ，删除关联数据，
-4、related_name=None,                     # 反向操作时，使用的字段名，用于代替 【表名_set】 如： obj.表名_set.all()
-                                    # 在做自关联时必须指定此字段，防止查找冲突
-5、delated_query_name=None,                  # 反向操作时，使用的连接前缀，用于替换【表名】
-                                                # 如：models.UserGroup.objects.filter(表名__字段名=1).values(&#39;表名__字段名&#39;)
-6、limit_choices_to=None,                   # 在Admin或ModelForm中显示关联数据时，提供的条件：
-            - limit_choices_to=&#123;&#39;nid__gt&#39;: 5&#125;
-            - limit_choices_to=lambda : &#123;&#39;nid__gt&#39;: 5&#125;
-7、db_constraint=True                      # 是否在数据库中创建外键约束
-8、parent_link=False                       # 在Admin中是否显示关联数据
-</code></pre>
-<h3 id="1-3-一对多基本查询"><a href="#1-3-一对多基本查询" class="headerlink" title="1.3 一对多基本查询"></a>1.3 一对多基本查询</h3><pre><code class="python">from django.shortcuts import render,HttpResponse
-from app01 import models
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        db_table <span class="token operator">=</span> <span class="token string">'tb_usertype'</span>                <span class="token comment"># 指明数据库表名</span>
+        verbose_name <span class="token operator">=</span> <span class="token string">'用户类型'</span>             <span class="token comment"># 在admin站点中显示的名称</span>
+        verbose_name_plural <span class="token operator">=</span> verbose_name   <span class="token comment"># 显示的复数名称</span></code></pre>
 
-def orm(request):
-    # 1 创建
-    # 创建数据方法一
-    models.UserInfo.objects.create(name=&#39;root&#39;, ut_id=2)
-    # 创建数据方法二
-    obj = models.UserInfo(name=&#39;root&#39;, ut_id=2)
-    obj.save()
-    # 创建数据库方法三(传入字典必须在字典前加两个星号)
-    dic = &#123;&#39;name&#39;: &#39;root&#39;, &#39;ut_id&#39;: 2&#125;
-    models.UserInfo.objects.create(**dic)
+<h3 id="1-2-ForeignKey可选参数"><a href="#1-2-ForeignKey可选参数" class="headerlink" title="1.2 ForeignKey可选参数"></a>1.2 ForeignKey可选参数</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、to<span class="token punctuation">,</span>                                <span class="token comment"># 要进行关联的表名</span>
+<span class="token number">2</span>、to_field<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                        <span class="token comment"># 要关联的表中的字段名称</span>
+<span class="token number">3</span>、on_delete<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                        <span class="token comment"># 当删除关联表中的数据时，当前表与其关联的行的行为</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>CASCADE             <span class="token comment"># ，删除关联数据，与之关联也删除</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>DO_NOTHING           <span class="token comment"># ，删除关联数据，引发错误IntegrityError</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>PROTECT             <span class="token comment"># ，删除关联数据，引发错误ProtectedError</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>SET_NULL            <span class="token comment"># ，删除关联数据，与之关联的值设置为null（前提FK字段需要设置为可空）</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>SET_DEFAULT          <span class="token comment"># ，删除关联数据，与之关联的值设置为默认值（前提FK字段需要设置默认值）</span>
+      <span class="token operator">-</span> models<span class="token punctuation">.</span>SET               <span class="token comment"># ，删除关联数据，</span>
+<span class="token number">4</span>、related_name<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                     <span class="token comment"># 反向操作时，使用的字段名，用于代替 【表名_set】 如： obj.表名_set.all()</span>
+                                    <span class="token comment"># 在做自关联时必须指定此字段，防止查找冲突</span>
+<span class="token number">5</span>、delated_query_name<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                  <span class="token comment"># 反向操作时，使用的连接前缀，用于替换【表名】</span>
+                                                <span class="token comment"># 如：models.UserGroup.objects.filter(表名__字段名=1).values('表名__字段名')</span>
+<span class="token number">6</span>、limit_choices_to<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                   <span class="token comment"># 在Admin或ModelForm中显示关联数据时，提供的条件：</span>
+            <span class="token operator">-</span> limit_choices_to<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'nid__gt'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">&#125;</span>
+            <span class="token operator">-</span> limit_choices_to<span class="token operator">=</span><span class="token keyword">lambda</span> <span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">'nid__gt'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">&#125;</span>
+<span class="token number">7</span>、db_constraint<span class="token operator">=</span><span class="token boolean">True</span>                      <span class="token comment"># 是否在数据库中创建外键约束</span>
+<span class="token number">8</span>、parent_link<span class="token operator">=</span><span class="token boolean">False</span>                       <span class="token comment"># 在Admin中是否显示关联数据</span></code></pre>
 
-    # 2 删除
-    # models.UserInfo.objects.all().delete()  # 删除所有
-    models.UserInfo.objects.filter(name=&#39;root&#39;).delete()  # 删除指定
+<h3 id="1-3-一对多基本查询"><a href="#1-3-一对多基本查询" class="headerlink" title="1.3 一对多基本查询"></a>1.3 一对多基本查询</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
-    # 3 更新
-    # models.UserInfo.objects.all().update(ut_id=1)
-    # models.UserInfo.objects.filter(name=&#39;zhangsan&#39;).update(ut_id=4)
+<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 1 创建</span>
+    <span class="token comment"># 创建数据方法一</span>
+    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>create<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">,</span> ut_id<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token comment"># 创建数据方法二</span>
+    obj <span class="token operator">=</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">,</span> ut_id<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+    obj<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># 创建数据库方法三(传入字典必须在字典前加两个星号)</span>
+    dic <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span> <span class="token string">'ut_id'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">&#125;</span>
+    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>create<span class="token punctuation">(</span><span class="token operator">**</span>dic<span class="token punctuation">)</span>
 
-    # 4.1 正向查找 user_obj.ut.type_name
-    print( models.UserInfo.objects.get(name=&#39;zhangsan&#39;).ut.type_name )
-    print( models.UserInfo.objects.filter(ut__type_name=&#39;student&#39;) )
+    <span class="token comment"># 2 删除</span>
+    <span class="token comment"># models.UserInfo.objects.all().delete()  # 删除所有</span>
+    models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>delete<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 删除指定</span>
 
-    # 4.2 反向查找 type_obj.userinfo_set.all()
-    print( models.UserType.objects.get(type_name=&#39;student&#39;).userinfo_set.all() )
-    print( models.UserType.objects.get(type_name=&#39;student&#39;).userinfo_set.filter(name=&#39;zhangsan&#39;) )
+    <span class="token comment"># 3 更新</span>
+    <span class="token comment"># models.UserInfo.objects.all().update(ut_id=1)</span>
+    <span class="token comment"># models.UserInfo.objects.filter(name='zhangsan').update(ut_id=4)</span>
 
-    return HttpResponse(&#39;orm&#39;)
-</code></pre>
-<h2 id="02-正向反向查"><a href="#02-正向反向查" class="headerlink" title="02.正向反向查"></a>02.正向反向查</h2><h3 id="2-1-related-query-name设置"><a href="#2-1-related-query-name设置" class="headerlink" title="2.1 related_query_name设置"></a>2.1 related_query_name设置</h3><pre><code class="python">from django.db import models
+    <span class="token comment"># 4.1 正向查找 user_obj.ut.type_name</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ut<span class="token punctuation">.</span>type_name <span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ut__type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
-class UserType(models.Model):
-    user_type_name = models.CharField(max_length=32)
-    def __str__(self):
-        return self.user_type_name            #只有加上这个，Django admin才会显示表名
+    <span class="token comment"># 4.2 反向查找 type_obj.userinfo_set.all()</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>userinfo_set<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>userinfo_set<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
-class User(models.Model):
-    username = models.CharField(max_length=32)
-    pwd = models.CharField(max_length=64)
-    ut = models.ForeignKey(
-        to=&#39;UserType&#39;,
-        to_field=&#39;id&#39;,
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
 
-        # 1、反向操作时，使用的连接前缀，用于替换【表名】
-        # 如： models.UserGroup.objects.filter(a__字段名=1).values(&#39;a__字段名&#39;)
-        related_query_name=&#39;a&#39;,
+<h2 id="02-正向反向查"><a href="#02-正向反向查" class="headerlink" title="02.正向反向查"></a>02.正向反向查</h2><h3 id="2-1-related-query-name设置"><a href="#2-1-related-query-name设置" class="headerlink" title="2.1 related_query_name设置"></a>2.1 related_query_name设置</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
-        #2、反向操作时，使用的字段名，用于代替 【表名_set】 如： obj.b_set.all()
-        # 使用时查找报错
-        # related_name=&#39;b&#39;,
-    )
-</code></pre>
-<h3 id="2-2-正向方向查"><a href="#2-2-正向方向查" class="headerlink" title="2.2 正向方向查"></a>2.2 正向方向查</h3><pre><code class="python">from django.shortcuts import HttpResponse
-from app01 import models
+<span class="token keyword">class</span> <span class="token class-name">UserType</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    user_type_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>user_type_name            <span class="token comment">#只有加上这个，Django admin才会显示表名</span>
 
-def orm(request):
-    # 1 正向查找
-    #1.1 正向查找user表用户名
-    print(models.User.objects.get(username=&#39;zhangsan&#39;).username)           # zhangsan
+<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    username <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+    pwd <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">)</span>
+    ut <span class="token operator">=</span> models<span class="token punctuation">.</span>ForeignKey<span class="token punctuation">(</span>
+        to<span class="token operator">=</span><span class="token string">'UserType'</span><span class="token punctuation">,</span>
+        to_field<span class="token operator">=</span><span class="token string">'id'</span><span class="token punctuation">,</span>
 
-    #1.2 正向跨表查找用户类型
-    print(models.User.objects.get(username=&#39;zhangsan&#39;).ut.user_type_name)  # student
+        <span class="token comment"># 1、反向操作时，使用的连接前缀，用于替换【表名】</span>
+        <span class="token comment"># 如： models.UserGroup.objects.filter(a__字段名=1).values('a__字段名')</span>
+        related_query_name<span class="token operator">=</span><span class="token string">'a'</span><span class="token punctuation">,</span>
 
-    #1.3 双下划线正向跨表正向查找
-    print( models.User.objects.all().values(&#39;ut__user_type_name&#39;,&#39;username&#39;) )
+        <span class="token comment">#2、反向操作时，使用的字段名，用于代替 【表名_set】 如： obj.b_set.all()</span>
+        <span class="token comment"># 使用时查找报错</span>
+        <span class="token comment"># related_name='b',</span>
+    <span class="token punctuation">)</span></code></pre>
 
+<h3 id="2-2-正向方向查"><a href="#2-2-正向方向查" class="headerlink" title="2.2 正向方向查"></a>2.2 正向方向查</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
-    # 2 反向查找
-    # 2.1：【表名_set】，反向查找user表中用户类型为student 的所有用户
-    print( models.UserType.objects.get(user_type_name=&#39;student&#39;).user_set.all() )           # [&lt;User: lisi&gt;, &lt;User: wangwu&gt;]
+<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 1 正向查找</span>
+    <span class="token comment">#1.1 正向查找user表用户名</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>User<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>username<span class="token punctuation">)</span>           <span class="token comment"># zhangsan</span>
 
-    # 2.2：【a__字段名】反向查找user表中张三在UserType表中的类型：（[&lt;UserType: teacher&gt;]）
-    print( models.UserType.objects.filter(a__username=&#39;zhangsan&#39;) )                         # student
-    # 这里的a是user表的ForeignKey字段的参数：related_query_name=&#39;a&#39;
+    <span class="token comment">#1.2 正向跨表查找用户类型</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>User<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ut<span class="token punctuation">.</span>user_type_name<span class="token punctuation">)</span>  <span class="token comment"># student</span>
 
-    # 2.3: 双下划线跨表反向查找
-    print( models.UserType.objects.all().values(&#39;a__username&#39;, &#39;user_type_name&#39;) )
+    <span class="token comment">#1.3 双下划线正向跨表正向查找</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>User<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'ut__user_type_name'</span><span class="token punctuation">,</span><span class="token string">'username'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
 
-    # 3 自动创建User表和UserType表中的数据
-    &#39;&#39;&#39;
-    username = [&#123;&#39;username&#39;:&#39;zhangsan&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,
-                &#123;&#39;username&#39;:&#39;lisi&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,
-                &#123;&#39;username&#39;:&#39;wangwu&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,]
+    <span class="token comment"># 2 反向查找</span>
+    <span class="token comment"># 2.1：【表名_set】，反向查找user表中用户类型为student 的所有用户</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>user_type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>user_set<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>           <span class="token comment"># [&lt;User: lisi>, &lt;User: wangwu>]</span>
 
-    user_type = [&#123;&#39;user_type_name&#39;:&#39;student&#39;&#125;,&#123;&#39;user_type_name&#39;:&#39;teacher&#39;&#125;,]
+    <span class="token comment"># 2.2：【a__字段名】反向查找user表中张三在UserType表中的类型：（[&lt;UserType: teacher>]）</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>a__username<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>                         <span class="token comment"># student</span>
+    <span class="token comment"># 这里的a是user表的ForeignKey字段的参数：related_query_name='a'</span>
 
-    for type_dic in user_type:
-        models.UserType.objects.create(**type_dic)
-
-    for user_dic in username:
-        models.User.objects.create(**user_dic)
-    &#39;&#39;&#39;
-    return HttpResponse(&#39;orm&#39;)
-</code></pre>
-<h2 id="03-values和values-list"><a href="#03-values和values-list" class="headerlink" title="03.values和values_list"></a>03.values和values_list</h2><pre><code class="python">from django.shortcuts import HttpResponse
-from app01 import models
-
-def orm(request):
-    # 第一种：values-----获取的内部是字典  拿固定列数
-    # 1.1 正向查找： 使用ForeignKey字段名ut结合双下划线查询
-    models.User.objects.filter(username=&#39;zhangsan&#39;).values(&#39;username&#39;, &#39;ut__user_type_name&#39;)
-
-    # 1.2 向查找： 使用ForeignKey的related_query_name=&#39;a&#39;,的字段
-    models.UserType.objects.all().values(&#39;user_type_name&#39;, &#39;a__username&#39;)
+    <span class="token comment"># 2.3: 双下划线跨表反向查找</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'a__username'</span><span class="token punctuation">,</span> <span class="token string">'user_type_name'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
 
-    # 第二种：values_list-----获取的是元组  拿固定列数
-    # 1.1 正向查找： 使用ForeignKey字段名ut结合双下划线查询
-    stus = models.User.objects.filter(username=&#39;zhangsan&#39;).values_list(&#39;username&#39;, &#39;ut__user_type_name&#39;)
+    <span class="token comment"># 3 自动创建User表和UserType表中的数据</span>
+    <span class="token triple-quoted-string string">'''
+    username = [&#123;'username':'zhangsan','pwd':'123','ut_id':'1'&#125;,
+                &#123;'username':'lisi','pwd':'123','ut_id':'1'&#125;,
+                &#123;'username':'wangwu','pwd':'123','ut_id':'1'&#125;,]
 
-    # 1.2 反向查找： 使用ForeignKey的related_query_name=&#39;a&#39;,的字段
-    utype = models.UserType.objects.all().values_list(&#39;user_type_name&#39;, &#39;a__username&#39;)
-
-
-    # 3 自动创建User表和UserType表中的数据
-    &#39;&#39;&#39;
-    username = [&#123;&#39;username&#39;:&#39;zhangsan&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,
-                &#123;&#39;username&#39;:&#39;lisi&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,
-                &#123;&#39;username&#39;:&#39;wangwu&#39;,&#39;pwd&#39;:&#39;123&#39;,&#39;ut_id&#39;:&#39;1&#39;&#125;,]
-
-    user_type = [&#123;&#39;user_type_name&#39;:&#39;student&#39;&#125;,&#123;&#39;user_type_name&#39;:&#39;teacher&#39;&#125;,]
+    user_type = [&#123;'user_type_name':'student'&#125;,&#123;'user_type_name':'teacher'&#125;,]
 
     for type_dic in user_type:
         models.UserType.objects.create(**type_dic)
 
     for user_dic in username:
         models.User.objects.create(**user_dic)
-    &#39;&#39;&#39;
+    '''</span>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
 
-    return HttpResponse(&#39;orm&#39;)
-</code></pre>
+<h2 id="03-values和values-list"><a href="#03-values和values-list" class="headerlink" title="03.values和values_list"></a>03.values和values_list</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
+
+<span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 第一种：values-----获取的内部是字典  拿固定列数</span>
+    <span class="token comment"># 1.1 正向查找： 使用ForeignKey字段名ut结合双下划线查询</span>
+    models<span class="token punctuation">.</span>User<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span> <span class="token string">'ut__user_type_name'</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 1.2 向查找： 使用ForeignKey的related_query_name='a',的字段</span>
+    models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'user_type_name'</span><span class="token punctuation">,</span> <span class="token string">'a__username'</span><span class="token punctuation">)</span>
+
+
+    <span class="token comment"># 第二种：values_list-----获取的是元组  拿固定列数</span>
+    <span class="token comment"># 1.1 正向查找： 使用ForeignKey字段名ut结合双下划线查询</span>
+    stus <span class="token operator">=</span> models<span class="token punctuation">.</span>User<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>username<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values_list<span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span> <span class="token string">'ut__user_type_name'</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 1.2 反向查找： 使用ForeignKey的related_query_name='a',的字段</span>
+    utype <span class="token operator">=</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values_list<span class="token punctuation">(</span><span class="token string">'user_type_name'</span><span class="token punctuation">,</span> <span class="token string">'a__username'</span><span class="token punctuation">)</span>
+
+
+    <span class="token comment"># 3 自动创建User表和UserType表中的数据</span>
+    <span class="token triple-quoted-string string">'''
+    username = [&#123;'username':'zhangsan','pwd':'123','ut_id':'1'&#125;,
+                &#123;'username':'lisi','pwd':'123','ut_id':'1'&#125;,
+                &#123;'username':'wangwu','pwd':'123','ut_id':'1'&#125;,]
+
+    user_type = [&#123;'user_type_name':'student'&#125;,&#123;'user_type_name':'teacher'&#125;,]
+
+    for type_dic in user_type:
+        models.UserType.objects.create(**type_dic)
+
+    for user_dic in username:
+        models.User.objects.create(**user_dic)
+    '''</span>
+
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>

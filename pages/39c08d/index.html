@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -93,24 +94,20 @@ sourceList[3][0]=100
 print(sourceList)           # [1, 2, 3, [100, 5, 6]]
 print(copyList)             # [1, 2, 3, [100, 5, 6]]
 print(deepcopyList)         # [1, 2, 3, [4, 5, 6]]
-</code></pre>
-</li>
-</ul>
-<p><img src="./assets/image-20200311090206377.png" alt="image-20200311090206377.png"></p>
-<h2 id="02-变量及其存储"><a href="#02-变量及其存储" class="headerlink" title="02.变量及其存储"></a>02.变量及其存储</h2><ul>
-<li><ol>
-<li>python的一切变量都是对象，变量的存储，采用了引用语义的方式，存储的只是一个变量的值所在的内存地址，而不是这个变量的只本身</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>不管多么复杂的数据结构，浅拷贝都只会copy一层。</li>
-</ol>
-</li>
-<li><p><strong>理解</strong>：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。</p>
-</li>
-</ul>
-<pre><code class="python">&gt;&gt;&gt; str1 = &#39;hello&#39;
-&gt;&gt;&gt; str2 = str1
+<pre class="language-none"><code class="language-none">
+![image-20200311090206377.png](.&#x2F;assets&#x2F;image-20200311090206377.png)
+
+## 02.变量及其存储
+
+- 1. python的一切变量都是对象，变量的存储，采用了引用语义的方式，存储的只是一个变量的值所在的内存地址，而不是这个变量的只本身
+
+- 2. 不管多么复杂的数据结构，浅拷贝都只会copy一层。
+
+- **理解**：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。
+
+&#96;&#96;&#96;python
+&gt;&gt;&gt; str1 &#x3D; &#39;hello&#39;
+&gt;&gt;&gt; str2 &#x3D; str1
 
 #1、让str1和str2变量都存储了‘hello’所在的内存地址
 &gt;&gt;&gt; id(str1)
@@ -120,23 +117,25 @@ print(deepcopyList)         # [1, 2, 3, [4, 5, 6]]
 &gt;&gt;&gt;
 
 #2、当str1的值变成‘new hello’后str1的值被重新赋值成&#39;new hello&#39;的内存地址，而str2的值依旧是‘hello’的内存地址
-&gt;&gt;&gt; str1 = &#39;new hello&#39;
+&gt;&gt;&gt; str1 &#x3D; &#39;new hello&#39;
 &gt;&gt;&gt; id(str1)
 22748320
 &gt;&gt;&gt; id(str2)
 22748280
 
 #3、不管多么复杂的数据结构，浅拷贝都只会copy一层。
-&gt;&gt;&gt; sourceList = [1,2,[3,4]]
-&gt;&gt;&gt; newList = sourceList
+&gt;&gt;&gt; sourceList &#x3D; [1,2,[3,4]]
+&gt;&gt;&gt; newList &#x3D; sourceList
 
-&gt;&gt;&gt; l[2][0]=100
+&gt;&gt;&gt; l[2][0]&#x3D;100
 
 &gt;&gt;&gt; sourceList
 [1, 2, [100, 4]]
 &gt;&gt;&gt; newList
-[1, 2, [100, 4]]
+[1, 2, [100, 4]]</code></pre>
 </code></pre>
+</li>
+</ul>
 <h2 id="03-is和-区别"><a href="#03-is和-区别" class="headerlink" title="03.is和&#x3D;&#x3D;区别"></a>03.is和&#x3D;&#x3D;区别</h2><ul>
 <li>is不仅数据一样内存地址也一样</li>
 <li>&#x3D;&#x3D; 只判断数据和数据类型一样即可</li>

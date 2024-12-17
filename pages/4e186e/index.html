@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -81,17 +82,17 @@
 <li>但是遇到一个视图对应的路径提供了多种不同HTTP请求方式的支持时</li>
 <li>便需要在一个函数中编写不同的业务逻辑，代码可读性与复用性都不佳。</li>
 </ul>
-<pre><code class="python"> def register(request):
-    &quot;&quot;&quot;处理注册&quot;&quot;&quot;
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">register</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token triple-quoted-string string">"""处理注册"""</span>
 
-    # 获取请求方法，判断是GET/POST请求
-    if request.method == &#39;GET&#39;:
-        # 处理GET请求，返回注册页面
-        return render(request, &#39;register.html&#39;)
-    else:
-        # 处理POST请求，实现注册逻辑
-        return HttpResponse(&#39;这里实现注册逻辑&#39;)
-</code></pre>
+   <span class="token comment"># 获取请求方法，判断是GET/POST请求</span>
+   <span class="token keyword">if</span> request<span class="token punctuation">.</span>method <span class="token operator">==</span> <span class="token string">'GET'</span><span class="token punctuation">:</span>
+       <span class="token comment"># 处理GET请求，返回注册页面</span>
+       <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token string">'register.html'</span><span class="token punctuation">)</span>
+   <span class="token keyword">else</span><span class="token punctuation">:</span>
+       <span class="token comment"># 处理POST请求，实现注册逻辑</span>
+       <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'这里实现注册逻辑'</span><span class="token punctuation">)</span></code></pre>
+
 <h3 id="1-2-类视图引入"><a href="#1-2-类视图引入" class="headerlink" title="1.2 类视图引入"></a>1.2 类视图引入</h3><ul>
 <li><p>在Django中也可以使用类来定义一个视图，称为<strong>类视图</strong>。</p>
 </li>
@@ -110,19 +111,19 @@
 </ul>
 </li>
 </ul>
-<pre><code class="python">from django.views import View
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
 
-class RegisterView(View):
-    &quot;&quot;&quot;类视图：处理注册&quot;&quot;&quot;
+<span class="token keyword">class</span> <span class="token class-name">RegisterView</span><span class="token punctuation">(</span>View<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""类视图：处理注册"""</span>
 
-    def get(self, request):
-        &quot;&quot;&quot;处理GET请求，返回注册页面&quot;&quot;&quot;
-        return JsonResponse(&#123;&quot;name&quot;:&quot;zhangsan&quot;&#125;)
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""处理GET请求，返回注册页面"""</span>
+        <span class="token keyword">return</span> JsonResponse<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"zhangsan"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 
-    def post(self, request):
-        &quot;&quot;&quot;处理POST请求，实现注册逻辑&quot;&quot;&quot;
-        return JsonResponse(&#123;&quot;name&quot;:&quot;zhangsan&quot;&#125;)
-</code></pre>
+    <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""处理POST请求，实现注册逻辑"""</span>
+        <span class="token keyword">return</span> JsonResponse<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"zhangsan"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
+
 <h2 id="02-类视图添加装饰器"><a href="#02-类视图添加装饰器" class="headerlink" title="02.类视图添加装饰器"></a>02.类视图添加装饰器</h2><ul>
 <li><p>1、 dispatch是父类中用来反射的函数，找对应的函数（比对应函数先执行）</p>
 </li>
@@ -131,20 +132,20 @@ class RegisterView(View):
 <li><p><code>添加路由</code></p>
 </li>
 </ul>
-<pre><code class="python">from django.urls import path, re_path
-from app01 import views
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
+<span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
 
-urlpatterns = [
-    re_path(&#39;home/&#39;, views.Home.as_view()),
-]
-</code></pre>
-<h3 id="2-1-定义一个装饰器"><a href="#2-1-定义一个装饰器" class="headerlink" title="2.1 定义一个装饰器"></a>2.1 定义一个装饰器</h3><pre><code class="python">def my_decorator(func):
-    def wrapper(request, *args, **kwargs):
-        print(&#39;自定义装饰器被调用了&#39;)
-        print(&#39;请求路径%s&#39; % request.path)
-        return func(request, *args, **kwargs)
-    return wrapper
-</code></pre>
+urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
+    re_path<span class="token punctuation">(</span><span class="token string">'home/'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>Home<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span></code></pre>
+
+<h3 id="2-1-定义一个装饰器"><a href="#2-1-定义一个装饰器" class="headerlink" title="2.1 定义一个装饰器"></a>2.1 定义一个装饰器</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'自定义装饰器被调用了'</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'请求路径%s'</span> <span class="token operator">%</span> request<span class="token punctuation">.</span>path<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> func<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> wrapper</code></pre>
+
 <h3 id="2-2-为特定请求方法添加装饰器"><a href="#2-2-为特定请求方法添加装饰器" class="headerlink" title="2.2 为特定请求方法添加装饰器"></a>2.2 为特定请求方法添加装饰器</h3><ul>
 <li><p>在类视图中使用为函数视图准备的装饰器时，不能直接添加装饰器</p>
 </li>
@@ -153,53 +154,53 @@ urlpatterns = [
 <li><p><strong>method_decorator装饰器使用name参数指明被装饰的方法</strong></p>
 </li>
 </ul>
-<pre><code class="python">from django.shortcuts import HttpResponse
-from django.views import View
-from django.utils.decorators import method_decorator
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> method_decorator
 
-# 为全部请求方法添加装饰器
-@method_decorator(my_decorator, name=&#39;dispatch&#39;)
-class DemoView(View):
-    def get(self, request):
-        print(&#39;get方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
+<span class="token comment"># 为全部请求方法添加装饰器</span>
+<span class="token decorator annotation punctuation">@method_decorator</span><span class="token punctuation">(</span>my_decorator<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'dispatch'</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">DemoView</span><span class="token punctuation">(</span>View<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'get方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
 
-    def post(self, request):
-        print(&#39;post方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
+    <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'post方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
 
-# 只给get请求添加装饰器
-@method_decorator(my_decorator, name=&#39;get&#39;)
-class DemoView(View):
-    def get(self, request):
-        print(&#39;get方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
+<span class="token comment"># 只给get请求添加装饰器</span>
+<span class="token decorator annotation punctuation">@method_decorator</span><span class="token punctuation">(</span>my_decorator<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">DemoView</span><span class="token punctuation">(</span>View<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'get方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
 
-    def post(self, request):
-        print(&#39;post方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
-</code></pre>
-<h3 id="2-3-为特定请求方法添加装饰器"><a href="#2-3-为特定请求方法添加装饰器" class="headerlink" title="2.3 为特定请求方法添加装饰器"></a>2.3 为特定请求方法添加装饰器</h3><pre><code class="python">from django.shortcuts import HttpResponse
-from django.views import View
-from django.utils.decorators import method_decorator
+    <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'post方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
 
-# 为特定请求方法添加装饰器
-class DemoView(View):
+<h3 id="2-3-为特定请求方法添加装饰器"><a href="#2-3-为特定请求方法添加装饰器" class="headerlink" title="2.3 为特定请求方法添加装饰器"></a>2.3 为特定请求方法添加装饰器</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
+<span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> method_decorator
 
-    @method_decorator(my_decorator)  # 为get方法添加了装饰器
-    def get(self, request):
-        print(&#39;get方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
+<span class="token comment"># 为特定请求方法添加装饰器</span>
+<span class="token keyword">class</span> <span class="token class-name">DemoView</span><span class="token punctuation">(</span>View<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    @method_decorator(my_decorator)  # 为post方法添加了装饰器
-    def post(self, request):
-        print(&#39;post方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
+    <span class="token decorator annotation punctuation">@method_decorator</span><span class="token punctuation">(</span>my_decorator<span class="token punctuation">)</span>  <span class="token comment"># 为get方法添加了装饰器</span>
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'get方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
 
-    def put(self, request):  # 没有为put方法添加装饰器
-        print(&#39;put方法&#39;)
-        return HttpResponse(&#39;ok&#39;)
-</code></pre>
+    <span class="token decorator annotation punctuation">@method_decorator</span><span class="token punctuation">(</span>my_decorator<span class="token punctuation">)</span>  <span class="token comment"># 为post方法添加了装饰器</span>
+    <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'post方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">put</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 没有为put方法添加装饰器</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'put方法'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
+
 <h2 id="03-类视图Mixin扩展类"><a href="#03-类视图Mixin扩展类" class="headerlink" title="03.类视图Mixin扩展类"></a>03.类视图Mixin扩展类</h2><ul>
 <li><p>使用面向对象多继承的特性，可以通过定义父类（作为扩展类）</p>
 </li>
@@ -208,32 +209,32 @@ class DemoView(View):
 <li><p>定义的扩展父类名称通常以Mixin结尾。</p>
 </li>
 </ul>
-<pre><code class="python">class ListModelMixin(object):
-    &quot;&quot;&quot;
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">ListModelMixin</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
     list扩展类
-    &quot;&quot;&quot;
-    def list(self, request, *args, **kwargs):
-        ...
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">list</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 
-class CreateModelMixin(object):
-    &quot;&quot;&quot;
+<span class="token keyword">class</span> <span class="token class-name">CreateModelMixin</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
     create扩展类
-    &quot;&quot;&quot;
-    def create(self, request, *args, **kwargs):
-        ...
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">create</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 
-class BooksView(CreateModelMixin, ListModelMixin, View):
-    &quot;&quot;&quot;
+<span class="token keyword">class</span> <span class="token class-name">BooksView</span><span class="token punctuation">(</span>CreateModelMixin<span class="token punctuation">,</span> ListModelMixin<span class="token punctuation">,</span> View<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
     同时继承两个扩展类，复用list和create方法
-    &quot;&quot;&quot;
-    def get(self, request):
-        self.list(request)
-        ...
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span><span class="token builtin">list</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 
-    def post(self, request):
-        self.create(request)
-        ...
-</code></pre>
+    <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>create<span class="token punctuation">(</span>request<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>

@@ -29,7 +29,8 @@
     <link type="text/css" rel="stylesheet" href="/css/code.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -76,126 +77,126 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-os模块常用方法"><a href="#01-os模块常用方法" class="headerlink" title="01.os模块常用方法"></a>01.os模块常用方法</h2><pre><code class="python">import os
-#1 当前工作目录，即当前python脚本工作的目录路径
-print(os.getcwd())    # C:\Users\admin\PycharmProjects\s14\Day5\test4
+                <h2 id="01-os模块常用方法"><a href="#01-os模块常用方法" class="headerlink" title="01.os模块常用方法"></a>01.os模块常用方法</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token comment">#1 当前工作目录，即当前python脚本工作的目录路径</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># C:\Users\admin\PycharmProjects\s14\Day5\test4</span>
 
-#2 当前脚本工作目录；相当于shell下cd
-os.chdir(&quot;C:\\Users\\admin\\PycharmProjects\\s14&quot;)
-os.chdir(r&quot;C:\Users\admin\PycharmProjects\s14&quot;)
-print(os.getcwd())    # C:\Users\admin\PycharmProjects\s14
+<span class="token comment">#2 当前脚本工作目录；相当于shell下cd</span>
+os<span class="token punctuation">.</span>chdir<span class="token punctuation">(</span><span class="token string">"C:\\Users\\admin\\PycharmProjects\\s14"</span><span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>chdir<span class="token punctuation">(</span><span class="token string">r"C:\Users\admin\PycharmProjects\s14"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># C:\Users\admin\PycharmProjects\s14</span>
 
-#3 返回当前目录: (&#39;.&#39;)
-print(os.curdir)        # (&#39;.&#39;)
+<span class="token comment">#3 返回当前目录: ('.')</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>curdir<span class="token punctuation">)</span>        <span class="token comment"># ('.')</span>
 
-#4 获取当前目录的父目录字符串名：(&#39;..&#39;)
-print(os.pardir)        # (&#39;..&#39;)
+<span class="token comment">#4 获取当前目录的父目录字符串名：('..')</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>pardir<span class="token punctuation">)</span>        <span class="token comment"># ('..')</span>
 
-#5 可生成多层递归目录
-os.makedirs(r&#39;C:\aaa\bbb&#39;)         # 可以发现在C盘创建了文件夹/aaa/bbb
+<span class="token comment">#5 可生成多层递归目录</span>
+os<span class="token punctuation">.</span>makedirs<span class="token punctuation">(</span><span class="token string">r'C:\aaa\bbb'</span><span class="token punctuation">)</span>         <span class="token comment"># 可以发现在C盘创建了文件夹/aaa/bbb</span>
 
-#6 若目录为空，则删除，并递归到上一级目录，如若也为空，则删除，依此类推
-os.removedirs(r&#39;C:\aaa\bbb&#39;)    # 删除所有空目录
+<span class="token comment">#6 若目录为空，则删除，并递归到上一级目录，如若也为空，则删除，依此类推</span>
+os<span class="token punctuation">.</span>removedirs<span class="token punctuation">(</span><span class="token string">r'C:\aaa\bbb'</span><span class="token punctuation">)</span>    <span class="token comment"># 删除所有空目录</span>
 
-#7 生成单级目录；相当于shell中mkdir dirname
-os.mkdir(r&#39;C:\bbb&#39;)        # 仅能创建单个目录
+<span class="token comment">#7 生成单级目录；相当于shell中mkdir dirname</span>
+os<span class="token punctuation">.</span>mkdir<span class="token punctuation">(</span><span class="token string">r'C:\bbb'</span><span class="token punctuation">)</span>        <span class="token comment"># 仅能创建单个目录</span>
 
-#8 删除单级空目录，若目录不为空则无法删除，报错；相当于shell中rmdir dirname
-os.rmdir(r&#39;C:\aaa&#39;)        # 仅删除指定的一个空目录
+<span class="token comment">#8 删除单级空目录，若目录不为空则无法删除，报错；相当于shell中rmdir dirname</span>
+os<span class="token punctuation">.</span>rmdir<span class="token punctuation">(</span><span class="token string">r'C:\aaa'</span><span class="token punctuation">)</span>        <span class="token comment"># 仅删除指定的一个空目录</span>
 
-#9 列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印
-print(os.listdir(r&quot;C:\Users\admin\PycharmProjects\s14&quot;))
+<span class="token comment">#9 列出指定目录下的所有文件和子目录，包括隐藏文件，并以列表方式打印</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>listdir<span class="token punctuation">(</span><span class="token string">r"C:\Users\admin\PycharmProjects\s14"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-#10 删除一个文件
-os.remove(r&#39;C:\bbb\test.txt&#39;)        # 指定删除test.txt文件
+<span class="token comment">#10 删除一个文件</span>
+os<span class="token punctuation">.</span>remove<span class="token punctuation">(</span><span class="token string">r'C:\bbb\test.txt'</span><span class="token punctuation">)</span>        <span class="token comment"># 指定删除test.txt文件</span>
 
-#11 重命名文件/目录
-os.rename(r&#39;C:\bbb\test.txt&#39;,r&#39;C:\bbb\test00.bak&#39;)
+<span class="token comment">#11 重命名文件/目录</span>
+os<span class="token punctuation">.</span>rename<span class="token punctuation">(</span><span class="token string">r'C:\bbb\test.txt'</span><span class="token punctuation">,</span><span class="token string">r'C:\bbb\test00.bak'</span><span class="token punctuation">)</span>
 
-#12 获取文件/目录信息
-print(os.stat(r&#39;C:\bbb\test.txt&#39;))
+<span class="token comment">#12 获取文件/目录信息</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>stat<span class="token punctuation">(</span><span class="token string">r'C:\bbb\test.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-#13 输出操作系统特定的路径分隔符，win下为&quot;\\&quot;,Linux下为&quot;/&quot;
-print(os.sep)                # \
+<span class="token comment">#13 输出操作系统特定的路径分隔符，win下为"\\",Linux下为"/"</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>sep<span class="token punctuation">)</span>                <span class="token comment"># \</span>
 
-#14 输出当前平台使用的行终止符，win下为&quot;\r\n&quot;,Linux下为&quot;\n&quot;
-print(os.linesep)
+<span class="token comment">#14 输出当前平台使用的行终止符，win下为"\r\n",Linux下为"\n"</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>linesep<span class="token punctuation">)</span>
 
-#15 输出用于分割文件路径的字符串
-print(os.pathsep)                # ;  （分号）
+<span class="token comment">#15 输出用于分割文件路径的字符串</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>pathsep<span class="token punctuation">)</span>                <span class="token comment"># ;  （分号）</span>
 
-#16 输出字符串指示当前使用平台。win-&gt;&#39;nt&#39;; Linux-&gt;&#39;posix&#39;
-print(os.name)                # nt
+<span class="token comment">#16 输出字符串指示当前使用平台。win->'nt'; Linux->'posix'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>name<span class="token punctuation">)</span>                <span class="token comment"># nt</span>
 
-#17 运行shell命令，直接显示
-os.system(&quot;bash command&quot;)
+<span class="token comment">#17 运行shell命令，直接显示</span>
+os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">"bash command"</span><span class="token punctuation">)</span>
 
-#18 获取系统环境变量
-print(os.environ)                # environ(&#123;&#39;OS&#39;: &#39;Windows_NT&#39;, &#39;PUBLIC&#39;: ………….
+<span class="token comment">#18 获取系统环境变量</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">)</span>                <span class="token comment"># environ(&#123;'OS': 'Windows_NT', 'PUBLIC': ………….</span>
 
-#19 返回path规范化的绝对路径
-print(os.path.abspath(r&#39;C:/bbb/test.txt&#39;))    # C:\bbb\test.txt
+<span class="token comment">#19 返回path规范化的绝对路径</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span><span class="token string">r'C:/bbb/test.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># C:\bbb\test.txt</span>
 
-#20 将path分割成目录和文件名二元组返回
-print(os.path.split(r&#39;C:/bbb/ccc&#39;))    # (&#39;C:/bbb&#39;, &#39;ccc&#39;)
+<span class="token comment">#20 将path分割成目录和文件名二元组返回</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># ('C:/bbb', 'ccc')</span>
 
-#21 返回path的目录。其实就是os.path.split(path)的第一个元素
-print(os.path.dirname(r&#39;C:/bbb/ccc&#39;))    # C:/bbb
+<span class="token comment">#21 返回path的目录。其实就是os.path.split(path)的第一个元素</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># C:/bbb</span>
 
-#22 返回path最后的文件名。如何path以／或\结尾，那么就会返回空值。即os.path.split(path)的第二个元素
-print(os.path.basename(r&#39;C:/bbb/ccc/ddd&#39;))    # ddd
+<span class="token comment">#22 返回path最后的文件名。如何path以／或\结尾，那么就会返回空值。即os.path.split(path)的第二个元素</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>basename<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc/ddd'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># ddd</span>
 
-#23 如果path存在，返回True；如果path不存在，返回False
-print(os.path.exists(r&#39;C:/bbb/ccc/&#39;))    # True
+<span class="token comment">#23 如果path存在，返回True；如果path不存在，返回False</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc/'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment"># True</span>
 
-#24 如果path是绝对路径，返回True        # True
-print(os.path.isabs(r&quot;C:\Users\admin\PycharmProjects\s14\Day5\test4&quot;))
+<span class="token comment">#24 如果path是绝对路径，返回True        # True</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isabs<span class="token punctuation">(</span><span class="token string">r"C:\Users\admin\PycharmProjects\s14\Day5\test4"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-#25 如果path是一个存在的文件，返回True。否则返回False
-print(os.path.isfile(r&#39;C:/bbb/ccc/test2.txt&#39;))        # True
+<span class="token comment">#25 如果path是一个存在的文件，返回True。否则返回False</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isfile<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc/test2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment"># True</span>
 
-#26 如果path是一个存在的目录，则返回True。否则返回False
-print(os.path.isdir(r&#39;C:/bbb/ccc&#39;))            # True
+<span class="token comment">#26 如果path是一个存在的目录，则返回True。否则返回False</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isdir<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>            <span class="token comment"># True</span>
 
-#28 返回path所指向的文件或者目录的最后存取时间
-print(os.path.getatime(r&#39;C:/bbb/ccc/test2.txt&#39;))        # 1483509254.9647143
+<span class="token comment">#28 返回path所指向的文件或者目录的最后存取时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>getatime<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc/test2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment"># 1483509254.9647143</span>
 
-#29 返回path所指向的文件或者目录的最后修改时间
-print(os.path.getmtime(r&#39;C:/bbb/ccc/test2.txt&#39;))        # 1483510068.746478
+<span class="token comment">#29 返回path所指向的文件或者目录的最后修改时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>getmtime<span class="token punctuation">(</span><span class="token string">r'C:/bbb/ccc/test2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment"># 1483510068.746478</span>
 
-#30 无论linux还是windows，拼接出文件路径
-put_filename = &#39;%s%s%s&#39;%(self.home,os. path.sep, filename)
-#C:\Users\admin\PycharmProjects\s14\day10select版FTP\home
-</code></pre>
-<h2 id="02-os模块使用"><a href="#02-os模块使用" class="headerlink" title="02.os模块使用"></a>02.os模块使用</h2><h3 id="2-1-添加文件夹到环境变量"><a href="#2-1-添加文件夹到环境变量" class="headerlink" title="2.1 添加文件夹到环境变量"></a>2.1 添加文件夹到环境变量</h3><pre><code class="python">import os,sys
-print(os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) ))
-BASE_DIR = os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) )
-sys.path.append(BASE_DIR)
+<span class="token comment">#30 无论linux还是windows，拼接出文件路径</span>
+put_filename <span class="token operator">=</span> <span class="token string">'%s%s%s'</span><span class="token operator">%</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>home<span class="token punctuation">,</span>os<span class="token punctuation">.</span> path<span class="token punctuation">.</span>sep<span class="token punctuation">,</span> filename<span class="token punctuation">)</span>
+<span class="token comment">#C:\Users\admin\PycharmProjects\s14\day10select版FTP\home</span></code></pre>
 
-# 代码解释：
-# 要想导入其他目录中的函数，其实就是将其他目录的绝对路径动态的添加到pyhton的环境变量中，这样python解释器就能够在运行时找到导入的模块而不报错：
-# 然后调用sys模块sys.path.append(BASE_DIR)就可以将这条路径添加到python环境变量中
-</code></pre>
+<h2 id="02-os模块使用"><a href="#02-os模块使用" class="headerlink" title="02.os模块使用"></a>02.os模块使用</h2><h3 id="2-1-添加文件夹到环境变量"><a href="#2-1-添加文件夹到环境变量" class="headerlink" title="2.1 添加文件夹到环境变量"></a>2.1 添加文件夹到环境变量</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os<span class="token punctuation">,</span>sys
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">)</span>
+BASE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">)</span>
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">)</span>
+
+<span class="token comment"># 代码解释：</span>
+<span class="token comment"># 要想导入其他目录中的函数，其实就是将其他目录的绝对路径动态的添加到pyhton的环境变量中，这样python解释器就能够在运行时找到导入的模块而不报错：</span>
+<span class="token comment"># 然后调用sys模块sys.path.append(BASE_DIR)就可以将这条路径添加到python环境变量中</span></code></pre>
+
 <h3 id="2-2-os-popen获取脚本执行结果"><a href="#2-2-os-popen获取脚本执行结果" class="headerlink" title="2.2 os.popen获取脚本执行结果"></a>2.2 os.popen获取脚本执行结果</h3><ul>
 <li>data.py</li>
 </ul>
-<pre><code class="python">data = &#123;&#39;name&#39;:&#39;aaa&#39;&#125;
-import json
-print json.dumps(data)
-</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">data <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">'aaa'</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> json
+<span class="token keyword">print</span> json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+
 <ul>
 <li>get_data.py</li>
 </ul>
-<pre><code class="python">#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-import os,json
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">import</span> os<span class="token punctuation">,</span>json
 
-ret = os.popen(&#39;python data.py&#39;)
-data = ret.read().strip()
-ret.close()
-data = json.loads(data)
-print data  # &#123;&#39;name&#39;:&#39;aaa&#39;&#125;
-</code></pre>
+ret <span class="token operator">=</span> os<span class="token punctuation">.</span>popen<span class="token punctuation">(</span><span class="token string">'python data.py'</span><span class="token punctuation">)</span>
+data <span class="token operator">=</span> ret<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ret<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+data <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span> data  <span class="token comment"># &#123;'name':'aaa'&#125;</span></code></pre>
+
 
                 
                 <p class="end">__END__</p>
