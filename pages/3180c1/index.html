@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            01.time
+            04.sys
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,7 +37,7 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">01.time</h1>
+                <h1 class="header-subtitle">04.sys</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
@@ -45,7 +45,7 @@
                         </span>
                         
                             
-                                <span id="//pages/3180c1/" class="leancloud_visitors" data-flag-title="01.time">
+                                <span id="//pages/3180c1/" class="leancloud_visitors" data-flag-title="04.sys">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
@@ -60,9 +60,13 @@
                         
                             <span class="category-color">python</span>
                         
-                            <span class="category-color">python模块</span>
+                            <span class="category-color">sys</span>
                         
                     
+                    
+                        
+                            <span class="tag-color">sys</span>
+                        
                     
                 </div>
             
@@ -76,138 +80,7 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-time模块"><a href="#01-time模块" class="headerlink" title="01.time模块"></a>01.time模块</h2><h3 id="1-1-time模块三种格式"><a href="#1-1-time模块三种格式" class="headerlink" title="1.1 time模块三种格式"></a>1.1 time模块三种格式</h3><table>
-<thead>
-<tr>
-<th>模块</th>
-<th>结果</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>time.time()</code></td>
-<td>1613221384.608557</td>
-<td>1.时间戳</td>
-</tr>
-<tr>
-<td><code>time.strftime(&#39;%Y-%m-%d&#39;)</code></td>
-<td>2021-02-13</td>
-<td>2.格式化时间</td>
-</tr>
-<tr>
-<td><code>time.localtime()</code></td>
-<td>time.struct_time(tm_year&#x3D;2021…</td>
-<td>3.时间元祖</td>
-</tr>
-</tbody></table>
-<p><img src="./assets/image-20210213211655899.png" style="width: 600px; margin-left: 20px;"> </img></p>
-<h3 id="1-2-time-模块时间格式转换"><a href="#1-2-time-模块时间格式转换" class="headerlink" title="1.2 time()模块时间格式转换"></a>1.2 time()模块时间格式转换</h3><pre><code class="python">import time
-print(time.time())                             # 时间戳：1511166937.2178104
-print(time.strftime(&#39;%Y-%m-%d&#39;))                   # 格式化的字符串: 2017-11-20
-print(time.localtime())                         # 结构化时间(元组): (tm_year=2017, tm_mon=11...)
-print(time.gmtime())                           # 将时间转换成utc格式的元组格式： (tm_year=2017, tm_mon=11...)
-
-#1. 将结构化时间转换成时间戳： 1511167004.0
-print(time.mktime(time.localtime()))
-
-#2. 将格字符串时间转换成结构化时间 元组： (tm_year=2017, tm_mon=11...)
-print(time.strptime(&#39;2014-11-11&#39;, &#39;%Y-%m-%d&#39;))
-
-#3. 结构化时间(元组) 转换成  字符串时间  ：2017-11-20
-print(time.strftime(&#39;%Y-%m-%d&#39;, time.localtime()))  # 默认当前时间
-
-#4. 将结构化时间(元组) 转换成英文字符串时间 : Mon Nov 20 16:51:28 2017
-print(time.asctime(time.localtime()))
-
-#5. 将时间戳转成 英文字符串时间 : Mon Nov 20 16:51:28 2017
-print(time.ctime(time.time()))
-</code></pre>
-<h2 id="02-datetime"><a href="#02-datetime" class="headerlink" title="02.datetime"></a>02.datetime</h2><h3 id="2-1-datetime获取时间"><a href="#2-1-datetime获取时间" class="headerlink" title="2.1 datetime获取时间"></a>2.1 datetime获取时间</h3><pre><code class="python">import datetime
-#1、datetime.datetime获取当前时间
-print(datetime.datetime.now())
-#2、获取三天后的时间
-print(datetime.datetime.now()+datetime.timedelta(+3))
-#3、获取三天前的时间
-print(datetime.datetime.now()+datetime.timedelta(-3))
-#4、获取三个小时后的时间
-print(datetime.datetime.now()+datetime.timedelta(hours=3))
-#5、获取三分钟以前的时间
-print(datetime.datetime.now()+datetime.timedelta(minutes = -3))
-
-import datetime
-print(datetime.datetime.now())                                   #2017-08-18 11:25:52.618873
-print(datetime.datetime.now().date())                              #2017-08-18
-print(datetime.datetime.now().strftime(&quot;%Y-%m-%d %H-%M-%S&quot;))              #2017-08-18 11-25-52
-</code></pre>
-<h3 id="2-2-datetime时间转换"><a href="#2-2-datetime时间转换" class="headerlink" title="2.2 datetime时间转换"></a>2.2 datetime时间转换</h3><pre><code class="python">#1、datetime对象与str转化
-# datetime.datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)
-&#39;2018-03-09 10:08:50&#39;
-
-# datetime.datetime.strptime(&#39;2016-02-22&#39;,&quot;%Y-%m-%d&quot;)
-datetime.datetime(2016, 2, 22, 0, 0)
-
-#2、datetime对象转时间元组
-# datetime.datetime.now().timetuple()
-time.struct_time(tm_year=2018, tm_mon=3, tm_mday=9,
-
-#3、时间戳转换成datetime对象
-# datetime.datetime.fromtimestamp(1520561646.8906238)
-datetime.datetime(2018, 3, 9, 10, 14, 6, 890624)
-</code></pre>
-<h2 id="03-时间模块使用"><a href="#03-时间模块使用" class="headerlink" title="03.时间模块使用"></a>03.时间模块使用</h2><h3 id="3-1-本地时间与utc时间相互转换"><a href="#3-1-本地时间与utc时间相互转换" class="headerlink" title="3.1 本地时间与utc时间相互转换"></a>3.1 本地时间与utc时间相互转换</h3><pre><code class="python"># -*- coding: utf-8 -*-
-import time
-import datetime
-
-def utc2local(utc_st):
-    &#39;&#39;&#39; 作用：将UTC时间装换成本地时间
-    :param utc_st: 传入的是utc时间(datatime对象)
-    :return:  返回的是本地时间 datetime 对象
-    &#39;&#39;&#39;
-    now_stamp = time.time()
-    local_time = datetime.datetime.fromtimestamp(now_stamp)
-    utc_time = datetime.datetime.utcfromtimestamp(now_stamp)
-    offset = local_time - utc_time
-    local_st = utc_st + offset
-    return local_st
-
-def local2utc(local_st):
-    &#39;&#39;&#39; 作用：将本地时间转换成UTC时间
-    :param local_st: 传入的是本地时间(datatime对象)
-    :return: 返回的是utc时间 datetime 对象
-    &#39;&#39;&#39;
-    time_struct = time.mktime(local_st.timetuple())
-    utc_st = datetime.datetime.utcfromtimestamp(time_struct)
-    return utc_st
-
-utc_time = datetime.datetime.utcfromtimestamp(time.time())
-# utc_time = datetime.datetime(2018, 5, 6, 5, 57, 9, 511870)        # 比北京时间晚了8个小时
-local_time = datetime.datetime.now()
-# local_time = datetime.datetime(2018, 5, 6, 13, 59, 27, 120771)    # 北京本地时间
-
-utc_to_local = utc2local(utc_time)
-local_to_utc = local2utc(local_time)
-print utc_to_local       # 2018-05-06 14:02:30.650270     已经转换成了北京本地时间
-print local_to_utc       # 2018-05-06 06:02:30            转换成北京当地时间
-</code></pre>
-<h3 id="3-2-django的timezone时间与本地时间转换"><a href="#3-2-django的timezone时间与本地时间转换" class="headerlink" title="3.2 django的timezone时间与本地时间转换"></a>3.2 django的timezone时间与本地时间转换</h3><pre><code class="python">from django.utils import timezone
-from datetime import datetime
-
-utc_time = timezone.now()
-local_time = datetime.now()
-
-#1、utc时间装换成本地时间
-utc_to_local = timezone.localtime(timezone.now())
-
-#2、本地时间装utc时间
-local_to_utc = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
-</code></pre>
-<h3 id="3-3-Python计算两个日期之间天数"><a href="#3-3-Python计算两个日期之间天数" class="headerlink" title="3.3 Python计算两个日期之间天数"></a>3.3 Python计算两个日期之间天数</h3><pre><code class="python">import datetime
-d1 = datetime.datetime(2018,10,31)       # 第一个日期
-d2 = datetime.datetime(2019,2,2)         # 第二个日期
-interval = d2 - d1                   # 两日期差距
-print(interval.days)                 # 具体的天数
-</code></pre>
-
+                
                 
                 <p class="end">__END__</p>
             </div>
@@ -219,7 +92,7 @@ print(interval.days)                 # 具体的天数
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>DYL521
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="../../pages/3180c1/" target="_blank">01.time</a>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/3180c1/" target="_blank">04.sys</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -236,18 +109,25 @@ print(interval.days)                 # 具体的天数
                         
                             <a href="../../categories/python/">python</a>
                         
-                            <a href="../../categories/python/python%E6%A8%A1%E5%9D%97/">python模块</a>
+                            <a href="../../categories/python/sys/">sys</a>
                         
                     </div>
                 
                 
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tag/sys/">sys</a>
+                        
+                    </div>
+                
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/b715aa/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/b715aa/" title="发布于 2021-02-13 08:45">03.os</a>
+                        <a href="../../pages/3180c1/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/3180c1/" title="发布于 2021-02-13 08:43">01.time</a>
                         <br>
                     
                     
-                        <a href="../../pages/1fafd1/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/1fafd1/" title="发布于 2021-02-13 11:04">10.角色(Role)</a>
+                        <a href="../../2021/02/13/01.python/02.python%E6%A8%A1%E5%9D%97/07.subprocess/" class="next-prefix">» </a> 下一篇：    <a href="../../2021/02/13/01.python/02.python%E6%A8%A1%E5%9D%97/07.subprocess/" title="发布于 2021-02-13 08:43">07.subprocess</a>
                     
                 </div>
             </div>
