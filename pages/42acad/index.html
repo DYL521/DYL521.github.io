@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            01.redis数据类型
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,38 @@
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">01.redis数据类型</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-02-09
+                        </span>
+                        
+                            
+                                <span id="//pages/42acad/" class="leancloud_visitors" data-flag-title="01.redis数据类型">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/42acad/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">面试题</span>
+                        
+                            <span class="category-color">Redis</span>
+                        
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +72,175 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="01-redis简介"><a href="#01-redis简介" class="headerlink" title="01.redis简介"></a>01.redis简介</h1><h2 id="1-1-什么是Redis？"><a href="#1-1-什么是Redis？" class="headerlink" title="1.1 什么是Redis？"></a>1.1 什么是Redis？</h2><ul>
+<li><p>Redis本质上是一个Key-Value类型的内存数据库，很像memcached。</p>
+</li>
+<li><p>整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。</p>
+</li>
+<li><p>因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过 10万次读写操作，是已知性能最快的Key-Value DB。</p>
+</li>
+</ul>
+<h2 id="1-2-redis特点"><a href="#1-2-redis特点" class="headerlink" title="1.2 redis特点"></a>1.2 redis特点</h2><ul>
+<li><p>redis比memcached优点</p>
+<ul>
+<li>数据类型：redis支持五中数据类型， memcached所有的值均是简单的字符串</li>
+<li>value大小限制：redis单个value的最大限制是512M，memcached只能保存1MB的数据</li>
+<li>持久化：redis可以持久化，memcached不支持持久化</li>
+</ul>
+</li>
+<li><p>redis为什么快？</p>
+<ul>
+<li>纯内存操作</li>
+<li>单线程避免上下文切换</li>
+<li>非阻塞IO多路复用机制</li>
+</ul>
+</li>
+<li><p>redis缺点</p>
+<ul>
+<li>内存限制，不能用作海量数据存储</li>
+<li>注：如果需要存储海量数据，可以使用MongoDB</li>
+</ul>
+</li>
+</ul>
+<h1 id="02-redis五种数据类型"><a href="#02-redis五种数据类型" class="headerlink" title="02.redis五种数据类型"></a>02.redis五种数据类型</h1><ul>
+<li>说明：<ul>
+<li>1.redis中所有数据结构都以唯一的key字符串作为名称，然后通过这个唯一的key来获取对应的value</li>
+<li>2.不同的数据类型数据结构差异就在于value的结构不一样</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-1-字符串（string）"><a href="#2-1-字符串（string）" class="headerlink" title="2.1 字符串（string）"></a>2.1 字符串（string）</h2><blockquote>
+<h3 id="2-1-1-value的数据结构（数组）"><a href="#2-1-1-value的数据结构（数组）" class="headerlink" title="2.1.1 value的数据结构（数组）"></a>2.1.1 <code>value的数据结构</code>（数组）</h3></blockquote>
+<ul>
+<li><p>1.字符串value数据结构类似于数组，采用与分配容易空间来减少内存频繁分配</p>
+</li>
+<li><p>2.当字符串长度小于1M时，扩容就是加倍现有空间</p>
+</li>
+<li><p>3.如果字符串长度操作1M时，扩容时最多扩容1M空间，字符串最大长度为 512M</p>
+</li>
+</ul>
+<blockquote>
+<h3 id="2-1-2-字符串的使用场景（缓存）"><a href="#2-1-2-字符串的使用场景（缓存）" class="headerlink" title="2.1.2 字符串的使用场景（缓存）"></a>2.1.2 <code>字符串的使用场景</code>（缓存）</h3></blockquote>
+<ul>
+<li><p>1.字符串一个常见的用途是缓存用户信息，我们将用户信息使用JSON序列化成字符串</p>
+</li>
+<li><p>2.取用户信息时会经过一次反序列化的过程</p>
+</li>
+</ul>
+<h2 id="2-2-list（列表）"><a href="#2-2-list（列表）" class="headerlink" title="2.2 list（列表）"></a>2.2 list（列表）</h2><blockquote>
+<h3 id="2-1-1-value的数据结构（双向链表）"><a href="#2-1-1-value的数据结构（双向链表）" class="headerlink" title="2.1.1 value的数据结构（双向链表）"></a>2.1.1 <code>value的数据结构</code>（双向链表）</h3></blockquote>
+<ul>
+<li><p>1.列表的数据结构是双向链表，这意味着插入和删除的时间复杂度是0(1)，索引的时间复杂度位0(n)</p>
+</li>
+<li><p>2.当列表弹出最后一个元素后，该数据结构会被自动删除，内存被回手</p>
+</li>
+</ul>
+<blockquote>
+<h3 id="2-1-2-列表的使用场景（队列、栈）"><a href="#2-1-2-列表的使用场景（队列、栈）" class="headerlink" title="2.1.2 列表的使用场景（队列、栈）"></a>2.1.2 <code>列表的使用场景</code>（队列、栈）</h3></blockquote>
+<h2 id="2-3-hash（字典）"><a href="#2-3-hash（字典）" class="headerlink" title="2.3 hash（字典）"></a>2.3 hash（字典）</h2><blockquote>
+<h3 id="2-3-1-value的数据结构（HashMap）"><a href="#2-3-1-value的数据结构（HashMap）" class="headerlink" title="2.3.1 value的数据结构（HashMap）"></a>2.3.1<code> value的数据结构</code>（HashMap）</h3></blockquote>
+<ul>
+<li><p>1.redis中的字典也是HashMap（数组+列表）的二维结构</p>
+</li>
+<li><p>2.不同的是redis的字典的值只能是字符串</p>
+</li>
+</ul>
+<blockquote>
+<h3 id="2-3-2-hash的使用场景（缓存）"><a href="#2-3-2-hash的使用场景（缓存）" class="headerlink" title="2.3.2 hash的使用场景（缓存）"></a>2.3.2 <code>hash的使用场景</code>（缓存）</h3></blockquote>
+<ul>
+<li><p>1.hash结构也可以用来缓存用户信息，与字符串一次性全部序列化整个对象不同，hash可以对每个字段进行单独存储</p>
+</li>
+<li><p>2.这样可以部分获取用户信息，节约网络流量</p>
+</li>
+<li><p>3.hash也有缺点，hash结构的存储消耗要高于单个字符串</p>
+</li>
+</ul>
+<h2 id="2-4-set（集合）"><a href="#2-4-set（集合）" class="headerlink" title="2.4 set（集合）"></a>2.4 set（集合）</h2><blockquote>
+<h3 id="2-4-1-value的数据结构（字典）"><a href="#2-4-1-value的数据结构（字典）" class="headerlink" title="2.4.1 value的数据结构（字典）"></a>2.4.1 value的数据结构（字典）</h3></blockquote>
+<ul>
+<li>redis中的集合相当于一个特殊的字典，字典的所有value都位null</li>
+<li>当集合中的最后一个元素被移除后，数据结构会被自动删除，内存被回收</li>
+</ul>
+<blockquote>
+<h3 id="2-4-2-set使用场景"><a href="#2-4-2-set使用场景" class="headerlink" title="2.4.2 set使用场景"></a>2.4.2 set使用场景</h3></blockquote>
+<ul>
+<li>set结构可以用来存储某个活动中中奖的用户ID,因为有去重功能，可以保证同一用户不会中间两次</li>
+</ul>
+<h2 id="2-5-zset（有序集合）"><a href="#2-5-zset（有序集合）" class="headerlink" title="2.5 zset（有序集合）"></a>2.5 zset（有序集合）</h2><blockquote>
+<h3 id="2-5-1-value的数据结构（跳跃列表-字典）"><a href="#2-5-1-value的数据结构（跳跃列表-字典）" class="headerlink" title="2.5.1 value的数据结构（跳跃列表+字典）"></a>2.5.1 <code>value的数据结构</code>（跳跃列表+字典）</h3></blockquote>
+<ul>
+<li>1.zset一方面是一个set，保证了内部的唯一性　</li>
+<li>2.另一方面它可以给每一个value赋予一个score，代表这个value的权重</li>
+<li>3.zset内部实现用的是一种叫做“跳跃列表”的数据结构</li>
+<li>4.zset最后一个元素被移除后，数据结构就会被自动删除，内存也会被回收</li>
+</ul>
+<blockquote>
+<h3 id="2-5-2-zset应用场景"><a href="#2-5-2-zset应用场景" class="headerlink" title="2.5.2 zset应用场景"></a>2.5.2 <code>zset应用场景</code></h3></blockquote>
+<ul>
+<li>1.粉丝列表：value（粉丝ID），score（关注时间），这样可以轻松按关注事件排序</li>
+<li>2.学生成绩：value（学生ID），score（考试成绩），这样可以轻松对成绩排序</li>
+<li>排行榜</li>
+</ul>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/42acad/" target="_blank">01.redis数据类型</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
                         
-                            目前共计 232 篇日志，继续加油！
+                            <a href="../../categories/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a>
                         
-                    </span>
-                    
-                    
+                            <a href="../../categories/%E9%9D%A2%E8%AF%95%E9%A2%98/Redis/">Redis</a>
                         
-                            <div class="archive-title">
-                                <h2 class="archive-year">2021</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/253e3a/"><span>08.局域网与广域网</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-13</span>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                
+                
+                <div class="article-prev-next">
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/67dfe8/"><span>02.VMware安装操作系统</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="../../pages/172127/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/172127/" title="发布于 2021-02-09 11:43">01.MySql事务</a>
+                        <br>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/75f126/"><span>03.Linux基础命令</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
                     
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/d16d69/"><span>04.磁盘_CPU_内存_负载</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/a07d15/"><span>05.进程管理</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/b11c84/"><span>06.计划任务</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/80bb25/"><span>07.磁盘管理</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/b66577/"><span>01.ES安装</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/d236d3/"><span>02.es介绍</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="../../../pages/df12b3/"><span>03.es基本使用</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">02-12</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="../../pages/8d2805/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/8d2805/" title="发布于 2021-02-09 11:43">02.redis数据同步</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="../11/">上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../10/">10</a><a class="page-number" href="../11/">11</a><span class="page-number current">12</span><a class="page-number" href="../13/">13</a><a class="page-number" href="../14/">14</a><span class="space">&hellip;</span><a class="page-number" href="../24/">24</a><a class="extend next" rel="next" href="../13/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
