@@ -107,14 +107,16 @@
 </ul>
 <h2 id="1-3-缓存雪崩"><a href="#1-3-缓存雪崩" class="headerlink" title="1.3 缓存雪崩"></a>1.3 缓存雪崩</h2><p><code>缓存层全部失效</code></p>
 <ul>
-<li><p><strong>1）定义</strong></p>
-<ul>
+<li><strong>1）定义</strong><ul>
 <li>缓存雪崩是指，由于缓存层承载着大量请求，有效的保护了存储层，但是如果缓存层由于某些原因整体不能提供服务</li>
-<li>于是所有的请求都会达到存储层，存储层的调用量会暴增，造成存储层也会挂掉的情况。</li>
+<li>于是所有的请求都会达到存储层，存储层的调用量会暴增，造成存储层也会挂掉的情况。<br>类似于： <ul>
+<li>redis故障； 解决办法： 使用redis集群</li>
+<li>Redis中大量key的ttl过期； 解决办法： 设置过期时间设置合理的区间范围；</li>
 </ul>
 </li>
-<li><p><strong>2）解决方法</strong></p>
-<ul>
+</ul>
+</li>
+<li><strong>2）解决方法</strong><ul>
 <li><strong>保证缓存层服务高可用性：</strong>比如 Redis Sentinel 和 Redis Cluster 都实现了高可用</li>
 <li><strong>依赖隔离组件为后端限流并降级：</strong>比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
 </ul>
