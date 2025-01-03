@@ -94,7 +94,7 @@
 </ul>
 <h1 id="二叉树的实现方式"><a href="#二叉树的实现方式" class="headerlink" title="二叉树的实现方式"></a>二叉树的实现方式</h1><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TreeNode</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>x<span class="token punctuation">,</span>left<span class="token punctuation">,</span>right<span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>val <span class="token operator">=</span> x
+        self<span class="token punctuation">.</span>value <span class="token operator">=</span> x
         self<span class="token punctuation">.</span>left <span class="token operator">=</span> Node
         self<span class="token punctuation">.</span>right<span class="token operator">=</span> Node
 
@@ -102,10 +102,10 @@ root <span class="token operator">=</span> TreeNode<span class="token punctuatio
 root<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
 root<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span></code></pre>
 
-<h1 id="二叉树的递归-层序遍历"><a href="#二叉树的递归-层序遍历" class="headerlink" title="二叉树的递归&#x2F;层序遍历"></a>二叉树的递归&#x2F;层序遍历</h1><pre class="language-python" data-language="python"><code class="language-python">
+<h1 id="二叉树的递归遍历-DFS"><a href="#二叉树的递归遍历-DFS" class="headerlink" title="二叉树的递归遍历[DFS]"></a>二叉树的递归遍历[DFS]</h1><pre class="language-python" data-language="python"><code class="language-python">
 <span class="token keyword">class</span> <span class="token class-name">TreeNode</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>x<span class="token punctuation">,</span>left<span class="token punctuation">,</span>right<span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>val <span class="token operator">=</span> x
+        self<span class="token punctuation">.</span>value <span class="token operator">=</span> x
         self<span class="token punctuation">.</span>left <span class="token operator">=</span> Node
         self<span class="token punctuation">.</span>right<span class="token operator">=</span> Node
 
@@ -113,9 +113,99 @@ root<span class="token punctuation">.</span>right <span class="token operator">=
 <span class="token keyword">def</span> <span class="token function">traverse</span><span class="token punctuation">(</span>root<span class="token punctuation">:</span>TreeNode<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> root <span class="token keyword">is</span> Node<span class="token punctuation">:</span>
         <span class="token keyword">return</span> 
+    <span class="token comment"># 前序位置</span>
     traverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
-    traverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span></code></pre>
+    <span class="token comment"># 中序位置</span>
+    traverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+    <span class="token comment"># 后续位置</span></code></pre>
 
+<h1 id="二叉树的层序遍历-BFS"><a href="#二叉树的层序遍历-BFS" class="headerlink" title="二叉树的层序遍历[BFS]"></a>二叉树的层序遍历[BFS]</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://labuladong.online/algo/data-structure-basic/binary-tree-traverse-basic/#%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86-dfs">https://labuladong.online/algo/data-structure-basic/binary-tree-traverse-basic/#%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86-dfs</a></li>
+</ul>
+<h2 id="BFS写法1"><a href="#BFS写法1" class="headerlink" title="BFS写法1"></a>BFS写法1</h2><pre class="language-python" data-language="python"><code class="language-python">
+<span class="token keyword">from</span> binaryTree<span class="token punctuation">.</span>node <span class="token keyword">import</span> TreeNode
+
+<span class="token triple-quoted-string string">"""
+  二叉树的层序遍历，又称之为BFS
+"""</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">bfs</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token keyword">not</span> root<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        queue <span class="token operator">=</span> <span class="token punctuation">[</span>root<span class="token punctuation">]</span>
+        <span class="token keyword">while</span> queue<span class="token punctuation">:</span>
+            level_values <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            level_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>queue<span class="token punctuation">)</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>level_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                node <span class="token operator">=</span> queue<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+                level_values<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+                <span class="token keyword">if</span> node<span class="token punctuation">.</span>left<span class="token punctuation">:</span>
+                    queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+                <span class="token keyword">if</span> node<span class="token punctuation">.</span>right<span class="token punctuation">:</span>
+                    queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>level_values<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> result
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    root <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>left<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>left<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>right<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+    root<span class="token punctuation">.</span>right<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> Solution<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>bfs<span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># [[1], [2, 3], [4, 5, 6, 7]]</span>
+</code></pre>
+
+<h2 id="BFS写法2"><a href="#BFS写法2" class="headerlink" title="BFS写法2"></a>BFS写法2</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">levelOrderTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> root <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    q <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    q<span class="token punctuation">.</span>append<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+    <span class="token keyword">while</span> q<span class="token punctuation">:</span>
+        cur <span class="token operator">=</span> q<span class="token punctuation">.</span>popleft<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># 访问 cur 节点</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>cur<span class="token punctuation">.</span>val<span class="token punctuation">)</span>
+
+        <span class="token comment"># 把 cur 的左右子节点加入队列</span>
+        <span class="token keyword">if</span> cur<span class="token punctuation">.</span>left <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            q<span class="token punctuation">.</span>append<span class="token punctuation">(</span>cur<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> cur<span class="token punctuation">.</span>right <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            q<span class="token punctuation">.</span>append<span class="token punctuation">(</span>cur<span class="token punctuation">.</span>right<span class="token punctuation">)</span></code></pre>
+
+<h1 id="例题：-查找二叉树的最小深度"><a href="#例题：-查找二叉树的最小深度" class="headerlink" title="例题： 查找二叉树的最小深度"></a>例题： 查找二叉树的最小深度</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-depth-of-binary-tree/">https://leetcode.cn/problems/minimum-depth-of-binary-tree/</a><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># Definition for a binary tree node.</span>
+<span class="token comment"># class TreeNode:</span>
+<span class="token comment">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="token comment">#         self.val = val</span>
+<span class="token comment">#         self.left = left</span>
+<span class="token comment">#         self.right = right</span>
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>minDepthValue <span class="token operator">=</span> <span class="token number">10000</span>
+        self<span class="token punctuation">.</span>currentDepth <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">def</span> <span class="token function">minDepth</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token keyword">not</span> root<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        self<span class="token punctuation">.</span>traverse<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>minDepthValue
+
+    <span class="token keyword">def</span> <span class="token function">traverse</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token keyword">not</span> root<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        self<span class="token punctuation">.</span>currentDepth <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> root<span class="token punctuation">.</span>left <span class="token keyword">is</span> <span class="token boolean">None</span> <span class="token keyword">and</span> root<span class="token punctuation">.</span>right <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>minDepthValue <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>minDepthValue<span class="token punctuation">,</span> self<span class="token punctuation">.</span>currentDepth<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>traverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>traverse<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>currentDepth <span class="token operator">-=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>minDepthValue</code></pre></li>
+</ul>
 
                 
                 <p class="end">__END__</p>
@@ -167,7 +257,7 @@ root<span class="token punctuation">.</span>right <span class="token operator">=
                         <br>
                     
                     
-                        <a href="../0.4%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" class="next-prefix">» </a> 下一篇：    <a href="../0.4%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" title="发布于 2024-12-15 06:53">0.4套模板解决100道二叉树练习</a>
+                        <a href="../0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" class="next-prefix">» </a> 下一篇：    <a href="../0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" title="发布于 2024-12-15 06:53">0.5二叉树的扩展延伸</a>
                     
                 </div>
             </div>
