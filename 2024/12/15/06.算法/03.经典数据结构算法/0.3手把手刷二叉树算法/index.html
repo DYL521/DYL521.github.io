@@ -206,6 +206,55 @@ root<span class="token punctuation">.</span>right <span class="token operator">=
         self<span class="token punctuation">.</span>currentDepth <span class="token operator">-=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> self<span class="token punctuation">.</span>minDepthValue</code></pre></li>
 </ul>
+<h1 id="二叉树系列算法核心纲领"><a href="#二叉树系列算法核心纲领" class="headerlink" title="二叉树系列算法核心纲领"></a>二叉树系列算法核心纲领</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://labuladong.online/algo/essential-technique/binary-tree-summary-2/">https://labuladong.online/algo/essential-technique/binary-tree-summary-2/</a></li>
+</ul>
+<p><strong>二叉树的解题思路</strong></p>
+<ul>
+<li><strong>是否可以通过遍历一遍二叉树得到答案</strong>？如果可以，用一个<strong>traverse</strong>函数函数陪外部变量实现，遍历的思维模式。</li>
+<li><strong>是否可以定义一个递归函数，通过子问题（子树）的答案推导出原问题的答案</strong>？如果可以，写出这个递归函数的定义，并充分利用这个函数的返回值，分解问题的思维模式<br>无论是哪种思维模式，都需要思考：<br><strong>如果单独抽出一个二叉树节点，它需要做什么事情？需要在什么时候（前&#x2F;中&#x2F;后序位置）做？</strong> 其他的节点不用操心，递归函数会在所有节点上执行相同的操作。</li>
+</ul>
+<h1 id="二叉树的重要性"><a href="#二叉树的重要性" class="headerlink" title="二叉树的重要性"></a>二叉树的重要性</h1><p>比如，经典排序算法： 快速排序和归并排序，有什么理解？<br><strong>快速排序就是个二叉树的前序遍历，归并排序就是二叉树的后序遍历</strong></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">""""
+   对于快速排序， 若在nums[lo..hi]排序，我们先找一个分界点p, 通过交换元素使得 nums[lo..p-1]都要小于等于nums[p],
+   且nums[p+1..hi]都大于nums[p], 然后递归nums[lo..p-1]和nums[p+1..hi]中寻找新的分界点
+"""</span>
+<span class="token keyword">def</span> <span class="token function">sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">:</span> <span class="token builtin">list</span><span class="token punctuation">,</span> lo<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> hi<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> lo<span class="token operator">>=</span> hi<span class="token punctuation">:</span>
+       <span class="token keyword">return</span>
+    <span class="token comment"># ************************</span>
+    <span class="token comment"># 通过交换元素构建分界点 p</span>
+    p <span class="token operator">=</span> partition<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> hi<span class="token punctuation">)</span>
+    sort<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> p<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    sort<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> p<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> hi<span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    i <span class="token operator">=</span> <span class="token punctuation">(</span>low <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> 
+    pivot <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span>  
+
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> pivot<span class="token punctuation">:</span>
+            i <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span>
+            arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span></code></pre>
+<ul>
+<li>归并排序<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">,</span> lo<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> hi<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token comment"># 定义：排序 nums[lo..hi]</span>
+    mid <span class="token operator">=</span> <span class="token punctuation">(</span>lo <span class="token operator">+</span> hi<span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
+    <span class="token comment"># 排序 nums[lo..mid]</span>
+    sort<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> mid<span class="token punctuation">)</span>
+    <span class="token comment"># 排序 nums[mid+1..hi]</span>
+    sort<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> hi<span class="token punctuation">)</span>
+
+    <span class="token comment"># ****** 后序位置 ******</span>
+    <span class="token comment"># 合并 nums[lo..mid] 和 nums[mid+1..hi]</span>
+    merge<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> mid<span class="token punctuation">,</span> hi<span class="token punctuation">)</span>
+    <span class="token comment"># *********************</span>
+
+</code></pre></li>
+</ul>
 
                 
                 <p class="end">__END__</p>
