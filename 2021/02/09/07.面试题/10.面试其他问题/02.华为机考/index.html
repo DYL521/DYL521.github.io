@@ -107,7 +107,175 @@ data3 <span class="token operator">=</span> <span class="token punctuation">[</s
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>data3<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre>
 <p>8.HJ85最长回文子串</p>
-<p>9.HJ100等差数列<br>10.HJ87密码强度等级中等题<br>1.HJ10字符个数统计<br>2.HJ46截取字符串<br>3.HJ60查找组成一个偶数最接近的两个素数<br>4.HJ40统计字符<br>5.HJ14字符串排序<br>6.HJ5进制转换<br>7.HJ59找出字符串中第一个只出现一次的字符<br>8.HJ58输入n个整数，输出其中最小的K个<br>9.HJ81字符串字符匹配</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        s <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        res <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">:</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> s<span class="token punctuation">[</span>i<span class="token punctuation">:</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    res<span class="token punctuation">.</span>append<span class="token punctuation">(</span>j <span class="token operator">-</span> i<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> res <span class="token operator">!=</span> <span class="token string">""</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span></code></pre>
+
+<p>9.HJ100等差数列</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+result <span class="token operator">=</span> <span class="token punctuation">[</span>i  <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token operator">*</span>n<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment"># 3*n+2最后一位</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">sum</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+
+<p>10.HJ87密码强度等级</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        s <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        sc <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token comment"># 密码长度</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">4</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">5</span>
+        <span class="token keyword">elif</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">7</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">10</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">25</span>
+
+        <span class="token comment"># 字母</span>
+        isu <span class="token operator">=</span> <span class="token number">0</span>
+        isl <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i<span class="token punctuation">.</span>isupper<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                isu <span class="token operator">=</span> <span class="token number">1</span>
+                <span class="token keyword">break</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i<span class="token punctuation">.</span>islower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                isl <span class="token operator">=</span> <span class="token number">1</span>
+                <span class="token keyword">break</span>
+        sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">10</span> <span class="token operator">*</span> <span class="token punctuation">(</span>isu <span class="token operator">+</span> isl<span class="token punctuation">)</span>
+
+        <span class="token comment"># 数字</span>
+        shu <span class="token operator">=</span> <span class="token string">"0123456789"</span>
+        count1 <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i <span class="token keyword">in</span> shu<span class="token punctuation">:</span>
+                count1 <span class="token operator">=</span> count1 <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> count1 <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">10</span>
+        <span class="token keyword">elif</span> count1 <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">20</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc
+
+        <span class="token comment"># 符号</span>
+        fh <span class="token operator">=</span> <span class="token string">"!\"#$%&amp;'()*+,-./:;&lt;=>?@[\\]^_`&#123;|&#125;~"</span>
+        count2 <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i <span class="token keyword">in</span> fh<span class="token punctuation">:</span>
+                count2 <span class="token operator">=</span> count2 <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> count2 <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">10</span>
+        <span class="token keyword">elif</span> count2 <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">25</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc
+
+        <span class="token comment"># 奖励</span>
+        <span class="token keyword">if</span> isu <span class="token operator">+</span> isl <span class="token operator">==</span> <span class="token number">2</span> <span class="token keyword">and</span> count1 <span class="token operator">>=</span> <span class="token number">1</span> <span class="token keyword">and</span> count2 <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">5</span>
+        <span class="token keyword">elif</span> isu <span class="token operator">+</span> isl <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">and</span> count1 <span class="token operator">>=</span> <span class="token number">1</span> <span class="token keyword">and</span> count2 <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">3</span>
+        <span class="token keyword">elif</span> isu <span class="token operator">+</span> isl <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">and</span> count1 <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            sc <span class="token operator">=</span> sc <span class="token operator">+</span> <span class="token number">2</span>
+        <span class="token keyword">if</span> sc <span class="token operator">>=</span> <span class="token number">90</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"VERY_SECURE"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">80</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"SECURE"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">70</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"VERY_STRONG"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">60</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"STRONG"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">50</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"AVERAGE"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">25</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"WEAK"</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> sc <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"VERY_WEAK"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+</code></pre>
+
+<p>中等题<br>1.HJ10字符个数统计</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">,</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<p>2.HJ46截取字符串</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+data <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+k <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token punctuation">:</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+
+<p>3.HJ60查找组成一个偶数最接近的两个素数</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+
+<span class="token keyword">def</span> <span class="token function">isSuShu</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n<span class="token operator">&lt;=</span><span class="token number">2</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token boolean">True</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> n <span class="token operator">%</span> i <span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">True</span>
+            
+
+data  <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>data <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> isSuShu<span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">and</span> isSuShu<span class="token punctuation">(</span>data<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token operator">-</span>i<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+        <span class="token keyword">break</span></code></pre>
+<p>4.HJ40统计字符</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+data <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+a <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># 空格</span>
+b <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># 数字</span>
+c <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># 其他</span>
+d <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># 字母</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> data<span class="token punctuation">:</span>
+    tmp <span class="token operator">=</span> <span class="token builtin">ord</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> tmp <span class="token operator">==</span> <span class="token number">32</span><span class="token punctuation">:</span>
+        a<span class="token operator">+=</span><span class="token number">1</span> <span class="token comment"># 空格</span>
+    <span class="token keyword">elif</span> <span class="token number">48</span> <span class="token operator">&lt;=</span>tmp <span class="token operator">&lt;=</span><span class="token number">57</span><span class="token punctuation">:</span>
+        b<span class="token operator">+=</span><span class="token number">1</span> <span class="token comment"># 数字</span>
+    <span class="token keyword">elif</span> <span class="token number">65</span> <span class="token operator">&lt;=</span>tmp <span class="token operator">&lt;=</span><span class="token number">90</span> <span class="token keyword">or</span> <span class="token number">97</span> <span class="token operator">&lt;=</span>tmp <span class="token operator">&lt;=</span><span class="token number">122</span><span class="token punctuation">:</span>
+        d<span class="token operator">+=</span><span class="token number">1</span>  <span class="token comment"># 字母</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        c <span class="token operator">+=</span><span class="token number">1</span> 
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span></code></pre>
+<p>5.HJ14字符串排序</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+num <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token builtin">sorted</span><span class="token punctuation">(</span>stack<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+
+<p>6.HJ5进制转换</p>
+<pre class="language-python" data-language="python"><code class="language-python">
+data <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 16进制转10进制， int(xxx,16)  hex:10进制转成16进制</span>
+ </code></pre>
+
+<p>7.HJ59找出字符串中第一个只出现一次的字符<br>8.HJ58输入n个整数，输出其中最小的K个<br>9.HJ81字符串字符匹配</p>
 
                 
                 <p class="end">__END__</p>
