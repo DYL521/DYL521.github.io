@@ -67,9 +67,9 @@
                         
                             <span class="tag-color">算法</span>
                         
-                            <span class="tag-color">华为机考</span>
-                        
                             <span class="tag-color">字符串分割</span>
+                        
+                            <span class="tag-color">华为机考</span>
                         
                     
                 </div>
@@ -120,6 +120,37 @@ S <span class="token operator">=</span> <span class="token builtin">input</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>process_string<span class="token punctuation">(</span>K<span class="token punctuation">,</span> S<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre>
 
+<h1 id="卡片组成的最大数字"><a href="#卡片组成的最大数字" class="headerlink" title="卡片组成的最大数字"></a>卡片组成的最大数字</h1><pre><code>小组中每位都有一张卡片，卡片是6位数以内的正整数；将卡片组成的多个数字，计算的最大数字。
+</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">
+<span class="token keyword">from</span> functools <span class="token keyword">import</span> cmp_to_key
+
+<span class="token comment"># 自定义排序规则</span>
+<span class="token keyword">def</span> <span class="token function">compare</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 比较拼接后的结果</span>
+    <span class="token keyword">if</span> x <span class="token operator">+</span> y <span class="token operator">></span> y <span class="token operator">+</span> x<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>  <span class="token comment"># x 排在前面</span>
+    <span class="token keyword">elif</span> x <span class="token operator">+</span> y <span class="token operator">&lt;</span> y <span class="token operator">+</span> x<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">1</span>   <span class="token comment"># y 排在前面</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>   <span class="token comment"># 相等，顺序无关</span>
+
+<span class="token keyword">def</span> <span class="token function">largest_number</span><span class="token punctuation">(</span>cards<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 将卡片转换为字符串</span>
+    cards <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">,</span> cards<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment"># 根据自定义比较规则排序</span>
+    cards<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span>cmp_to_key<span class="token punctuation">(</span>compare<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment"># 拼接结果</span>
+    result <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>cards<span class="token punctuation">)</span>
+    <span class="token comment"># 处理前导零的情况：如果结果是 "000..."，返回 "0"</span>
+    <span class="token keyword">return</span> result <span class="token keyword">if</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">'0'</span> <span class="token keyword">else</span> <span class="token string">'0'</span>
+
+<span class="token comment"># 测试</span>
+s <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token string">"请输入卡片数字（用逗号分隔）："</span><span class="token punctuation">)</span>
+parts <span class="token operator">=</span> s<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
+cards <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> parts<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 转换为整数列表</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>largest_number<span class="token punctuation">(</span>cards<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
                 
                 <p class="end">__END__</p>
             </div>
@@ -158,9 +189,9 @@ S <span class="token operator">=</span> <span class="token builtin">input</span>
                         
                             <a href="../../../../../../tag/%E7%AE%97%E6%B3%95/">算法</a>
                         
-                            <a href="../../../../../../tag/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/">华为机考</a>
-                        
                             <a href="../../../../../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%86%E5%89%B2/">字符串分割</a>
+                        
+                            <a href="../../../../../../tag/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/">华为机考</a>
                         
                     </div>
                 
