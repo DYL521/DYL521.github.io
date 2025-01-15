@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            04.中文分词检索
+            04.华为机考-必考题目
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,32 +37,40 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">04.中文分词检索</h1>
+                <h1 class="header-subtitle">04.华为机考-必考题目</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2021-02-12
+                            <i class="iconfont icon-time"></i> 发表时间：2022-02-09
                         </span>
                         
                             
-                                <span id="//pages/5021f3/" class="leancloud_visitors" data-flag-title="04.中文分词检索">
+                                <span id="/2022/02/09/07.面试题/10.面试其他问题/04.字符串分割/" class="leancloud_visitors" data-flag-title="04.华为机考-必考题目">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/5021f3/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2022/02/09/07.面试题/10.面试其他问题/04.字符串分割/"></span>
                                 </span>
                               
                         
                     </p>
                     
                         
-                            <span class="category-color">数据库</span>
+                            <span class="category-color">华为机考</span>
                         
-                            <span class="category-color">Elasticsearch</span>
+                            <span class="category-color">算法</span>
                         
                     
+                    
+                        
+                            <span class="tag-color">算法</span>
+                        
+                            <span class="tag-color">华为机考</span>
+                        
+                            <span class="tag-color">字符串分割</span>
+                        
                     
                 </div>
             
@@ -76,126 +84,42 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-mapping映射"><a href="#01-mapping映射" class="headerlink" title="01.mapping映射"></a>01.mapping映射</h2><ul>
-<li>前面已经安装了ik中文分词器,这里就不介绍怎么安装了</li>
-<li>ik_max_word: 会将文本做最细粒度的拆分</li>
-<li>ik_smart: 会做最粗粒度的拆分</li>
+                <ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/circle/discuss/niKSMZ/">https://leetcode-cn.com/circle/discuss/niKSMZ/</a></li>
 </ul>
-<h3 id="1-1-映射是什么"><a href="#1-1-映射是什么" class="headerlink" title="1.1 映射是什么"></a>1.1 映射是什么</h3><ul>
-<li>映射：指定字段类型，将时间域视为时间，数字域视为数字，字符串域视为全文或精确值字符串</li>
-<li>Elasticsearch 支持如下简单域类型：<ul>
-<li>字符串: text   string(高版本废弃)</li>
-<li>整数 : byte, short, integer, long</li>
-<li>浮点数: float, double</li>
-<li>布尔型: boolean</li>
-<li>日期: date</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-2-设置mapping"><a href="#1-2-设置mapping" class="headerlink" title="1.2 设置mapping"></a>1.2 设置mapping</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射关系</span>
-GET /worker1/_mapping
+<h1 id="题目0092-重组字符串"><a href="#题目0092-重组字符串" class="headerlink" title="题目0092-重组字符串"></a>题目0092-重组字符串</h1><p>题目描述:<br>    给定一个非空字符串S，其被N个‘-’分隔成N+1的子串，给定正整数K，<br>    要求除第一个子串外，其余的子串每K个字符组成新的子串，并用‘-’分隔。<br>    对于新组成的每一个子串，如果它含有的小写字母比大写字母多，则将这个子串的所有大写字母转换为小写字母；<br>    反之，如果它含有的大写字母比小写字母多，则将这个子串的所有小写字母转换为大写字母；<br>    大小写字母的数量相等时，不做转换。<br>输入描述:<br>    输入为两行，第一行为参数K，第二行为字符串S。<br>输出描述:<br>    输出转换后的字符串。</p>
+<p>输入<br>    3<br>    12abc-abCABc-4aB@<br>输出<br>    12abc-abc-ABC-4aB-@</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">convert_substring</span><span class="token punctuation">(</span>substring<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    lower_count <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> substring <span class="token keyword">if</span> c<span class="token punctuation">.</span>islower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    upper_count <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>substring<span class="token punctuation">)</span> <span class="token operator">-</span> lower_count
+    
+    <span class="token keyword">if</span> lower_count <span class="token operator">></span> upper_count<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> substring<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> upper_count <span class="token operator">></span> lower_count<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> substring<span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> substring
 
-<span class="token comment">## 创建映射</span>
-PUT /worker1
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"age"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"long"</span>
-			<span class="token punctuation">&#125;</span>,
-			
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token keyword">def</span> <span class="token function">process_string</span><span class="token punctuation">(</span>K<span class="token punctuation">,</span> S<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    parts <span class="token operator">=</span> S<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span>
+    result <span class="token operator">=</span> <span class="token punctuation">[</span>parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span>  <span class="token comment"># 第一个子串不做处理</span>
+    
+    <span class="token keyword">for</span> part <span class="token keyword">in</span> parts<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token comment"># 每个子串按K个字符分割</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>part<span class="token punctuation">)</span><span class="token punctuation">,</span> K<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            substring <span class="token operator">=</span> part<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span>K<span class="token punctuation">]</span>
+            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>convert_substring<span class="token punctuation">(</span>substring<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">return</span> <span class="token string">'-'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
 
-<h3 id="1-3-添加和查询数据"><a href="#1-3-添加和查询数据" class="headerlink" title="1.3 添加和查询数据"></a>1.3 添加和查询数据</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询worker1中所有数据</span>
-GET /worker1/_search
+<span class="token comment"># 读取输入</span>
+K <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+S <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token comment">## 不指定id在worker1中添加数据</span>
-POST /worker1/_doc
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"tom"</span>,
-  <span class="token string">"age"</span>:18
-<span class="token punctuation">&#125;</span>
+<span class="token comment"># 处理字符串并输出结果</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>process_string<span class="token punctuation">(</span>K<span class="token punctuation">,</span> S<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
 
-
-<span class="token comment">## 指定id在worker1中添加数据</span>
-POST /worker1/_doc/2
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"jack"</span>,
-  <span class="token string">"age"</span>:18
-<span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="02-分析器"><a href="#02-分析器" class="headerlink" title="02.分析器"></a>02.分析器</h2><h3 id="2-1-分析器类型"><a href="#2-1-分析器类型" class="headerlink" title="2.1 分析器类型"></a>2.1 分析器类型</h3><h4 id="2-1-1-三方中文分词器"><a href="#2-1-1-三方中文分词器" class="headerlink" title="2.1.1 三方中文分词器"></a>2.1.1 三方中文分词器</h4><ul>
-<li>ik_max_word：会做细粒度拆分</li>
-<li>ik_smart：会做最粗粒度的拆分</li>
-</ul>
-<p><img src="./assets/image-20210113115604228.png" style="width: 800px; margin-left: 10px;"> </img></p>
-<h4 id="2-2-自带分词器"><a href="#2-2-自带分词器" class="headerlink" title="2.2 自带分词器"></a>2.2 自带分词器</h4><ul>
-<li>标准分析器（standard）：标准分析器是Elasticsearch默认使用的分析器。</li>
-<li>简单分析器（simple）：简单分析器在任何不是字母的地方分隔文本，将词条小写。</li>
-<li><code>空格分析器</code>（whitespace）：空格分析器在空格的地方划分文本。</li>
-<li><code>语言分析器</code>（english）：它们可以考虑指定语言的特点<ul>
-<li>例如， 英语 分析器附带了一组英语无用词（常用单词，例如 and 或者 the ，它们对相关性没有多少影响），它们会被删除。 </li>
-<li>由于理解英语语法的规则，这个分词器可以提取英语单词的词干 。</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-2-在mapping中指定分析"><a href="#2-2-在mapping中指定分析" class="headerlink" title="2.2 在mapping中指定分析"></a>2.2 在mapping中指定分析</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射</span>
-GET /worker4/_mapping
-
-
-<span class="token comment">## 创建mapping</span>
-PUT /worker
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"whitespace"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"address"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"english"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
-
-<h3 id="2-3-添加数据"><a href="#2-3-添加数据" class="headerlink" title="2.3 添加数据"></a>2.3 添加数据</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询所有数据</span>
-GET /worker/_search
-
-<span class="token comment">## 添加记录</span>
-POST /worker/_doc/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang first"</span>,
-  <span class="token string">"address"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang henan"</span>,
-  <span class="token string">"desc"</span><span class="token builtin class-name">:</span><span class="token string">"肖乃强是谁？"</span>
-<span class="token punctuation">&#125;</span></code></pre>
-
-<h3 id="2-4-whitespace空格分析器"><a href="#2-4-whitespace空格分析器" class="headerlink" title="2.4 whitespace空格分析器"></a>2.4 whitespace空格分析器</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看刚刚设置的mapping映射</span>
-GET /worker/_mapping
-<span class="token comment">## 查询刚创建的数据 id=1</span>
-GET /worker/_doc/1
-
-<span class="token comment">## 因为name使用的是"whitespace"空格分析器，所以 ?q=name:xiao 无法匹配xiao-nai-qiang 这个关键字</span>
-GET /worker/_search?q<span class="token operator">=</span>name:xiao
-
-<span class="token comment">## 只有完整查询 ?q=name:xiao-nai-qiang 才能匹配到数据</span>
-GET /worker/_search?q<span class="token operator">=</span>name:xiao-nai-qiang</code></pre>
-
-<h3 id="2-5-语言分析器（english）"><a href="#2-5-语言分析器（english）" class="headerlink" title="2.5 语言分析器（english）"></a>2.5 语言分析器（english）</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 因为 note字段设置的是 "english" 语音分析器，所以通过 ?q=note:xiao 可以搜索到 xiao-nai-qiang</span>
-GET /worker4/_search?q<span class="token operator">=</span>address:xiao</code></pre>
-
-<h3 id="2-6-ik-max-word中文分词"><a href="#2-6-ik-max-word中文分词" class="headerlink" title="2.6 ik_max_word中文分词"></a>2.6 ik_max_word中文分词</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## ik_max_word中文分词，可以通过 ?q=desc:肖乃强 查询到 "肖乃强是谁？"</span>
-GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强</code></pre>
                 
                 <p class="end">__END__</p>
             </div>
@@ -207,7 +131,7 @@ GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强</code><
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>DYL521
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="../../pages/5021f3/" target="_blank">04.中文分词检索</a>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">04.华为机考-必考题目</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -222,20 +146,31 @@ GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强</code><
                     <div class="category">
                         分类：
                         
-                            <a href="../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                            <a href="../../../../../../categories/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/">华为机考</a>
                         
-                            <a href="../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Elasticsearch/">Elasticsearch</a>
+                            <a href="../../../../../../categories/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/%E7%AE%97%E6%B3%95/">算法</a>
                         
                     </div>
                 
                 
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../../../../../tag/%E7%AE%97%E6%B3%95/">算法</a>
+                        
+                            <a href="../../../../../../tag/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/">华为机考</a>
+                        
+                            <a href="../../../../../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%86%E5%89%B2/">字符串分割</a>
+                        
+                    </div>
+                
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/df12b3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/df12b3/" title="发布于 2021-02-12 03:04">03.es基本使用</a>
+                        <a href="../03.%E5%89%91%E6%8C%87offer/" class="prev-prefix">« </a> 上一篇：    <a href="../03.%E5%89%91%E6%8C%87offer/" title="发布于 2022-02-09 11:43">03.剑指offer</a>
                         <br>
                     
                     
-                        <a href="../../pages/51290c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/51290c/" title="发布于 2021-02-12 03:04">05.python使用ES</a>
+                        <a href="../../../../../../pages/987539/" class="next-prefix">» </a> 下一篇：    <a href="../../../../../../pages/987539/" title="发布于 2022-01-03 09:27">一大波Model操作</a>
                     
                 </div>
             </div>
