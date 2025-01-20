@@ -92,9 +92,9 @@
 <li><code>“---” </code>表示YAML格式，一个文件的开始</li>
 <li><code>“#”注释</code></li>
 </ul>
-<h2 id="02-先来认识一下Playbook（自动部署Nginx）"><a href="#02-先来认识一下Playbook（自动部署Nginx）" class="headerlink" title="02.先来认识一下Playbook（自动部署Nginx）"></a>02.先来认识一下Playbook（自动部署Nginx）</h2><h3 id="2-1-nginx-playbook-yml"><a href="#2-1-nginx-playbook-yml" class="headerlink" title="2.1 nginx-playbook.yml"></a>2.1 nginx-playbook.yml</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim nginx-playbook.yml</span></code></pre>
+<h2 id="02-先来认识一下Playbook（自动部署Nginx）"><a href="#02-先来认识一下Playbook（自动部署Nginx）" class="headerlink" title="02.先来认识一下Playbook（自动部署Nginx）"></a>02.先来认识一下Playbook（自动部署Nginx）</h2><h3 id="2-1-nginx-playbook-yml"><a href="#2-1-nginx-playbook-yml" class="headerlink" title="2.1 nginx-playbook.yml"></a>2.1 nginx-playbook.yml</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim nginx-playbook.yml</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
 <span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers  <span class="token comment"># 对 webservers组中所有机器执行</span>
   <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no   <span class="token comment"># 禁用 facts，可以加快执行速度</span>
   <span class="token key atrule">vars</span><span class="token punctuation">:</span>          <span class="token comment"># 添加变量</span>
@@ -131,9 +131,9 @@
         <span class="token key atrule">state</span><span class="token punctuation">:</span> directory
     
     <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Create test page index.html  <span class="token comment">#### 第六：创建“主页”</span>
-      <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo "hello <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>hello<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>" <span class="token punctuation">></span> /var/www/html/index.html   <span class="token comment"># 在这里可以引用变量</span></code></pre>
+      <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo "hello <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>hello<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>" <span class="token punctuation">></span> /var/www/html/index.html   <span class="token comment"># 在这里可以引用变量</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-2-site-conf"><a href="#2-2-site-conf" class="headerlink" title="2.2 site.conf"></a>2.2 site.conf</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim site.conf</span>
+<h3 id="2-2-site-conf"><a href="#2-2-site-conf" class="headerlink" title="2.2 site.conf"></a>2.2 site.conf</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim site.conf</span>
 server <span class="token punctuation">&#123;</span>
   listen <span class="token number">80</span><span class="token punctuation">;</span>
   server_name www.example.com<span class="token punctuation">;</span>
@@ -141,17 +141,17 @@ server <span class="token punctuation">&#123;</span>
     root /var/www/html<span class="token punctuation">;</span>
     index index.html<span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-执行playbook"><a href="#2-3-执行playbook" class="headerlink" title="2.3 执行playbook"></a>2.3 执行playbook</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检查语法</span>
+<h3 id="2-3-执行playbook"><a href="#2-3-执行playbook" class="headerlink" title="2.3 执行playbook"></a>2.3 执行playbook</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检查语法</span>
 <span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml --syntax-check</span>
 <span class="token comment"># 执行playbook</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml</span></code></pre>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>查看配置文件是否成功</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 tmp<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/conf.d/site.conf </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 tmp<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/conf.d/site.conf </span>
 server <span class="token punctuation">&#123;</span>
   listen <span class="token number">80</span><span class="token punctuation">;</span>
   server_name www.example.com<span class="token punctuation">;</span>
@@ -160,9 +160,9 @@ server <span class="token punctuation">&#123;</span>
     index index.html<span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
-<span class="token punctuation">[</span>root@k8s-node1 tmp<span class="token punctuation">]</span><span class="token comment"># systemctl status nginx   # 查看当前nginx服务状态</span></code></pre>
+<span class="token punctuation">[</span>root@k8s-node1 tmp<span class="token punctuation">]</span><span class="token comment"># systemctl status nginx   # 查看当前nginx服务状态</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="03-Playbook文件结构"><a href="#03-Playbook文件结构" class="headerlink" title="03. Playbook文件结构"></a>03. Playbook文件结构</h2><pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>      <span class="token comment"># 标记文件的开始</span>
+<h2 id="03-Playbook文件结构"><a href="#03-Playbook文件结构" class="headerlink" title="03. Playbook文件结构"></a>03. Playbook文件结构</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>      <span class="token comment"># 标记文件的开始</span>
 <span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers    <span class="token comment"># 指定该playbook在哪个服务器上执行</span>
   <span class="token key atrule">vars</span><span class="token punctuation">:</span>             <span class="token comment"># 表示下面是定义的变量，</span>
     <span class="token key atrule">http_port</span><span class="token punctuation">:</span> <span class="token number">80</span>      <span class="token comment"># 变量的形式，key: value，这里http_port是变量名，80是值</span>
@@ -173,12 +173,12 @@ server <span class="token punctuation">&#123;</span>
       <span class="token key atrule">yum</span><span class="token punctuation">:</span> pkg=httpd state=latest               <span class="token comment"># yum说明要是用的模板名称，后面指定对应的参数，这两行结合起来就相当于一个shell命令。</span>
   
     <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> write the apache config file          <span class="token comment"># 每个task之间可以使用空行来做区分。</span>
-      <span class="token key atrule">template</span><span class="token punctuation">:</span> src=/srv/httpd.j2 dest=/etc/httpd.conf</code></pre>
+      <span class="token key atrule">template</span><span class="token punctuation">:</span> src=/srv/httpd.j2 dest=/etc/httpd.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="04-在变更时执行操作（handlers）"><a href="#04-在变更时执行操作（handlers）" class="headerlink" title="04.在变更时执行操作（handlers）"></a>04.在变更时执行操作（handlers）</h2><h3 id="4-1-修改配置文件"><a href="#4-1-修改配置文件" class="headerlink" title="4.1 修改配置文件"></a>4.1 修改配置文件</h3><ul>
 <li>修改nginx配置文件，从新加载</li>
 </ul>
-<pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment"># vim verify-nginx-conf.yaml</span>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment"># vim verify-nginx-conf.yaml</span>
 <span class="token punctuation">---</span>
 <span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
   <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no
@@ -191,15 +191,15 @@ server <span class="token punctuation">&#123;</span>
       <span class="token key atrule">dest</span><span class="token punctuation">:</span> /etc/nginx/conf.d/site.conf
 
   <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> reload nginx
-    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded</code></pre>
+    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>执行playbook修改配置文件</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml --syntax-check</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml --syntax-check</span>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="4-2-handlers只有修改才会重启"><a href="#4-2-handlers只有修改才会重启" class="headerlink" title="4.2 handlers只有修改才会重启"></a>4.2 handlers只有修改才会重启</h3><pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment"># vim verify-nginx-conf.yaml</span>
+<h3 id="4-2-handlers只有修改才会重启"><a href="#4-2-handlers只有修改才会重启" class="headerlink" title="4.2 handlers只有修改才会重启"></a>4.2 handlers只有修改才会重启</h3><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment"># vim verify-nginx-conf.yaml</span>
 <span class="token punctuation">---</span>
 <span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
   <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no
@@ -212,24 +212,24 @@ server <span class="token punctuation">&#123;</span>
       <span class="token key atrule">dest</span><span class="token punctuation">:</span> /etc/nginx/conf.d/site.conf
 
   <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> reload nginx
-    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded</code></pre>
+    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>由于 site.conf配置没有修改，所以 changed&#x3D;0 （没有执行 reload）</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook verify-nginx-conf.yaml </span>
 PLAY RECAP **************************************************************************************************************************************************
 <span class="token number">192.168</span>.56.65              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span>   
-<span class="token number">192.168</span>.56.66              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span> </code></pre>
+<span class="token number">192.168</span>.56.66              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="05-任务控制（tags）"><a href="#05-任务控制（tags）" class="headerlink" title="05.任务控制（tags）"></a>05.任务控制（tags）</h2><ul>
 <li>在一个大的 playbook配置文件中，指定执行某一个任务</li>
 <li>比如下面这个案子nginx部署的项目，可以在每个模块中添加一个tags</li>
 <li>这样就可以单独管理</li>
 </ul>
-<h3 id="5-1-添加tags"><a href="#5-1-添加tags" class="headerlink" title="5.1 添加tags"></a>5.1 添加tags</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim nginx-playbook.yml</span></code></pre>
+<h3 id="5-1-添加tags"><a href="#5-1-添加tags" class="headerlink" title="5.1 添加tags"></a>5.1 添加tags</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim nginx-playbook.yml</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="language-bash" data-language="bash"><code class="language-bash">---
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">---
 - hosts: webservers  <span class="token comment"># 对 webservers组中所有机器执行</span>
   vars:          <span class="token comment"># 添加变量</span>
     hello: Ansible
@@ -268,14 +268,14 @@ PLAY RECAP *********************************************************************
         state: directory
     
     - name: Create <span class="token builtin class-name">test</span> page index.html  <span class="token comment">#### 第六：创建“主页”</span>
-      shell: <span class="token builtin class-name">echo</span> <span class="token string">"hello &#123;&#123;hello&#125;&#125;"</span> <span class="token operator">></span> /var/www/html/index.html   <span class="token comment"># 在这里可以引用变量</span></code></pre>
+      shell: <span class="token builtin class-name">echo</span> <span class="token string">"hello &#123;&#123;hello&#125;&#125;"</span> <span class="token operator">></span> /var/www/html/index.html   <span class="token comment"># 在这里可以引用变量</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="5-2-指定只执行指定tag"><a href="#5-2-指定只执行指定tag" class="headerlink" title="5.2 指定只执行指定tag"></a>5.2 指定只执行指定tag</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 指定，只执行启动nginx这个步骤</span>
+<h3 id="5-2-指定只执行指定tag"><a href="#5-2-指定只执行指定tag" class="headerlink" title="5.2 指定只执行指定tag"></a>5.2 指定只执行指定tag</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 指定，只执行启动nginx这个步骤</span>
 <span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml --tags "startngx"</span>
 <span class="token comment"># 跳过，除了不启动nginx，其他都执行</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml --skip-tags "startngx"</span></code></pre>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook nginx-playbook.yml --skip-tags "startngx"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="06-Playbook文件调试"><a href="#06-Playbook文件调试" class="headerlink" title="06. Playbook文件调试"></a>06. Playbook文件调试</h2><h3 id="6-1-调试文件"><a href="#6-1-调试文件" class="headerlink" title="6.1 调试文件"></a>6.1 调试文件</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim debug.yaml</span>
+<h2 id="06-Playbook文件调试"><a href="#06-Playbook文件调试" class="headerlink" title="06. Playbook文件调试"></a>06. Playbook文件调试</h2><h3 id="6-1-调试文件"><a href="#6-1-调试文件" class="headerlink" title="6.1 调试文件"></a>6.1 调试文件</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim debug.yaml</span>
 ---
 - hosts: webservers  <span class="token comment"># 对 webservers组中所有机器执行</span>
   vars:          <span class="token comment"># 添加变量</span>
@@ -293,19 +293,19 @@ PLAY RECAP *********************************************************************
       
     - name: debug playbook <span class="token function">file</span>
       debug: <span class="token assign-left variable">msg</span><span class="token operator">=</span><span class="token string">"输出：&#123;&#123;hello&#125;&#125;"</span>
-      tags: debugtag</code></pre>
+      tags: debugtag<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="6-2-语法检查"><a href="#6-2-语法检查" class="headerlink" title="6.2 语法检查"></a>6.2 语法检查</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook debug.yaml --syntax-check</span>
-playbook: debug.yaml</code></pre>
+<h3 id="6-2-语法检查"><a href="#6-2-语法检查" class="headerlink" title="6.2 语法检查"></a>6.2 语法检查</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook debug.yaml --syntax-check</span>
+playbook: debug.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="6-3-debug调试"><a href="#6-3-debug调试" class="headerlink" title="6.3 debug调试"></a>6.3 debug调试</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook debug.yaml --tags debugtag</span>
+<h3 id="6-3-debug调试"><a href="#6-3-debug调试" class="headerlink" title="6.3 debug调试"></a>6.3 debug调试</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook debug.yaml --tags debugtag</span>
 TASK <span class="token punctuation">[</span>debug playbook file<span class="token punctuation">]</span> **********************************************************************************************************************************
 ok: <span class="token punctuation">[</span><span class="token number">192.168</span>.56.65<span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"输出：Ansible"</span>
 <span class="token punctuation">&#125;</span>
 ok: <span class="token punctuation">[</span><span class="token number">192.168</span>.56.66<span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"输出：Ansible"</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>

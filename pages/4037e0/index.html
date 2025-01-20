@@ -86,7 +86,7 @@
 <li>第二:  反序列化</li>
 <li>第三：数据校验</li>
 </ul>
-<h3 id="1-1-定义Serializer"><a href="#1-1-定义Serializer" class="headerlink" title="1.1 定义Serializer"></a>1.1 定义Serializer</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<h3 id="1-1-定义Serializer"><a href="#1-1-定义Serializer" class="headerlink" title="1.1 定义Serializer"></a>1.1 定义Serializer</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo
 
@@ -111,25 +111,25 @@
     <span class="token keyword">def</span> <span class="token function">get_xxx</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>row<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">'''row: 传过来的正是 BookInfo表的对象'''</span>
         books <span class="token operator">=</span> row<span class="token punctuation">.</span>btitle   <span class="token comment"># 获取用户名</span>
-        <span class="token keyword">return</span> books</code></pre>
+        <span class="token keyword">return</span> books<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-2-序列化：作用1"><a href="#1-2-序列化：作用1" class="headerlink" title="1.2 序列化：作用1"></a>1.2 序列化：<code>作用1</code></h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">APIViewBookInfoViewSet</span><span class="token punctuation">(</span>APIView<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h3 id="1-2-序列化：作用1"><a href="#1-2-序列化：作用1" class="headerlink" title="1.2 序列化：作用1"></a>1.2 序列化：<code>作用1</code></h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">APIViewBookInfoViewSet</span><span class="token punctuation">(</span>APIView<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
         obj <span class="token operator">=</span> BookInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer1<span class="token punctuation">(</span>instance<span class="token operator">=</span>obj<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 序列化多条数据</span>
         <span class="token comment"># ser = serializers.BookInfoSerializer1(instance=obj[0])            # 序列化一条数据</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-3-反序列化：作用2"><a href="#1-3-反序列化：作用2" class="headerlink" title="1.3 反序列化：作用2"></a>1.3 反序列化：<code>作用2</code></h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建</span>
+<h3 id="1-3-反序列化：作用2"><a href="#1-3-反序列化：作用2" class="headerlink" title="1.3 反序列化：作用2"></a>1.3 反序列化：<code>作用2</code></h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建</span>
 <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
     ser <span class="token operator">=</span>  serializers<span class="token punctuation">.</span>BookInfoSerializer1<span class="token punctuation">(</span>data<span class="token operator">=</span>request<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
     <span class="token comment"># 判断提交数据是否合法</span>
     <span class="token keyword">if</span> ser<span class="token punctuation">.</span>is_valid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         ser<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">,</span> status<span class="token operator">=</span><span class="token number">201</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>errors<span class="token punctuation">,</span>status<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>errors<span class="token punctuation">,</span>status<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-4-字段校验：作用3"><a href="#1-4-字段校验：作用3" class="headerlink" title="1.4 字段校验：作用3"></a>1.4 字段校验：<code>作用3</code></h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">BookInfoSerializer1</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>Serializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h3 id="1-4-字段校验：作用3"><a href="#1-4-字段校验：作用3" class="headerlink" title="1.4 字段校验：作用3"></a>1.4 字段校验：<code>作用3</code></h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">BookInfoSerializer1</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>Serializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""图书数据序列化器"""</span>
   
     <span class="token comment"># 定义单一字段验证的方法</span>
@@ -142,10 +142,10 @@
     <span class="token keyword">def</span> <span class="token function">validate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> attrs<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> attrs<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'admin'</span><span class="token punctuation">:</span>
             <span class="token keyword">raise</span> serializers<span class="token punctuation">.</span>ValidationError<span class="token punctuation">(</span><span class="token string">'不能创建admin用户'</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> attrs</code></pre>
+        <span class="token keyword">return</span> attrs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="02-序列化-反序列化"><a href="#02-序列化-反序列化" class="headerlink" title="02.序列化&amp;反序列化"></a>02.序列化&amp;反序列化</h2><h3 id="2-1-book-models-py"><a href="#2-1-book-models-py" class="headerlink" title="2.1 book&#x2F;models.py"></a>2.1 book&#x2F;models.py</h3><p><img src="./assets/image-20210217194315866.png" style="width: 900px; margin-left: 0px;"> </img></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
 <span class="token comment">#定义图书模型类BookInfo</span>
 <span class="token keyword">class</span> <span class="token class-name">BookInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -183,9 +183,9 @@
         verbose_name_plural <span class="token operator">=</span> verbose_name
 
     <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>hname</code></pre>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>hname<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-2-book-serializers-py"><a href="#2-2-book-serializers-py" class="headerlink" title="2.2 book&#x2F;serializers.py"></a>2.2 book&#x2F;serializers.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<h3 id="2-2-book-serializers-py"><a href="#2-2-book-serializers-py" class="headerlink" title="2.2 book&#x2F;serializers.py"></a>2.2 book&#x2F;serializers.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo
 
@@ -228,9 +228,9 @@
         <span class="token keyword">if</span> validated_data<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'bpub_date'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             instance<span class="token punctuation">.</span>bpub_date <span class="token operator">=</span> validated_data<span class="token punctuation">[</span><span class="token string">'bpub_date'</span><span class="token punctuation">]</span>
         instance<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> instance</code></pre>
+        <span class="token keyword">return</span> instance<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-book-views-py"><a href="#2-3-book-views-py" class="headerlink" title="2.3 book&#x2F;views.py"></a>2.3 book&#x2F;views.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
+<h3 id="2-3-book-views-py"><a href="#2-3-book-views-py" class="headerlink" title="2.3 book&#x2F;views.py"></a>2.3 book&#x2F;views.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>response <span class="token keyword">import</span> Response
 <span class="token keyword">from</span> book <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo
@@ -264,19 +264,19 @@
         <span class="token keyword">if</span> ser<span class="token punctuation">.</span>is_valid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             ser<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">,</span> status<span class="token operator">=</span><span class="token number">201</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>errors<span class="token punctuation">,</span>status<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>data<span class="token operator">=</span>ser<span class="token punctuation">.</span>errors<span class="token punctuation">,</span>status<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-4-book-urls-py"><a href="#2-4-book-urls-py" class="headerlink" title="2.4 book&#x2F;urls.py"></a>2.4 book&#x2F;urls.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> re_path<span class="token punctuation">,</span>path
+<h3 id="2-4-book-urls-py"><a href="#2-4-book-urls-py" class="headerlink" title="2.4 book&#x2F;urls.py"></a>2.4 book&#x2F;urls.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> re_path<span class="token punctuation">,</span>path
 <span class="token keyword">from</span> book <span class="token keyword">import</span> views
 
 urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
     path<span class="token punctuation">(</span><span class="token string">'book1/'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>APIViewBookInfoViewSet<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-5-测试接口"><a href="#2-5-测试接口" class="headerlink" title="2.5 测试接口"></a>2.5 测试接口</h3><h4 id="2-5-1-get获取数据"><a href="#2-5-1-get获取数据" class="headerlink" title="2.5.1 get获取数据"></a>2.5.1 get获取数据</h4><blockquote>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
 </blockquote>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
     <span class="token punctuation">&#123;</span>
         <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
         <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"西游记"</span><span class="token punctuation">,</span>
@@ -295,7 +295,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
         <span class="token string">"xxx"</span><span class="token punctuation">:</span> <span class="token string">"水浒传"</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="2-5-2-post添加数据"><a href="#2-5-2-post添加数据" class="headerlink" title="2.5.2 post添加数据"></a>2.5.2 post添加数据</h4><blockquote>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
@@ -305,7 +305,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?pk=4">http://127.0.0.1:8000/book/book1/?pk=4</a></p>
 </blockquote>
 <p><img src="./assets/image-20210217181515171.png" style="width: 700px; margin-left: 20px;"> </img></p>
-<h2 id="03-嵌套序列化"><a href="#03-嵌套序列化" class="headerlink" title="03.嵌套序列化"></a>03.嵌套序列化</h2><h3 id="3-1-book-serializers-py"><a href="#3-1-book-serializers-py" class="headerlink" title="3.1 book&#x2F;serializers.py"></a>3.1 book&#x2F;serializers.py</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
+<h2 id="03-嵌套序列化"><a href="#03-嵌套序列化" class="headerlink" title="03.嵌套序列化"></a>03.嵌套序列化</h2><h3 id="3-1-book-serializers-py"><a href="#3-1-book-serializers-py" class="headerlink" title="3.1 book&#x2F;serializers.py"></a>3.1 book&#x2F;serializers.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo<span class="token punctuation">,</span>HeroInfo
 
 <span class="token keyword">class</span> <span class="token class-name">HeroInfoSerializer</span><span class="token punctuation">(</span>serializers<span class="token punctuation">.</span>Serializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -344,9 +344,9 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
     <span class="token keyword">def</span> <span class="token function">get_xxx</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>row<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">'''row: 传过来的正是 BookInfo表的对象'''</span>
         books <span class="token operator">=</span> row<span class="token punctuation">.</span>btitle   <span class="token comment"># 获取用户名</span>
-        <span class="token keyword">return</span> books</code></pre>
+        <span class="token keyword">return</span> books<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-2-查询结果"><a href="#3-2-查询结果" class="headerlink" title="3.2 查询结果"></a>3.2 查询结果</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+<h3 id="3-2-查询结果"><a href="#3-2-查询结果" class="headerlink" title="3.2 查询结果"></a>3.2 查询结果</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
     <span class="token punctuation">&#123;</span>
         <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
         <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"西游记"</span><span class="token punctuation">,</span>
@@ -396,7 +396,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
         <span class="token string">"xxx"</span><span class="token punctuation">:</span> <span class="token string">"三国演义2"</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="04-字段类型和选项参数"><a href="#04-字段类型和选项参数" class="headerlink" title="04.字段类型和选项参数"></a>04.字段类型和选项参数</h2><h3 id="4-1-通用参数"><a href="#4-1-通用参数" class="headerlink" title="4.1 通用参数"></a>4.1 通用参数</h3><ul>
 <li>无论哪种字段类型都可以使用的选项参数。</li>

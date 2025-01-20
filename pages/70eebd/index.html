@@ -83,7 +83,7 @@
 <li>4）为了保证数据安全，必须使用<code>线程锁</code></li>
 </ul>
 <p><code>说明：</code>下面利用for循环同时启动50个线程并行执行，执行时间是3秒而不是所有线程执行时间的总和</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> threading
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> threading
 <span class="token keyword">import</span> time
 
 <span class="token keyword">def</span> <span class="token function">sayhi</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#定义每个线程要运行的函数</span>
@@ -91,7 +91,7 @@
     time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     t <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>sayhi<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'t-%s'</span><span class="token operator">%</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-2-GIL锁和线程锁"><a href="#1-2-GIL锁和线程锁" class="headerlink" title="1.2 GIL锁和线程锁"></a>1.2 GIL锁和线程锁</h3><ul>
 <li>GIL全局解释器锁<ul>
@@ -113,7 +113,7 @@
 </li>
 <li><code>在有GIL的情况下执行 count = count + 1 会出错原因解析，用线程锁解决方法</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 1）第一步：count = 0   count初始值为0</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1）第一步：count = 0   count初始值为0</span>
 <span class="token comment"># 2）第二步：线程1要执行对count加1的操作首先申请GIL全局解释器锁</span>
 <span class="token comment"># 3）第三步：调用操作系统原生线程在操作系统中执行</span>
 <span class="token comment"># 4）第四步：count加1还未执行完毕，时间到了被要求释放GIL</span>
@@ -123,7 +123,7 @@
 <span class="token comment"># 7）第七步：线程2执行完加1后就赋值count=1并释放GIL</span>
 <span class="token comment"># 8）第八步：线程2执行完后cpu又交给了线程1，线程1根据上下文继续执行count加1操作，先拿到GIL</span>
 <span class="token comment">#    锁，完成加1操作，由于线程1先拿到的数据count=0，执行完加1后结果还是1</span>
-<span class="token comment"># 9）第九步：线程1将count=1在次赋值给count并释放GIL锁，此时连个线程都对数据加1，但是值最终是1</span></code></pre>
+<span class="token comment"># 9）第九步：线程1将count=1在次赋值给count并释放GIL锁，此时连个线程都对数据加1，但是值最终是1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>死锁定义</code><ul>
@@ -138,7 +138,7 @@
 <h3 id="1-4-join-和setDaemon"><a href="#1-4-join-和setDaemon" class="headerlink" title="1.4 join()和setDaemon()"></a>1.4 join()和setDaemon()</h3><h4 id="2-4-1-join"><a href="#2-4-1-join" class="headerlink" title="2.4.1 join()"></a>2.4.1 join()</h4><ul>
 <li><code>实现所有线程都执行结束后再执行主线程</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> threading
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> threading
 <span class="token function">import</span> <span class="token function">time</span>
 start_time <span class="token operator">=</span> time.time<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
@@ -149,12 +149,12 @@ def sayhi<span class="token punctuation">(</span>num<span class="token punctuati
     t <span class="token operator">=</span> threading.Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>sayhi,args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'t-%s'</span>%i,<span class="token punctuation">))</span>
     t.setDaemon<span class="token punctuation">(</span>True<span class="token punctuation">)</span>  <span class="token comment">#把当前线程变成守护线程，必须在t.start()前设置</span>
     t.start<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment">#启动一个线程，程序不会阻塞</span>
-print<span class="token punctuation">(</span><span class="token string">'cost time:'</span>,time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> - start_time<span class="token punctuation">)</span></code></pre>
+print<span class="token punctuation">(</span><span class="token string">'cost time:'</span>,time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> - start_time<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="2-4-2-setDaemon"><a href="#2-4-2-setDaemon" class="headerlink" title="2.4.2 setDaemon()"></a>2.4.2 setDaemon()</h4><ul>
 <li><code>守护线程，主线程退出时，需要子线程随主线程退出</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> threading
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> threading
 <span class="token function">import</span> <span class="token function">time</span>
 start_time <span class="token operator">=</span> time.time<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
@@ -165,7 +165,7 @@ def sayhi<span class="token punctuation">(</span>num<span class="token punctuati
     t <span class="token operator">=</span> threading.Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>sayhi,args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'t-%s'</span>%i,<span class="token punctuation">))</span>
     t.setDaemon<span class="token punctuation">(</span>True<span class="token punctuation">)</span>  <span class="token comment">#把当前线程变成守护线程，必须在t.start()前设置</span>
     t.start<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment">#启动一个线程，程序不会阻塞</span>
-print<span class="token punctuation">(</span><span class="token string">'cost time:'</span>,time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> - start_time<span class="token punctuation">)</span></code></pre>
+print<span class="token punctuation">(</span><span class="token string">'cost time:'</span>,time.time<span class="token punctuation">(</span><span class="token punctuation">)</span> - start_time<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -173,7 +173,7 @@ print<span class="token punctuation">(</span><span class="token string">'cost ti
 <li>Python提供了几个用于多线程编程的模块，包括thread、threading和Queue等。</li>
 <li>thread和threading模块允许程序员创建和管理线程。</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> threading
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> threading
 <span class="token keyword">import</span> time
 
 <span class="token keyword">def</span> <span class="token function">sayhi</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#定义每个线程要运行的函数</span>
@@ -182,7 +182,7 @@ print<span class="token punctuation">(</span><span class="token string">'cost ti
     
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     t <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>sayhi<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'t-%s'</span><span class="token operator">%</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="1-5-2-concurrent-futures"><a href="#1-5-2-concurrent-futures" class="headerlink" title="1.5.2 concurrent.futures"></a>1.5.2 concurrent.futures</h4><ul>
 <li><p><code>1、简介</code> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/concurrent.futures.html">参考官网</a></p>
@@ -217,7 +217,7 @@ print<span class="token punctuation">(</span><span class="token string">'cost ti
 <li><p>concurrent.futures.ThreadPoolExecutor 抓取网页</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 <span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
 
 <span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -234,7 +234,7 @@ pool <span class="token operator">=</span> ThreadPoolExecutor<span class="token 
 <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
     pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>       <span class="token comment"># 去线程池中获取一个线程，线程去执行fetch_request方法</span>
 
-pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">)</span>                      <span class="token comment"># 主线程自己关闭，让子线程自己拿任务执行</span></code></pre>
+pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">)</span>                      <span class="token comment"># 主线程自己关闭，让子线程自己拿任务执行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -274,11 +274,11 @@ pool<span class="token punctuation">.</span>shutdown<span class="token punctuati
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/7cc201/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/7cc201/" title="发布于 2021-02-11 10:59">07.协程</a>
+                        <a href="../../pages/f8baa8/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/f8baa8/" title="发布于 2021-02-11 10:59">05.进程</a>
                         <br>
                     
                     
-                        <a href="../../pages/d776ab/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/d776ab/" title="发布于 2021-02-11 10:59">08.select、poll、epoll</a>
+                        <a href="../../pages/7cc201/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/7cc201/" title="发布于 2021-02-11 10:59">07.协程</a>
                     
                 </div>
             </div>

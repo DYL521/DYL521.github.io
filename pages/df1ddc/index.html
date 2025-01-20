@@ -80,7 +80,7 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-一对多创建表"><a href="#01-一对多创建表" class="headerlink" title="01.一对多创建表"></a>01.一对多创建表</h2><h3 id="1-1-创建一对多表"><a href="#1-1-创建一对多表" class="headerlink" title="1.1 创建一对多表"></a>1.1 创建一对多表</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+                <h2 id="01-一对多创建表"><a href="#01-一对多创建表" class="headerlink" title="01.一对多创建表"></a>01.一对多创建表</h2><h3 id="1-1-创建一对多表"><a href="#1-1-创建一对多表" class="headerlink" title="1.1 创建一对多表"></a>1.1 创建一对多表</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
 <span class="token keyword">class</span> <span class="token class-name">UserInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
     name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>unique<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
@@ -101,9 +101,9 @@
     <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
         db_table <span class="token operator">=</span> <span class="token string">'tb_usertype'</span>                <span class="token comment"># 指明数据库表名</span>
         verbose_name <span class="token operator">=</span> <span class="token string">'用户类型'</span>             <span class="token comment"># 在admin站点中显示的名称</span>
-        verbose_name_plural <span class="token operator">=</span> verbose_name   <span class="token comment"># 显示的复数名称</span></code></pre>
+        verbose_name_plural <span class="token operator">=</span> verbose_name   <span class="token comment"># 显示的复数名称</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-2-ForeignKey可选参数"><a href="#1-2-ForeignKey可选参数" class="headerlink" title="1.2 ForeignKey可选参数"></a>1.2 ForeignKey可选参数</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、to<span class="token punctuation">,</span>                                <span class="token comment"># 要进行关联的表名</span>
+<h3 id="1-2-ForeignKey可选参数"><a href="#1-2-ForeignKey可选参数" class="headerlink" title="1.2 ForeignKey可选参数"></a>1.2 ForeignKey可选参数</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、to<span class="token punctuation">,</span>                                <span class="token comment"># 要进行关联的表名</span>
 <span class="token number">2</span>、to_field<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                        <span class="token comment"># 要关联的表中的字段名称</span>
 <span class="token number">3</span>、on_delete<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>                        <span class="token comment"># 当删除关联表中的数据时，当前表与其关联的行的行为</span>
       <span class="token operator">-</span> models<span class="token punctuation">.</span>CASCADE             <span class="token comment"># ，删除关联数据，与之关联也删除</span>
@@ -120,9 +120,9 @@
             <span class="token operator">-</span> limit_choices_to<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'nid__gt'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">&#125;</span>
             <span class="token operator">-</span> limit_choices_to<span class="token operator">=</span><span class="token keyword">lambda</span> <span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">'nid__gt'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">&#125;</span>
 <span class="token number">7</span>、db_constraint<span class="token operator">=</span><span class="token boolean">True</span>                      <span class="token comment"># 是否在数据库中创建外键约束</span>
-<span class="token number">8</span>、parent_link<span class="token operator">=</span><span class="token boolean">False</span>                       <span class="token comment"># 在Admin中是否显示关联数据</span></code></pre>
+<span class="token number">8</span>、parent_link<span class="token operator">=</span><span class="token boolean">False</span>                       <span class="token comment"># 在Admin中是否显示关联数据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-3-一对多基本查询"><a href="#1-3-一对多基本查询" class="headerlink" title="1.3 一对多基本查询"></a>1.3 一对多基本查询</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse
+<h3 id="1-3-一对多基本查询"><a href="#1-3-一对多基本查询" class="headerlink" title="1.3 一对多基本查询"></a>1.3 一对多基本查询</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -152,9 +152,9 @@
     <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>userinfo_set<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span> models<span class="token punctuation">.</span>UserType<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span>type_name<span class="token operator">=</span><span class="token string">'student'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>userinfo_set<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'zhangsan'</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="02-正向反向查"><a href="#02-正向反向查" class="headerlink" title="02.正向反向查"></a>02.正向反向查</h2><h3 id="2-1-related-query-name设置"><a href="#2-1-related-query-name设置" class="headerlink" title="2.1 related_query_name设置"></a>2.1 related_query_name设置</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+<h2 id="02-正向反向查"><a href="#02-正向反向查" class="headerlink" title="02.正向反向查"></a>02.正向反向查</h2><h3 id="2-1-related-query-name设置"><a href="#2-1-related-query-name设置" class="headerlink" title="2.1 related_query_name设置"></a>2.1 related_query_name设置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
 <span class="token keyword">class</span> <span class="token class-name">UserType</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
     user_type_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
@@ -175,9 +175,9 @@
         <span class="token comment">#2、反向操作时，使用的字段名，用于代替 【表名_set】 如： obj.b_set.all()</span>
         <span class="token comment"># 使用时查找报错</span>
         <span class="token comment"># related_name='b',</span>
-    <span class="token punctuation">)</span></code></pre>
+    <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-2-正向方向查"><a href="#2-2-正向方向查" class="headerlink" title="2.2 正向方向查"></a>2.2 正向方向查</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<h3 id="2-2-正向方向查"><a href="#2-2-正向方向查" class="headerlink" title="2.2 正向方向查"></a>2.2 正向方向查</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -218,9 +218,9 @@
     for user_dic in username:
         models.User.objects.create(**user_dic)
     '''</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="03-values和values-list"><a href="#03-values和values-list" class="headerlink" title="03.values和values_list"></a>03.values和values_list</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<h2 id="03-values和values-list"><a href="#03-values和values-list" class="headerlink" title="03.values和values_list"></a>03.values和values_list</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -255,7 +255,7 @@
         models.User.objects.create(**user_dic)
     '''</span>
 
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>

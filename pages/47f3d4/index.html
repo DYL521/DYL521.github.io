@@ -85,12 +85,12 @@
 <li><p><strong>作用：</strong>一个队列中，一次性、顺序性、排他性的执行一系列命令</p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Multi 命令用于标记一个事务块的开始事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性( atomic )地执行</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Multi 命令用于标记一个事务块的开始事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性( atomic )地执行</span>
 <span class="token operator">></span> multi        <span class="token comment"># 开始一个redis事物</span>
 incr books
 incr books
 <span class="token operator">></span> <span class="token builtin class-name">exec</span>         <span class="token comment"># 执行事物</span>
-<span class="token operator">></span> discard       <span class="token comment"># 丢弃事物</span></code></pre>
+<span class="token operator">></span> discard       <span class="token comment"># 丢弃事物</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="1-2-watch乐观锁"><a href="#1-2-watch乐观锁" class="headerlink" title="1.2 watch乐观锁"></a>1.2 watch乐观锁</h2><ul>
 <li><p><strong>实质：<code>WATCH 只会在数据被其他客户端抢先修改了的情况下通知执行命令的这个客户端</code>（通过 WatchError 异常）<code>但不会阻止其他客户端对数据的修改</code></strong></p>
@@ -113,7 +113,7 @@ incr books
 <blockquote>
 <p><strong><code>使用reids的 watch + multi 指令实现超卖</code></strong></p>
 </blockquote>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#! /usr/bin/env python</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#! /usr/bin/env python</span>
 <span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token function">import</span> redis
 def sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span>:
@@ -135,7 +135,7 @@ def sale<span class="token punctuation">(</span>rs<span class="token punctuation
 
 rs <span class="token operator">=</span> redis.Redis<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'127.0.0.1'</span>, <span class="token assign-left variable">port</span><span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>                   <span class="token comment"># 连接redis</span>
 rs.set<span class="token punctuation">(</span><span class="token string">'apple'</span>,1000<span class="token punctuation">)</span>                                    <span class="token comment"># 首先在redis中设置某商品apple 对应数量value值为1000</span>
-sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span></code></pre>
+sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="1-3-setnx分布式锁"><a href="#1-3-setnx分布式锁" class="headerlink" title="1.3 setnx分布式锁"></a>1.3 setnx分布式锁</h2><ul>
 <li><p>1.分布式锁本质是占一个坑，当别的进程也要来占坑时发现已经被占，就会放弃或者稍后重试</p>
@@ -145,13 +145,13 @@ sale<span class="token punctuation">(</span>rs<span class="token punctuation">)<
 <li><p>3.先来先占，用完了在调用del指令释放坑</p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">></span> setnx lock:codehole <span class="token boolean">true</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token operator">></span> setnx lock:codehole <span class="token boolean">true</span>
 <span class="token punctuation">..</span><span class="token punctuation">..</span> <span class="token keyword">do</span> something critical <span class="token punctuation">..</span><span class="token punctuation">..</span>
-<span class="token operator">></span> del lock:codehole</code></pre>
+<span class="token operator">></span> del lock:codehole<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h3 id="1-3-1-setnx-watch-multi解决超卖问题"><a href="#1-3-1-setnx-watch-multi解决超卖问题" class="headerlink" title="1.3.1 setnx+watch+multi解决超卖问题"></a>1.3.1 setnx+watch+multi解决超卖问题</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env </span>
+<h3 id="1-3-1-setnx-watch-multi解决超卖问题"><a href="#1-3-1-setnx-watch-multi解决超卖问题" class="headerlink" title="1.3.1 setnx+watch+multi解决超卖问题"></a>1.3.1 setnx+watch+multi解决超卖问题</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env </span>
 <span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">import</span> redis
 <span class="token keyword">import</span> uuid
@@ -224,12 +224,12 @@ sale<span class="token punctuation">(</span>rs<span class="token punctuation">)<
 
 rs <span class="token operator">=</span> redis<span class="token punctuation">.</span>Redis<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">6379</span><span class="token punctuation">)</span>      <span class="token comment"># 连接redis</span>
 rs<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span><span class="token number">1000</span><span class="token punctuation">)</span>                               <span class="token comment"># # 首先在redis中设置某商品apple 对应数量value值为1000</span>
-sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span></code></pre>
+sale<span class="token punctuation">(</span>rs<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <h3 id="1-3-2-优化：给分布式锁加超时时间防止死锁"><a href="#1-3-2-优化：给分布式锁加超时时间防止死锁" class="headerlink" title="1.3.2 优化：给分布式锁加超时时间防止死锁"></a>1.3.2 优化：给分布式锁加超时时间防止死锁</h3><p>可能会出现的问题</p>
 <ul>
-<li>超时时间不好评估，因为如果业务在10s中还没有处理完，这个时候锁释放了，这个时候其他线程就会拿到这个锁。。。<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">acquire_expire_lock</span><span class="token punctuation">(</span>rs<span class="token punctuation">,</span> lock_name<span class="token punctuation">,</span> expire_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> locked_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<li>超时时间不好评估，因为如果业务在10s中还没有处理完，这个时候锁释放了，这个时候其他线程就会拿到这个锁。。。<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">acquire_expire_lock</span><span class="token punctuation">(</span>rs<span class="token punctuation">,</span> lock_name<span class="token punctuation">,</span> expire_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> locked_time<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">'''
     rs: 连接对象
     lock_name: 锁标识
@@ -246,7 +246,7 @@ sale<span class="token punctuation">(</span>rs<span class="token punctuation">)<
             rs<span class="token punctuation">.</span>expire<span class="token punctuation">(</span>lock_name<span class="token punctuation">,</span> locked_time<span class="token punctuation">)</span>
             <span class="token keyword">return</span> identifier
         time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">.001</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre></li>
+    <span class="token keyword">return</span> <span class="token boolean">False</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
 <h3 id="1-3-3-分布式锁-看门狗-过期时间续期-过期时间的实现"><a href="#1-3-3-分布式锁-看门狗-过期时间续期-过期时间的实现" class="headerlink" title="1.3.3 分布式锁+ 看门狗[过期时间续期]+ 过期时间的实现"></a>1.3.3 分布式锁+ 看门狗[过期时间续期]+ 过期时间的实现</h3><ul>
 <li>加锁时，先设置一个过期时间，然后开启一个守护线程，定时检测这个锁的失效时间，如果锁快要过期了，但是操作共享资源还未完成，</li>
@@ -292,7 +292,7 @@ sale<span class="token punctuation">(</span>rs<span class="token punctuation">)<
                         <br>
                     
                     
-                        <a href="../../pages/98c7a6/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/98c7a6/" title="发布于 2021-02-09 11:43">01.数据结构</a>
+                        <a href="../../pages/90d2c7/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/90d2c7/" title="发布于 2021-02-09 11:43">01.列表</a>
                     
                 </div>
             </div>

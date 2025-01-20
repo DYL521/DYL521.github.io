@@ -84,7 +84,7 @@
 <li><strong>作用：</strong>从数据库中取出一个汇总的集合</li>
 <li><code>aggregate求最大值、最小值、平局值等</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span>Avg<span class="token punctuation">,</span>Max<span class="token punctuation">,</span>Sum
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span>Avg<span class="token punctuation">,</span>Max<span class="token punctuation">,</span>Sum
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
     stus <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>aggregate<span class="token punctuation">(</span>
@@ -95,13 +95,13 @@
 
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stu'</span><span class="token punctuation">,</span>stus<span class="token punctuation">)</span>
     <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span>
-<span class="token comment">#运行结果：&#123;'stu_sum': 69, 'stu_max': 24, 'stu_avg': 23.0, 'stu_num': 3&#125;</span></code></pre>
+<span class="token comment">#运行结果：&#123;'stu_sum': 69, 'stu_max': 24, 'stu_avg': 23.0, 'stu_num': 3&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="02-annotate实现聚合group-by查询"><a href="#02-annotate实现聚合group-by查询" class="headerlink" title="02.annotate实现聚合group by查询"></a>02.annotate实现聚合group by查询</h2><ul>
 <li>**作用:**对查询结果进行分组，比如分组求出各年龄段的人数</li>
 <li><strong>注:</strong>   annotate后面加filter过滤相当于原生sql语句中的having</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span> Avg<span class="token punctuation">,</span> Max<span class="token punctuation">,</span> Min<span class="token punctuation">,</span> Sum
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Count<span class="token punctuation">,</span> Avg<span class="token punctuation">,</span> Max<span class="token punctuation">,</span> Min<span class="token punctuation">,</span> Sum
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment">#1 按年纪分组查找学生表中各个年龄段学生人数：（22岁两人，24岁一人）</span>
     <span class="token comment"># 查询结果：[&#123;'stu_num': 2, 'age': 22&#125;, &#123;'stu_num': 1, 'age': 24&#125;]</span>
@@ -119,7 +119,7 @@
 
     stus3 <span class="token operator">=</span> models<span class="token punctuation">.</span>Student<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>stu_Avg<span class="token operator">=</span>Avg<span class="token punctuation">(</span><span class="token string">'grade'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="03-aggregate和annotate区别"><a href="#03-aggregate和annotate区别" class="headerlink" title="03.aggregate和annotate区别"></a>03.aggregate和annotate区别</h2><ul>
 <li><ol>

@@ -81,7 +81,7 @@
 <li>但是遇到一个视图对应的路径提供了多种不同HTTP请求方式的支持时</li>
 <li>便需要在一个函数中编写不同的业务逻辑，代码可读性与复用性都不佳。</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">register</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">register</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
    <span class="token triple-quoted-string string">"""处理注册"""</span>
 
    <span class="token comment"># 获取请求方法，判断是GET/POST请求</span>
@@ -90,7 +90,7 @@
        <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token string">'register.html'</span><span class="token punctuation">)</span>
    <span class="token keyword">else</span><span class="token punctuation">:</span>
        <span class="token comment"># 处理POST请求，实现注册逻辑</span>
-       <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'这里实现注册逻辑'</span><span class="token punctuation">)</span></code></pre>
+       <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'这里实现注册逻辑'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-2-类视图引入"><a href="#1-2-类视图引入" class="headerlink" title="1.2 类视图引入"></a>1.2 类视图引入</h3><ul>
 <li><p>在Django中也可以使用类来定义一个视图，称为<strong>类视图</strong>。</p>
@@ -110,7 +110,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
 
 <span class="token keyword">class</span> <span class="token class-name">RegisterView</span><span class="token punctuation">(</span>View<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""类视图：处理注册"""</span>
@@ -121,7 +121,7 @@
 
     <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""处理POST请求，实现注册逻辑"""</span>
-        <span class="token keyword">return</span> JsonResponse<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"zhangsan"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> JsonResponse<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"zhangsan"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="02-类视图添加装饰器"><a href="#02-类视图添加装饰器" class="headerlink" title="02.类视图添加装饰器"></a>02.类视图添加装饰器</h2><ul>
 <li><p>1、 dispatch是父类中用来反射的函数，找对应的函数（比对应函数先执行）</p>
@@ -131,19 +131,19 @@
 <li><p><code>添加路由</code></p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
 
 urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
     re_path<span class="token punctuation">(</span><span class="token string">'home/'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>Home<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-1-定义一个装饰器"><a href="#2-1-定义一个装饰器" class="headerlink" title="2.1 定义一个装饰器"></a>2.1 定义一个装饰器</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h3 id="2-1-定义一个装饰器"><a href="#2-1-定义一个装饰器" class="headerlink" title="2.1 定义一个装饰器"></a>2.1 定义一个装饰器</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'自定义装饰器被调用了'</span><span class="token punctuation">)</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'请求路径%s'</span> <span class="token operator">%</span> request<span class="token punctuation">.</span>path<span class="token punctuation">)</span>
         <span class="token keyword">return</span> func<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> wrapper</code></pre>
+    <span class="token keyword">return</span> wrapper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-2-为特定请求方法添加装饰器"><a href="#2-2-为特定请求方法添加装饰器" class="headerlink" title="2.2 为特定请求方法添加装饰器"></a>2.2 为特定请求方法添加装饰器</h3><ul>
 <li><p>在类视图中使用为函数视图准备的装饰器时，不能直接添加装饰器</p>
@@ -153,7 +153,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 <li><p><strong>method_decorator装饰器使用name参数指明被装饰的方法</strong></p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> method_decorator
 
@@ -177,9 +177,9 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 
     <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'post方法'</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-为特定请求方法添加装饰器"><a href="#2-3-为特定请求方法添加装饰器" class="headerlink" title="2.3 为特定请求方法添加装饰器"></a>2.3 为特定请求方法添加装饰器</h3><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+<h3 id="2-3-为特定请求方法添加装饰器"><a href="#2-3-为特定请求方法添加装饰器" class="headerlink" title="2.3 为特定请求方法添加装饰器"></a>2.3 为特定请求方法添加装饰器</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>views <span class="token keyword">import</span> View
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> method_decorator
 
@@ -198,7 +198,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 
     <span class="token keyword">def</span> <span class="token function">put</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 没有为put方法添加装饰器</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'put方法'</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'ok'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="03-类视图Mixin扩展类"><a href="#03-类视图Mixin扩展类" class="headerlink" title="03.类视图Mixin扩展类"></a>03.类视图Mixin扩展类</h2><ul>
 <li><p>使用面向对象多继承的特性，可以通过定义父类（作为扩展类）</p>
@@ -208,7 +208,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 <li><p>定义的扩展父类名称通常以Mixin结尾。</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">ListModelMixin</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">ListModelMixin</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
     list扩展类
     """</span>
@@ -232,7 +232,7 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 
     <span class="token keyword">def</span> <span class="token function">post</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
         self<span class="token punctuation">.</span>create<span class="token punctuation">(</span>request<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 

@@ -100,30 +100,30 @@
 <h2 id="1-2-Nginx反向代理"><a href="#1-2-Nginx反向代理" class="headerlink" title="1.2 Nginx反向代理"></a>1.2 Nginx反向代理</h2><h3 id="1-2-1-web01和web02安装nginx"><a href="#1-2-1-web01和web02安装nginx" class="headerlink" title="1.2.1 web01和web02安装nginx"></a>1.2.1 web01和web02安装nginx</h3><ul>
 <li>web01配置</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
-<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
+<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li>web02配置</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
-<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span>
+<span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># echo web01 > /usr/share/nginx/html/index.html</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li>测试nginx服务</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/    <span class="token comment"># web01</span>
-http://192.168.56.63/    <span class="token comment"># web02</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/    <span class="token comment"># web01</span>
+http://192.168.56.63/    <span class="token comment"># web02</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="1-2-2-nginx反向代理配置"><a href="#1-2-2-nginx反向代理配置" class="headerlink" title="1.2.2 nginx反向代理配置"></a>1.2.2 nginx反向代理配置</h3><ul>
 <li><code>安装nginx服务器</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>配置反向代理</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">stream <span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">stream <span class="token punctuation">&#123;</span>
     log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
     access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
     upstream django-apiserver <span class="token punctuation">&#123;</span>
@@ -135,12 +135,12 @@ http://192.168.56.63/    <span class="token comment"># web02</span></code></pre>
        listen <span class="token number">88</span><span class="token punctuation">;</span>
        proxy_pass django-apiserver<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>完整配置如下</code>(看一下即可，都是nginx默认配置)</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
 user  nginx<span class="token punctuation">;</span>
 worker_processes  <span class="token number">1</span><span class="token punctuation">;</span>
 error_log  /var/log/nginx/error.log warn<span class="token punctuation">;</span>
@@ -175,16 +175,16 @@ http <span class="token punctuation">&#123;</span>
     keepalive_timeout  <span class="token number">65</span><span class="token punctuation">;</span>
     <span class="token comment">#gzip  on;</span>
     include /etc/nginx/conf.d/*.conf<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>测试反向代理可用性</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
 http://192.168.56.63/        <span class="token comment"># web02</span>
-<span class="token comment"># 可以停止一个nginx服务，测试可用性</span></code></pre>
+<span class="token comment"># 可以停止一个nginx服务，测试可用性</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h1 id="1-3-nginx-upstream五中配置"><a href="#1-3-nginx-upstream五中配置" class="headerlink" title="1.3 nginx upstream五中配置"></a>1.3 nginx upstream五中配置</h1><pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、轮询（默认）
+<h1 id="1-3-nginx-upstream五中配置"><a href="#1-3-nginx-upstream五中配置" class="headerlink" title="1.3 nginx upstream五中配置"></a>1.3 nginx upstream五中配置</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、轮询（默认）
 每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。
 
 upstream backserver <span class="token punctuation">&#123;</span>
@@ -229,7 +229,7 @@ upstream backserver <span class="token punctuation">&#123;</span>
     server squid2<span class="token punctuation">:</span><span class="token number">3128</span><span class="token punctuation">;</span>
     <span class="token builtin">hash</span> $request_uri<span class="token punctuation">;</span>
     hash_method crc32<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 

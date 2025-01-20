@@ -80,7 +80,7 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-基本操作"><a href="#01-基本操作" class="headerlink" title="01.基本操作"></a>01.基本操作</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
+                <h2 id="01-基本操作"><a href="#01-基本操作" class="headerlink" title="01.基本操作"></a>01.基本操作</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> models
 
 <span class="token keyword">def</span> <span class="token function">orm</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -121,12 +121,12 @@
     <span class="token comment"># 6.3 指定数据库</span>
     models<span class="token punctuation">.</span>UserInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>raw<span class="token punctuation">(</span><span class="token string">'select * from userinfo'</span><span class="token punctuation">,</span> using<span class="token operator">=</span><span class="token string">"default"</span><span class="token punctuation">)</span>
 
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'orm'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="02-进阶操作"><a href="#02-进阶操作" class="headerlink" title="02.进阶操作"></a>02.进阶操作</h2><ul>
 <li><code>进阶操作：牛掰掰的双下划线</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、大于，小于
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1</span>、大于，小于
         <span class="token comment"># models.Tb1.objects.filter(id__gt=1)                 # 获取id大于1的值</span>
         <span class="token comment"># models.Tb1.objects.filter(id__gte=1)                # 获取id大于等于1的值</span>
         <span class="token comment"># models.Tb1.objects.filter(id__lt=10)                # 获取id小于10的值</span>
@@ -184,12 +184,12 @@
 <span class="token number">17</span>、second
         <span class="token comment"># Event.objects.filter(timestamp__second=31)</span>
         <span class="token comment"># Event.objects.filter(time__second=2)</span>
-        <span class="token comment"># Event.objects.filter(timestamp__second__gte=31)</span></code></pre>
+        <span class="token comment"># Event.objects.filter(timestamp__second__gte=31)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="03-时间过滤"><a href="#03-时间过滤" class="headerlink" title="03.时间过滤"></a>03.时间过滤</h2><ul>
 <li>根据天&#x2F;小时进行过滤</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils <span class="token keyword">import</span> timezone
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils <span class="token keyword">import</span> timezone
 <span class="token keyword">from</span> report<span class="token punctuation">.</span>models <span class="token keyword">import</span> <span class="token operator">*</span>
 
 now <span class="token operator">=</span> timezone<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -197,7 +197,7 @@ now <span class="token operator">=</span> timezone<span class="token punctuation
 start_time <span class="token operator">=</span> now <span class="token operator">-</span> timezone<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">240</span><span class="token punctuation">)</span>  <span class="token comment"># 查询10天前的数据</span>
 end_time <span class="token operator">=</span> now
 
-qs <span class="token operator">=</span> AllClarm<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>start_tm__range<span class="token operator">=</span><span class="token punctuation">(</span>start_time<span class="token punctuation">,</span> end_time<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+qs <span class="token operator">=</span> AllClarm<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>start_tm__range<span class="token operator">=</span><span class="token punctuation">(</span>start_time<span class="token punctuation">,</span> end_time<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>

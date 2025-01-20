@@ -193,7 +193,7 @@
 </ul>
 <h1 id="14-延时消息？"><a href="#14-延时消息？" class="headerlink" title="14.延时消息？"></a>14.延时消息？</h1><pre><code>电商订单的超时自动取消，就是一个典型的利用延时消息的例子，用户提交了一个订单，就可以发送一个延时消息，1h以后去检查订单状态，若果还未付款就取消订单
 </code></pre>
-<pre class="language-java" data-language="java"><code class="language-java">
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">
 <span class="token comment">// 实例化一个生产者来产生延时消息</span>
 <span class="token class-name">DefaultMQProducer</span> producer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultMQProducer</span><span class="token punctuation">(</span><span class="token string">"ExampleProducerGroup"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// 启动生产者</span>
@@ -205,7 +205,7 @@ producer<span class="token punctuation">.</span><span class="token function">sta
     message<span class="token punctuation">.</span><span class="token function">setDelayTimeLevel</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment">// 发送消息</span>
     producer<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但是，目前RocketMQ支持的延时级别是有限的：private String messageDelayLevel &#x3D; “1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h”;</p>
 <p>RocketMQ如何实现延时消息的，<strong>临时存储+定时任务!</strong></p>
 <h1 id="15-怎么实现分布式消息事务"><a href="#15-怎么实现分布式消息事务" class="headerlink" title="15.怎么实现分布式消息事务?"></a>15.怎么实现分布式消息事务?</h1><p>半消息： 是指暂时还不能被Consumer消费的消息， Produce成功发生到Broker端的消息，但是此消息被标记为“暂不可投递”状态，只有等Producer端执行完本地事务二次确人之后Consumer才能消费此消息。</p>

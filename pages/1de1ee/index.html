@@ -108,12 +108,12 @@
 <h3 id="1-2-1-配置nginx负载"><a href="#1-2-1-配置nginx负载" class="headerlink" title="1.2.1 配置nginx负载"></a>1.2.1 配置nginx负载</h3><ul>
 <li>安装nginx服务</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@linux-node4 ~<span class="token punctuation">]</span><span class="token comment"># yum -y install nginx</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>配置反向代理</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/nginx/nginx.conf</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/nginx/nginx.conf</span>
 stream <span class="token punctuation">&#123;</span>
     log_format  main  <span class="token string">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="token punctuation">;</span>
     access_log  /var/log/nginx/django-access.log  main<span class="token punctuation">;</span>
@@ -126,12 +126,12 @@ stream <span class="token punctuation">&#123;</span>
        listen <span class="token number">88</span><span class="token punctuation">;</span>
        proxy_pass django-apiserver<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-2-2-完整配置如下"><a href="#1-2-2-完整配置如下" class="headerlink" title="1.2.2 完整配置如下"></a>1.2.2 完整配置如下</h3><ul>
 <li><code>看一下即可，都是nginx默认配置</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/nginx/nginx.conf </span>
 user  nginx<span class="token punctuation">;</span>
 worker_processes  <span class="token number">1</span><span class="token punctuation">;</span>
 error_log  /var/log/nginx/error.log warn<span class="token punctuation">;</span>
@@ -166,28 +166,28 @@ http <span class="token punctuation">&#123;</span>
     keepalive_timeout  <span class="token number">65</span><span class="token punctuation">;</span>
     <span class="token comment">#gzip  on;</span>
     include /etc/nginx/conf.d/*.conf<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-2-3-测试反向代理可用性"><a href="#1-2-3-测试反向代理可用性" class="headerlink" title="1.2.3 测试反向代理可用性"></a>1.2.3 测试反向代理可用性</h3><ul>
 <li>测试集群可用性</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.62/        <span class="token comment"># web01</span>
 http://192.168.56.63/        <span class="token comment"># web02</span>
-<span class="token comment"># 可以停止一个nginx服务，测试可用性</span></code></pre>
+<span class="token comment"># 可以停止一个nginx服务，测试可用性</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>服务管理</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl start nginx</span>
-<span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl enable nginx</span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl start nginx</span>
+<span class="token punctuation">[</span>root@lb-slave ~<span class="token punctuation">]</span><span class="token comment"># systemctl enable nginx</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="2-3-keepalive安装与配置"><a href="#2-3-keepalive安装与配置" class="headerlink" title="2.3 keepalive安装与配置"></a>2.3 keepalive安装与配置</h2><h3 id="2-3-1-安装keepalive"><a href="#2-3-1-安装keepalive" class="headerlink" title="2.3.1 安装keepalive"></a>2.3.1 安装keepalive</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># yum -y install keepalived</span></code></pre>
+<h2 id="2-3-keepalive安装与配置"><a href="#2-3-keepalive安装与配置" class="headerlink" title="2.3 keepalive安装与配置"></a>2.3 keepalive安装与配置</h2><h3 id="2-3-1-安装keepalive"><a href="#2-3-1-安装keepalive" class="headerlink" title="2.3.1 安装keepalive"></a>2.3.1 安装keepalive</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># yum -y install keepalived</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-3-2-keepalive-master配置修改"><a href="#2-3-2-keepalive-master配置修改" class="headerlink" title="2.3.2 keepalive-master配置修改"></a>2.3.2 keepalive-master配置修改</h3><ul>
 <li>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</li>
 <li><code>192.168.56.61</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
 
 global_defs <span class="token punctuation">&#123;</span> 
    notification_email <span class="token punctuation">&#123;</span> 
@@ -223,7 +223,7 @@ vrrp_instance VI_1 <span class="token punctuation">&#123;</span>
     track_script <span class="token punctuation">&#123;</span>
         check_nginx
     <span class="token punctuation">&#125;</span> 
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-3-3-keepalive-slave配置修改"><a href="#2-3-3-keepalive-slave配置修改" class="headerlink" title="2.3.3 keepalive-slave配置修改"></a>2.3.3 keepalive-slave配置修改</h3><ul>
 <li><p>&#x3D;&#x3D;注：默认的keepalived.conf配置太多，直接删除，用下面配置替换即可&#x3D;&#x3D;</p>
@@ -231,7 +231,7 @@ vrrp_instance VI_1 <span class="token punctuation">&#123;</span>
 <li><p><code>192.168.56.64</code></p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/keepalived.conf </span>
  
 global_defs <span class="token punctuation">&#123;</span> 
    notification_email <span class="token punctuation">&#123;</span> 
@@ -265,9 +265,9 @@ vrrp_instance VI_1 <span class="token punctuation">&#123;</span>
     track_script <span class="token punctuation">&#123;</span>
         check_nginx
     <span class="token punctuation">&#125;</span> 
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-4-添加nginx健康监测脚本"><a href="#2-3-4-添加nginx健康监测脚本" class="headerlink" title="2.3.4 添加nginx健康监测脚本"></a>2.3.4 添加nginx健康监测脚本</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/check_nginx.sh</span>
+<h3 id="2-3-4-添加nginx健康监测脚本"><a href="#2-3-4-添加nginx健康监测脚本" class="headerlink" title="2.3.4 添加nginx健康监测脚本"></a>2.3.4 添加nginx健康监测脚本</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># vim /etc/keepalived/check_nginx.sh</span>
 <span class="token comment">#!/bin/bash</span>
 <span class="token assign-left variable">count</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> <span class="token parameter variable">-ef</span> <span class="token operator">|</span><span class="token function">grep</span> nginx <span class="token operator">|</span><span class="token function">egrep</span> <span class="token parameter variable">-cv</span> <span class="token string">"grep|<span class="token variable">$$</span>"</span><span class="token variable">)</span></span>
 
@@ -276,10 +276,10 @@ vrrp_instance VI_1 <span class="token punctuation">&#123;</span>
 <span class="token keyword">else</span>
     <span class="token builtin class-name">exit</span> <span class="token number">0</span>
 <span class="token keyword">fi</span>
-<span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># chmod +x /etc/keepalived/check_nginx.sh         # 给脚本添加一个可执行权限</span></code></pre>
+<span class="token punctuation">[</span>root@lb-master keepalived<span class="token punctuation">]</span><span class="token comment"># chmod +x /etc/keepalived/check_nginx.sh         # 给脚本添加一个可执行权限</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-5-启动keepalive"><a href="#2-3-5-启动keepalive" class="headerlink" title="2.3.5 启动keepalive"></a>2.3.5 启动keepalive</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl start keepalived</span>
-<span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl enable keepalived</span></code></pre>
+<h3 id="2-3-5-启动keepalive"><a href="#2-3-5-启动keepalive" class="headerlink" title="2.3.5 启动keepalive"></a>2.3.5 启动keepalive</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl start keepalived</span>
+<span class="token punctuation">[</span>root@lb-master ~<span class="token punctuation">]</span><span class="token comment">#  systemctl enable keepalived</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="2-4-测试keepalive高可用"><a href="#2-4-测试keepalive高可用" class="headerlink" title="2.4 测试keepalive高可用"></a>2.4 测试keepalive高可用</h2><ul>
 <li>测试使用 <a target="_blank" rel="noopener" href="http://192.168.56.60:88/">http://192.168.56.60:88/</a> 虚拟IP访问<ul>

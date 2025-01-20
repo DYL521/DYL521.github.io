@@ -80,11 +80,11 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-创建数据库"><a href="#01-创建数据库" class="headerlink" title="01.创建数据库"></a>01.创建数据库</h2><h3 id="1-1-创建mysql库"><a href="#1-1-创建mysql库" class="headerlink" title="1.1 创建mysql库"></a>1.1 创建mysql库</h3><pre class="language-python" data-language="python"><code class="language-python">mysql<span class="token operator">></span>  create database testdb charset utf8<span class="token punctuation">;</span>       <span class="token comment"># 创建数据库</span>
+                <h2 id="01-创建数据库"><a href="#01-创建数据库" class="headerlink" title="01.创建数据库"></a>01.创建数据库</h2><h3 id="1-1-创建mysql库"><a href="#1-1-创建mysql库" class="headerlink" title="1.1 创建mysql库"></a>1.1 创建mysql库</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">mysql<span class="token operator">></span>  create database testdb charset utf8<span class="token punctuation">;</span>       <span class="token comment"># 创建数据库</span>
 mysql<span class="token operator">></span>  drop database testdb<span class="token punctuation">;</span>                 <span class="token comment"># 删除数据库</span>
-mysql<span class="token operator">></span>  show databases<span class="token punctuation">;</span>                     <span class="token comment"># 查看刚刚创建的数据库</span></code></pre>
+mysql<span class="token operator">></span>  show databases<span class="token punctuation">;</span>                     <span class="token comment"># 查看刚刚创建的数据库</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-2-创建用户并授权"><a href="#1-2-创建用户并授权" class="headerlink" title="1.2 创建用户并授权"></a>1.2 创建用户并授权</h3><pre class="language-mysql" data-language="mysql"><code class="language-mysql"># 1、创建用户
+<h3 id="1-2-创建用户并授权"><a href="#1-2-创建用户并授权" class="headerlink" title="1.2 创建用户并授权"></a>1.2 创建用户并授权</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql"># 1、创建用户
 create user &#39;django&#39;@&#39;%&#39; identified by &#39;123456&#39;;
 
 # 2、授予django用户授予对 testdb 数据库的操作权限
@@ -94,18 +94,18 @@ select host,user from mysql.user;
 
 # 3、删除用户
 Delete FROM mysql.user Where User&#x3D;&#39;django&#39; and Host&#x3D;”localhost”; 
-Delete FROM mysql.user Where User&#x3D;&#39;django&#39;; </code></pre>
+Delete FROM mysql.user Where User&#x3D;&#39;django&#39;; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="02-配置django"><a href="#02-配置django" class="headerlink" title="02.配置django"></a>02.配置django</h2><h3 id="2-1-安装PyMySQL"><a href="#2-1-安装PyMySQL" class="headerlink" title="2.1 安装PyMySQL"></a>2.1 安装PyMySQL</h3><pre class="language-none"><code class="language-none">pip install PyMySQL</code></pre>
+<h2 id="02-配置django"><a href="#02-配置django" class="headerlink" title="02.配置django"></a>02.配置django</h2><h3 id="2-1-安装PyMySQL"><a href="#2-1-安装PyMySQL" class="headerlink" title="2.1 安装PyMySQL"></a>2.1 安装PyMySQL</h3><pre class="line-numbers language-none"><code class="language-none">pip install PyMySQL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-2-主动修改为pymysql"><a href="#2-2-主动修改为pymysql" class="headerlink" title="2.2 主动修改为pymysql"></a>2.2 主动修改为pymysql</h3><ul>
 <li>Django默认使用MySQLdb模块链接MySQL，但在python3中还没有MySQLdb</li>
 <li>主动修改为pymysql，在project同名文件夹下的__init__文件中添加如下代码即可</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pymysql <span class="token keyword">import</span> install_as_MySQLdb
-install_as_MySQLdb<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pymysql <span class="token keyword">import</span> install_as_MySQLdb
+install_as_MySQLdb<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="2-3-修改DATABASES配置"><a href="#2-3-修改DATABASES配置" class="headerlink" title="2.3 修改DATABASES配置"></a>2.3 修改DATABASES配置</h3><pre class="language-python" data-language="python"><code class="language-python">DATABASES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+<h3 id="2-3-修改DATABASES配置"><a href="#2-3-修改DATABASES配置" class="headerlink" title="2.3 修改DATABASES配置"></a>2.3 修改DATABASES配置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">DATABASES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token string">'default'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
         <span class="token string">'ENGINE'</span><span class="token punctuation">:</span> <span class="token string">'django.db.backends.mysql'</span><span class="token punctuation">,</span>
         <span class="token string">'NAME'</span><span class="token punctuation">:</span> <span class="token string">'testdb'</span><span class="token punctuation">,</span> 
@@ -114,10 +114,10 @@ install_as_MySQLdb<span class="token punctuation">(</span><span class="token pun
         <span class="token string">'HOST'</span><span class="token punctuation">:</span> <span class="token string">'123.56.94.237'</span><span class="token punctuation">,</span>
         <span class="token string">'PORT'</span><span class="token punctuation">:</span> <span class="token string">'3306'</span><span class="token punctuation">,</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-4-创建表"><a href="#2-4-创建表" class="headerlink" title="2.4 创建表"></a>2.4 创建表</h3><pre class="language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py makemigrations
-python manage<span class="token punctuation">.</span>py migrate</code></pre>
+<h3 id="2-4-创建表"><a href="#2-4-创建表" class="headerlink" title="2.4 创建表"></a>2.4 创建表</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py makemigrations
+python manage<span class="token punctuation">.</span>py migrate<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>

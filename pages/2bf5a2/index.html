@@ -83,7 +83,7 @@
                 <h2 id="01-DRF初始化"><a href="#01-DRF初始化" class="headerlink" title="01.DRF初始化"></a>01.DRF初始化</h2><ul>
 <li>1.DRF框架的8个核心功能</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1.</span>认证（用户登录校验用户名密码或者token是否合法）
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1.</span>认证（用户登录校验用户名密码或者token是否合法）
 <span class="token number">2.</span>权限（根据不同的用户角色，可以操作不同的表）
 <span class="token number">3.</span>限流（限制接口访问速度）
 <span class="token number">4.</span>序列化（返回json）
@@ -92,25 +92,25 @@
 	<span class="token comment"># api.example.com/v1/login     # 只有用户名密码登录</span>
 	<span class="token comment"># api.example.com/v2/login     # 手机号，微信 登录</span>
 <span class="token number">7.</span>过滤（username<span class="token operator">=</span>zhangsan）
-<span class="token number">8.</span>排序（ordering<span class="token operator">=</span><span class="token operator">-</span><span class="token builtin">id</span>）</code></pre>
+<span class="token number">8.</span>排序（ordering<span class="token operator">=</span><span class="token operator">-</span><span class="token builtin">id</span>）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>2.相关包</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1.序列化相关'''</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1.序列化相关'''</span>
 serializer
 ModelSerializer
 <span class="token triple-quoted-string string">'''2.DRF视图函数继承'''</span>
 APIView
-ModelViewSet</code></pre>
+ModelViewSet<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-1-安装DRF"><a href="#1-1-安装DRF" class="headerlink" title="1.1 安装DRF"></a>1.1 安装DRF</h3><pre class="language-python" data-language="python"><code class="language-python">pip install djangorestframework<span class="token operator">==</span><span class="token number">3.11</span><span class="token number">.0</span>        <span class="token comment"># 安装djangorestframework</span>
-pip install django<span class="token operator">-</span><span class="token builtin">filter</span><span class="token operator">==</span><span class="token number">2.3</span><span class="token number">.0</span>             <span class="token comment"># 安装过滤器</span></code></pre>
+<h3 id="1-1-安装DRF"><a href="#1-1-安装DRF" class="headerlink" title="1.1 安装DRF"></a>1.1 安装DRF</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">pip install djangorestframework<span class="token operator">==</span><span class="token number">3.11</span><span class="token number">.0</span>        <span class="token comment"># 安装djangorestframework</span>
+pip install django<span class="token operator">-</span><span class="token builtin">filter</span><span class="token operator">==</span><span class="token number">2.3</span><span class="token number">.0</span>             <span class="token comment"># 安装过滤器</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="1-2-在syl-settings-py中注册"><a href="#1-2-在syl-settings-py中注册" class="headerlink" title="1.2 在syl&#x2F;settings.py中注册"></a>1.2 在syl&#x2F;settings.py中注册</h3><pre class="language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
+<h3 id="1-2-在syl-settings-py中注册"><a href="#1-2-在syl-settings-py中注册" class="headerlink" title="1.2 在syl&#x2F;settings.py中注册"></a>1.2 在syl&#x2F;settings.py中注册</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
     <span class="token string">'django_filters'</span><span class="token punctuation">,</span>
     <span class="token string">'rest_framework'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-3-syl-settings-py配置DRF"><a href="#1-3-syl-settings-py配置DRF" class="headerlink" title="1.3 syl&#x2F;settings.py配置DRF"></a>1.3 syl&#x2F;settings.py配置DRF</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 过滤器</span>
 <span class="token comment"># 1,安装 django-filter</span>
@@ -237,7 +237,7 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
 <h3 id="2-1-user-urls-py"><a href="#2-1-user-urls-py" class="headerlink" title="2.1 user&#x2F;urls.py"></a>2.1 user&#x2F;urls.py</h3><ul>
 <li>ModelViewSet注册路由三部曲</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> include<span class="token punctuation">,</span> path
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> include<span class="token punctuation">,</span> path
 <span class="token keyword">from</span> user <span class="token keyword">import</span> views
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>routers <span class="token keyword">import</span> SimpleRouter<span class="token punctuation">,</span> DefaultRouter
 
@@ -251,14 +251,14 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
     path<span class="token punctuation">(</span><span class="token string">'api-auth/'</span><span class="token punctuation">,</span> include<span class="token punctuation">(</span><span class="token string">'rest_framework.urls'</span><span class="token punctuation">,</span> namespace<span class="token operator">=</span><span class="token string">'rest_framework'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 认证地址</span>
 <span class="token punctuation">]</span>
 
-urlpatterns <span class="token operator">+=</span> router<span class="token punctuation">.</span>urls     <span class="token comment"># 3.模块地址</span></code></pre>
+urlpatterns <span class="token operator">+=</span> router<span class="token punctuation">.</span>urls     <span class="token comment"># 3.模块地址</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-list'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> 
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-list'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> 
  <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-list'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span>
  <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/actived/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-actived'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> 
  <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/actived\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-actived'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> 
  <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/unactived/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-unactived'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> 
- <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/unactived\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-unactived'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/(?P&lt;pk>[^/.]+)/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-detail'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/(?P&lt;pk>[^/.]+)\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-detail'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'api-root'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'api-root'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">]</span> DRF</code></pre>
+ <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/unactived\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-unactived'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/(?P&lt;pk>[^/.]+)/$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-detail'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^user/(?P&lt;pk>[^/.]+)\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'user-detail'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'api-root'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>URLPattern <span class="token string">'^\.(?P&lt;format>[a-z0-9]+)/?$'</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token string">'api-root'</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">]</span> DRF<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-2-serializers-py"><a href="#2-2-serializers-py" class="headerlink" title="2.2 serializers.py"></a>2.2 serializers.py</h3><ul>
 <li><p>创建 <code>user/serializers.py</code>写序列化器</p>
@@ -275,7 +275,7 @@ urlpatterns <span class="token operator">+=</span> router<span class="token punc
 </ul>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> user<span class="token punctuation">.</span>models <span class="token keyword">import</span> User
 
 
@@ -330,7 +330,7 @@ urlpatterns <span class="token operator">+=</span> router<span class="token punc
         model <span class="token operator">=</span> User
         fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'username'</span><span class="token punctuation">,</span> <span class="token string">'is_active'</span><span class="token punctuation">)</span>  <span class="token comment"># 临时添加字段也需要写在这里</span>
         <span class="token comment"># fields = '__all__'  # 所有字段</span>
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-3-user-views-py"><a href="#2-3-user-views-py" class="headerlink" title="2.3 user&#x2F;views.py"></a>2.3 user&#x2F;views.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>http <span class="token keyword">import</span> HttpResponse
 <span class="token keyword">from</span> django_filters<span class="token punctuation">.</span>rest_framework <span class="token keyword">import</span> DjangoFilterBackend
@@ -441,7 +441,7 @@ urlpatterns <span class="token operator">+=</span> router<span class="token punc
 <h2 id="03-测试接口"><a href="#03-测试接口" class="headerlink" title="03.测试接口"></a>03.测试接口</h2><h3 id="3-1-查询-接口"><a href="#3-1-查询-接口" class="headerlink" title="3.1 查询 接口"></a>3.1 查询 接口</h3><ul>
 <li>查询路由</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#1.查询所有用户</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1.查询所有用户</span>
 http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>
 <span class="token comment">#2.查询id=1的用户</span>
 http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span>    <span class="token comment">#3.查询 用户名（tom），激活的用户</span>
@@ -449,43 +449,43 @@ http<span class="token punctuation">:</span><span class="token operator">//</spa
 <span class="token comment">#4.查询所有用户 用id 反向排序</span>
 http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?ordering<span class="token operator">=</span><span class="token operator">-</span><span class="token builtin">id</span>
 <span class="token comment">#5.查询用户表中第一页，每页显示一条数据</span>
-http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?page<span class="token operator">=</span><span class="token number">1</span><span class="token operator">&amp;</span>page_size<span class="token operator">=</span><span class="token number">1</span></code></pre>
+http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?page<span class="token operator">=</span><span class="token number">1</span><span class="token operator">&amp;</span>page_size<span class="token operator">=</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>增加（POST）</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#1.增加用户</span>
-http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1.增加用户</span>
+http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li>修改（PUT）</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 修改用户信息</span>
-http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 修改用户信息</span>
+http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ul>
 <li>删除（DELETE）</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 删除用户</span>
-http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 删除用户</span>
+http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="3-2-自定义认证权限"><a href="#3-2-自定义认证权限" class="headerlink" title="3.2 自定义认证权限"></a>3.2 自定义认证权限</h3><h4 id="3-2-1-测试-全局权限功能"><a href="#3-2-1-测试-全局权限功能" class="headerlink" title="3.2.1 测试 全局权限功能"></a>3.2.1 测试 <code>全局权限</code>功能</h4><ul>
 <li>在浏览器中，打开任意接口，未登录用户只能发送get请求，只有登录用户才能发送post等请求</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># http://192.168.56.100:8888/user/user/</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># http://192.168.56.100:8888/user/user/</span>
 <span class="token string">''</span>'syl<span class="token operator">/</span>settings<span class="token punctuation">.</span>py中设置，只有认证用户可以访问<span class="token punctuation">,</span> 否则只能读取
 REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token comment">#2.权限配置（全局）： 顺序靠上的严格</span>
     <span class="token string">'DEFAULT_PERMISSION_CLASSES'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
         <span class="token string">'rest_framework.permissions.IsAuthenticatedOrReadOnly'</span><span class="token punctuation">,</span>  <span class="token comment"># 认证用户可以访问, 否则只能读取</span>
     <span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-2-2-测试-自定义权限功能"><a href="#3-2-2-测试-自定义权限功能" class="headerlink" title="3.2.2 测试 自定义权限功能"></a>3.2.2 测试 <code>自定义权限</code>功能</h4><ul>
 <li><code>注：自定义权限会覆盖settings.py中配置的全局权限</code></li>
 <li>1.自定义权限（<code>其实应该写到一个单独的文件内进行公用，这里先写到这里进行测试</code>）</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 自定义权限（局部）</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 自定义权限（局部）</span>
 <span class="token keyword">class</span> <span class="token class-name">MyPermission</span><span class="token punctuation">(</span>BasePermission<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># has_permission 是用户对这个视图有没有 GET POST PUT PATCH DELETE 权限的分别判断</span>
     <span class="token keyword">def</span> <span class="token function">has_permission</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> view<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -507,19 +507,19 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
         <span class="token triple-quoted-string string">"""获取单个数据时,判断用户对某个数据对象是否有访问权限"""</span>
         <span class="token keyword">if</span> request<span class="token punctuation">.</span>user<span class="token punctuation">.</span><span class="token builtin">id</span> <span class="token operator">==</span> obj<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span> <span class="token boolean">True</span>
-        <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre>
+        <span class="token keyword">return</span> <span class="token boolean">False</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>2.<code>user/viesws.py视图函数中指定当前视图要用的</code>权限类</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 2.权限：自定义权限类</span>
-    permission_classes <span class="token operator">=</span> <span class="token punctuation">(</span>MyPermission<span class="token punctuation">,</span><span class="token punctuation">)</span></code></pre>
+    permission_classes <span class="token operator">=</span> <span class="token punctuation">(</span>MyPermission<span class="token punctuation">,</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-3-限流"><a href="#3-3-限流" class="headerlink" title="3.3 限流"></a>3.3 限流</h3><ul>
 <li><code>syl/settings.py中配置限流</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>apiview<span class="token operator">/</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>apiview<span class="token operator">/</span>
 <span class="token triple-quoted-string string">'''修改syl/settings.py配置限速设置'''</span>
 REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token comment">#3.1 限流策略</span>
@@ -527,12 +527,12 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
         <span class="token string">'user'</span><span class="token punctuation">:</span> <span class="token string">'3/hour'</span><span class="token punctuation">,</span>    <span class="token comment"># 认证用户每小时10次</span>
         <span class="token string">'anon'</span><span class="token punctuation">:</span> <span class="token string">'3/day'</span><span class="token punctuation">,</span>     <span class="token comment"># 未认证用户每天</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-4-序列化"><a href="#3-4-序列化" class="headerlink" title="3.4 序列化"></a>3.4 序列化</h3><ul>
 <li><code>user/serialzers.py</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> user<span class="token punctuation">.</span>models <span class="token keyword">import</span> User
 
 <span class="token keyword">def</span> <span class="token function">address_validate</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -584,50 +584,50 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
                 <span class="token string">"min_length"</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>  <span class="token comment"># 给地址增加 最小长度限制</span>
                 <span class="token string">"default"</span><span class="token punctuation">:</span> <span class="token string">'默认测试地址'</span><span class="token punctuation">,</span>  <span class="token comment"># 增加默认值</span>
             <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span></code></pre>
+        <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-5-自定义分页"><a href="#3-5-自定义分页" class="headerlink" title="3.5 自定义分页"></a>3.5 自定义分页</h3><pre class="language-bash" data-language="bash"><code class="language-bash">http://192.168.56.100:8888/user/user/?page<span class="token operator">=</span><span class="token number">1</span><span class="token operator">&amp;</span><span class="token assign-left variable">page_size</span><span class="token operator">=</span><span class="token number">1</span></code></pre>
+<h3 id="3-5-自定义分页"><a href="#3-5-自定义分页" class="headerlink" title="3.5 自定义分页"></a>3.5 自定义分页</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http://192.168.56.100:8888/user/user/?page<span class="token operator">=</span><span class="token number">1</span><span class="token operator">&amp;</span><span class="token assign-left variable">page_size</span><span class="token operator">=</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>1.<code>user/views.py</code>中定义自定义分页类</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 分页（局部）：自定义分页器 局部</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 分页（局部）：自定义分页器 局部</span>
 <span class="token keyword">class</span> <span class="token class-name">PageNum</span><span class="token punctuation">(</span>PageNumberPagination<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 查询字符串中代表每页返回数据数量的参数名, 默认值: None</span>
     page_size_query_param <span class="token operator">=</span> <span class="token string">'page_size'</span>
     <span class="token comment"># 查询字符串中代表页码的参数名, 有默认值: page</span>
     <span class="token comment"># page_query_param = 'page'</span>
     <span class="token comment"># 一页中最多的结果条数</span>
-    max_page_size <span class="token operator">=</span> <span class="token number">2</span></code></pre>
+    max_page_size <span class="token operator">=</span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li>2.<code>user/views.py</code>视图函数中使用</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 3.分页：自定义分页器 覆盖全局配置</span>
-    pagination_class <span class="token operator">=</span> PageNum</code></pre>
+    pagination_class <span class="token operator">=</span> PageNum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-6-过滤和排序"><a href="#3-6-过滤和排序" class="headerlink" title="3.6 过滤和排序"></a>3.6 过滤和排序</h3><ul>
 <li>测试url</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#1.过滤：查询 用户名（tom），激活的用户</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1.过滤：查询 用户名（tom），激活的用户</span>
 http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?username<span class="token operator">=</span>tom<span class="token operator">&amp;</span>phone<span class="token operator">=</span><span class="token operator">&amp;</span>is_active<span class="token operator">=</span>true
 <span class="token comment">#2.排序：查询所有用户 用id 反向排序</span>
-http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?ordering<span class="token operator">=</span><span class="token operator">-</span><span class="token builtin">id</span></code></pre>
+http<span class="token punctuation">:</span><span class="token operator">//</span><span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.100</span><span class="token punctuation">:</span><span class="token number">8888</span><span class="token operator">/</span>user<span class="token operator">/</span>user<span class="token operator">/</span>?ordering<span class="token operator">=</span><span class="token operator">-</span><span class="token builtin">id</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>user/views.py</code>视图函数中配置过滤和排序字段</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">UserViewSet</span><span class="token punctuation">(</span>viewsets<span class="token punctuation">.</span>ModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 5.过滤：指定过滤方法类, 排序方法类, 一个或多个</span>
     filter_backends <span class="token operator">=</span> <span class="token punctuation">(</span>DjangoFilterBackend<span class="token punctuation">,</span> OrderingFilter<span class="token punctuation">)</span>  <span class="token comment"># 同时支持过滤和排序</span>
   
     <span class="token comment"># 5.1指定排序字段, 不设置, 排序功能不起效</span>
     ordering_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'date_joined'</span><span class="token punctuation">,</span> <span class="token string">'id'</span><span class="token punctuation">)</span>  <span class="token comment"># ?ordering=-id</span>
     <span class="token comment"># 5.2指定过滤字段, 不设置, 过滤功能不起效</span>
-    filter_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span> <span class="token string">'phone'</span><span class="token punctuation">,</span> <span class="token string">'is_active'</span><span class="token punctuation">)</span>  <span class="token comment"># ?username=tom&amp;phone=&amp;is_active=true</span></code></pre>
+    filter_fields <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'username'</span><span class="token punctuation">,</span> <span class="token string">'phone'</span><span class="token punctuation">,</span> <span class="token string">'is_active'</span><span class="token punctuation">)</span>  <span class="token comment"># ?username=tom&amp;phone=&amp;is_active=true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="04-多对多序列化"><a href="#04-多对多序列化" class="headerlink" title="04.多对多序列化"></a>04.多对多序列化</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<h2 id="04-多对多序列化"><a href="#04-多对多序列化" class="headerlink" title="04.多对多序列化"></a>04.多对多序列化</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> course<span class="token punctuation">.</span>models <span class="token keyword">import</span> <span class="token operator">*</span>
 
@@ -655,7 +655,7 @@ http<span class="token punctuation">:</span><span class="token operator">//</spa
 <span class="token keyword">class</span> <span class="token class-name">CourseDeepSerializer</span><span class="token punctuation">(</span>CourseSerializer<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 字段名名, 必须是模型可以 . 引用到的变量</span>
     <span class="token comment"># Course().   "chapters"  才能作为字段名,  如果是集合, 需要加many=True,</span>
-    chapters <span class="token operator">=</span> ChaptersSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+    chapters <span class="token operator">=</span> ChaptersSerializer<span class="token punctuation">(</span>many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>
