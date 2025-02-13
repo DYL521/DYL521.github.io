@@ -81,6 +81,25 @@
 <li>运行时间超过<code>long_query_time</code>值的SQL语句，则会被记录到慢查询日志中。</li>
 <li><code>long_query_time</code>的默认值为<code>10</code>，意思是记录运行<code>10</code>秒以上的语句。</li>
 </ul>
+<h2 id="1-2-诊断慢查询"><a href="#1-2-诊断慢查询" class="headerlink" title="1.2  诊断慢查询"></a>1.2  诊断慢查询</h2><ul>
+<li><p>开启慢查询日志</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查看当前配置</span>
+<span class="token comment">-- 查看当前配置</span>
+<span class="token keyword">SHOW</span> VARIABLES <span class="token operator">LIKE</span> <span class="token string">'slow_query_log%'</span><span class="token punctuation">;</span>
+<span class="token keyword">SHOW</span> VARIPS <span class="token operator">LIKE</span> <span class="token string">'long_query_time'</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 动态开启（重启失效）</span>
+<span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> slow_query_log <span class="token operator">=</span> <span class="token string">'ON'</span><span class="token punctuation">;</span>
+<span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> long_query_time <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  <span class="token comment">-- 阈值设为1秒</span>
+<span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> slow_query_log_file <span class="token operator">=</span> <span class="token string">'/var/log/mysql/slow.log'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>分析工具</p>
+<ul>
+<li>mysqldumpslow（MySQL自带）</li>
+<li>Percona Toolkit（高阶分析）</li>
+</ul>
+</li>
+</ul>
 <h2 id="1-2-查找那些语句慢"><a href="#1-2-查找那些语句慢" class="headerlink" title="1.2 查找那些语句慢"></a>1.2 查找那些语句慢</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 比如，得到返回记录集最多的10个SQL。</span>
 mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">10</span> /database/mysql/mysql06_slow.log
 
@@ -93,15 +112,10 @@ mysqldumpslow <span class="token parameter variable">-s</span> t <span class="to
 <span class="token comment"># 另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现刷屏的情况。</span>
 mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">20</span> /mysqldata/mysql/mysql06-slow.log <span class="token operator">|</span> <span class="token function">more</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="1-3-explain分析慢查询原因"><a href="#1-3-explain分析慢查询原因" class="headerlink" title="1.3 explain分析慢查询原因"></a>1.3 explain分析慢查询原因</h2><ul>
-<li><p>使用 EXPLAIN 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。</p>
-</li>
-<li><p>EXPLAIN 的查询结果还会告诉你你的索引主键被如何利用的，你的数据表是如何被搜索和排序的……等等，等等。</p>
-</li>
-<li><p>explain的执行效果</p>
-</li>
-</ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mysql<span class="token operator">></span> explain <span class="token keyword">select</span> * from subject where <span class="token function">id</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">\</span>G
+<h2 id="1-3-explain分析慢查询原因"><a href="#1-3-explain分析慢查询原因" class="headerlink" title="1.3 explain分析慢查询原因"></a>1.3 explain分析慢查询原因</h2><h3 id="1-3-1-explain执行计划分析"><a href="#1-3-1-explain执行计划分析" class="headerlink" title="1.3.1 explain执行计划分析"></a>1.3.1 explain执行计划分析</h3><ul>
+<li>使用 EXPLAIN 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。</li>
+<li>EXPLAIN 的查询结果还会告诉你你的索引主键被如何利用的，你的数据表是如何被搜索和排序的……等等，等等。</li>
+<li>explain的执行效果<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mysql<span class="token operator">></span> explain <span class="token keyword">select</span> * from subject where <span class="token function">id</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">\</span>G
 ******************************************************
            id: <span class="token number">1</span>
   select_type: SIMPLE
@@ -115,7 +129,59 @@ possible_keys: PRIMARY
          rows: <span class="token number">1</span>
      filtered: <span class="token number">100.00</span>             <span class="token comment"># 查询的表行占表的百分比</span>
         Extra: NULL
-******************************************************<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+******************************************************<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>关注type列： index&#x2F;rang优于全表扫描</li>
+<li>检查key列： 是否民中索引</li>
+<li>rows列： <strong>扫描行数越少越好</strong></li>
+</ul>
+<h3 id="1-3-2-索引设计原则"><a href="#1-3-2-索引设计原则" class="headerlink" title="1.3.2 索引设计原则"></a>1.3.2 索引设计原则</h3><h3 id="1-3-2-1-覆盖索引：-索引包含查询锁需要的字段"><a href="#1-3-2-1-覆盖索引：-索引包含查询锁需要的字段" class="headerlink" title="1.3.2.1 覆盖索引： 索引包含查询锁需要的字段"></a>1.3.2.1 覆盖索引： 索引包含查询锁需要的字段</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> orders <span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> idx_user_product <span class="token punctuation">(</span>user_id<span class="token punctuation">,</span> product_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- 查询时直接使用索引</span>
+<span class="token keyword">SELECT</span> user_id<span class="token punctuation">,</span> product_id <span class="token keyword">FROM</span> orders <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-3-2-2-最左前缀原则：-复合索引按字段顺序生效"><a href="#1-3-2-2-最左前缀原则：-复合索引按字段顺序生效" class="headerlink" title="1.3.2.2 最左前缀原则： 复合索引按字段顺序生效"></a>1.3.2.2 最左前缀原则： 复合索引按字段顺序生效</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 索引 (A,B,C) 对 WHERE A=1 AND B>2 有效，但对 WHERE B>2 无效</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="1-3-2-3-避免冗余索引：删除未使用的索引"><a href="#1-3-2-3-避免冗余索引：删除未使用的索引" class="headerlink" title="1.3.2.3 避免冗余索引：删除未使用的索引"></a>1.3.2.3 避免冗余索引：删除未使用的索引</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> sys<span class="token punctuation">.</span>schema_unused_indexes<span class="token punctuation">;</span>  <span class="token comment">-- 需启用performance_schema</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-3-索引失效的场景"><a href="#1-3-3-索引失效的场景" class="headerlink" title="1.3.3 索引失效的场景"></a>1.3.3 索引失效的场景</h3><ul>
+<li>对索引字段进行运算：  </li>
+<li>使用LIKE “%keyword” 左模糊查询</li>
+<li>隐式类型转换： where id &#x3D; “100” (id为整型)</li>
+</ul>
+<h2 id="1-4-SQL语句优化"><a href="#1-4-SQL语句优化" class="headerlink" title="1.4 SQL语句优化"></a>1.4 SQL语句优化</h2><h3 id="1-4-1-避免全表扫描"><a href="#1-4-1-避免全表扫描" class="headerlink" title="1.4.1 避免全表扫描"></a>1.4.1 避免全表扫描</h3><ul>
+<li>**禁用SELECT * **， 明确指定字段</li>
+<li>分页优化<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">
+<span class="token comment">-- 低效写法（偏移量过大）</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> logs <span class="token keyword">LIMIT</span> <span class="token number">10000</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 高效写法（基于ID游标）</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> logs  <span class="token keyword">where</span>  id <span class="token operator">></span><span class="token number">100000</span> <span class="token keyword">LIMIT</span> <span class="token number">10000</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h3 id="1-4-2-JOIN优化"><a href="#1-4-2-JOIN优化" class="headerlink" title="1.4.2 JOIN优化"></a>1.4.2 JOIN优化</h3><ul>
+<li>小表驱动大表<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> users u 
+<span class="token keyword">join</span> orders o 
+<span class="token keyword">on</span>  u<span class="token punctuation">.</span>id<span class="token operator">=</span>o<span class="token punctuation">.</span>user_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>避免笛卡尔积： 确保JOIN条件准确, ON后面一定要有条件！！</li>
+</ul>
+<h3 id="1-4-3-子查询改写-将IN子查询改为JOIN"><a href="#1-4-3-子查询改写-将IN子查询改为JOIN" class="headerlink" title="1.4.3 子查询改写: 将IN子查询改为JOIN"></a>1.4.3 子查询改写: 将IN子查询改为JOIN</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--- 低效</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> id <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> user_id <span class="token operator">in</span> orders<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">--- 高效</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users u <span class="token keyword">join</span> orders o <span class="token keyword">ON</span> u<span class="token punctuation">.</span>id <span class="token operator">=</span> o<span class="token punctuation">.</span>user_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-4-4-批量操作"><a href="#1-4-4-批量操作" class="headerlink" title="1.4.4 批量操作"></a>1.4.4 批量操作</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> logs <span class="token punctuation">(</span>message<span class="token punctuation">)</span> <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'msg1'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'msg2'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'msg3'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="1-5-配置调优"><a href="#1-5-配置调优" class="headerlink" title="1.5 配置调优"></a>1.5 配置调优</h2><h3 id="1-5-1-InnoDB缓冲池"><a href="#1-5-1-InnoDB缓冲池" class="headerlink" title="1.5.1 InnoDB缓冲池"></a>1.5.1 InnoDB缓冲池</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 配置为物理内存的70%-80%</span>
+innodb_buffer_pool_size <span class="token operator">=</span> 16G<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="1-5-2-连接池管理"><a href="#1-5-2-连接池管理" class="headerlink" title="1.5.2 连接池管理"></a>1.5.2 连接池管理</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">max_connections <span class="token operator">=</span> <span class="token number">500</span>        <span class="token comment"># 最大连接数</span>
+thread_cache_size <span class="token operator">=</span> <span class="token number">50</span>       <span class="token comment"># 线程缓存</span>
+wait_timeout <span class="token operator">=</span> <span class="token number">600</span>           <span class="token comment"># 空闲连接超时</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-5-3-临时表优化"><a href="#1-5-3-临时表优化" class="headerlink" title="1.5.3 临时表优化"></a>1.5.3 临时表优化</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tmp_table_size <span class="token operator">=</span> 64M         <span class="token comment"># 内存临时表上限</span>
+max_heap_table_size <span class="token operator">=</span> 64M    <span class="token comment"># 内存表大小限制</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
 
 
 
