@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            04.链表
+            标签 - MySQL索引
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,42 +32,15 @@
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/post.css">
+    <link type="text/css" rel="stylesheet" href="/css/archive.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">04.链表</h1>
+                <h1 class="header-subtitle">标签归档</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text">
-                        <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2021-03-04
-                        </span>
-                        
-                            
-                                <span id="//pages/030b7e/" class="leancloud_visitors" data-flag-title="04.链表">
-                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                </span>
-                            
-                            
-                                <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/030b7e/"></span>
-                                </span>
-                              
-                        
-                    </p>
-                    
-                        
-                            <span class="category-color">算法</span>
-                        
-                            <span class="category-color">数据结构</span>
-                        
-                    
-                    
-                        
-                            <span class="tag-color">数据结构</span>
-                        
-                    
+                    <p class="article-info-text Chinese"></p>
+                    <p class="article-info-text English"></p>                  
                 </div>
             
         </div>
@@ -76,135 +49,37 @@
 </div>
 <div id="container">
     
-        <!-- 文章页面 -->
-        <div id="article">
-            <div class="toc"></div>
-            <div class="article-body">
-                <h1 id="01-链表"><a href="#01-链表" class="headerlink" title="01.链表"></a>01.链表</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/8574655.html#i4">https://www.cnblogs.com/xiaonq/p/8574655.html#i4</a></p>
-<h2 id="1-1-单链表定义"><a href="#1-1-单链表定义" class="headerlink" title="1.1 单链表定义"></a>1.1 单链表定义</h2><ul>
-<li>注：链表中每个元素都是一个对象，每个对象称为一个节点</li>
-<li>每个节点包含两部分：<ul>
-<li><code>数据域</code>： 存放当前节点数据</li>
-<li><code>指针域</code>： 指向下一个节点的内存地址</li>
-</ul>
-</li>
-</ul>
-<p><img src="./assets/image-20210120112921195.png" style="width: 800px; margin-left: 10px;"> </img></p>
-<h2 id="1-2-python模拟单链表"><a href="#1-2-python模拟单链表" class="headerlink" title="1.2 python模拟单链表"></a>1.2 python模拟单链表</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> item<span class="token punctuation">,</span><span class="token builtin">next</span><span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>item <span class="token operator">=</span> item
-        self<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> <span class="token builtin">next</span>
-      
-l <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span>Node<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span>item<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span>item<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-3-单向链表反转"><a href="#1-3-单向链表反转" class="headerlink" title="1.3 单向链表反转"></a>1.3 单向链表反转</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
-<span class="token comment"># -*- coding: utf-8 -*-</span>
-<span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>val <span class="token operator">=</span> val
-        self<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> <span class="token boolean">None</span>
-
-<span class="token keyword">def</span> <span class="token function">list_reverse</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> head <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token boolean">None</span>
-    L<span class="token punctuation">,</span> R<span class="token punctuation">,</span> cur <span class="token operator">=</span> <span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">,</span> head  <span class="token comment"># 左指针、有指针、游标</span>
-    <span class="token keyword">while</span> cur<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">!=</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-        L <span class="token operator">=</span> R             <span class="token comment"># 左侧指针指向以前右侧指针位置</span>
-        R <span class="token operator">=</span> cur           <span class="token comment"># 右侧指针前进一位指向当前游标位置</span>
-        cur <span class="token operator">=</span> cur<span class="token punctuation">.</span><span class="token builtin">next</span>    <span class="token comment"># 游标每次向前进一位</span>
-        R<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> L        <span class="token comment"># 右侧指针指向左侧实现反转</span>
-    cur<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> R          <span class="token comment"># 当跳出 while 循环时 cur(原链表最后一个元素) R(原链表倒数第二个元素)</span>
-    <span class="token keyword">return</span> cur
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">'''
-    原始链表：1 -> 2 -> 3 -> 4
-    反转链表：4 -> 3 -> 2 -> 1
-    '''</span>
-    l1 <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-    l1<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
-    l <span class="token operator">=</span> list_reverse<span class="token punctuation">(</span>l1<span class="token punctuation">)</span>
-    <span class="token keyword">print</span> l<span class="token punctuation">.</span>val         <span class="token comment"># 4  反转后链表第一个值4</span>
-    <span class="token keyword">print</span> l<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span>val    <span class="token comment"># 3  第二个值3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-4-链表时间复杂度"><a href="#1-4-链表时间复杂度" class="headerlink" title="1.4 链表时间复杂度"></a>1.4 链表时间复杂度</h2><ul>
-<li><p>从链表中取出一个元素，时间复杂度： <code>O(n)</code></p>
-<ul>
-<li>n代表列表长度</li>
-</ul>
-</li>
-<li><p>遍历链表： <code>O(N)</code></p>
-</li>
-<li><p>删除一个链表中的元素：O(1)</p>
-</li>
-</ul>
-
-                
-                <p class="end">__END__</p>
-            </div>
-            <div class="article-footer">
-                <div class="suffix-box">
-    <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
-    </div>
-    <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>DYL521
-        <br>
-        <span class="suffix-box-title">文章出处：</span><a href="../../pages/030b7e/" target="_blank">04.链表</a>
-        <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
-        <br>
-        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
-        <br>
-        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
-        <br>
-    </div>
-    <div style="clear: both;"></div>
-</div>
-                
-                    <div class="category">
-                        分类：
+        
+            <!-- 归档页面、分类归档页面、标签归档页面 -->
+            <div class="articles">
+                <div class="articles-wrap">
+                    <span class="archive-move-on"></span>
+                    <span class="archive-counter">
                         
-                            <a href="../../categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            当前标签：<span class="tag">MySQL索引</span>
                         
-                            <a href="../../categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-                        
-                    </div>
-                
-                
-                    <div class="tag">
-                        标签：
-                        
-                            <a href="../../tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-                        
-                    </div>
-                
-                <div class="article-prev-next">
-                    
-                        <a href="../../pages/fccf80/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/fccf80/" title="发布于 2021-03-04 11:02">03.队列</a>
-                        <br>
+                    </span>
                     
                     
-                        <a href="../../pages/310286/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/310286/" title="发布于 2021-03-04 11:02">05.数组</a>
+                        
+                            <div class="archive-title">
+                                <h2 class="archive-year">2021</h2>
+                            </div>
+                            
+                           
+                        <div class="article">
+                            <div class="article-header">
+                                <h1 class="article-title"><a href="../../pages/ed510c/"><span>04.MySQL索引</span></a></h1>
+                                <div class="article-meta">
+                                    <span class="article-time">02-22</span>
+                                </div>
+                            </div>
+                        </div>
                     
                 </div>
             </div>
             
-    <div class="article-comments">
         
-            <div class="comments-title">
-                评论列表
-            </div>
-        
-        <div class="comments-content"></div>
-    </div>
-    
- 
-        </div>
     
 </div>
     <div id="footer">
