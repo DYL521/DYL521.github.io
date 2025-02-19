@@ -62,7 +62,13 @@
                         
                             <span class="category-color">算法&数据结构</span>
                         
+                            <span class="category-color">动态规划</span>
+                        
                     
+                    
+                        
+                            <span class="tag-color">动态规划</span>
+                        
                     
                 </div>
             
@@ -76,64 +82,136 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-快排"><a href="#01-快排" class="headerlink" title="01.快排"></a>01.快排</h1><h2 id="1-1-快排-递归实现"><a href="#1-1-快排-递归实现" class="headerlink" title="1.1 快排-递归实现"></a>1.1 快排-递归实现</h2><p><strong>注：</strong>快排代码实现（类似于二叉树 递归调用）—-<code>右手左手一个慢动作，左手右手</code>一个慢动作重播</p>
+                <ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/1dG8Dk7nZeIGHQ0Hp8gq7Q">https://mp.weixin.qq.com/s/1dG8Dk7nZeIGHQ0Hp8gq7Q</a></li>
+</ul>
+<h1 id="动态规划的题目特点"><a href="#动态规划的题目特点" class="headerlink" title="动态规划的题目特点"></a>动态规划的题目特点</h1><p>1、记数</p>
 <ul>
-<li><code>空间复杂度 O(1)</code></li>
+<li>有多少种方式走到右下角</li>
+<li>有多少种方法选出k个数使得和是sum<br>2、求最大最小值</li>
+<li>从左上角走到右下角路径的最大数字和</li>
+<li>最长上升子序列长度<br>3、求存在性</li>
+<li>取石子游戏，先手是否必胜</li>
+<li>能不能选出k个数使得和是sum</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
-<span class="token comment"># -*- coding:utf-8 -*-</span>
-<span class="token keyword">import</span> random
-<span class="token keyword">import</span> sys
-sys<span class="token punctuation">.</span>setrecursionlimit<span class="token punctuation">(</span><span class="token number">10000000</span><span class="token punctuation">)</span>             <span class="token comment">#设置系统最大递归深度</span>
+<h2 id="LintCode-669-Coin-Change"><a href="#LintCode-669-Coin-Change" class="headerlink" title="LintCode 669: Coin Change"></a>LintCode 669: Coin Change</h2><pre class="line-numbers language-none"><code class="language-none">- 你有三种硬币，分别面值是2元、5元、7原，每种硬币足够做
+- 买一本书，需要27问
+- 如何用最少得硬币组合正好付清27元，不需要对方付钱
 
-<span class="token keyword">def</span> <span class="token function">quick_sort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>
-        mid <span class="token operator">=</span> partition<span class="token punctuation">(</span>data<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span>    <span class="token comment"># mid返回的是上一个用来排序那个数的下标</span>
-        quick_sort<span class="token punctuation">(</span>data<span class="token punctuation">,</span> left<span class="token punctuation">,</span> mid <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        quick_sort<span class="token punctuation">(</span>data<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span>right<span class="token punctuation">)</span>
+ 求最大最小值动态规划！<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token comment"># 每执行一次partition函数都可以实现将某个数左边都比这个数小右边都比这个数大</span>
-<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    tmp <span class="token operator">=</span> data<span class="token punctuation">[</span>left<span class="token punctuation">]</span>
-    <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>
-        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right <span class="token keyword">and</span> data<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token operator">>=</span> tmp<span class="token punctuation">:</span>     <span class="token comment"># 从右向左找小于tmp的数放到左边空位置</span>
-            right <span class="token operator">-=</span> <span class="token number">1</span>
-        data<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span>right<span class="token punctuation">]</span>                       <span class="token comment"># 将右边小于tmp值得数放到左边空位置</span>
-        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right <span class="token keyword">and</span> data<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> tmp<span class="token punctuation">:</span>      <span class="token comment"># 从左向右找到大于tmp的值放到右边空位置</span>
-            left <span class="token operator">+=</span> <span class="token number">1</span>
-        data<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span>left<span class="token punctuation">]</span>                       <span class="token comment"># 将右边大于tmp值得数放到右边空位置</span>
-    data<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">=</span> tmp
-    <span class="token keyword">return</span> left
-
-data <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-random<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>data<span class="token punctuation">)</span>                                 <span class="token comment">#将有序列表打乱</span>
-quick_sort<span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-2-快排-简单实现"><a href="#1-2-快排-简单实现" class="headerlink" title="1.2 快排-简单实现"></a>1.2 快排-简单实现</h2><ul>
-<li>空间复杂度高（<code>O(N)</code>）：需要开辟新的列表存储</li>
+<h3 id="动态规划的组成部分之一：-确定状态"><a href="#动态规划的组成部分之一：-确定状态" class="headerlink" title="动态规划的组成部分之一： 确定状态"></a>动态规划的组成部分之一： 确定状态</h3><ul>
+<li>状态在动态规划中的作用是定海神针</li>
+<li>简单的说，解动态对话的时候，需要开一个数组，数组的每个元素f(i)或者f(i)(j)代表什么<ul>
+<li>类似于解数学题中的，xyz代表什么？</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
-<span class="token comment"># -*- coding: utf-8 -*-</span>
-<span class="token keyword">def</span> <span class="token function">quick</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token builtin">list</span>
+</li>
+<li>确定状态需要两个意识<ul>
+<li>最后一步</li>
+<li>子问题</li>
+</ul>
+</li>
+</ul>
+<h4 id="最后一步是什么？"><a href="#最后一步是什么？" class="headerlink" title="最后一步是什么？"></a>最后一步是什么？</h4><ul>
+<li>虽然我们不知道最优策略是什么， 但是最优策略肯定是K枚硬币a1,a2…ak面值加起来是27</li>
+<li>所以一定有最后的硬币ak</li>
+<li>除掉这枚硬币，前面的硬币面值加起来是27-ak</li>
+</ul>
+<h4 id="子问题是什么？"><a href="#子问题是什么？" class="headerlink" title="子问题是什么？"></a>子问题是什么？</h4><ul>
+<li>所以我们就要求： 最少用多少枚硬币可以拼出27-ak</li>
+<li>原问题是最少用多少枚硬币可以拼出27</li>
+<li>我们将原问题转换成一个子问题，而且规模变小了：17-ak</li>
+<li>为了简化定义，我们设状态f(x)&#x3D;最少用多少枚硬币可以拼出X</li>
+</ul>
+<p>我们还不知道ak是多少？<br>但是ak，只可能是2，5，7其中一个</p>
+<ul>
+<li>如果ak是2， f(27)应该是f(27-2)+1（加上最后一枚硬币2）</li>
+<li>如果ak是5， f(27)应该是f(27-5)+1（加上最后一枚硬币5）</li>
+<li>如果ak是7, f(27)应该是f(27-7)+1（加上最后一枚硬币7）<br>除此以外，没有其他的可能<br>所以最小， <strong>f(x)&#x3D;min{f(27-2)+1,f(27-5)+1,f(27-7)+1}</strong></li>
+</ul>
+<p>递归解法： 效率比较低</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 最少用多少枚硬币，拼出x</span>
+    <span class="token keyword">if</span> x <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>  <span class="token comment"># x=0 </span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+    res <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span>  <span class="token comment"># 无穷大</span>
+    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">2</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是2  A</span>
+    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">5</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是5</span>
+    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">7</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">7</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是7</span>
+    <span class="token keyword">return</span> res
 
-    tmp <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>  <span class="token comment"># 临时变量 可以取随机值</span>
-    left <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">list</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token keyword">if</span> x <span class="token operator">&lt;=</span> tmp<span class="token punctuation">]</span>  <span class="token comment"># 左列表</span>
-    right <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">list</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token keyword">if</span> x <span class="token operator">></span> tmp<span class="token punctuation">]</span>  <span class="token comment"># 右列表</span>
-    <span class="token keyword">return</span> quick<span class="token punctuation">(</span>left<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">[</span>tmp<span class="token punctuation">]</span> <span class="token operator">+</span> quick<span class="token punctuation">(</span>right<span class="token punctuation">)</span>
 
-li <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span>
-<span class="token keyword">print</span> quick<span class="token punctuation">(</span>li<span class="token punctuation">)</span>  <span class="token comment"># [2, 3, 4, 5, 7, 8]</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token comment">#### 对[4,3,7,5,8,2]排序</span>
-<span class="token triple-quoted-string string">'''
-[3, 2] + [4] + [7, 5, 8]                 # tmp = [4]
-[2] + [3] + [4] + [7, 5, 8]              # tmp = [3] 此时对[3, 2]这个列表进行排序
-[2] + [3] + [4] + [5] + [7] + [8]        # tmp = [7] 此时对[7, 5, 8]这个列表进行排序
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>递归做了很对的重复计算，效率低下</li>
+<li>如何避免？</li>
+<li>将计算结果保存下来，并改变计算顺序</li>
+</ul>
+<h3 id="动态规划的组成部分之一：-状态方程"><a href="#动态规划的组成部分之一：-状态方程" class="headerlink" title="动态规划的组成部分之一： 状态方程"></a>动态规划的组成部分之一： 状态方程</h3><ul>
+<li>设状态f[x]&#x3D;最少用多少枚硬币拼出X</li>
+<li>对任意的X，<strong>f[x]&#x3D;min{f[27-2]+1,f[27-5]+1,f[27-7]+1}</strong>  40%</li>
+</ul>
+<h3 id="动态规划的组成部分之一：-初始条件和边界情况"><a href="#动态规划的组成部分之一：-初始条件和边界情况" class="headerlink" title="动态规划的组成部分之一： 初始条件和边界情况"></a>动态规划的组成部分之一： 初始条件和边界情况</h3><ul>
+<li><p>f[x]&#x3D;min{f[27-2]+1,f[27-5]+1,f[27-7]+1}</p>
+</li>
+<li><p>两个问题： X-2，X-5或者X-7小于0 怎么办，什么时候停下来？</p>
+</li>
+<li><p>如果不能拼出来Y，定义f(Y)为正无穷</p>
+</li>
+<li><p>初始条件： f(0)&#x3D;0</p>
+</li>
+</ul>
+<h3 id="动态规划的组成部分之一：-计算顺序"><a href="#动态规划的组成部分之一：-计算顺序" class="headerlink" title="动态规划的组成部分之一： 计算顺序"></a>动态规划的组成部分之一： 计算顺序</h3><ul>
+<li>拼出x所需要的最小硬币数,f[x]&#x3D;min{f[27-2]+1,f[27-5]+1,f[27-7]+1}</li>
+<li>初始条件： f[0] &#x3D; 0</li>
+<li>计算f[1],f[2],f[3]…f[27]</li>
+</ul>
+<h4 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h4><p>动态规划组成部分:</p>
+<ul>
+<li>1、确定状态<ul>
+<li>最后一步（最优策略中使用的最后一枚硬币ak）</li>
+<li>化成子问题（最少得硬币拼出更小的面值27-ak）</li>
+</ul>
+</li>
+<li>2、转移方程<ul>
+<li>f[x]&#x3D;min{f[27-2]+1,f[27-5]+1,f[27-7]+1}</li>
+</ul>
+</li>
+<li>3、初始条件和边界情况<ul>
+<li>f[0] &#x3D;0, 如果不能拼出Y，f[Y]&#x3D;正无穷</li>
+</ul>
+</li>
+<li>4、计算顺序<ul>
+<li>f[0],f[1]…</li>
+</ul>
+</li>
+</ul>
+<p>消除冗余，加速计算</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token comment"># A: &#123; 2,5,7 &#125;    M: 目标数27</span>
+<span class="token keyword">def</span> <span class="token function">coinChange</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 最少用多少枚硬币，拼出x</span>
+    f <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span> <span class="token keyword">for</span>  i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>M<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>
 
+    f<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token comment"># f[1],f[2]...f[27]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span> <span class="token comment"># 假设无穷大</span>
+        <span class="token comment"># last coin A[0]、A[1]...A[n-1]</span>
+        <span class="token comment"># f[i]= min&#123;f[27-A[0]]+1,f[27-A[1]]+1....f[27-A[n-1]]+1&#125;</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#  27*3</span>
+            <span class="token keyword">if</span> i <span class="token operator">>=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token keyword">and</span> f<span class="token punctuation">[</span>i <span class="token operator">-</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                f<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> f<span class="token punctuation">[</span>i <span class="token operator">-</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> f<span class="token punctuation">[</span>M<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">[</span>M<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+    <span class="token keyword">return</span> f<span class="token punctuation">[</span>M<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>OrderDict</p>
 
                 
                 <p class="end">__END__</p>
@@ -165,12 +243,21 @@ li <span class="token operator">=</span> <span class="token punctuation">[</span
                         
                             <a href="../../categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E7%AE%97%E6%B3%95-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">算法&数据结构</a>
                         
+                            <a href="../../categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E7%AE%97%E6%B3%95-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+                        
                     </div>
                 
                 
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+                        
+                    </div>
+                
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/a441d9/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a441d9/" title="发布于 2021-02-12 10:55">03.nginx反向代理</a>
+                        <a href="../../pages/1ffa8a/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/1ffa8a/" title="发布于 2021-02-12 10:30">10.快排</a>
                         <br>
                     
                     
