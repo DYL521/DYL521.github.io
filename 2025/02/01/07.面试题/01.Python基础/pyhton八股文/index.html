@@ -132,7 +132,57 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 <span class="token comment"># 使用sorted()根据列表的元祖的第二个元素进行排序</span>
 <span class="token builtin">sorted</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'one'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'three'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h1 id="5、python装饰器"><a href="#5、python装饰器" class="headerlink" title="5、python装饰器"></a>5、python装饰器</h1>
+<h1 id="5、python装饰器"><a href="#5、python装饰器" class="headerlink" title="5、python装饰器"></a>5、python装饰器</h1><p>在python中，装饰器是一种很勇的设计模式，主要用于在不修改原始函数或方法定义的情况，给函数或方法添加新的功能。<br>这种功能添加通常关联跨系统的关注点，比兔日志、事务处理等等。。</p>
+<p>装饰器本质上是一个函数，它接受一个函数作为参数并返回一个新的函数。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Something is happening before the function is called."</span><span class="token punctuation">)</span>
+        func<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Something is happening after the function is called."</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> wrapper
+
+<span class="token decorator annotation punctuation">@my_decorator</span>
+<span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Hello!"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="装饰器的高级用法："><a href="#装饰器的高级用法：" class="headerlink" title="装饰器的高级用法："></a>装饰器的高级用法：</h2><h3 id="1-带参数的装饰器："><a href="#1-带参数的装饰器：" class="headerlink" title="1.带参数的装饰器："></a>1.带参数的装饰器：</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">decorator_with_args</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Arguments received: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>arg1<span class="token punctuation">&#125;</span></span><span class="token string">, </span><span class="token interpolation"><span class="token punctuation">&#123;</span>arg2<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+            func<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> wrapper
+    <span class="token keyword">return</span> my_decorator
+
+<span class="token decorator annotation punctuation">@decorator_with_args</span><span class="token punctuation">(</span><span class="token string">"arg1"</span><span class="token punctuation">,</span> <span class="token string">"arg2"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Hello!"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她"><a href="#2-装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她" class="headerlink" title="2.装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她"></a>2.装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的<strong>wrapper</strong>函数需要能够接受这些参数，并在调用的时候床底给她</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Before calling the function"</span><span class="token punctuation">)</span>
+        result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"After calling the function"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> result
+    <span class="token keyword">return</span> wrapper
+
+<span class="token decorator annotation punctuation">@my_decorator</span>
+<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> b
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h1 id="6、python的执行过程"><a href="#6、python的执行过程" class="headerlink" title="6、python的执行过程"></a>6、python的执行过程</h1><p>python是一种解释性语言，这意味着python代码在执行时先转换成子字节码，然后由python虚拟机PVM执行</p>
+<ol>
+<li>源代码：：编写的Python文件</li>
+<li>编译：：Python解释器首先将源代码编译成字节码。这一过程涉及到语法分析和语义分析，确保代码符合Python的语法规则。字节码是一种低级、与平台无关的代码，保存在.pyc中</li>
+<li>字节码：：编译得到的字节码是一种中间表示形式，存储在内存中。字节码的执行比直接解释源代码要快。</li>
+<li>python虚拟机：：Python虚拟机（PVM）是Python运行时环境的一部分，负责读取字节码，将其转换成机器码，然后执行。PVM是解释器的核心，它执行存储在pyc中</li>
+<li>执行：：PVM逐条执行字节码指令，进行函数调用、内存管理等</li>
+</ol>
+<h1 id="7、is-和-的区别"><a href="#7、is-和-的区别" class="headerlink" title="7、is 和&#x3D;&#x3D;的区别"></a>7、is 和&#x3D;&#x3D;的区别</h1><p>is是比较两个对象的内存地址是是否相等<br>&#x3D;&#x3D;比较的是两个对象的值是否相当，在使用&#x3D;&#x3D;时，实际上是调用了对象的__eq__()方法， 这意味这&#x3D;&#x3D;的行为可以根据对象不同改变</p>
+<h1 id="8、python多线程，-GIL"><a href="#8、python多线程，-GIL" class="headerlink" title="8、python多线程， GIL"></a>8、python多线程， GIL</h1>
                 
                 <p class="end">__END__</p>
             </div>
