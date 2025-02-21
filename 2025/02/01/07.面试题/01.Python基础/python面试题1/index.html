@@ -323,14 +323,14 @@ threads <span class="token operator">=</span> <span class="token punctuation">[<
 <h3 id="3-1-3-asyncio-异步编程"><a href="#3-1-3-asyncio-异步编程" class="headerlink" title="3.1.3 asyncio (异步编程)"></a>3.1.3 asyncio (异步编程)</h3><ul>
 <li>适合场景：<ul>
 <li>IO密集型任务：与threading类似, asyncio适合于异步IO操作，如网络请求</li>
-<li>高并发应用：</li>
-<li>单线程异步任务：</li>
+<li>高并发应用：适用于需要高并发处理大量I&#x2F;O，例如爬虫等等</li>
+<li>单线程异步任务：适用于单线程的异步任务，避免上下文的切换等</li>
 </ul>
 </li>
 <li>性能特点：<ul>
-<li>轻量级</li>
-<li>非阻塞</li>
-<li>适用于IO密级：</li>
+<li>轻量级：比于多线程和多进程，asyncio 更加轻量。通过事件循环机制，单线程可以并发执行多个任务，而不需要多线程或多进程的开销。</li>
+<li>非阻塞：asyncio 任务在执行 I&#x2F;O 操作时不会阻塞主线程，因此可以更高效地处理大量并发任务。</li>
+<li>适用于IO密级：asyncio 在处理 I&#x2F;O 密集型任务时，能够通过非阻塞 I&#x2F;O 提高效率，尤其是在需要大量等待 I&#x2F;O 响应的情况下。</li>
 </ul>
 </li>
 </ul>
@@ -347,7 +347,16 @@ threads <span class="token operator">=</span> <span class="token punctuation">[<
 <span class="token keyword">print</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>  <span class="token comment"># 输出是否总是1000000？</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"><a href="#3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。" class="headerlink" title="3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"></a>3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</h2><h1 id="四、性能优化与高级用法"><a href="#四、性能优化与高级用法" class="headerlink" title="四、性能优化与高级用法"></a>四、性能优化与高级用法</h1><h2 id="4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"><a href="#4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。" class="headerlink" title="4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"></a>4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</h2><h2 id="4-2-使用functools-lru-cache优化递归斐波那契数列函数，并解释其原理。"><a href="#4-2-使用functools-lru-cache优化递归斐波那契数列函数，并解释其原理。" class="headerlink" title="4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。"></a>4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> lru_cache
+<h2 id="3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"><a href="#3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。" class="headerlink" title="3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"></a>3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</h2><h1 id="四、性能优化与高级用法"><a href="#四、性能优化与高级用法" class="headerlink" title="四、性能优化与高级用法"></a>四、性能优化与高级用法</h1><h2 id="4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"><a href="#4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。" class="headerlink" title="4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"></a>4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token keyword">def</span> <span class="token function">read_large_file</span><span class="token punctuation">(</span>file_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 使用管道，避免一次性加载大文件</span>
+lines <span class="token operator">=</span> read_large_file<span class="token punctuation">(</span><span class="token string">'data/test.txt'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="4-2-使用functools-lru-cache优化递归斐波那契数列函数，并解释其原理。"><a href="#4-2-使用functools-lru-cache优化递归斐波那契数列函数，并解释其原理。" class="headerlink" title="4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。"></a>4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> lru_cache
 
 <span class="token decorator annotation punctuation">@lru_cache</span><span class="token punctuation">(</span>maxsize<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
 <span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -355,20 +364,7 @@ threads <span class="token operator">=</span> <span class="token punctuation">[<
         <span class="token keyword">return</span> n
     <span class="token keyword">return</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="4-3-如何用Cython或Numba加速Python代码？请简述步骤。"><a href="#4-3-如何用Cython或Numba加速Python代码？请简述步骤。" class="headerlink" title="4.3 如何用Cython或Numba加速Python代码？请简述步骤。"></a>4.3 如何用Cython或Numba加速Python代码？请简述步骤。</h2><p>五、数据库与ORM<br>解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。</p>
-<p>如何用Python实现数据库连接池？写出伪代码逻辑。</p>
-<p>设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。</p>
-<p>六、算法与数据结构<br>实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</p>
-<p>编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</p>
-<p>反转链表（LeetCode 206），要求递归和迭代两种解法。</p>
-<p>七、系统设计<br>设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。</p>
-<p>如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。</p>
-<p>设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。</p>
-<p>参考答案提示<br>GIL问题：多线程适合I&#x2F;O密集型，多进程适合CPU密集型；规避方式包括用多进程、C扩展或异步。</p>
-<p>默认参数陷阱：列表默认参数在函数定义时创建，多次调用共享同一列表。</p>
-<p>线程安全计数器：需用锁或原子操作（如threading.Lock）。</p>
-<p>元类示例：覆盖__new__方法，遍历类属性并转换键名为大写。</p>
-
+<h2 id="4-3-如何用Cython或Numba加速Python代码？请简述步骤。"><a href="#4-3-如何用Cython或Numba加速Python代码？请简述步骤。" class="headerlink" title="4.3 如何用Cython或Numba加速Python代码？请简述步骤。"></a>4.3 如何用Cython或Numba加速Python代码？请简述步骤。</h2><h1 id="五、数据库与ORM"><a href="#五、数据库与ORM" class="headerlink" title="五、数据库与ORM"></a>五、数据库与ORM</h1><h2 id="5-1-解释SQLAlchemy的Session和Connection的区别，以及scoped-session的作用。"><a href="#5-1-解释SQLAlchemy的Session和Connection的区别，以及scoped-session的作用。" class="headerlink" title="5.1 解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。"></a>5.1 解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。</h2><h2 id="5-2-如何用Python实现数据库连接池？写出伪代码逻辑。"><a href="#5-2-如何用Python实现数据库连接池？写出伪代码逻辑。" class="headerlink" title="5.2 如何用Python实现数据库连接池？写出伪代码逻辑。"></a>5.2 如何用Python实现数据库连接池？写出伪代码逻辑。</h2><h2 id="5-3-设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。"><a href="#5-3-设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。" class="headerlink" title="5.3 设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。"></a>5.3 设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。</h2><h1 id="六、算法与数据结构"><a href="#六、算法与数据结构" class="headerlink" title="六、算法与数据结构"></a>六、算法与数据结构</h1><h2 id="6-1-实现一个LRU缓存（Least-Recently-Used），要求所有操作时间复杂度为O-1-。"><a href="#6-1-实现一个LRU缓存（Least-Recently-Used），要求所有操作时间复杂度为O-1-。" class="headerlink" title="6.1 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。"></a>6.1 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</h2><h2 id="6-2-编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。"><a href="#6-2-编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。" class="headerlink" title="6.2 编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。"></a>6.2 编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</h2><h2 id="6-3-反转链表（LeetCode-206），要求递归和迭代两种解法。"><a href="#6-3-反转链表（LeetCode-206），要求递归和迭代两种解法。" class="headerlink" title="6.3 反转链表（LeetCode 206），要求递归和迭代两种解法。"></a>6.3 反转链表（LeetCode 206），要求递归和迭代两种解法。</h2><h1 id="七、系统设计"><a href="#七、系统设计" class="headerlink" title="七、系统设计"></a>七、系统设计</h1><h2 id="7-1-设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。"><a href="#7-1-设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。" class="headerlink" title="7.1 设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。"></a>7.1 设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。</h2><h2 id="7-2-如何用Python构建一个高性能REST-API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。"><a href="#7-2-如何用Python构建一个高性能REST-API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。" class="headerlink" title="7.2 如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。"></a>7.2 如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。</h2><h2 id="7-3-设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。"><a href="#7-3-设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。" class="headerlink" title="7.3 设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。"></a>7.3 设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。</h2>
                 
                 <p class="end">__END__</p>
             </div>
