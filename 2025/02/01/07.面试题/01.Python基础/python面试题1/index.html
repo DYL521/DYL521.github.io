@@ -159,7 +159,6 @@ python的垃圾回收专门对循环引用做了优化，巡检引用检测由GC
 <h1 id="二、元编程与设计模式"><a href="#二、元编程与设计模式" class="headerlink" title="二、元编程与设计模式"></a>二、元编程与设计模式</h1><h2 id="2-1-实现一个单例模式（Singleton），要求线程安全且支持懒加载。"><a href="#2-1-实现一个单例模式（Singleton），要求线程安全且支持懒加载。" class="headerlink" title="2.1 实现一个单例模式（Singleton），要求线程安全且支持懒加载。"></a>2.1 实现一个单例模式（Singleton），要求线程安全且支持懒加载。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">
 <span class="token keyword">import</span> threading
 
-
 <span class="token keyword">class</span> <span class="token class-name">Singleton</span><span class="token punctuation">:</span>
     __instance <span class="token operator">=</span> <span class="token boolean">None</span>
     _lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -195,7 +194,7 @@ thread2<span class="token punctuation">.</span>start<span class="token punctuati
 
 thread1<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
 thread2<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="2-2-编写一个装饰器-retry-max-attempts-3-delay-1-，使被装饰的函数在抛出异常时自动重试，最多尝试max-attempts次，每次间隔delay秒。"><a href="#2-2-编写一个装饰器-retry-max-attempts-3-delay-1-，使被装饰的函数在抛出异常时自动重试，最多尝试max-attempts次，每次间隔delay秒。" class="headerlink" title="2.2 编写一个装饰器@retry(max_attempts&#x3D;3, delay&#x3D;1)，使被装饰的函数在抛出异常时自动重试，最多尝试max_attempts次，每次间隔delay秒。"></a>2.2 编写一个装饰器@retry(max_attempts&#x3D;3, delay&#x3D;1)，使被装饰的函数在抛出异常时自动重试，最多尝试max_attempts次，每次间隔delay秒。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> functools
 <span class="token keyword">import</span> time
