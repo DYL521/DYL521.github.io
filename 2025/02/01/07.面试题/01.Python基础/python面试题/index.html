@@ -98,7 +98,7 @@ GIL对多线程程序的影响：
     
 </code></pre>
 <h2 id="2、描述Python的垃圾回收机制（引用计数-分代回收），并解释如何解决循环引用问题。"><a href="#2、描述Python的垃圾回收机制（引用计数-分代回收），并解释如何解决循环引用问题。" class="headerlink" title="2、描述Python的垃圾回收机制（引用计数+分代回收），并解释如何解决循环引用问题。"></a>2、描述Python的垃圾回收机制（引用计数+分代回收），并解释如何解决循环引用问题。</h2><h2 id="2-1-引用计数"><a href="#2-1-引用计数" class="headerlink" title="2.1 引用计数"></a>2.1 引用计数</h2><pre><code>每个python对象都有一个引用计数器，记录有多少个变量引用该对象。当引用计数为0时，表示该对象不再被使用，可以被释放，从而释放内存。
--  增加引用计数： 当一个新对象或者数据结构引用该对象时，引用计数+1
+-  增加引用计数： 当一个新对象创建或者数据结构引用该对象时，引用计数+1
 -  减少引用计数:  当一个引用变量被删除、重新赋值或者超出作用域，引用计数-1
 - 内存回收： 当对象的引用计数为0时，python会自动回收该对象的内存，避免内存泄漏。
 </code></pre>
@@ -107,14 +107,14 @@ GIL对多线程程序的影响：
 
 python的分代回收机制包括三代：
 1.第0代： 创建新的对象，由于大多数对象的生命周期较短，因此大多数对象在0代就被回收的概率较高。
-2.第1代： 经过第一次垃圾回收之后还存在的对象，因此存活时间教程
+2.第1代： 经过第一次垃圾回收之后还存在的对象，因此存活时间教长
 3.第2代： 经过多次垃圾回收任然还存活的对象。 他们被认为是长期存在的一些，因此回收率较低。
 </code></pre>
 <h2 id="2-3-如何解决循环引用的问题："><a href="#2-3-如何解决循环引用的问题：" class="headerlink" title="2.3 如何解决循环引用的问题："></a>2.3 如何解决循环引用的问题：</h2><ul>
 <li><p>什么是循环引用？</p>
-<pre><code>循环引用问题是指两个对象或者多个对象相互引用对方，导致他妈的的引用计数无法降低到0，造成内存泄漏。
+<pre><code>循环引用问题是指两个对象或者多个对象相互引用对方，导致对象的引用计数无法降低到0，造成内存泄漏。
 
-python的垃圾回收专门对循环引用做了优化，巡检引用检测由GC模块的**垃圾回收器**负责，它会定期
+python的垃圾回收专门对循环引用做了优化，循环引用检测由GC模块的**垃圾回收器**负责，它会定期
 检测对象之间的引用关系，检测是否存在循环引用，并将其清理。
 
 - GC模块： 
@@ -345,7 +345,26 @@ threads <span class="token operator">=</span> <span class="token punctuation">[<
 <span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>  <span class="token comment"># 输出是否总是1000000？</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>修改之后：<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> threading
 
+counter <span class="token operator">=</span> <span class="token number">0</span>
+lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">global</span> counter
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> lock<span class="token punctuation">:</span>
+            counter <span class="token operator">+=</span> <span class="token number">1</span>
+
+
+threads <span class="token operator">=</span> <span class="token punctuation">[</span>threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>increment<span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>  <span class="token comment"># 输出是否总是1000000？</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
 <h2 id="3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"><a href="#3-3-用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。" class="headerlink" title="3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。"></a>3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</h2><h1 id="四、性能优化与高级用法"><a href="#四、性能优化与高级用法" class="headerlink" title="四、性能优化与高级用法"></a>四、性能优化与高级用法</h1><h2 id="4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"><a href="#4-1-如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。" class="headerlink" title="4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。"></a>4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">
 <span class="token keyword">def</span> <span class="token function">read_large_file</span><span class="token punctuation">(</span>file_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
