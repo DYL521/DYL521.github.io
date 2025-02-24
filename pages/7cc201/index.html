@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            02.GIL锁.md
+            07.协程
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,7 +37,7 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">02.GIL锁.md</h1>
+                <h1 class="header-subtitle">07.协程</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
@@ -45,7 +45,7 @@
                         </span>
                         
                             
-                                <span id="//pages/7cc201/" class="leancloud_visitors" data-flag-title="02.GIL锁.md">
+                                <span id="//pages/7cc201/" class="leancloud_visitors" data-flag-title="07.协程">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
@@ -60,13 +60,9 @@
                         
                             <span class="category-color">python</span>
                         
-                            <span class="category-color">python高级</span>
+                            <span class="category-color">python基础</span>
                         
                     
-                    
-                        
-                            <span class="tag-color">GIL锁</span>
-                        
                     
                 </div>
             
@@ -80,46 +76,236 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <ul>
-<li><a target="_blank" rel="noopener" href="https://realpython.com/python-gil/">https://realpython.com/python-gil/</a></li>
-<li><a target="_blank" rel="noopener" href="https://siskinc.github.io/post/python%E7%9A%84%E5%85%A8%E5%B1%80%E9%94%81_gil/">https://siskinc.github.io/post/python%E7%9A%84%E5%85%A8%E5%B1%80%E9%94%81_gil/</a></li>
+                <h2 id="01-协程"><a href="#01-协程" class="headerlink" title="01.协程"></a>01.协程</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/7905347.html#i4">https://www.cnblogs.com/xiaonq/p/7905347.html#i4</a></p>
+<h3 id="1-1-什么是协程"><a href="#1-1-什么是协程" class="headerlink" title="1.1 什么是协程"></a>1.1 什么是协程</h3><h4 id="1-1-1-协程的特点"><a href="#1-1-1-协程的特点" class="headerlink" title="1.1.1 协程的特点"></a>1.1.1 协程的特点</h4><ul>
+<li><code>协程是一种用户态的轻量级线程，由用户代码自行管理，而不是操作系统调度 </code></li>
+<li>非抢占式调度，协程只有在显式 yield 或 await 时才会主动让出 CPU。</li>
+<li>单线程执行，避免了线程切换的锁竞争问题，适用于 IO 密集型任务。</li>
 </ul>
-<h1 id="1、为什么产生了GIL锁？"><a href="#1、为什么产生了GIL锁？" class="headerlink" title="1、为什么产生了GIL锁？"></a>1、为什么产生了GIL锁？</h1><pre><code>在python设计的年代，都是单核CPU，因为进程程是CPU是分配资源的最小单位，所以不会有数据操作混乱的问题。
-随计算机的发展，出现了多核CPU， pyhton为了利用多核的优势，开始支持多线程，解决多线程之间的数据完整性、状态同步就是加锁， 所以产生了GIL锁
-</code></pre>
-<p>GIL锁是python的全局解释性锁， 同一个进程中假设有多个线程运行， 其中一个线程会独占python解释器（GIL），使得其他线程无法运行，等该线程运行完成后其他线程才能运行<br>所以在多线程中，线程的执行仍然是有先后顺序的，并不是同时进行的（python的特点）</p>
-<h1 id="2、如何解决GIL？"><a href="#2、如何解决GIL？" class="headerlink" title="2、如何解决GIL？"></a>2、如何解决GIL？</h1><p>GIL最大的问题就是python的多线程程序并不能利用多核的优势（比如一个使用了多个线程的计算密集型程序只会在一个单CPU上执行）</p>
-<h2 id="2-1-如果是完全的python环境，使用multiprocessing"><a href="#2-1-如果是完全的python环境，使用multiprocessing" class="headerlink" title="2.1  如果是完全的python环境，使用multiprocessing"></a>2.1  如果是完全的python环境，使用multiprocessing</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Processing pool (see below for initiazation)</span>
-pool <span class="token operator">=</span> <span class="token boolean">None</span>
+<h4 id="1-1-2-协程的优点"><a href="#1-1-2-协程的优点" class="headerlink" title="1.1.2 协程的优点"></a>1.1.2 协程的优点</h4><ul>
+<li>切换开销极低：协程切换仅涉及栈和寄存器的切换，不需要系统调用。</li>
+<li>无锁编程：协程在同一个线程中执行，不会有数据竞争问题，避免了线程同步的开销。</li>
+<li>适用于高并发 IO：如异步 Web 服务器（FastAPI、Node.js）、网络爬虫等。</li>
+</ul>
+<h3 id="1-2-协程优缺点"><a href="#1-2-协程优缺点" class="headerlink" title="1.2 协程优缺点"></a>1.2 协程优缺点</h3><ul>
+<li><p><code>协程缺点</code></p>
+<ul>
+<li>无法利用多核资源：<code>协程的本质是个单线程,它不能同时将 单个CPU 的多个核用上</code>,协程需要和进程配合才能运行在多CPU上</li>
+<li><code>协程如果阻塞掉，整个程序都阻塞</code></li>
+</ul>
+</li>
+<li><p><code>协程最大的优点</code></p>
+<ul>
+<li>不仅是处理高并发（单线程下处理高并发）</li>
+<li>特别节省资源（协程本质是一个单线程，当然节省资源）<ul>
+<li>500日活，用php写需要两百多态机器，但是golang只需要二十多太机器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-协程遇到I-O切换，那活只谁干的？"><a href="#1-3-协程遇到I-O切换，那活只谁干的？" class="headerlink" title="1.3 协程遇到I&#x2F;O切换，那活只谁干的？"></a>1.3 协程遇到I&#x2F;O切换，那活只谁干的？</h3><ul>
+<li><p>简单说法</p>
+<ul>
+<li>协程遇到I&#x2F;O后自动切换，但是会保持一个socket连接，交给系统内核去处理工作</li>
+<li>epoll()就工作内核中，他维护了一个链表，来存放所有的socket连接</li>
+<li>当内核处理完成后就会回调一个函数，以socket文件描述符为key，结果为value存放到字典中</li>
+<li>此时这个列表还是在内核中，需要将这个字典拷贝到用户空间（用户进程中）</li>
+</ul>
+</li>
+<li><p>本质</p>
+<ul>
+<li>1.<code>epoll()中内核则维护一个链表</code>，epoll_wait直接检查链表是不是空就知道是否有文件描述符准备好了。</li>
+<li>2.在内核实现中epoll是根据每个sockfd上面的与设备驱动程序建立起来的回调函数实现的。</li>
+<li>3.某个sockfd上的事件发生时，与它对应的回调函数就会被调用，来把这个sockfd加入链表，其他处于“空闲的”状态的则不会。</li>
+<li>4.epoll上面链表中获取文件描述，这里使用内存映射（mmap）技术，避免了复制大量文件描述符带来的开销</li>
+<li>内存映射（mmap）：内存映射文件，是由一个文件到一块内存的映射，将不必再对文件执行I&#x2F;O操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-适用场景："><a href="#1-4-适用场景：" class="headerlink" title="1.4 适用场景："></a>1.4 适用场景：</h3><ul>
+<li>高并发 IO 任务:（如异步 Web 服务器、爬虫）。</li>
+<li>事件驱动型编程:（如游戏引擎、GUI 事件循环）。</li>
+<li>异步数据库访问: （如 asyncpg、aiomysql）。</li>
+</ul>
+<h3 id="1-5-Python中协程的模块"><a href="#1-5-Python中协程的模块" class="headerlink" title="1.5 Python中协程的模块"></a>1.5 Python中协程的模块</h3><ul>
+<li>greenlet：遇到I&#x2F;O<code>手动切换</code>，是一个C模块</li>
+<li>gevent：对greenlet封装，遇到I&#x2F;O<code>自动切换</code>（<code>借助C语言库greenlet</code>）</li>
+<li>asyncio：和gevent一样，也是实现协程的一个模块（<code>python自己实现</code>）<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12870204.html">https://www.cnblogs.com/xiaonq/p/12870204.html</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="02-进程，线程，协程爬取页面"><a href="#02-进程，线程，协程爬取页面" class="headerlink" title="02.进程，线程，协程爬取页面"></a>02.进程，线程，协程爬取页面</h2><ul>
+<li>特点：<ul>
+<li><code>1.进程</code>：启用进程非常浪费资源</li>
+<li><code>2.线程</code>：线程多，并且在阻塞过程中无法执行其他任务</li>
+<li><code>3.协程</code>：gevent只用起一个线程，当请求发出去后gevent就不管,永远就只有一个线程工作，谁先回来先处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-for循环"><a href="#2-1-for循环" class="headerlink" title="2.1 for循环"></a>2.1 for循环</h3><ul>
+<li>第四：性能最差</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">import</span> requests
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span>,
+    <span class="token string">'http://dig.chouti.com/'</span>,
+<span class="token punctuation">]</span>
 
-<span class="token comment"># Performs a large calculation (CPU bound)</span>
-<span class="token keyword">def</span> <span class="token function">some_work</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token keyword">return</span> result
+<span class="token keyword">for</span> <span class="token for-or-select variable">url</span> <span class="token keyword">in</span> url_list:
+    result <span class="token operator">=</span> requests.get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    print<span class="token punctuation">(</span>result.text<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token comment"># A thread that calls the above function</span>
-<span class="token keyword">def</span> <span class="token function">some_thread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-        r <span class="token operator">=</span> pool<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>some_work<span class="token punctuation">,</span> <span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<h3 id="2-2-进程池"><a href="#2-2-进程池" class="headerlink" title="2.2 进程池"></a>2.2 进程池</h3><ul>
+<li><code>缺点：</code>启用进程非常浪费资源</li>
+</ul>
+<h4 id="2-2-1-multiprocessing-Pool"><a href="#2-2-1-multiprocessing-Pool" class="headerlink" title="2.2.1 multiprocessing.Pool"></a>2.2.1 multiprocessing.Pool</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">import</span> requests
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
 
-<span class="token comment"># Initiaze the pool</span>
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">call</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'-->exec done:'</span><span class="token punctuation">,</span><span class="token string">"测试进程池执行后回调功能"</span><span class="token punctuation">)</span>
+
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
+
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token keyword">import</span> multiprocessing
-    pool <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Pool<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>        <span class="token comment"># 创建线程池</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+        <span class="token comment">#用法1 callback作用是指定只有当Foo运行结束后就执行callback调用的函数,父进程调用的callback函数</span>
+        pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>func<span class="token operator">=</span>fetch_request<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span>callback<span class="token operator">=</span>call<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">)</span>
+    pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token comment">#关闭pool</span>
+    pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment">#进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="2-另外一个方式，引入C扩展编程技术"><a href="#2-另外一个方式，引入C扩展编程技术" class="headerlink" title="2. 另外一个方式，引入C扩展编程技术"></a>2. 另外一个方式，引入C扩展编程技术</h2><pre class="line-numbers language-C" data-language="C"><code class="language-C">#include &quot;Python.h&quot;
-...
+<h4 id="2-2-2-ProcessPoolExecutor"><a href="#2-2-2-ProcessPoolExecutor" class="headerlink" title="2.2.2 ProcessPoolExecutor"></a>2.2.2 ProcessPoolExecutor</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
 
-PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
-   ...
-   Py_BEGIN_ALLOW_THREADS
-   &#x2F;&#x2F; Threaded C code
-   ...
-   Py_END_ALLOW_THREADS
-   ...
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
+
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    pool <span class="token operator">=</span> ProcessPoolExecutor<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>        <span class="token comment"># 创建线程池</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+        pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>    <span class="token comment"># 去线程池中获取一个进程，进程去执行fetch_request方法</span>
+    pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span>wait<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-3-线程池"><a href="#2-3-线程池" class="headerlink" title="2.3 线程池"></a>2.3 线程池</h3><ul>
+<li><code>缺点：</code> 创建一个新线程将消耗大量的计算资源，并且在阻塞过程中无法执行其他任务。</li>
+<li><code>例：</code> 比如线程池中10个线程同时去10个url获取数据，当数据还没来时这些线程全部都在等待，不做事。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
+
+<span class="token keyword">def</span> <span class="token function">fetch_request</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
+
+url_list <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span>         <span class="token comment">#google页面会卡住，知道页面超时后这个进程才结束</span>
+    <span class="token string">'http://dig.chouti.com/'</span><span class="token punctuation">,</span>          <span class="token comment">#chouti页面内容会直接返回，不会等待Google页面的返回</span>
+<span class="token punctuation">]</span>
+
+pool <span class="token operator">=</span> ThreadPoolExecutor<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>            <span class="token comment"># 创建一个线程池，最多开10个线程</span>
+<span class="token keyword">for</span> url <span class="token keyword">in</span> url_list<span class="token punctuation">:</span>
+    pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>fetch_request<span class="token punctuation">,</span>url<span class="token punctuation">)</span>       <span class="token comment"># 去线程池中获取一个线程，线程去执行fetch_request方法</span>
+
+pool<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">)</span>                      <span class="token comment"># 主线程自己关闭，让子线程自己拿任务执行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-4-协程"><a href="#2-4-协程" class="headerlink" title="2.4 协程"></a>2.4 协程</h3><ul>
+<li><code>特点 ：</code>gevent只用起一个线程，当请求发出去后gevent就不管,永远就只有一个线程工作，谁先回来先处理</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> gevent
+<span class="token keyword">from</span> gevent <span class="token keyword">import</span> monkey
+monkey<span class="token punctuation">.</span>patch_all<span class="token punctuation">(</span>select<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>  <span class="token comment"># 注意，这个导包顺序不要变</span>
+<span class="token keyword">import</span> requests
+
+<span class="token comment"># 这些请求谁先回来就先处理谁</span>
+<span class="token keyword">def</span> <span class="token function">fetch_async</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> url<span class="token punctuation">,</span> req_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    response <span class="token operator">=</span> requests<span class="token punctuation">.</span>request<span class="token punctuation">(</span>method<span class="token operator">=</span>method<span class="token punctuation">,</span> url<span class="token operator">=</span>url<span class="token punctuation">,</span> <span class="token operator">**</span>req_kwargs<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>url<span class="token punctuation">,</span> response<span class="token punctuation">.</span>content<span class="token punctuation">)</span>
+
+<span class="token comment"># ##### 发送请求 #####</span>
+gevent<span class="token punctuation">.</span>joinall<span class="token punctuation">(</span><span class="token punctuation">[</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://www.baidu.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://www.google.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    gevent<span class="token punctuation">.</span>spawn<span class="token punctuation">(</span>fetch_async<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'get'</span><span class="token punctuation">,</span> url<span class="token operator">=</span><span class="token string">'https://github.com/'</span><span class="token punctuation">,</span> req_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3、结论"><a href="#3、结论" class="headerlink" title="3、结论"></a>3、结论</h3><ul>
+<li>如果任务是 CPU 密集型（如计算、AI 训练），建议使用<strong>多进程</strong>来充分利用多核 CPU。</li>
+<li>如果任务是 IO 密集型（如网络请求、数据库查询），协程是更高效的选择，避免线程切换的开销。</li>
+<li>如果任务需要多个并行执行单元共享数据（如 GUI、游戏开发），多线程是一个合适的方案，但要注意线程同步问题。</li>
+<li>在高并发场景下，可以使用 “多进程 + 协程” 结合的方式，如 Nginx、FastAPI、Node.js 采用的模式。</li>
+</ul>
+<h3 id="4-进程、线程、协程对比总结"><a href="#4-进程、线程、协程对比总结" class="headerlink" title="4. 进程、线程、协程对比总结"></a>4. 进程、线程、协程对比总结</h3><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>进程</th>
+<th>线程</th>
+<th>协程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>调度方式</td>
+<td>操作系统</td>
+<td>操作系统</td>
+<td>用户态（手动切换）</td>
+</tr>
+<tr>
+<td>资源占用</td>
+<td>高（独立内存）</td>
+<td>低（共享进程内存）</td>
+<td>极低（仅栈和寄存器）</td>
+</tr>
+<tr>
+<td>通信方式</td>
+<td>IPC（管道、消息队列）</td>
+<td>共享变量（需加锁）</td>
+<td>共享变量（无锁）</td>
+</tr>
+<tr>
+<td>创建开销</td>
+<td>高</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td>上下文切换</td>
+<td>慢</td>
+<td>较快</td>
+<td>极快</td>
+</tr>
+<tr>
+<td>是否并行</td>
+<td>是（多进程可用多核    ）</td>
+<td>取决于语言（Java 可以，Python 受 GIL 限制）</td>
+<td>否（单线程内运行）</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>计算密集型、多核并行</td>
+<td>IO 密集型、需要共享数据</td>
+<td>高并发</td>
+</tr>
+</tbody></table>
 
                 
                 <p class="end">__END__</p>
@@ -132,7 +318,7 @@ PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>DYL521
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="../../pages/7cc201/" target="_blank">02.GIL锁.md</a>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/7cc201/" target="_blank">07.协程</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -149,25 +335,18 @@ PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
                         
                             <a href="../../categories/python/">python</a>
                         
-                            <a href="../../categories/python/python%E9%AB%98%E7%BA%A7/">python高级</a>
+                            <a href="../../categories/python/python%E5%9F%BA%E7%A1%80/">python基础</a>
                         
                     </div>
                 
-                
-                    <div class="tag">
-                        标签：
-                        
-                            <a href="../../tag/GIL%E9%94%81/">GIL锁</a>
-                        
-                    </div>
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/480866/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/480866/" title="发布于 2021-02-11 10:59">17.次重点</a>
+                        <a href="../../pages/0316d2/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/0316d2/" title="发布于 2021-02-11 10:59">04.集合</a>
                         <br>
                     
                     
-                        <a href="../../pages/053e86/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/053e86/" title="发布于 2021-02-09 03:45">01.1~50题</a>
+                        <a href="../../pages/d776ab/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/d776ab/" title="发布于 2021-02-11 10:59">08.select、poll、epoll</a>
                     
                 </div>
             </div>
