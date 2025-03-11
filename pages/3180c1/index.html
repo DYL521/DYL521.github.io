@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            04.sys
+            01.time
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,7 +37,7 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">04.sys</h1>
+                <h1 class="header-subtitle">01.time</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
@@ -45,7 +45,7 @@
                         </span>
                         
                             
-                                <span id="//pages/3180c1/" class="leancloud_visitors" data-flag-title="04.sys">
+                                <span id="//pages/3180c1/" class="leancloud_visitors" data-flag-title="01.time">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
@@ -60,13 +60,9 @@
                         
                             <span class="category-color">python</span>
                         
-                            <span class="category-color">sys</span>
+                            <span class="category-color">python模块</span>
                         
                     
-                    
-                        
-                            <span class="tag-color">sys</span>
-                        
                     
                 </div>
             
@@ -80,7 +76,138 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                
+                <h2 id="01-time模块"><a href="#01-time模块" class="headerlink" title="01.time模块"></a>01.time模块</h2><h3 id="1-1-time模块三种格式"><a href="#1-1-time模块三种格式" class="headerlink" title="1.1 time模块三种格式"></a>1.1 time模块三种格式</h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>结果</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>time.time()</code></td>
+<td>1613221384.608557</td>
+<td>1.时间戳</td>
+</tr>
+<tr>
+<td><code>time.strftime(&#39;%Y-%m-%d&#39;)</code></td>
+<td>2021-02-13</td>
+<td>2.格式化时间</td>
+</tr>
+<tr>
+<td><code>time.localtime()</code></td>
+<td>time.struct_time(tm_year&#x3D;2021…</td>
+<td>3.时间元祖</td>
+</tr>
+</tbody></table>
+<p><img src="./assets/image-20210213211655899.png" style="width: 600px; margin-left: 20px;"> </img></p>
+<h3 id="1-2-time-模块时间格式转换"><a href="#1-2-time-模块时间格式转换" class="headerlink" title="1.2 time()模块时间格式转换"></a>1.2 time()模块时间格式转换</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                             <span class="token comment"># 时间戳：1511166937.2178104</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                   <span class="token comment"># 格式化的字符串: 2017-11-20</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>localtime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                         <span class="token comment"># 结构化时间(元组): (tm_year=2017, tm_mon=11...)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>gmtime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                           <span class="token comment"># 将时间转换成utc格式的元组格式： (tm_year=2017, tm_mon=11...)</span>
+
+<span class="token comment">#1. 将结构化时间转换成时间戳： 1511167004.0</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>mktime<span class="token punctuation">(</span>time<span class="token punctuation">.</span>localtime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">#2. 将格字符串时间转换成结构化时间 元组： (tm_year=2017, tm_mon=11...)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>strptime<span class="token punctuation">(</span><span class="token string">'2014-11-11'</span><span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">#3. 结构化时间(元组) 转换成  字符串时间  ：2017-11-20</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%Y-%m-%d'</span><span class="token punctuation">,</span> time<span class="token punctuation">.</span>localtime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 默认当前时间</span>
+
+<span class="token comment">#4. 将结构化时间(元组) 转换成英文字符串时间 : Mon Nov 20 16:51:28 2017</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>asctime<span class="token punctuation">(</span>time<span class="token punctuation">.</span>localtime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">#5. 将时间戳转成 英文字符串时间 : Mon Nov 20 16:51:28 2017</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>ctime<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="02-datetime"><a href="#02-datetime" class="headerlink" title="02.datetime"></a>02.datetime</h2><h3 id="2-1-datetime获取时间"><a href="#2-1-datetime获取时间" class="headerlink" title="2.1 datetime获取时间"></a>2.1 datetime获取时间</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> datetime
+<span class="token comment">#1、datetime.datetime获取当前时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#2、获取三天后的时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#3、获取三天前的时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#4、获取三个小时后的时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#5、获取三分钟以前的时间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>minutes <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">import</span> datetime
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                                   <span class="token comment">#2017-08-18 11:25:52.618873</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>date<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                              <span class="token comment">#2017-08-18</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">"%Y-%m-%d %H-%M-%S"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>              <span class="token comment">#2017-08-18 11-25-52</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-datetime时间转换"><a href="#2-2-datetime时间转换" class="headerlink" title="2.2 datetime时间转换"></a>2.2 datetime时间转换</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1、datetime对象与str转化</span>
+<span class="token comment"># datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")</span>
+<span class="token string">'2018-03-09 10:08:50'</span>
+
+<span class="token comment"># datetime.datetime.strptime('2016-02-22',"%Y-%m-%d")</span>
+datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">(</span><span class="token number">2016</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token comment">#2、datetime对象转时间元组</span>
+<span class="token comment"># datetime.datetime.now().timetuple()</span>
+time<span class="token punctuation">.</span>struct_time<span class="token punctuation">(</span>tm_year<span class="token operator">=</span><span class="token number">2018</span><span class="token punctuation">,</span> tm_mon<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> tm_mday<span class="token operator">=</span><span class="token number">9</span><span class="token punctuation">,</span>
+
+<span class="token comment">#3、时间戳转换成datetime对象</span>
+<span class="token comment"># datetime.datetime.fromtimestamp(1520561646.8906238)</span>
+datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">(</span><span class="token number">2018</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">890624</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="03-时间模块使用"><a href="#03-时间模块使用" class="headerlink" title="03.时间模块使用"></a>03.时间模块使用</h2><h3 id="3-1-本地时间与utc时间相互转换"><a href="#3-1-本地时间与utc时间相互转换" class="headerlink" title="3.1 本地时间与utc时间相互转换"></a>3.1 本地时间与utc时间相互转换</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> datetime
+
+<span class="token keyword">def</span> <span class="token function">utc2local</span><span class="token punctuation">(</span>utc_st<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">''' 作用：将UTC时间装换成本地时间
+    :param utc_st: 传入的是utc时间(datatime对象)
+    :return:  返回的是本地时间 datetime 对象
+    '''</span>
+    now_stamp <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    local_time <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>fromtimestamp<span class="token punctuation">(</span>now_stamp<span class="token punctuation">)</span>
+    utc_time <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>utcfromtimestamp<span class="token punctuation">(</span>now_stamp<span class="token punctuation">)</span>
+    offset <span class="token operator">=</span> local_time <span class="token operator">-</span> utc_time
+    local_st <span class="token operator">=</span> utc_st <span class="token operator">+</span> offset
+    <span class="token keyword">return</span> local_st
+
+<span class="token keyword">def</span> <span class="token function">local2utc</span><span class="token punctuation">(</span>local_st<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">''' 作用：将本地时间转换成UTC时间
+    :param local_st: 传入的是本地时间(datatime对象)
+    :return: 返回的是utc时间 datetime 对象
+    '''</span>
+    time_struct <span class="token operator">=</span> time<span class="token punctuation">.</span>mktime<span class="token punctuation">(</span>local_st<span class="token punctuation">.</span>timetuple<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    utc_st <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>utcfromtimestamp<span class="token punctuation">(</span>time_struct<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> utc_st
+
+utc_time <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>utcfromtimestamp<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># utc_time = datetime.datetime(2018, 5, 6, 5, 57, 9, 511870)        # 比北京时间晚了8个小时</span>
+local_time <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># local_time = datetime.datetime(2018, 5, 6, 13, 59, 27, 120771)    # 北京本地时间</span>
+
+utc_to_local <span class="token operator">=</span> utc2local<span class="token punctuation">(</span>utc_time<span class="token punctuation">)</span>
+local_to_utc <span class="token operator">=</span> local2utc<span class="token punctuation">(</span>local_time<span class="token punctuation">)</span>
+<span class="token keyword">print</span> utc_to_local       <span class="token comment"># 2018-05-06 14:02:30.650270     已经转换成了北京本地时间</span>
+<span class="token keyword">print</span> local_to_utc       <span class="token comment"># 2018-05-06 06:02:30            转换成北京当地时间</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-2-django的timezone时间与本地时间转换"><a href="#3-2-django的timezone时间与本地时间转换" class="headerlink" title="3.2 django的timezone时间与本地时间转换"></a>3.2 django的timezone时间与本地时间转换</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils <span class="token keyword">import</span> timezone
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+
+utc_time <span class="token operator">=</span> timezone<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+local_time <span class="token operator">=</span> datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">#1、utc时间装换成本地时间</span>
+utc_to_local <span class="token operator">=</span> timezone<span class="token punctuation">.</span>localtime<span class="token punctuation">(</span>timezone<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">#2、本地时间装utc时间</span>
+local_to_utc <span class="token operator">=</span> timezone<span class="token punctuation">.</span>make_aware<span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timezone<span class="token punctuation">.</span>get_current_timezone<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-3-Python计算两个日期之间天数"><a href="#3-3-Python计算两个日期之间天数" class="headerlink" title="3.3 Python计算两个日期之间天数"></a>3.3 Python计算两个日期之间天数</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> datetime
+d1 <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">(</span><span class="token number">2018</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">31</span><span class="token punctuation">)</span>       <span class="token comment"># 第一个日期</span>
+d2 <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">(</span><span class="token number">2019</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>         <span class="token comment"># 第二个日期</span>
+interval <span class="token operator">=</span> d2 <span class="token operator">-</span> d1                   <span class="token comment"># 两日期差距</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>interval<span class="token punctuation">.</span>days<span class="token punctuation">)</span>                 <span class="token comment"># 具体的天数</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
                 
                 <p class="end">__END__</p>
             </div>
@@ -92,7 +219,7 @@
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>DYL521
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="../../pages/3180c1/" target="_blank">04.sys</a>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/3180c1/" target="_blank">01.time</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -109,21 +236,14 @@
                         
                             <a href="../../categories/python/">python</a>
                         
-                            <a href="../../categories/python/sys/">sys</a>
+                            <a href="../../categories/python/python%E6%A8%A1%E5%9D%97/">python模块</a>
                         
                     </div>
                 
-                
-                    <div class="tag">
-                        标签：
-                        
-                            <a href="../../tag/sys/">sys</a>
-                        
-                    </div>
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/3180c1/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/3180c1/" title="发布于 2021-02-13 08:43">01.time</a>
+                        <a href="../../pages/3180c1/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/3180c1/" title="发布于 2021-02-13 08:43">04.sys</a>
                         <br>
                     
                     
