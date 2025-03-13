@@ -85,7 +85,65 @@
                 <ul>
 <li><a target="_blank" rel="noopener" href="https://labuladong.online/algo/essential-technique/sliding-window-framework/">https://labuladong.online/algo/essential-technique/sliding-window-framework/</a></li>
 </ul>
-<p>滑动窗口可以归类为快慢指针，一快一慢两个指针前后相随，中间的部分就是窗口。<br>滑动窗口算法技巧主要用来解决子数组问题，比如让你寻找符合某个条件的最长&#x2F;最短子数组。</p>
+<p>滑动窗口可以归类为<strong>快慢指针</strong>，一快一慢两个指针前后相随，中间的部分就是窗口。<br>滑动窗口算法技巧主要用来解决子数组问题，比如让你寻找符合某个条件的最长&#x2F;最短子数组。</p>
+<h1 id="滑动窗口框架概览"><a href="#滑动窗口框架概览" class="headerlink" title="滑动窗口框架概览"></a>滑动窗口框架概览</h1><p>如果使用暴力解法，需要嵌套for循环实现穷举所有子数组，时间复杂度是N^2</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token builtin">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token builtin">int</span> j <span class="token operator">=</span> i<span class="token punctuation">;</span> j <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token operator">//</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">,</span> j<span class="token punctuation">]</span> 是一个子数组
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果使用滑动框架，简单的来说就是维护一个窗口，不断滑动，然后更新答案</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token builtin">int</span> left <span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>right <span class="token operator">&lt;</span>nums<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token operator">//</span> 增大窗口
+    window<span class="token punctuation">.</span>addLast<span class="token punctuation">(</span>nums<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    right <span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>window needs shrink<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token operator">//</span> 缩小窗口
+        window<span class="token punctuation">.</span>removeFirst<span class="token punctuation">(</span>nums<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        left<span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基于滑动窗口框架写出的代码时间复杂度是O(N)</p>
+<ul>
+<li>滑动窗口伪代码实现：</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 滑动窗口算法伪码框架</span>
+<span class="token keyword">def</span> <span class="token function">slidingWindow</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 用合适的数据结构记录窗口中的数据，根据具体场景变通</span>
+    <span class="token comment"># 比如说，我想记录窗口中元素出现的次数，就用 map</span>
+    <span class="token comment"># 如果我想记录窗口中的元素和，就可以只用一个 int</span>
+    window <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+    left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+    <span class="token keyword">while</span> right <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># c 是将移入窗口的字符</span>
+        c <span class="token operator">=</span> s<span class="token punctuation">[</span>right<span class="token punctuation">]</span>
+        window<span class="token punctuation">.</span>add<span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+        <span class="token comment"># 增大窗口</span>
+        right <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token comment"># 进行窗口内数据的一系列更新</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+        <span class="token comment"># *** debug 输出的位置 ***</span>
+        <span class="token comment"># 注意在最终的解法代码中不要 print</span>
+        <span class="token comment"># 因为 IO 操作很耗时，可能导致超时</span>
+        <span class="token comment"># print(f"window: [&#123;left&#125;, &#123;right&#125;)")</span>
+        <span class="token comment"># ***********************</span>
+
+        <span class="token comment"># 判断左侧窗口是否要收缩</span>
+        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right <span class="token keyword">and</span> window needs shrink<span class="token punctuation">:</span>
+            <span class="token comment"># d 是将移出窗口的字符</span>
+            d <span class="token operator">=</span> s<span class="token punctuation">[</span>left<span class="token punctuation">]</span>
+            window<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+            <span class="token comment"># 缩小窗口</span>
+            left <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token comment"># 进行窗口内数据的一系列更新</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
                 <p class="end">__END__</p>
@@ -131,11 +189,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.4%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" class="prev-prefix">« </a> 上一篇：    <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.4%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" title="发布于 2024-12-15 06:53">0.4套模板解决100道二叉树练习</a>
+                        <a href="../../../../17/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" class="prev-prefix">« </a> 上一篇：    <a href="../../../../17/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" title="发布于 2024-12-17 07:03">01.python的内存管理机制</a>
                         <br>
                     
                     
-                        <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.6%E6%89%8B%E6%8A%8A%E6%89%8B%E8%AE%BE%E8%AE%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/0.1%20LRU%E7%AE%97%E6%B3%95/" class="next-prefix">» </a> 下一篇：    <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.6%E6%89%8B%E6%8A%8A%E6%89%8B%E8%AE%BE%E8%AE%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/0.1%20LRU%E7%AE%97%E6%B3%95/" title="发布于 2024-12-15 06:53">手撸LRU算法</a>
+                        <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.1%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E9%93%BE%E8%A1%A8%E7%AE%97%E6%B3%95/" class="next-prefix">» </a> 下一篇：    <a href="../../03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.1%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E9%93%BE%E8%A1%A8%E7%AE%97%E6%B3%95/" title="发布于 2024-12-15 06:53">0.1手把手刷链表算法</a>
                     
                 </div>
             </div>
