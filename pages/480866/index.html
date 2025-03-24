@@ -76,22 +76,27 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-读写文件"><a href="#01-读写文件" class="headerlink" title="01.读写文件"></a>01.读写文件</h2><ul>
-<li><p>读写文件（python如何读取大文件）：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/7860309.html">https://www.cnblogs.com/xiaonq/p/7860309.html</a></p>
+                <h2 id="01读写文件"><a class="markdownIt-Anchor" href="#01读写文件"></a> 01.读写文件</h2>
+<ul>
+<li>
+<p>读写文件（python如何读取大文件）：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/7860309.html">https://www.cnblogs.com/xiaonq/p/7860309.html</a></p>
 </li>
-<li><p>经典面试题：现在有一个5G的文件，用python写入另一个文件里</p>
+<li>
+<p>经典面试题：现在有一个5G的文件，用python写入另一个文件里</p>
 <ul>
 <li>read(): 指定读取指定大小的文件（默认一次读取所有）</li>
 <li>readline(): 逐行读取，适合读大文件</li>
 <li>readlines(): 一次性读取所有文件， 将文件按行读取成列表</li>
 </ul>
 </li>
-<li><p>我们使用了一个 while 循环来读取文件内容，每次最多读取 8kb 大小</p>
+<li>
+<p>我们使用了一个 while 循环来读取文件内容，每次最多读取 8kb 大小</p>
 </li>
-<li><p>这样可以避免之前需要拼接一个巨大字符串的过程，把内存占用降低非常多。</p>
+<li>
+<p>这样可以避免之前需要拼接一个巨大字符串的过程，把内存占用降低非常多。</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/python</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/python</span>
 <span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">def</span> <span class="token function">read_big_file_v</span><span class="token punctuation">(</span>fname<span class="token punctuation">)</span><span class="token punctuation">:</span>
     block_size <span class="token operator">=</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">8</span>
@@ -103,52 +108,62 @@
                 <span class="token keyword">break</span>
             <span class="token keyword">print</span><span class="token punctuation">(</span>chunk<span class="token punctuation">)</span>
 path <span class="token operator">=</span> <span class="token string">r'C:\aaa\luting\edc-backend\tttt.py'</span>
-read_big_file_v<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-字符编码"><a href="#02-字符编码" class="headerlink" title="02.字符编码"></a>02.字符编码</h2><ul>
-<li><p>各种编码由来</p>
+read_big_file_v<span class="token punctuation">(</span>path<span class="token punctuation">)</span></code></pre>
+<h2 id="02字符编码"><a class="markdownIt-Anchor" href="#02字符编码"></a> 02.字符编码</h2>
 <ul>
-<li>ASCII       :  不支持中文（<strong>一个字母一个字节：a&#x2F;b&#x2F;c</strong>）</li>
+<li>
+<p>各种编码由来</p>
+<ul>
+<li>ASCII       :  不支持中文（<strong>一个字母一个字节：a/b/c</strong>）</li>
 <li>GBK        :  是中国的中文字符，其包含了简体中文和繁体中文的字符</li>
 <li>Unicode :  万国编码（Unicode 包含GBK）</li>
 </ul>
 </li>
-<li><p>Unicode（<strong>每个字母需要用两个字节：a&#x2F;b&#x2F;c</strong>）</p>
+<li>
+<p>Unicode（<strong>每个字母需要用两个字节：a/b/c</strong>）</p>
 <ul>
 <li>存储所有字符串都用连个字节</li>
 <li>Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码</li>
-<li>规定所有的字符和符号最少由 16 位来表示（2个字节），即：2 **16 &#x3D; 65536</li>
+<li>规定所有的字符和符号最少由 16 位来表示（2个字节），即：2 **16 = 65536</li>
 <li>这里还有个问题：使用的字节增加了，那么造成的直接影响就是使用的空间就直接翻倍了</li>
 </ul>
 </li>
-<li><p>Utf-8       : 可变长码, 是Unicode 的扩展集</p>
+<li>
+<p>Utf-8       : 可变长码, 是Unicode 的扩展集</p>
 <ul>
-<li><p>UTF-8编码：是对Unicode编码的压缩和优化，他不再使用最少使用2个字节，而是将所有的字符和符号进行分类</p>
+<li>
+<p>UTF-8编码：是对Unicode编码的压缩和优化，他不再使用最少使用2个字节，而是将所有的字符和符号进行分类</p>
 </li>
-<li><p>ascii码中的内容用1个字节保存、欧洲的字符用2个字节保存，东亚的字符用3个字节保存…</p>
+<li>
+<p>ascii码中的内容用1个字节保存、欧洲的字符用2个字节保存，东亚的字符用3个字节保存…</p>
 </li>
-<li><p><strong>存一个a字母用一个字节，存一个中文用三个字节</strong></p>
+<li>
+<p><strong>存一个a字母用一个字节，存一个中文用三个字节</strong></p>
 </li>
 </ul>
 </li>
-<li><p>python2与python3的几个区别　</p>
+<li>
+<p>python2与python3的几个区别</p>
 <ul>
 <li>Python2默认 编码方式为ASCII， Python3  默认编码方式为UTF-8（是Unicode 的扩展集）</li>
 <li>python2中字符串有str和unicode两种类型， python3 中字符串有str和字节(bytes) 两种类型</li>
 <li>python3中不再支持u中文的语法格式</li>
 </ul>
 </li>
-<li><p>python2和python3中编码转换</p>
+<li>
+<p>python2和python3中编码转换</p>
 <ul>
 <li>在python3中字符串默认是unicode所以不需要decode()，直接encode成想要转换的编码如gb2312</li>
 <li>在python2中默认是ASCII编码，必须先转换成Unicode，Unicode 可以作为各种编码的转换的中转站</li>
 </ul>
 </li>
 </ul>
-<h2 id="03-常用模块"><a href="#03-常用模块" class="headerlink" title="03.常用模块"></a>03.常用模块</h2><ul>
+<h2 id="03常用模块"><a class="markdownIt-Anchor" href="#03常用模块"></a> 03.常用模块</h2>
+<ul>
 <li>（re）(paramiko、subprocess)：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/7866925.html">https://www.cnblogs.com/xiaonq/p/7866925.html</a></li>
 </ul>
-<h2 id="04-python2与python3的区别"><a href="#04-python2与python3的区别" class="headerlink" title="04.python2与python3的区别"></a>04.python2与python3的区别</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/8706111.html">https://www.cnblogs.com/xiaonq/p/8706111.html</a></p>
+<h2 id="04python2与python3的区别"><a class="markdownIt-Anchor" href="#04python2与python3的区别"></a> 04.python2与python3的区别</h2>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/8706111.html">https://www.cnblogs.com/xiaonq/p/8706111.html</a></p>
 
                 
                 <p class="end">__END__</p>
@@ -185,11 +200,11 @@ read_big_file_v<span class="token punctuation">(</span>path<span class="token pu
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/2d9cd4/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/2d9cd4/" title="发布于 2021-02-11 10:59">15.网络七层</a>
+                        <a href="../../pages/a18e2b/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a18e2b/" title="发布于 2021-02-11 10:59">16.高阶函数</a>
                         <br>
                     
                     
-                        <a href="../../pages/a18e2b/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a18e2b/" title="发布于 2021-02-11 10:59">16.高阶函数</a>
+                        <a href="../../pages/7cc201/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/7cc201/" title="发布于 2021-02-11 10:59">02.GIL锁.md</a>
                     
                 </div>
             </div>

@@ -76,11 +76,13 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-RBAC角色权限管理机制"><a href="#01-RBAC角色权限管理机制" class="headerlink" title="01.RBAC角色权限管理机制"></a>01.RBAC角色权限管理机制</h1><blockquote>
+                <h1 id="01rbac角色权限管理机制"><a class="markdownIt-Anchor" href="#01rbac角色权限管理机制"></a> 01.RBAC角色权限管理机制</h1>
+<blockquote>
 <p>基于 Django 的后台管理平台，采用 RBAC 权限管理机制</p>
 </blockquote>
 <ul>
-<li>用户表、角色表、权限表<ul>
+<li>用户表、角色表、权限表
+<ul>
 <li>用户表：账号、姓名、邮箱、添加时间、最后登录时间、账号是否禁止登录</li>
 <li>角色表：商品管理员、订单管理员、超级管理员</li>
 <li>资源列表：资源名称（项目模块名称），资源路径（后台路由）</li>
@@ -89,15 +91,15 @@
 </ul>
 </li>
 </ul>
-<h4 id="RBAC角色权限管理机制实现思路"><a href="#RBAC角色权限管理机制实现思路" class="headerlink" title="RBAC角色权限管理机制实现思路"></a>RBAC角色权限管理机制实现思路</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 面向资源编程</span>
+<h4 id="rbac角色权限管理机制实现思路"><a class="markdownIt-Anchor" href="#rbac角色权限管理机制实现思路"></a> RBAC角色权限管理机制实现思路</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 面向资源编程</span>
 https<span class="token punctuation">:</span><span class="token operator">//</span>www<span class="token punctuation">.</span>shiyanlou<span class="token punctuation">.</span>com<span class="token operator">/</span>v1<span class="token operator">/</span>books<span class="token operator">/</span>        <span class="token comment"># 请求后端 books书籍表中数据</span>
 	get
     post
 <span class="token comment"># 用户表</span>
 <span class="token comment"># 角色表</span>
 <span class="token comment"># 权限表</span>
-get<span class="token operator">/</span>post<span class="token operator">/</span>put<span class="token operator">/</span>delete 对应关系<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+get<span class="token operator">/</span>post<span class="token operator">/</span>put<span class="token operator">/</span>delete 对应关系</code></pre>
 <ul>
 <li>所有权限的本质是对数据库中表中数据增删改查的操作</li>
 <li>而这些增删改查的操作是通过前端不同路由，通过get、post、put、delete方法操作数据库的</li>
@@ -113,7 +115,8 @@ get<span class="token operator">/</span>post<span class="token operator">/</span
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><a target="_blank" rel="noopener" href="https://www.shiyanlou.com/v1/books/">https://www.shiyanlou.com/v1/books/</a></td>
 <td>get</td>
 <td>判断用户是否可以查询books表中数据</td>
@@ -133,9 +136,11 @@ get<span class="token operator">/</span>post<span class="token operator">/</span
 <td>delete</td>
 <td>判断用户是否可以删除books表中数据</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
-<li>后端如何判断用户权限<ul>
+<li>后端如何判断用户权限
+<ul>
 <li>用户发送求方法 <a target="_blank" rel="noopener" href="https://www.shiyanlou.com/v1/books/">https://www.shiyanlou.com/v1/books/</a> 的url</li>
 <li>后端首先查询时哪一个用户，然后查询当前用户的角色</li>
 <li>最后判断这个角色是否可以访问 <a target="_blank" rel="noopener" href="https://www.shiyanlou.com/v1/books/">https://www.shiyanlou.com/v1/books/</a> 的对应方法即可</li>

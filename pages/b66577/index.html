@@ -76,23 +76,24 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-安装Docker"><a href="#01-安装Docker" class="headerlink" title="01.安装Docker"></a>01.安装Docker</h2><h3 id="1-1-yum安装docker"><a href="#1-1-yum安装docker" class="headerlink" title="1.1 yum安装docker"></a>1.1 yum安装docker</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  yum -y install wget</span>
+                <h2 id="01安装docker"><a class="markdownIt-Anchor" href="#01安装docker"></a> 01.安装Docker</h2>
+<h3 id="11-yum安装docker"><a class="markdownIt-Anchor" href="#11-yum安装docker"></a> 1.1 yum安装docker</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  yum -y install wget</span>
 <span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo</span>
 <span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  yum -y install docker-ce</span>
-<span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  systemctl enable docker &amp;&amp; systemctl start docker</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  systemctl enable docker &amp;&amp; systemctl start docker</span></code></pre>
 <ul>
 <li>配置镜像下载加速器：</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  cat > /etc/docker/daemon.json &lt;&lt; EOF</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  cat > /etc/docker/daemon.json &lt;&lt; EOF</span>
 <span class="token punctuation">&#123;</span>
   <span class="token string">"registry-mirrors"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token string">"https://b9pmyelo.mirror.aliyuncs.com"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span>
 EOF
 <span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  systemctl restart docker</span>
-<span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  docker info</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-2-添加阿里云YUM软件源"><a href="#1-2-添加阿里云YUM软件源" class="headerlink" title="1.2 添加阿里云YUM软件源"></a>1.2 添加阿里云YUM软件源</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  cat > /etc/yum.repos.d/kubernetes.repo &lt;&lt; EOF</span>
+<span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  docker info</span></code></pre>
+<h3 id="12-添加阿里云yum软件源"><a class="markdownIt-Anchor" href="#12-添加阿里云yum软件源"></a> 1.2 添加阿里云YUM软件源</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-master ~<span class="token punctuation">]</span><span class="token comment">##  cat > /etc/yum.repos.d/kubernetes.repo &lt;&lt; EOF</span>
 <span class="token punctuation">[</span>kubernetes<span class="token punctuation">]</span>
 <span class="token assign-left variable">name</span><span class="token operator">=</span>Kubernetes
 <span class="token assign-left variable">baseurl</span><span class="token operator">=</span>https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
@@ -100,21 +101,22 @@ EOF
 <span class="token assign-left variable">gpgcheck</span><span class="token operator">=</span><span class="token number">0</span>
 <span class="token assign-left variable">repo_gpgcheck</span><span class="token operator">=</span><span class="token number">0</span>
 <span class="token assign-left variable">gpgkey</span><span class="token operator">=</span>https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-docker安装ES"><a href="#02-docker安装ES" class="headerlink" title="02.docker安装ES"></a>02.docker安装ES</h2><h3 id="2-1-docker安装es"><a href="#2-1-docker安装es" class="headerlink" title="2.1 docker安装es"></a>2.1 docker安装es</h3><ul>
+EOF</code></pre>
+<h2 id="02docker安装es"><a class="markdownIt-Anchor" href="#02docker安装es"></a> 02.docker安装ES</h2>
+<h3 id="21-docker安装es"><a class="markdownIt-Anchor" href="#21-docker安装es"></a> 2.1 docker安装es</h3>
+<ul>
 <li>docker安装es</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker pull elasticsearch:7.2.0</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -d elasticsearch:7.2.0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker pull elasticsearch:7.2.0</span>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -d elasticsearch:7.2.0</span></code></pre>
 <ul>
-<li>修改配置，解决跨域访问问题<ul>
+<li>修改配置，解决跨域访问问题
+<ul>
 <li>首先进入到容器中，然后<code>进入到指定目录修改elasticsearch.yml文件</code></li>
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker pull elasticsearch:7.2.0</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker pull elasticsearch:7.2.0</span>
  
 <span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker exec -it elasticsearch /bin/bash</span>
 <span class="token punctuation">[</span>root@de5bba3e2d81 elasticsearch<span class="token punctuation">]</span><span class="token comment">##  cd /usr/share/elasticsearch/config/</span>
@@ -123,27 +125,30 @@ EOF<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
 http.cors.enabled: <span class="token boolean">true</span>
 http.cors.allow-origin: <span class="token string">"*"</span>
 <span class="token punctuation">[</span>root@de5bba3e2d81 elasticsearch<span class="token punctuation">]</span><span class="token comment">##  exit</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##   docker restart elasticsearch</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-安装ik分词器"><a href="#2-2-安装ik分词器" class="headerlink" title="2.2 安装ik分词器"></a>2.2 安装ik分词器</h3><ul>
-<li><p>es自带的分词器对中文分词不是很友好，所以我们下载开源的IK分词器来解决这个问题。</p>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##   docker restart elasticsearch</span></code></pre>
+<h3 id="22-安装ik分词器"><a class="markdownIt-Anchor" href="#22-安装ik分词器"></a> 2.2 安装ik分词器</h3>
+<ul>
+<li>
+<p>es自带的分词器对中文分词不是很友好，所以我们下载开源的IK分词器来解决这个问题。</p>
 </li>
-<li><p>首先进入到plugins目录中下载分词器，下载完成后然后解压，再重启es即可。</p>
+<li>
+<p>首先进入到plugins目录中下载分词器，下载完成后然后解压，再重启es即可。</p>
 </li>
-<li><p>注意：elasticsearch的版本和ik分词器的版本需要保持一致，不然在重启的时候会失败。</p>
+<li>
+<p>注意：elasticsearch的版本和ik分词器的版本需要保持一致，不然在重启的时候会失败。</p>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  cd /usr/share/elasticsearch/plugins/</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  cd /usr/share/elasticsearch/plugins/</span>
 <span class="token punctuation">[</span>root@de5bba3e2d81 elasticsearch<span class="token punctuation">]</span><span class="token comment">## elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.2.0/elasticsearch-analysis-ik-7.2.0.zip</span>
 <span class="token punctuation">[</span>root@de5bba3e2d81 elasticsearch<span class="token punctuation">]</span><span class="token comment">##  exit</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker restart elasticsearch   ## 然后可以在kibana界面的dev tools中验证是否安装成功；</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-安装kinaba"><a href="#2-3-安装kinaba" class="headerlink" title="2.3 安装kinaba"></a>2.3 安装kinaba</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">## docker pull kibana:7.2.0</span>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">##  docker restart elasticsearch   ## 然后可以在kibana界面的dev tools中验证是否安装成功；</span></code></pre>
+<h3 id="23-安装kinaba"><a class="markdownIt-Anchor" href="#23-安装kinaba"></a> 2.3 安装kinaba</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">## docker pull kibana:7.2.0</span>
 <span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">## docker run --name kibana --link=elasticsearch:test  -p 5601:5601 -d kibana:7.2.0</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">## docker start kibana</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment">## docker start kibana</span></code></pre>
 <ul>
-<li>访问网址<ul>
+<li>访问网址
+<ul>
 <li>访问ES：      <a target="_blank" rel="noopener" href="http://192.168.56.66:9200/">http://192.168.56.66:9200/</a></li>
 <li>访问kibana：<a target="_blank" rel="noopener" href="http://192.168.56.66:5601/">http://192.168.56.66:5601/</a></li>
 </ul>

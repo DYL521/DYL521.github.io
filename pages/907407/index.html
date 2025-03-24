@@ -76,22 +76,26 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-RESTful风格"><a href="#01-RESTful风格" class="headerlink" title="01.RESTful风格"></a>01.RESTful风格</h1><blockquote>
+                <h1 id="01restful风格"><a class="markdownIt-Anchor" href="#01restful风格"></a> 01.RESTful风格</h1>
+<blockquote>
 <p>结合DRF框架提供标准RESTful API接口</p>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/10053234.html">https://www.cnblogs.com/xiaonq/p/10053234.html</a></p>
 <ul>
-<li><p>restful说明</p>
+<li>
+<p>restful说明</p>
 <ul>
 <li><span style="color: red"> RESTful不是一种技术，而是一种接口规范，主要规范包括：1.请求方式、2.状态码、3、url规范、4、传参规范</span></li>
-<li>RESTful核心是面向资源编程<ul>
+<li>RESTful核心是面向资源编程
+<ul>
 <li>把所有数据都当做一个资源，在url中使用名词或者名词的复数形式表示这个资源</li>
-<li>以 get&#x2F;post&#x2F;put&#x2F;delete 请求方式，来区别他们的增删改查动作</li>
+<li>以 get/post/put/delete 请求方式，来区别他们的增删改查动作</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>请求方式method</p>
+<li>
+<p>请求方式method</p>
 <ul>
 <li>GET      ：从服务器取出资源（一项或多项）</li>
 <li>POST    ：在服务器新建一个资源</li>
@@ -100,10 +104,11 @@
 <li>DELETE ：从服务器删除资源</li>
 </ul>
 </li>
-<li><p><strong>状态码</strong></p>
+<li>
+<p><strong>状态码</strong></p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 2XX请求成功'''</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 2XX请求成功'''</span>
 <span class="token comment">#----- 200 请求成功，一般用于GET与POST请求</span>
 <span class="token comment">#----- 201 Created - [POST/PUT/PATCH]：用户新建或修改数据成功。</span>
 
@@ -122,10 +127,10 @@
 <span class="token comment"># 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。</span>
 <span class="token triple-quoted-string string">'''4. 5XX服务端错误'''</span>
 <span class="token comment">#----- 500 INTERNAL SERVER ERROR - [*]：服务器内部错误，无法完成请求</span>
-<span class="token comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span></code></pre>
 <ul>
-<li><p>面向资源编程： 路径，视网络上任何东西都是资源，均使用名词表示（可复数）</p>
+<li>
+<p>面向资源编程： 路径，视网络上任何东西都是资源，均使用名词表示（可复数）</p>
 <ul>
 <li>所有请求实际操作的都是数据库中的表，每一个表当做一个资源</li>
 <li>资源是一个名称，所以RESTful规范中URL只能有名称或名词的复数形式</li>
@@ -134,12 +139,13 @@
 <li><a target="_blank" rel="noopener" href="https://api.example.com/v1/employees">https://api.example.com/v1/employees</a></li>
 </ul>
 </li>
-<li><p>过滤，通过在url上传参的形式传递搜索条件</p>
+<li>
+<p>过滤，通过在url上传参的形式传递搜索条件</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?limit=10%EF%BC%9A%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E8%AE%B0%E5%BD%95%E7%9A%84%E6%95%B0%E9%87%8F">https://api.example.com/v1/zoos?limit=10：指定返回记录的数量</a></li>
 <li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?offset=10%EF%BC%9A%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E8%AE%B0%E5%BD%95%E7%9A%84%E5%BC%80%E5%A7%8B%E4%BD%8D%E7%BD%AE">https://api.example.com/v1/zoos?offset=10：指定返回记录的开始位置</a></li>
-<li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?page=2&per_page=100%EF%BC%9A%E6%8C%87%E5%AE%9A%E7%AC%AC%E5%87%A0%E9%A1%B5%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%AF%8F%E9%A1%B5%E7%9A%84%E8%AE%B0%E5%BD%95%E6%95%B0">https://api.example.com/v1/zoos?page=2&amp;per_page=100：指定第几页，以及每页的记录数</a></li>
-<li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?sortby=name&order=asc%EF%BC%9A%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E6%8C%89%E7%85%A7%E5%93%AA%E4%B8%AA%E5%B1%9E%E6%80%A7%E6%8E%92%E5%BA%8F%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%8E%92%E5%BA%8F%E9%A1%BA%E5%BA%8F">https://api.example.com/v1/zoos?sortby=name&amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序</a></li>
+<li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?page=2&amp;per_page=100%EF%BC%9A%E6%8C%87%E5%AE%9A%E7%AC%AC%E5%87%A0%E9%A1%B5%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%AF%8F%E9%A1%B5%E7%9A%84%E8%AE%B0%E5%BD%95%E6%95%B0">https://api.example.com/v1/zoos?page=2&amp;per_page=100：指定第几页，以及每页的记录数</a></li>
+<li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?sortby=name&amp;order=asc%EF%BC%9A%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E6%8C%89%E7%85%A7%E5%93%AA%E4%B8%AA%E5%B1%9E%E6%80%A7%E6%8E%92%E5%BA%8F%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%8E%92%E5%BA%8F%E9%A1%BA%E5%BA%8F">https://api.example.com/v1/zoos?sortby=name&amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序</a></li>
 <li><a target="_blank" rel="noopener" href="https://api.example.com/v1/zoos?animal_type_id=1%EF%BC%9A%E6%8C%87%E5%AE%9A%E7%AD%9B%E9%80%89%E6%9D%A1%E4%BB%B6">https://api.example.com/v1/zoos?animal_type_id=1：指定筛选条件</a></li>
 </ul>
 </li>

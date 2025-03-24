@@ -76,12 +76,16 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="1-git分支说明"><a href="#1-git分支说明" class="headerlink" title="1.git分支说明"></a>1.git分支说明</h1><ul>
-<li><p>1.master 主分支，稳定代码，为生产环境做准备的</p>
+                <h1 id="1git分支说明"><a class="markdownIt-Anchor" href="#1git分支说明"></a> 1.git分支说明</h1>
+<ul>
+<li>
+<p>1.master 主分支，稳定代码，为生产环境做准备的</p>
 </li>
-<li><p>2.develop 开发分支，为开发服务（测试没有问题的代码最终会合并到master分支形成文档版本）</p>
+<li>
+<p>2.develop 开发分支，为开发服务（测试没有问题的代码最终会合并到master分支形成文档版本）</p>
 </li>
-<li><p>3.git的三个工作区域</p>
+<li>
+<p>3.git的三个工作区域</p>
 <ul>
 <li>1）<strong>工作区：</strong> 就是你在电脑上看到的目录，比如目录下testgit里的文件(.git隐藏目录版本库除外)。</li>
 <li>2）<strong>暂存区 :</strong> 暂存区就是文件夹 .git中的一个小部分（.git文件夹就是版本库）</li>
@@ -90,7 +94,9 @@
 </li>
 </ul>
 <p><img src="./assets/image-20210212110535764.png" style="width: 800px; margin-left: 10px;"> </img></p>
-<h1 id="2-真实环境开发流程"><a href="#2-真实环境开发流程" class="headerlink" title="2.真实环境开发流程"></a>2.真实环境开发流程</h1><h2 id="2-1自己创建django项目推送到仓库"><a href="#2-1自己创建django项目推送到仓库" class="headerlink" title="2.1自己创建django项目推送到仓库"></a>2.1自己创建django项目推送到仓库</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">django<span class="token operator">-</span>admin startproject demo2
+<h1 id="2真实环境开发流程"><a class="markdownIt-Anchor" href="#2真实环境开发流程"></a> 2.真实环境开发流程</h1>
+<h2 id="21自己创建django项目推送到仓库"><a class="markdownIt-Anchor" href="#21自己创建django项目推送到仓库"></a> 2.1自己创建django项目推送到仓库</h2>
+<pre class="language-python" data-language="python"><code class="language-python">django<span class="token operator">-</span>admin startproject demo2
 cd demo2                          <span class="token comment"># 切换到项目路径</span>
 git init                          <span class="token comment"># 初始化这个本地git仓库</span>
 <span class="token comment"># git remote rm origin            # 如有路径不一致可以先删除现有的路径       </span>
@@ -98,16 +104,15 @@ git remote add origin http<span class="token punctuation">:</span><span class="t
 touch Readme                      <span class="token comment"># 新建一个项目文件（工作区）</span>
 git add <span class="token punctuation">.</span>                         <span class="token comment"># 把工作区中所有变更全部提交到（暂存区）</span>
 git commit <span class="token operator">-</span>m <span class="token string">'init'</span>              <span class="token comment"># 把暂存区代码提交到本地git仓库，只有提交到代码库才能被git管理（本地git仓库）</span>
-git push origin master            <span class="token comment"># 将本地仓库的代码推送到线上仓库（线上git仓库）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 代码回滚</span>
+git push origin master            <span class="token comment"># 将本地仓库的代码推送到线上仓库（线上git仓库）</span></code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 代码回滚</span>
 git log                        <span class="token comment">#查看所有提交到仓库的版本记录:   git log -2</span>
 git reflog                     <span class="token comment">#查看所有操作记录（状态的md5值和改变的值）</span>
 git reset <span class="token operator">-</span><span class="token operator">-</span>hard d9e0ed0       <span class="token comment">#回到指定版本（d9e0ed0是创建版本的MD5值得前6位或者7位）</span>
 git reset <span class="token operator">-</span><span class="token operator">-</span>hard HEAD<span class="token operator">^</span>         <span class="token comment">#回到上一个版本</span>
-注：这样可以回到第一次提交到仓库的状态，但再使用git log看不到其他几次的md5值了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="2-2-在本地创建一个dev分支，开发完成后合并到master分支"><a href="#2-2-在本地创建一个dev分支，开发完成后合并到master分支" class="headerlink" title="2.2 在本地创建一个dev分支，开发完成后合并到master分支"></a>2.2 在本地创建一个dev分支，开发完成后合并到master分支</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 从master分支切换到dev分支进行开发并推送到dev分支的过程'''</span>
+注：这样可以回到第一次提交到仓库的状态，但再使用git log看不到其他几次的md5值了</code></pre>
+<h2 id="22-在本地创建一个dev分支开发完成后合并到master分支"><a class="markdownIt-Anchor" href="#22-在本地创建一个dev分支开发完成后合并到master分支"></a> 2.2 在本地创建一个dev分支，开发完成后合并到master分支</h2>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 从master分支切换到dev分支进行开发并推送到dev分支的过程'''</span>
 git checkout <span class="token operator">-</span>b dev master    <span class="token comment"># 从master分支创建dev开发分支</span>
 git branch                    <span class="token comment"># 可以看到现在已经切换到dev分支了</span>
 vim Readme                    <span class="token comment"># 模拟在项目中修改代码</span>
@@ -119,9 +124,9 @@ git push origin dev           <span class="token comment"># 把代码先推倒de
 git checkout master           <span class="token comment"># 开发完成后，需要合并回master分支，先切换到master分支</span>
 cat Readme                    <span class="token comment"># 可以看到master分支的内容没有修改</span>
 git merge <span class="token operator">-</span><span class="token operator">-</span>no<span class="token operator">-</span>ff dev         <span class="token comment"># 将刚刚dev中修改的代码合并到master</span>
-git push origin master        <span class="token comment"># 将本地仓库的代码推送到线上仓库（线上git仓库）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-只有master分支情况下（一个人负责维护项目）"><a href="#1-只有master分支情况下（一个人负责维护项目）" class="headerlink" title="1.只有master分支情况下（一个人负责维护项目）"></a>1.只有master分支情况下（一个人负责维护项目）</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">git clone git@gitee<span class="token punctuation">.</span>com<span class="token punctuation">:</span>xiaonqedu<span class="token operator">/</span>daily1904<span class="token punctuation">.</span>git
+git push origin master        <span class="token comment"># 将本地仓库的代码推送到线上仓库（线上git仓库）</span></code></pre>
+<h2 id="1只有master分支情况下一个人负责维护项目"><a class="markdownIt-Anchor" href="#1只有master分支情况下一个人负责维护项目"></a> 1.只有master分支情况下（一个人负责维护项目）</h2>
+<pre class="language-python" data-language="python"><code class="language-python">git clone git@gitee<span class="token punctuation">.</span>com<span class="token punctuation">:</span>xiaonqedu<span class="token operator">/</span>daily1904<span class="token punctuation">.</span>git
 vim test<span class="token punctuation">.</span>txt                 <span class="token comment"># 工作区(本地的仓库)</span>
 git add <span class="token punctuation">.</span>                    <span class="token comment"># 当前修改是在暂存区（本地仓库）</span>
 git commit <span class="token operator">-</span>m <span class="token string">'0514'</span>         <span class="token comment"># 把暂存区的代码永久保存到 版本库中，这样代码就不会丢失（本地版本仓库）</span>
@@ -130,10 +135,11 @@ git log <span class="token operator">-</span><span class="token number">2</span>
 git reset <span class="token operator">-</span><span class="token operator">-</span>hard 41e1efb     <span class="token comment"># 回滚到任意版本</span>
 git reflog                     <span class="token comment">#查看所有操作记录（状态的md5值和改变的值）</span>
 <span class="token comment"># 把本地真正开发的代码提交到线上代码仓库</span>
-git push origin master              <span class="token comment"># 此时代码才会更新到线上的代码仓库</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="2-多人协同开发，一般有master分支和dev分支"><a href="#2-多人协同开发，一般有master分支和dev分支" class="headerlink" title="2.多人协同开发，一般有master分支和dev分支"></a>2.多人协同开发，一般有master分支和dev分支</h2><p>  　　1. master 主分支，稳定代码，为生产环境做准备的<br>        　　2. develop 开发分支，为开发服务（测试没有问题的代码最终会合并到master分支形成文档版本）</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">git clone git@gitee<span class="token punctuation">.</span>com<span class="token punctuation">:</span>xiaonqedu<span class="token operator">/</span>daily1904<span class="token punctuation">.</span>git
+git push origin master              <span class="token comment"># 此时代码才会更新到线上的代码仓库</span></code></pre>
+<h2 id="2多人协同开发一般有master分支和dev分支"><a class="markdownIt-Anchor" href="#2多人协同开发一般有master分支和dev分支"></a> 2.多人协同开发，一般有master分支和dev分支</h2>
+<p>1. master 主分支，稳定代码，为生产环境做准备的<br />
+　　2. develop 开发分支，为开发服务（测试没有问题的代码最终会合并到master分支形成文档版本）</p>
+<pre class="language-python" data-language="python"><code class="language-python">git clone git@gitee<span class="token punctuation">.</span>com<span class="token punctuation">:</span>xiaonqedu<span class="token operator">/</span>daily1904<span class="token punctuation">.</span>git
 git branch                                  <span class="token comment"># 查看当前所在分支</span>
 git checkout <span class="token operator">-</span>b dev master                  <span class="token comment"># 从master分支切换到了dev分支</span>
 vim test<span class="token punctuation">.</span>txt                               <span class="token comment"># 模拟开发过程</span>
@@ -145,8 +151,7 @@ git checkout master
 
 <span class="token comment"># dev分支是一个开发分支，如果测试发现没有问题，需要把dev分支代码合并到master分支，形成最终稳定版本</span>
 git merge dev                              <span class="token comment"># 把dev分支中的代码合并到master中</span>
-git push origin master                     <span class="token comment"># 把本地仓库中master代码推送到线上</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+git push origin master                     <span class="token comment"># 把本地仓库中master代码推送到线上</span></code></pre>
 
                 
                 <p class="end">__END__</p>

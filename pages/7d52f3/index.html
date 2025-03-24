@@ -76,110 +76,148 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-redis简介"><a href="#01-redis简介" class="headerlink" title="01.redis简介"></a>01.redis简介</h1><h2 id="1-1-什么是Redis？"><a href="#1-1-什么是Redis？" class="headerlink" title="1.1 什么是Redis？"></a>1.1 什么是Redis？</h2><ul>
-<li><p>Redis本质上是一个Key-Value类型的内存数据库，很像memcached。</p>
+                <h1 id="01redis简介"><a class="markdownIt-Anchor" href="#01redis简介"></a> 01.redis简介</h1>
+<h2 id="11-什么是redis"><a class="markdownIt-Anchor" href="#11-什么是redis"></a> 1.1 什么是Redis？</h2>
+<ul>
+<li>
+<p>Redis本质上是一个Key-Value类型的内存数据库，很像memcached。</p>
 </li>
-<li><p>整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。</p>
+<li>
+<p>整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。</p>
 </li>
-<li><p>因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过 10万次读写操作，是已知性能最快的Key-Value DB。</p>
+<li>
+<p>因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过 10万次读写操作，是已知性能最快的Key-Value DB。</p>
 </li>
 </ul>
-<h2 id="1-2-redis特点"><a href="#1-2-redis特点" class="headerlink" title="1.2 redis特点"></a>1.2 redis特点</h2><ul>
-<li><p>redis比memcached优点</p>
+<h2 id="12-redis特点"><a class="markdownIt-Anchor" href="#12-redis特点"></a> 1.2 redis特点</h2>
+<ul>
+<li>
+<p>redis比memcached优点</p>
 <ul>
 <li>数据类型：redis支持五中数据类型， memcached所有的值均是简单的字符串</li>
 <li>value大小限制：redis单个value的最大限制是512M，memcached只能保存1MB的数据</li>
 <li>持久化：redis可以持久化，memcached不支持持久化</li>
 </ul>
 </li>
-<li><p>redis为什么快？</p>
+<li>
+<p>redis为什么快？</p>
 <ul>
 <li>纯内存操作</li>
 <li>单线程避免上下文切换</li>
 <li>非阻塞IO多路复用机制</li>
 </ul>
 </li>
-<li><p>redis缺点</p>
+<li>
+<p>redis缺点</p>
 <ul>
 <li>内存限制，不能用作海量数据存储</li>
 <li>注：如果需要存储海量数据，可以使用MongoDB</li>
 </ul>
 </li>
 </ul>
-<h1 id="02-redis五种数据类型"><a href="#02-redis五种数据类型" class="headerlink" title="02.redis五种数据类型"></a>02.redis五种数据类型</h1><ul>
-<li>说明：<ul>
+<h1 id="02redis五种数据类型"><a class="markdownIt-Anchor" href="#02redis五种数据类型"></a> 02.redis五种数据类型</h1>
+<ul>
+<li>说明：
+<ul>
 <li>1.redis中所有数据结构都以唯一的key字符串作为名称，然后通过这个唯一的key来获取对应的value</li>
 <li>2.不同的数据类型数据结构差异就在于value的结构不一样</li>
 </ul>
 </li>
 </ul>
-<h2 id="2-1-字符串（string）"><a href="#2-1-字符串（string）" class="headerlink" title="2.1 字符串（string）"></a>2.1 字符串（string）</h2><blockquote>
-<h3 id="2-1-1-value的数据结构（数组）"><a href="#2-1-1-value的数据结构（数组）" class="headerlink" title="2.1.1 value的数据结构（数组）"></a>2.1.1 <code>value的数据结构</code>（数组）</h3></blockquote>
+<h2 id="21-字符串string"><a class="markdownIt-Anchor" href="#21-字符串string"></a> 2.1 字符串（string）</h2>
+<blockquote>
+<h3 id="211-value的数据结构数组"><a class="markdownIt-Anchor" href="#211-value的数据结构数组"></a> 2.1.1 <code>value的数据结构</code>（数组）</h3>
+</blockquote>
 <ul>
-<li><p>1.字符串value数据结构类似于数组，采用与分配容易空间来减少内存频繁分配</p>
+<li>
+<p>1.字符串value数据结构类似于数组，采用与分配容易空间来减少内存频繁分配</p>
 </li>
-<li><p>2.当字符串长度小于1M时，扩容就是加倍现有空间</p>
+<li>
+<p>2.当字符串长度小于1M时，扩容就是加倍现有空间</p>
 </li>
-<li><p>3.如果字符串长度操作1M时，扩容时最多扩容1M空间，字符串最大长度为 512M</p>
+<li>
+<p>3.如果字符串长度操作1M时，扩容时最多扩容1M空间，字符串最大长度为 512M</p>
 </li>
 </ul>
 <blockquote>
-<h3 id="2-1-2-字符串的使用场景（缓存）"><a href="#2-1-2-字符串的使用场景（缓存）" class="headerlink" title="2.1.2 字符串的使用场景（缓存）"></a>2.1.2 <code>字符串的使用场景</code>（缓存）</h3></blockquote>
+<h3 id="212-字符串的使用场景缓存"><a class="markdownIt-Anchor" href="#212-字符串的使用场景缓存"></a> 2.1.2 <code>字符串的使用场景</code>（缓存）</h3>
+</blockquote>
 <ul>
-<li><p>1.字符串一个常见的用途是缓存用户信息，我们将用户信息使用JSON序列化成字符串</p>
+<li>
+<p>1.字符串一个常见的用途是缓存用户信息，我们将用户信息使用JSON序列化成字符串</p>
 </li>
-<li><p>2.取用户信息时会经过一次反序列化的过程</p>
+<li>
+<p>2.取用户信息时会经过一次反序列化的过程</p>
 </li>
 </ul>
-<h2 id="2-2-list（列表）"><a href="#2-2-list（列表）" class="headerlink" title="2.2 list（列表）"></a>2.2 list（列表）</h2><blockquote>
-<h3 id="2-1-1-value的数据结构（双向链表）"><a href="#2-1-1-value的数据结构（双向链表）" class="headerlink" title="2.1.1 value的数据结构（双向链表）"></a>2.1.1 <code>value的数据结构</code>（双向链表）</h3></blockquote>
+<h2 id="22-list列表"><a class="markdownIt-Anchor" href="#22-list列表"></a> 2.2 list（列表）</h2>
+<blockquote>
+<h3 id="211-value的数据结构双向链表"><a class="markdownIt-Anchor" href="#211-value的数据结构双向链表"></a> 2.1.1 <code>value的数据结构</code>（双向链表）</h3>
+</blockquote>
 <ul>
-<li><p>1.列表的数据结构是双向链表，这意味着插入和删除的时间复杂度是0(1)，索引的时间复杂度位0(n)</p>
+<li>
+<p>1.列表的数据结构是双向链表，这意味着插入和删除的时间复杂度是0(1)，索引的时间复杂度位0(n)</p>
 </li>
-<li><p>2.当列表弹出最后一个元素后，该数据结构会被自动删除，内存被回手</p>
+<li>
+<p>2.当列表弹出最后一个元素后，该数据结构会被自动删除，内存被回手</p>
 </li>
 </ul>
 <blockquote>
-<h3 id="2-1-2-列表的使用场景（队列、栈）"><a href="#2-1-2-列表的使用场景（队列、栈）" class="headerlink" title="2.1.2 列表的使用场景（队列、栈）"></a>2.1.2 <code>列表的使用场景</code>（队列、栈）</h3></blockquote>
-<h2 id="2-3-hash（字典）"><a href="#2-3-hash（字典）" class="headerlink" title="2.3 hash（字典）"></a>2.3 hash（字典）</h2><blockquote>
-<h3 id="2-3-1-value的数据结构（HashMap）"><a href="#2-3-1-value的数据结构（HashMap）" class="headerlink" title="2.3.1 value的数据结构（HashMap）"></a>2.3.1<code> value的数据结构</code>（HashMap）</h3></blockquote>
+<h3 id="212-列表的使用场景队列-栈"><a class="markdownIt-Anchor" href="#212-列表的使用场景队列-栈"></a> 2.1.2 <code>列表的使用场景</code>（队列、栈）</h3>
+</blockquote>
+<h2 id="23-hash字典"><a class="markdownIt-Anchor" href="#23-hash字典"></a> 2.3 hash（字典）</h2>
+<blockquote>
+<h3 id="231-value的数据结构hashmap"><a class="markdownIt-Anchor" href="#231-value的数据结构hashmap"></a> 2.3.1<code> value的数据结构</code>（HashMap）</h3>
+</blockquote>
 <ul>
-<li><p>1.redis中的字典也是HashMap（数组+列表）的二维结构</p>
+<li>
+<p>1.redis中的字典也是HashMap（数组+列表）的二维结构</p>
 </li>
-<li><p>2.不同的是redis的字典的值只能是字符串</p>
+<li>
+<p>2.不同的是redis的字典的值只能是字符串</p>
 </li>
 </ul>
 <blockquote>
-<h3 id="2-3-2-hash的使用场景（缓存）"><a href="#2-3-2-hash的使用场景（缓存）" class="headerlink" title="2.3.2 hash的使用场景（缓存）"></a>2.3.2 <code>hash的使用场景</code>（缓存）</h3></blockquote>
+<h3 id="232-hash的使用场景缓存"><a class="markdownIt-Anchor" href="#232-hash的使用场景缓存"></a> 2.3.2 <code>hash的使用场景</code>（缓存）</h3>
+</blockquote>
 <ul>
-<li><p>1.hash结构也可以用来缓存用户信息，与字符串一次性全部序列化整个对象不同，hash可以对每个字段进行单独存储</p>
+<li>
+<p>1.hash结构也可以用来缓存用户信息，与字符串一次性全部序列化整个对象不同，hash可以对每个字段进行单独存储</p>
 </li>
-<li><p>2.这样可以部分获取用户信息，节约网络流量</p>
+<li>
+<p>2.这样可以部分获取用户信息，节约网络流量</p>
 </li>
-<li><p>3.hash也有缺点，hash结构的存储消耗要高于单个字符串</p>
+<li>
+<p>3.hash也有缺点，hash结构的存储消耗要高于单个字符串</p>
 </li>
 </ul>
-<h2 id="2-4-set（集合）"><a href="#2-4-set（集合）" class="headerlink" title="2.4 set（集合）"></a>2.4 set（集合）</h2><blockquote>
-<h3 id="2-4-1-value的数据结构（字典）"><a href="#2-4-1-value的数据结构（字典）" class="headerlink" title="2.4.1 value的数据结构（字典）"></a>2.4.1 value的数据结构（字典）</h3></blockquote>
+<h2 id="24-set集合"><a class="markdownIt-Anchor" href="#24-set集合"></a> 2.4 set（集合）</h2>
+<blockquote>
+<h3 id="241-value的数据结构字典"><a class="markdownIt-Anchor" href="#241-value的数据结构字典"></a> 2.4.1 value的数据结构（字典）</h3>
+</blockquote>
 <ul>
 <li>redis中的集合相当于一个特殊的字典，字典的所有value都位null</li>
 <li>当集合中的最后一个元素被移除后，数据结构会被自动删除，内存被回收</li>
 </ul>
 <blockquote>
-<h3 id="2-4-2-set使用场景"><a href="#2-4-2-set使用场景" class="headerlink" title="2.4.2 set使用场景"></a>2.4.2 set使用场景</h3></blockquote>
+<h3 id="242-set使用场景"><a class="markdownIt-Anchor" href="#242-set使用场景"></a> 2.4.2 set使用场景</h3>
+</blockquote>
 <ul>
 <li>set结构可以用来存储某个活动中中奖的用户ID,因为有去重功能，可以保证同一用户不会中间两次</li>
 </ul>
-<h2 id="2-5-zset（有序集合）"><a href="#2-5-zset（有序集合）" class="headerlink" title="2.5 zset（有序集合）"></a>2.5 zset（有序集合）</h2><blockquote>
-<h3 id="2-5-1-value的数据结构（跳跃列表-字典）"><a href="#2-5-1-value的数据结构（跳跃列表-字典）" class="headerlink" title="2.5.1 value的数据结构（跳跃列表+字典）"></a>2.5.1 <code>value的数据结构</code>（跳跃列表+字典）</h3></blockquote>
+<h2 id="25-zset有序集合"><a class="markdownIt-Anchor" href="#25-zset有序集合"></a> 2.5 zset（有序集合）</h2>
+<blockquote>
+<h3 id="251-value的数据结构跳跃列表字典"><a class="markdownIt-Anchor" href="#251-value的数据结构跳跃列表字典"></a> 2.5.1 <code>value的数据结构</code>（跳跃列表+字典）</h3>
+</blockquote>
 <ul>
-<li>1.zset一方面是一个set，保证了内部的唯一性　</li>
+<li>1.zset一方面是一个set，保证了内部的唯一性</li>
 <li>2.另一方面它可以给每一个value赋予一个score，代表这个value的权重</li>
 <li>3.zset内部实现用的是一种叫做“跳跃列表”的数据结构</li>
 <li>4.zset最后一个元素被移除后，数据结构就会被自动删除，内存也会被回收</li>
 </ul>
 <blockquote>
-<h3 id="2-5-2-zset应用场景"><a href="#2-5-2-zset应用场景" class="headerlink" title="2.5.2 zset应用场景"></a>2.5.2 <code>zset应用场景</code></h3></blockquote>
+<h3 id="252-zset应用场景"><a class="markdownIt-Anchor" href="#252-zset应用场景"></a> 2.5.2 <code>zset应用场景</code></h3>
+</blockquote>
 <ul>
 <li>1.粉丝列表：value（粉丝ID），score（关注时间），这样可以轻松按关注事件排序</li>
 <li>2.学生成绩：value（学生ID），score（考试成绩），这样可以轻松对成绩排序</li>

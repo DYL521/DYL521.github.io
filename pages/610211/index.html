@@ -80,61 +80,78 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-mysql中的锁"><a href="#01-mysql中的锁" class="headerlink" title="01.mysql中的锁"></a>01.mysql中的锁</h1><h2 id="1-1-锁分类"><a href="#1-1-锁分类" class="headerlink" title="1.1 锁分类"></a>1.1 锁分类</h2><ul>
-<li><p><code>按使用方式划分</code>：乐观锁、悲观锁</p>
+                <h1 id="01mysql中的锁"><a class="markdownIt-Anchor" href="#01mysql中的锁"></a> 01.mysql中的锁</h1>
+<h2 id="11-锁分类"><a class="markdownIt-Anchor" href="#11-锁分类"></a> 1.1 锁分类</h2>
+<ul>
+<li>
+<p><code>按使用方式划分</code>：乐观锁、悲观锁</p>
 </li>
-<li><p><code>按锁级别划分</code>：共享锁、排他锁</p>
+<li>
+<p><code>按锁级别划分</code>：共享锁、排他锁</p>
 </li>
-<li><p><code>按锁的粒度划分</code>：表级锁、行级锁、页级锁</p>
+<li>
+<p><code>按锁的粒度划分</code>：表级锁、行级锁、页级锁</p>
 </li>
-<li><p>按操作划分：DML锁，DDL锁</p>
+<li>
+<p>按操作划分：DML锁，DDL锁</p>
 </li>
-<li><p>按加锁方式划分：自动锁、显示锁</p>
+<li>
+<p>按加锁方式划分：自动锁、显示锁</p>
 </li>
 </ul>
-<h2 id="1-2-共享锁和排它锁"><a href="#1-2-共享锁和排它锁" class="headerlink" title="1.2 共享锁和排它锁"></a>1.2 共享锁和排它锁</h2><ul>
-<li><p>共享锁（<code>读锁</code>）</p>
+<h2 id="12-共享锁和排它锁"><a class="markdownIt-Anchor" href="#12-共享锁和排它锁"></a> 1.2 共享锁和排它锁</h2>
+<ul>
+<li>
+<p>共享锁（<code>读锁</code>）</p>
 <ul>
 <li>共享锁又叫读锁，如果事务T对A加上共享锁，则其它事务只能对A再加共享锁，不能加其它锁。</li>
 <li>获准共享锁的事务只能读数据，不能写数据。</li>
 <li>用法： SELECT … LOCK IN SHARE MODE;</li>
 </ul>
 </li>
-<li><p>排它锁（<code>写锁</code>）</p>
+<li>
+<p>排它锁（<code>写锁</code>）</p>
 <ul>
 <li>排它锁又叫写锁，如果事务T对A加上排它锁，则其它事务都不能对A加任何类型的锁。获准排它锁的事务既能读数据，又能写数据。</li>
 <li>用法 ：  SELECT … FOR UPDATE</li>
 </ul>
 </li>
 </ul>
-<h2 id="1-3-乐观锁和悲观锁"><a href="#1-3-乐观锁和悲观锁" class="headerlink" title="1.3 乐观锁和悲观锁"></a>1.3 乐观锁和悲观锁</h2><h3 id="2-3-1-悲观锁：写少读多"><a href="#2-3-1-悲观锁：写少读多" class="headerlink" title="2.3.1 悲观锁：写少读多"></a>2.3.1 悲观锁：写少读多</h3><ul>
-<li><p>MySQL会对查询结果集中<code>每行数据都添加排他锁</code>，<code>其他线程对该记录的更新与删除操作都会阻塞</code></p>
+<h2 id="13-乐观锁和悲观锁"><a class="markdownIt-Anchor" href="#13-乐观锁和悲观锁"></a> 1.3 乐观锁和悲观锁</h2>
+<h3 id="231-悲观锁写少读多"><a class="markdownIt-Anchor" href="#231-悲观锁写少读多"></a> 2.3.1 悲观锁：写少读多</h3>
+<ul>
+<li>
+<p>MySQL会对查询结果集中<code>每行数据都添加排他锁</code>，<code>其他线程对该记录的更新与删除操作都会阻塞</code></p>
 </li>
-<li><p>申请前提：<code>没有线程对该结果集中的任何行数据使用排他锁或共享锁，否则申请会阻塞</code>。</p>
+<li>
+<p>申请前提：<code>没有线程对该结果集中的任何行数据使用排他锁或共享锁，否则申请会阻塞</code>。</p>
 </li>
-<li><p>适用场景：悲观锁适合写入频繁的场景。</p>
+<li>
+<p>适用场景：悲观锁适合写入频繁的场景。</p>
 </li>
 </ul>
 <blockquote>
 <p><code>对商品数量-1操作，悲观锁实现</code></p>
 <ul>
 <li>每次获取商品时，对该商品加排他锁</li>
-<li>也就是在用户A获取获取 id&#x3D;1 的商品信息时对该行记录加锁，期间其他用户阻塞等待访问该记录。</li>
+<li>也就是在用户A获取获取 id=1 的商品信息时对该行记录加锁，期间其他用户阻塞等待访问该记录。</li>
 </ul>
 </blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 悲观锁实现加一操作代码</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#### 悲观锁实现加一操作代码</span>
 <span class="token comment"># 我们可以看到，首先通过begin开启一个事物，在获得shop信息和修改数据的整个过程中都对数据加锁，保证了数据的一致性。</span>
 <span class="token triple-quoted-string string">'''
 begin;
 select id,name,stock as old_stock from shop  where id=1 for update;
 update shop set stock=stock-1 where id=1 and stock=old_stock;
 commit
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-2-乐观锁：读多写少"><a href="#2-3-2-乐观锁：读多写少" class="headerlink" title="2.3.2 乐观锁：读多写少"></a>2.3.2 乐观锁：读多写少</h3><ul>
-<li><p>在更新数据的时候需要比较程序中的库存量与数据库中的库存量是否相等，如果相等则进行更新。</p>
+'''</span></code></pre>
+<h3 id="232-乐观锁读多写少"><a class="markdownIt-Anchor" href="#232-乐观锁读多写少"></a> 2.3.2 乐观锁：读多写少</h3>
+<ul>
+<li>
+<p>在更新数据的时候需要比较程序中的库存量与数据库中的库存量是否相等，如果相等则进行更新。</p>
 </li>
-<li><p>反之<code>程序重新获取库存量，再次进行比较，直到两个库存量的数值相等才进行数据更新</code>。</p>
+<li>
+<p>反之<code>程序重新获取库存量，再次进行比较，直到两个库存量的数值相等才进行数据更新</code>。</p>
 </li>
 </ul>
 <blockquote>
@@ -145,7 +162,7 @@ commit
 <li>反之程序重新获取库存量，再次进行比较，直到两个库存量的数值相等才进行数据更新。</li>
 </ul>
 </blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#### 乐观锁实现加一操作代码</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#### 乐观锁实现加一操作代码</span>
 <span class="token comment"># 我们可以看到，只有当对数量-1操作时才会加锁，只有当程序中值和数据库中的值相等时才正真执行。</span>
 <span class="token triple-quoted-string string">'''
 //不加锁
@@ -154,9 +171,9 @@ select id,name,stock where id=1;
 begin;
 update shop set stock=stock-1 where id=1 and stock=stock;
 commit;
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-4-行级锁-表级锁"><a href="#1-4-行级锁-表级锁" class="headerlink" title="1.4 行级锁 &amp; 表级锁"></a>1.4 行级锁 &amp; 表级锁</h2><ul>
+'''</span></code></pre>
+<h2 id="14-行级锁-表级锁"><a class="markdownIt-Anchor" href="#14-行级锁-表级锁"></a> 1.4 行级锁 &amp; 表级锁</h2>
+<ul>
 <li>行级锁（写多读少）开销大，加锁慢，锁定粒度最小，<strong>发生锁冲突概率最低</strong>，并发度最高</li>
 <li>表级锁（适合大量的读操作）开销小，加锁快，锁定粒度大、发生锁冲突最高，并发度最低</li>
 </ul>

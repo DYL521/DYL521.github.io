@@ -76,15 +76,19 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-json"><a href="#01-json" class="headerlink" title="01.json"></a>01.json</h2><ul>
-<li><p>1.序列化 (json.dumps) ：是将内存中的对象存储到硬盘，变成字符串</p>
+                <h2 id="01json"><a class="markdownIt-Anchor" href="#01json"></a> 01.json</h2>
+<ul>
+<li>
+<p>1.序列化 (json.dumps) ：是将内存中的对象存储到硬盘，变成字符串</p>
 </li>
-<li><p>2.反序列化(json.loads) ： 将刚刚保存在硬盘中的内存对象从新加载到内存中</p>
+<li>
+<p>2.反序列化(json.loads) ： 将刚刚保存在硬盘中的内存对象从新加载到内存中</p>
 </li>
-<li><p>json.dumps( data,ensure_ascii&#x3D;False, indent&#x3D;4)</p>
+<li>
+<p>json.dumps( data,ensure_ascii=False, indent=4)</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#json序列化代码</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#json序列化代码</span>
 <span class="token keyword">import</span> json
 info <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">"tom"</span><span class="token punctuation">,</span>
@@ -93,26 +97,29 @@ info <span class="token operator">=</span> <span class="token punctuation">&#123
 f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span>
 <span class="token comment"># print(json.dumps(info))</span>
 f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">)</span>
-f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#json反序列化代码</span>
+f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#json反序列化代码</span>
 <span class="token keyword">import</span> json
 f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">"r"</span><span class="token punctuation">)</span>
 data <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">"age"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-pickle序列化"><a href="#02-pickle序列化" class="headerlink" title="02.pickle序列化"></a>02.pickle序列化</h2><ul>
-<li><p>python的pickle模块实现了python的所有数据序列和反序列化。</p>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">"age"</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h2 id="02pickle序列化"><a class="markdownIt-Anchor" href="#02pickle序列化"></a> 02.pickle序列化</h2>
+<ul>
+<li>
+<p>python的pickle模块实现了python的所有数据序列和反序列化。</p>
 </li>
-<li><p>基本上功能使用和JSON模块没有太大区别，方法也同样是dumps&#x2F;dump和loads&#x2F;load</p>
+<li>
+<p>基本上功能使用和JSON模块没有太大区别，方法也同样是dumps/dump和loads/load</p>
 </li>
-<li><p>与JSON不同的是pickle不是用于多种语言间的数据传输，它仅作为python对象的持久化或者python程序间进行互相传输对象的方法，因此它支持了python所有的数据类型。</p>
+<li>
+<p>与JSON不同的是pickle不是用于多种语言间的数据传输，它仅作为python对象的持久化或者python程序间进行互相传输对象的方法，因此它支持了python所有的数据类型。</p>
 </li>
-<li><p><code>pickle序列化代码</code></p>
+<li>
+<p><code>pickle序列化代码</code></p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#pickle序列化代码</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#pickle序列化代码</span>
 <span class="token keyword">import</span> pickle
 info <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">"tom"</span><span class="token punctuation">,</span>
@@ -120,19 +127,18 @@ info <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">'wb'</span><span class="token punctuation">)</span>
 f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">)</span>
-f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 <ul>
 <li><code>pickle反序列化代码</code></li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">#pickle反序列化代码
+<pre class="language-none"><code class="language-none">#pickle反序列化代码
 import pickle
 f &#x3D; open(&quot;test.txt&quot;,&quot;rb&quot;)
 data &#x3D; pickle.loads(f.read())
 f.close()
-print(data[&quot;age&quot;])<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="03-解决序列化datetime类型"><a href="#03-解决序列化datetime类型" class="headerlink" title="03.解决序列化datetime类型"></a>03.解决序列化datetime类型</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json<span class="token punctuation">,</span>datetime
+print(data[&quot;age&quot;])</code></pre>
+<h2 id="03解决序列化datetime类型"><a class="markdownIt-Anchor" href="#03解决序列化datetime类型"></a> 03.解决序列化datetime类型</h2>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json<span class="token punctuation">,</span>datetime
 
 <span class="token keyword">class</span> <span class="token class-name">JsonCustomEncoder</span><span class="token punctuation">(</span>json<span class="token punctuation">.</span>JSONEncoder<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">default</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -147,10 +153,10 @@ t <span class="token operator">=</span> datetime<span class="token punctuation">
 
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">,</span>t<span class="token punctuation">)</span>
 f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'ttt'</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span>                              <span class="token comment">#指定将内容写入到ttt文件中</span>
-f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>t<span class="token punctuation">,</span>cls<span class="token operator">=</span>JsonCustomEncoder<span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment">#使用时候只要在json.dumps增加个cls参数即可</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>t<span class="token punctuation">,</span>cls<span class="token operator">=</span>JsonCustomEncoder<span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment">#使用时候只要在json.dumps增加个cls参数即可</span></code></pre>
 <ul>
-<li><code>JSON和pickle模块的区别</code><ul>
+<li><code>JSON和pickle模块的区别</code>
+<ul>
 <li>1.JSON只能处理基本数据类型。pickle能处理所有Python的数据类型。</li>
 <li>2.JSON用于各种语言之间的字符转换。</li>
 <li>pickle用于Python程序对象的持久化或者Python程序间对象网络传输，但不同版本的Python序列化可能还有差异</li>
@@ -193,11 +199,11 @@ f<span class="token punctuation">.</span>write<span class="token punctuation">(<
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/a62e27/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a62e27/" title="发布于 2021-02-13 08:46">06.hashlib</a>
+                        <a href="../../pages/7ed190/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/7ed190/" title="发布于 2021-02-14 08:52">02.环境安装</a>
                         <br>
                     
                     
-                        <a href="../../pages/502ef4/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/502ef4/" title="发布于 2021-02-13 08:46">09.paramiko</a>
+                        <a href="../../pages/a62e27/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a62e27/" title="发布于 2021-02-13 08:46">06.hashlib</a>
                     
                 </div>
             </div>

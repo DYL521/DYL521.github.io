@@ -76,13 +76,16 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-创建django项目"><a href="#01-创建django项目" class="headerlink" title="01.创建django项目"></a>01.创建django项目</h2><h3 id="1-1-创建django项目"><a href="#1-1-创建django项目" class="headerlink" title="1.1 创建django项目"></a>1.1 创建django项目</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp<span class="token operator">></span>workon djenv                         <span class="token comment">## 进入虚拟环境</span>
+                <h2 id="01创建django项目"><a class="markdownIt-Anchor" href="#01创建django项目"></a> 01.创建django项目</h2>
+<h3 id="11-创建django项目"><a class="markdownIt-Anchor" href="#11-创建django项目"></a> 1.1 创建django项目</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp<span class="token operator">></span>workon djenv                         <span class="token comment">## 进入虚拟环境</span>
 <span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp<span class="token operator">></span>django<span class="token operator">-</span>admin startproject mysite           <span class="token comment">## 创建django项目</span>
 <span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp<span class="token operator">></span>cd mysite                           <span class="token comment">## 进入项目目录</span>
 D<span class="token punctuation">:</span>\mysite<span class="token operator">></span>  python manage<span class="token punctuation">.</span>py runserver <span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span><span class="token punctuation">:</span><span class="token number">8000</span>       <span class="token comment">## 运行mysite项目</span>
-<span class="token comment">## 浏览器访问：http://127.0.0.1:8000/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">## 浏览器访问：http://127.0.0.1:8000/</span></code></pre>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214212742257.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h3 id="1-3-工程目录说明"><a href="#1-3-工程目录说明" class="headerlink" title="1.3 工程目录说明"></a>1.3 工程目录说明</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">C<span class="token punctuation">:</span><span class="token punctuation">.</span>
+<h3 id="13-工程目录说明"><a class="markdownIt-Anchor" href="#13-工程目录说明"></a> 1.3 工程目录说明</h3>
+<pre class="language-python" data-language="python"><code class="language-python">C<span class="token punctuation">:</span><span class="token punctuation">.</span>
 │  db<span class="token punctuation">.</span>sqlite3                <span class="token comment">## sqlite数据库文件（settings.py中默认连接的数据库）</span>
 │  manage<span class="token punctuation">.</span>py                <span class="token comment">## 项目管理脚本</span>
 │
@@ -90,41 +93,42 @@ D<span class="token punctuation">:</span>\mysite<span class="token operator">></
     │  settings<span class="token punctuation">.</span>py           <span class="token comment">## 是项目的整体配置文件</span>
     │  urls<span class="token punctuation">.</span>py              <span class="token comment">## 总路由</span>
     │  wsgi<span class="token punctuation">.</span>py              <span class="token comment">## 是项目与WSGI兼容的Web服务器入口</span>
-    │  __init__<span class="token punctuation">.</span>py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-4-运行开发服务器"><a href="#1-4-运行开发服务器" class="headerlink" title="1.4 运行开发服务器"></a>1.4 运行开发服务器</h3><ul>
+    │  __init__<span class="token punctuation">.</span>py</code></pre>
+<h3 id="14-运行开发服务器"><a class="markdownIt-Anchor" href="#14-运行开发服务器"></a> 1.4 运行开发服务器</h3>
+<ul>
 <li>在开发阶段，为了能够快速预览到开发的效果</li>
 <li>django提供了一个纯python编写的轻量级web服务器，仅在开发阶段使用。</li>
 <li>可以不写IP和端口，默认IP是127.0.0.1，默认端口为8000</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py runserver ip<span class="token punctuation">:</span>端口
+<pre class="language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py runserver ip<span class="token punctuation">:</span>端口
 或：
-python manage<span class="token punctuation">.</span>py runserver<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-5-配置setting-py"><a href="#1-5-配置setting-py" class="headerlink" title="1.5 配置setting.py"></a>1.5 配置setting.py</h3><h4 id="1-5-1-配置模板路径"><a href="#1-5-1-配置模板路径" class="headerlink" title="1.5.1 配置模板路径"></a>1.5.1 配置模板路径</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">TEMPLATES <span class="token operator">=</span> <span class="token punctuation">[</span>
+python manage<span class="token punctuation">.</span>py runserver</code></pre>
+<h3 id="15-配置settingpy"><a class="markdownIt-Anchor" href="#15-配置settingpy"></a> 1.5 <a target="_blank" rel="noopener" href="http://xn--setting-hh6sw00k.py">配置setting.py</a></h3>
+<h4 id="151-配置模板路径"><a class="markdownIt-Anchor" href="#151-配置模板路径"></a> 1.5.1 配置模板路径</h4>
+<pre class="language-python" data-language="python"><code class="language-python">TEMPLATES <span class="token operator">=</span> <span class="token punctuation">[</span>
     <span class="token punctuation">&#123;</span>
        <span class="token string">'DIRS'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span><span class="token string">'templates'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-5-2-配置静态目录"><a href="#1-5-2-配置静态目录" class="headerlink" title="1.5.2 配置静态目录"></a>1.5.2 配置静态目录</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#像ccs和js这些静态文件如果想要使用必须在这里配置路径</span>
+<span class="token punctuation">]</span></code></pre>
+<h4 id="152-配置静态目录"><a class="markdownIt-Anchor" href="#152-配置静态目录"></a> 1.5.2 配置静态目录</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#像ccs和js这些静态文件如果想要使用必须在这里配置路径</span>
 STATICFILES_DIRS <span class="token operator">=</span> <span class="token punctuation">(</span>
     os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span><span class="token string">'static'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-5-3-注释CSRF"><a href="#1-5-3-注释CSRF" class="headerlink" title="1.5.3 注释CSRF"></a>1.5.3 注释CSRF</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">MIDDLEWARE <span class="token operator">=</span> <span class="token punctuation">[</span>
+<span class="token punctuation">)</span></code></pre>
+<h4 id="153-注释csrf"><a class="markdownIt-Anchor" href="#153-注释csrf"></a> 1.5.3 注释CSRF</h4>
+<pre class="language-python" data-language="python"><code class="language-python">MIDDLEWARE <span class="token operator">=</span> <span class="token punctuation">[</span>
     <span class="token comment">## 'django.middleware.csrf.CsrfViewMiddleware',</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-5-4-修改时区"><a href="#1-5-4-修改时区" class="headerlink" title="1.5.4 修改时区"></a>1.5.4 修改时区</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">## LANGUAGE_CODE = 'en-us'</span>
+<span class="token punctuation">]</span></code></pre>
+<h4 id="154-修改时区"><a class="markdownIt-Anchor" href="#154-修改时区"></a> 1.5.4 修改时区</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">## LANGUAGE_CODE = 'en-us'</span>
 LANGUAGE_CODE <span class="token operator">=</span> <span class="token string">'zh-hans'</span>
 
 <span class="token comment">## TIME_ZONE = 'UTC'</span>
-TIME_ZONE <span class="token operator">=</span> <span class="token string">'Asia/Shanghai'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-创建子应用三部曲"><a href="#02-创建子应用三部曲" class="headerlink" title="02.创建子应用三部曲"></a>02.创建子应用三部曲</h2><h3 id="2-1-创建子应用"><a href="#2-1-创建子应用" class="headerlink" title="2.1 创建子应用"></a>2.1 创建子应用</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp\mysite<span class="token operator">></span>  python manage<span class="token punctuation">.</span>py startapp app01<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">C<span class="token punctuation">:</span><span class="token punctuation">.</span>
+TIME_ZONE <span class="token operator">=</span> <span class="token string">'Asia/Shanghai'</span></code></pre>
+<h2 id="02创建子应用三部曲"><a class="markdownIt-Anchor" href="#02创建子应用三部曲"></a> 02.创建子应用三部曲</h2>
+<h3 id="21-创建子应用"><a class="markdownIt-Anchor" href="#21-创建子应用"></a> 2.1 创建子应用</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>djenv<span class="token punctuation">)</span> c<span class="token punctuation">:</span>\tmp\mysite<span class="token operator">></span>  python manage<span class="token punctuation">.</span>py startapp app01</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">C<span class="token punctuation">:</span><span class="token punctuation">.</span>
 │  db<span class="token punctuation">.</span>sqlite3               <span class="token comment">## sqlite数据库文件（settings.py中默认连接的数据库）</span>
 │  manage<span class="token punctuation">.</span>py               <span class="token comment">## 项目管理脚本</span>
 │
@@ -143,48 +147,51 @@ TIME_ZONE <span class="token operator">=</span> <span class="token string">'Asia
     │  settings<span class="token punctuation">.</span>py           <span class="token comment">## 是项目的整体配置文件</span>
     │  urls<span class="token punctuation">.</span>py              <span class="token comment">## 总路由</span>
     │  wsgi<span class="token punctuation">.</span>py              <span class="token comment">## 是项目与WSGI兼容的Web服务器入口</span>
-    │  __init__<span class="token punctuation">.</span>py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-注册子应用"><a href="#2-2-注册子应用" class="headerlink" title="2.2 注册子应用"></a>2.2 注册子应用</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
+    │  __init__<span class="token punctuation">.</span>py</code></pre>
+<h3 id="22-注册子应用"><a class="markdownIt-Anchor" href="#22-注册子应用"></a> 2.2 注册子应用</h3>
+<pre class="language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
     <span class="token string">'app01.apps.App01Config'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-配置主路由"><a href="#2-3-配置主路由" class="headerlink" title="2.3 配置主路由"></a>2.3 配置主路由</h3><ul>
+<span class="token punctuation">]</span></code></pre>
+<h3 id="23-配置主路由"><a class="markdownIt-Anchor" href="#23-配置主路由"></a> 2.3 配置主路由</h3>
+<ul>
 <li><code>mysite\urls.py</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> include
 
 urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
     path<span class="token punctuation">(</span><span class="token string">'admin/'</span><span class="token punctuation">,</span> admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>urls<span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token comment"># 配置路由分发</span>
     path<span class="token punctuation">(</span><span class="token string">'app01/'</span><span class="token punctuation">,</span> include<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'app01.urls'</span><span class="token punctuation">,</span> <span class="token string">'app01'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> namespace<span class="token operator">=</span><span class="token string">'app01'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-4-添加子路由"><a href="#2-4-添加子路由" class="headerlink" title="2.4 添加子路由"></a>2.4 添加子路由</h3><ul>
+<span class="token punctuation">]</span></code></pre>
+<h3 id="24-添加子路由"><a class="markdownIt-Anchor" href="#24-添加子路由"></a> 2.4 添加子路由</h3>
+<ul>
 <li><code>app01/urls.py</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
 <span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
 
 urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
     re_path<span class="token punctuation">(</span><span class="token string">r'index1/$'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>index1<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'index1'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-5-创建视图"><a href="#2-5-创建视图" class="headerlink" title="2.5 创建视图"></a>2.5 创建视图</h3><ul>
+<span class="token punctuation">]</span></code></pre>
+<h3 id="25-创建视图"><a class="markdownIt-Anchor" href="#25-创建视图"></a> 2.5 创建视图</h3>
+<ul>
 <li><code>app01/views.py</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span> HttpResponse
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span> HttpResponse
 
 <span class="token keyword">def</span> <span class="token function">index1</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">"Hello World"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="03-PyCharm打开项目"><a href="#03-PyCharm打开项目" class="headerlink" title="03.PyCharm打开项目"></a>03.PyCharm打开项目</h2><h3 id="3-1-添加虚拟环境"><a href="#3-1-添加虚拟环境" class="headerlink" title="3.1 添加虚拟环境"></a>3.1 添加虚拟环境</h3><ul>
+    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">"Hello World"</span><span class="token punctuation">)</span></code></pre>
+<h2 id="03pycharm打开项目"><a class="markdownIt-Anchor" href="#03pycharm打开项目"></a> 03.PyCharm打开项目</h2>
+<h3 id="31-添加虚拟环境"><a class="markdownIt-Anchor" href="#31-添加虚拟环境"></a> 3.1 添加虚拟环境</h3>
+<ul>
 <li>文件 –》 设置 –》项目:mysite –》 python解释器</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214215013077.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h3 id="3-2-添加解释器"><a href="#3-2-添加解释器" class="headerlink" title="3.2 添加解释器"></a>3.2 添加解释器</h3><p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214215125468.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h2 id="04-配置跨域"><a href="#04-配置跨域" class="headerlink" title="04.配置跨域"></a>04.配置跨域</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token number">1.</span> 安装包
+<h3 id="32-添加解释器"><a class="markdownIt-Anchor" href="#32-添加解释器"></a> 3.2 添加解释器</h3>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214215125468.png" style="width: 800px; margin-left: 20px;"> </img></p>
+<h2 id="04配置跨域"><a class="markdownIt-Anchor" href="#04配置跨域"></a> 04.配置跨域</h2>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token number">1.</span> 安装包
 pip install django<span class="token operator">-</span>cors<span class="token operator">-</span>headers 
 
 <span class="token number">2.</span> 注册应用
@@ -204,8 +211,7 @@ CORS_ORIGIN_WHITELIST <span class="token operator">=</span> <span class="token p
     <span class="token string">'http://127.0.0.1:8080'</span><span class="token punctuation">,</span>
     <span class="token string">'http://localhost:8080'</span><span class="token punctuation">,</span>
 <span class="token punctuation">)</span>
-CORS_ALLOW_CREDENTIALS <span class="token operator">=</span> <span class="token boolean">True</span>  <span class="token comment"># 允许携带cookie</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+CORS_ALLOW_CREDENTIALS <span class="token operator">=</span> <span class="token boolean">True</span>  <span class="token comment"># 允许携带cookie</span></code></pre>
 
                 
                 <p class="end">__END__</p>

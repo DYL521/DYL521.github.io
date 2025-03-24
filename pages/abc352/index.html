@@ -76,17 +76,22 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-ES复杂类型"><a href="#01-ES复杂类型" class="headerlink" title="01.ES复杂类型"></a>01.ES复杂类型</h2><h3 id="1-1-背景说明"><a href="#1-1-背景说明" class="headerlink" title="1.1 背景说明"></a>1.1 背景说明</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/laoyang360/article/details/82950393">https://blog.csdn.net/laoyang360/article/details/82950393</a></p>
+                <h2 id="01es复杂类型"><a class="markdownIt-Anchor" href="#01es复杂类型"></a> 01.ES复杂类型</h2>
+<h3 id="11-背景说明"><a class="markdownIt-Anchor" href="#11-背景说明"></a> 1.1 背景说明</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/laoyang360/article/details/82950393">https://blog.csdn.net/laoyang360/article/details/82950393</a></p>
 <ul>
-<li><p>问题背景</p>
+<li>
+<p>问题背景</p>
 <ul>
 <li>在elasticsearch中，我们可以将密切相关的实体存储在单个文档中。</li>
 <li>例如，我们可以通过传递一系列评论来存储博客文章及其所有评论。</li>
 </ul>
 </li>
-<li><p>如下，有一个文章，和这个文章相关的所有评论</p>
+<li>
+<p>如下，有一个文章，和这个文章相关的所有评论</p>
 </li>
-<li><p>现在假设我们想查找用户{name：john，age：34}评论过的所有博客帖子</p>
+<li>
+<p>现在假设我们想查找用户{name：john，age：34}评论过的所有博客帖子</p>
 </li>
 </ul>
 <table>
@@ -96,7 +101,8 @@
 <th>age</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>William</td>
 <td><code>34</code></td>
 </tr>
@@ -108,8 +114,10 @@
 <td>Smith</td>
 <td>33</td>
 </tr>
-</tbody></table>
-<h3 id="1-2-文章示例"><a href="#1-2-文章示例" class="headerlink" title="1.2 文章示例"></a>1.2 文章示例</h3><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+</tbody>
+</table>
+<h3 id="12-文章示例"><a class="markdownIt-Anchor" href="#12-文章示例"></a> 1.2 文章示例</h3>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Invest Money"</span><span class="token punctuation">,</span>
   <span class="token property">"body"</span><span class="token operator">:</span> <span class="token string">"Please start investing money as soon..."</span><span class="token punctuation">,</span>
   <span class="token property">"tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"money"</span><span class="token punctuation">,</span> <span class="token string">"invest"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
@@ -137,9 +145,10 @@
       <span class="token property">"commented_on"</span><span class="token operator">:</span> <span class="token string">"20 Nov 2017"</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-自动创建mapping方式测试"><a href="#02-自动创建mapping方式测试" class="headerlink" title="02.自动创建mapping方式测试"></a>02.自动创建mapping方式测试</h2><h3 id="2-1-创建索引"><a href="#2-1-创建索引" class="headerlink" title="2.1 创建索引"></a>2.1 创建索引</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">POST /article/1
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="02自动创建mapping方式测试"><a class="markdownIt-Anchor" href="#02自动创建mapping方式测试"></a> 02.自动创建mapping方式测试</h2>
+<h3 id="21-创建索引"><a class="markdownIt-Anchor" href="#21-创建索引"></a> 2.1 创建索引</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">POST /article/1
 <span class="token punctuation">&#123;</span>
   <span class="token string">"title"</span><span class="token builtin class-name">:</span> <span class="token string">"Invest Money"</span>,
   <span class="token string">"body"</span><span class="token builtin class-name">:</span> <span class="token string">"Please start investing money as soon..."</span>,
@@ -168,12 +177,12 @@
       <span class="token string">"commented_on"</span><span class="token builtin class-name">:</span> <span class="token string">"20 Nov 2017"</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-查看自动生成的类型"><a href="#2-2-查看自动生成的类型" class="headerlink" title="2.2 查看自动生成的类型"></a>2.2 查看自动生成的类型</h3><blockquote>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="22-查看自动生成的类型"><a class="markdownIt-Anchor" href="#22-查看自动生成的类型"></a> 2.2 查看自动生成的类型</h3>
+<blockquote>
 <p><code>GET /article/_mapping</code></p>
 </blockquote>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
   <span class="token string">"article"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
     <span class="token string">"mappings"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
       <span class="token string">"properties"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -253,9 +262,9 @@
       <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-查询"><a href="#2-3-查询" class="headerlink" title="2.3 查询"></a>2.3 查询</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="23-查询"><a class="markdownIt-Anchor" href="#23-查询"></a> 2.3 查询</h3>
+<ul>
 <li>现在假设我们想查找用户{name：john，age：34}评论过的所有博客帖子</li>
 <li>显然评论中，没有这条数据，但是我们过滤后的结果却让人惊奇</li>
 </ul>
@@ -266,7 +275,8 @@
 <th>age</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>William</td>
 <td><code>34</code></td>
 </tr>
@@ -278,8 +288,10 @@
 <td>Smith</td>
 <td>33</td>
 </tr>
-</tbody></table>
-<h3 id="2-4-过滤结果却可以找到数据"><a href="#2-4-过滤结果却可以找到数据" class="headerlink" title="2.4 过滤结果却可以找到数据"></a>2.4 过滤结果却可以找到数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /article/_search
+</tbody>
+</table>
+<h3 id="24-过滤结果却可以找到数据"><a class="markdownIt-Anchor" href="#24-过滤结果却可以找到数据"></a> 2.4 过滤结果却可以找到数据</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">GET /article/_search
 <span class="token punctuation">&#123;</span>
   <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
     <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -297,18 +309,19 @@
       <span class="token punctuation">]</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-5-分析原因"><a href="#2-5-分析原因" class="headerlink" title="2.5 分析原因"></a>2.5 分析原因</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="25-分析原因"><a class="markdownIt-Anchor" href="#25-分析原因"></a> 2.5 分析原因</h3>
+<ul>
 <li>elasticsearch中的内部对象无法按预期工作，这里的问题是elasticsearch（lucene）使用的库没有内部对象的概念</li>
 <li>因此内部对象被扁平化为一个简单的字段名称和值列表。</li>
-<li>我们的文档内部存储为：<ul>
+<li>我们的文档内部存储为：
+<ul>
 <li>您可以清楚地看到，comments.name和comments.age之间的关系已丢失。</li>
 <li>这就是为什么我们的文档匹配john和34的查询</li>
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
   <span class="token string">"title"</span><span class="token builtin class-name">:</span>                    <span class="token punctuation">[</span> invest, money <span class="token punctuation">]</span>,
   <span class="token string">"body"</span><span class="token builtin class-name">:</span>                     <span class="token punctuation">[</span> as, investing, money, please, soon, start <span class="token punctuation">]</span>,
   <span class="token string">"tags"</span><span class="token builtin class-name">:</span>                     <span class="token punctuation">[</span> invest, money <span class="token punctuation">]</span>,
@@ -318,9 +331,9 @@
   <span class="token string">"comments.age"</span><span class="token builtin class-name">:</span>             <span class="token punctuation">[</span> <span class="token number">33</span>, <span class="token number">34</span>, <span class="token number">38</span> <span class="token punctuation">]</span>,
   <span class="token string">"comments.rating"</span><span class="token builtin class-name">:</span>          <span class="token punctuation">[</span> <span class="token number">7</span>, <span class="token number">8</span>, <span class="token number">9</span> <span class="token punctuation">]</span>,
   <span class="token string">"comments.commented_on"</span><span class="token builtin class-name">:</span>    <span class="token punctuation">[</span> <span class="token number">20</span> Nov <span class="token number">2017</span>, <span class="token number">25</span> Nov <span class="token number">2017</span>, <span class="token number">30</span> Nov <span class="token number">2017</span> <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-6-nested类型索引存储变化"><a href="#2-6-nested类型索引存储变化" class="headerlink" title="2.6 nested类型索引存储变化"></a>2.6 nested类型索引存储变化</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="26-nested类型索引存储变化"><a class="markdownIt-Anchor" href="#26-nested类型索引存储变化"></a> 2.6 nested类型索引存储变化</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
   <span class="token punctuation">&#123;</span>
     <span class="token string">"comments.name"</span><span class="token builtin class-name">:</span>    <span class="token punctuation">[</span> john <span class="token punctuation">]</span>,
     <span class="token string">"comments.comment"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span> after i investing started reading this <span class="token punctuation">]</span>,
@@ -348,22 +361,19 @@
     <span class="token string">"tags"</span><span class="token builtin class-name">:</span>             <span class="token punctuation">[</span> invest, money <span class="token punctuation">]</span>,
     <span class="token string">"published_on"</span><span class="token builtin class-name">:</span>     <span class="token punctuation">[</span> <span class="token number">18</span> Oct <span class="token number">2017</span> <span class="token punctuation">]</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-
-
-<h2 id="03-如何解决呢？"><a href="#03-如何解决呢？" class="headerlink" title="03.如何解决呢？"></a>03.如何解决呢？</h2><p><code>官方地址：</code><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html</a></p>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="03如何解决呢"><a class="markdownIt-Anchor" href="#03如何解决呢"></a> 03.如何解决呢？</h2>
+<p><code>官方地址：</code><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html</a></p>
 <ul>
 <li>要解决这个问题，我们只需要对elasticsearch的映射进行一些小改动。</li>
 <li>如果您查看索引的映射，您会发现comments字段的类型是object。</li>
 <li>我们需要更新它的类型为nested。</li>
 </ul>
-<h3 id="3-1-创建nested类型索引"><a href="#3-1-创建nested类型索引" class="headerlink" title="3.1 创建nested类型索引"></a>3.1 创建nested类型索引</h3><ul>
+<h3 id="31-创建nested类型索引"><a class="markdownIt-Anchor" href="#31-创建nested类型索引"></a> 3.1 创建nested类型索引</h3>
+<ul>
 <li>我们可以通过运行以下查询来简单地更新索引的映射</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PUT /article_new
+<pre class="language-bash" data-language="bash"><code class="language-bash">PUT /article_new
 <span class="token punctuation">&#123;</span>
   <span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
     <span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -401,12 +411,12 @@
       <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-2-nested添加数据"><a href="#3-2-nested添加数据" class="headerlink" title="3.2 nested添加数据"></a>3.2 nested添加数据</h3><blockquote>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="32-nested添加数据"><a class="markdownIt-Anchor" href="#32-nested添加数据"></a> 3.2 nested添加数据</h3>
+<blockquote>
 <p><code>GET /article_new/_search</code>     ## 测试查询所有数据</p>
 </blockquote>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PUT /article_new/_doc/1
+<pre class="language-bash" data-language="bash"><code class="language-bash">PUT /article_new/_doc/1
 <span class="token punctuation">&#123;</span>
   <span class="token string">"title"</span><span class="token builtin class-name">:</span> <span class="token string">"Invest Money"</span>,
   <span class="token string">"body"</span><span class="token builtin class-name">:</span> <span class="token string">"Please start investing money as soon..."</span>,
@@ -435,21 +445,25 @@
       <span class="token string">"commented_on"</span><span class="token builtin class-name">:</span> <span class="token string">"20 Nov 2017"</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-3-使用nested需要方式查询"><a href="#3-3-使用nested需要方式查询" class="headerlink" title="3.3 使用nested需要方式查询"></a>3.3 使用nested需要方式查询</h3><ul>
-<li><p>将映射更改为Nested类型后，我们可以查询索引的方式略有变化。 </p>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="33-使用nested需要方式查询"><a class="markdownIt-Anchor" href="#33-使用nested需要方式查询"></a> 3.3 使用nested需要方式查询</h3>
+<ul>
+<li>
+<p>将映射更改为Nested类型后，我们可以查询索引的方式略有变化。</p>
 </li>
-<li><p>我们需要使用Nested查询。</p>
+<li>
+<p>我们需要使用Nested查询。</p>
 </li>
-<li><table>
+<li>
+<table>
 <thead>
 <tr>
 <th>ame</th>
 <th>age</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>William</td>
 <td><code>34</code></td>
 </tr>
@@ -461,10 +475,11 @@
 <td>Smith</td>
 <td>33</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET /article_new/_search?pretty
+<pre class="language-bash" data-language="bash"><code class="language-bash">GET /article_new/_search?pretty
 <span class="token punctuation">&#123;</span>
   <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
     <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -493,34 +508,34 @@
       <span class="token punctuation">]</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-4-Nested类型-删除"><a href="#3-4-Nested类型-删除" class="headerlink" title="3.4 Nested类型(删除)"></a>3.4 Nested类型(删除)</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="34-nested类型删除"><a class="markdownIt-Anchor" href="#34-nested类型删除"></a> 3.4 Nested类型(删除)</h3>
+<ul>
 <li>序号为1的评论原来有三条，现在删除John的评论数据，删除后评论数为2条。</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">POST  article_new/_doc/1/_update
+<pre class="language-bash" data-language="bash"><code class="language-bash">POST  article_new/_doc/1/_update
 <span class="token punctuation">&#123;</span>
  <span class="token string">"script"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
     <span class="token string">"lang"</span><span class="token builtin class-name">:</span> <span class="token string">"painless"</span>,
     <span class="token string">"source"</span><span class="token builtin class-name">:</span> <span class="token string">"ctx._source.comments.removeIf(it -> it.name == 'John');"</span>
  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-5-Nested类型-改"><a href="#3-5-Nested类型-改" class="headerlink" title="3.5 Nested类型(改)"></a>3.5 Nested类型(改)</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="35-nested类型改"><a class="markdownIt-Anchor" href="#35-nested类型改"></a> 3.5 Nested类型(改)</h3>
+<ul>
 <li>将steve评论内容中的age值调整为25，同时调整了评论内容。</li>
 </ul>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json">POST article_new/_doc/<span class="token number">1</span>/_update
+<pre class="language-json" data-language="json"><code class="language-json">POST article_new/_doc/<span class="token number">1</span>/_update
 <span class="token punctuation">&#123;</span>
   <span class="token property">"script"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"for(e in ctx._source.comments)&#123;if (e.name == 'Smith') &#123;e.age = 25; e.comment= 'very very good article...';&#125;&#125;"</span> 
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-6-Nested类型-聚合"><a href="#3-6-Nested类型-聚合" class="headerlink" title="3.6 Nested类型(聚合)"></a>3.6 Nested类型(聚合)</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="36-nested类型聚合"><a class="markdownIt-Anchor" href="#36-nested类型聚合"></a> 3.6 Nested类型(聚合)</h3>
+<ul>
 <li>认知前提：nested聚合隶属于聚合分类中的Bucket聚合分类。</li>
 <li>聚合article_new 中评论者年龄最小的值。</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GET article_new/_search
+<pre class="language-bash" data-language="bash"><code class="language-bash">GET article_new/_search
 <span class="token punctuation">&#123;</span>
   <span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
   <span class="token string">"aggs"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -537,9 +552,9 @@
       <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="04-Nested类型的适用场景"><a href="#04-Nested类型的适用场景" class="headerlink" title="04.Nested类型的适用场景"></a>04.Nested类型的适用场景</h2><p><img src="./assets/image-20210205174624807.png" style="width: 800px; margin-left: 50px;"> </img></p>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="04nested类型的适用场景"><a class="markdownIt-Anchor" href="#04nested类型的适用场景"></a> 04.Nested类型的适用场景</h2>
+<p><img src="./assets/image-20210205174624807.png" style="width: 800px; margin-left: 50px;"> </img></p>
 
                 
                 <p class="end">__END__</p>

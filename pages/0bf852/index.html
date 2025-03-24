@@ -80,7 +80,9 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-APIView介绍"><a href="#01-APIView介绍" class="headerlink" title="01.APIView介绍"></a>01.APIView介绍</h2><h3 id="1-1-APIView特点"><a href="#1-1-APIView特点" class="headerlink" title="1.1 APIView特点"></a>1.1 APIView特点</h3><p><code>APIView</code>是REST framework提供的所有视图的基类，继承自Django的 <code>View</code>类。</p>
+                <h2 id="01apiview介绍"><a class="markdownIt-Anchor" href="#01apiview介绍"></a> 01.APIView介绍</h2>
+<h3 id="11-apiview特点"><a class="markdownIt-Anchor" href="#11-apiview特点"></a> 1.1 APIView特点</h3>
+<p><code>APIView</code>是REST framework提供的所有视图的基类，继承自Django的 <code>View</code>类。</p>
 <p><code>APIView</code>与 <code>View</code>的区别：</p>
 <ul>
 <li><strong>请求对象</strong>：传入到视图中的request对象是REST framework的 <code>Request</code>对象，而不再是Django原始的 <code>HttpRequest</code>对象；</li>
@@ -88,7 +90,8 @@
 <li><strong>异常处理</strong>：任何 <code>APIException</code>的子异常都会被DRF框架默认的异常处理机制处理成对应的响应信息返回给客户端；</li>
 <li><strong>其他功能</strong>：认证、权限、限流。</li>
 </ul>
-<h3 id="1-2-Request对象"><a href="#1-2-Request对象" class="headerlink" title="1.2 Request对象"></a>1.2 Request对象</h3><ul>
+<h3 id="12-request对象"><a class="markdownIt-Anchor" href="#12-request对象"></a> 1.2 Request对象</h3>
+<ul>
 <li>视图继承APIView之后，传入视图的request对象是DRF框架提供的 <code>Request</code>类的对象</li>
 <li>Request类的对象有两个属性：</li>
 </ul>
@@ -99,7 +102,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>data</td>
 <td>包含解析之后的请求体数据，已经解析为了字典或类字典，相当于Django原始request对象的body、POST、FILES属性。</td>
 </tr>
@@ -107,14 +111,15 @@
 <td>query_params</td>
 <td>包含解析之后的查询字符串数据，相当于Django原始request对象的GET属性</td>
 </tr>
-</tbody></table>
-<h3 id="1-3-Response对象"><a href="#1-3-Response对象" class="headerlink" title="1.3 Response对象"></a>1.3 Response对象</h3><ul>
+</tbody>
+</table>
+<h3 id="13-response对象"><a class="markdownIt-Anchor" href="#13-response对象"></a> 1.3 Response对象</h3>
+<ul>
 <li>视图继承APIView之后，响应时可以统一返回Response对象，格式如下：</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>response <span class="token keyword">import</span> Response
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>response <span class="token keyword">import</span> Response
 
-response <span class="token operator">=</span> Response<span class="token punctuation">(</span><span class="token operator">&lt;</span>原始响应数据<span class="token operator">></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+response <span class="token operator">=</span> Response<span class="token punctuation">(</span><span class="token operator">&lt;</span>原始响应数据<span class="token operator">></span><span class="token punctuation">)</span></code></pre>
 <ul>
 <li>原始的响应数据，会根据客户端请求头的 <code>Accpet</code>，自动转换为对应的格式并进行返回，如：</li>
 </ul>
@@ -125,24 +130,28 @@ response <span class="token operator">=</span> Response<span class="token punctu
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>application&#x2F;json</td>
+<tbody>
+<tr>
+<td>application/json</td>
 <td>服务器会将原始响应数据转换为json数据进行返回，没指定Accept时，默认返回json</td>
 </tr>
 <tr>
-<td>text&#x2F;html</td>
+<td>text/html</td>
 <td>服务器会将原始响应数据转换为html网页进行返回</td>
 </tr>
-</tbody></table>
-<h2 id="02-DRF全局配置"><a href="#02-DRF全局配置" class="headerlink" title="02.DRF全局配置"></a>02.DRF全局配置</h2><h3 id="2-1-settings-py注册"><a href="#2-1-settings-py注册" class="headerlink" title="2.1 settings.py注册"></a>2.1 settings.py注册</h3><ul>
+</tbody>
+</table>
+<h2 id="02drf全局配置"><a class="markdownIt-Anchor" href="#02drf全局配置"></a> 02.DRF全局配置</h2>
+<h3 id="21-settingspy注册"><a class="markdownIt-Anchor" href="#21-settingspy注册"></a> 2.1 settings.py注册</h3>
+<ul>
 <li>注册</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
+<pre class="language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
     <span class="token string">'rest_framework'</span><span class="token punctuation">,</span>
     <span class="token string">'django_filters'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-全局配置DRF"><a href="#2-2-全局配置DRF" class="headerlink" title="2.2 全局配置DRF"></a>2.2 全局配置DRF</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 过滤器</span>
+<span class="token punctuation">]</span></code></pre>
+<h3 id="22-全局配置drf"><a class="markdownIt-Anchor" href="#22-全局配置drf"></a> 2.2 全局配置DRF</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 过滤器</span>
 <span class="token comment"># 1,安装 django-filter</span>
 <span class="token comment"># 2,注册应用</span>
 <span class="token comment"># 3,配置settings, 在view里配置可过滤的字段</span>
@@ -198,9 +207,10 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
     <span class="token string">'DEFAULT_VERSION'</span><span class="token punctuation">:</span> <span class="token boolean">None</span><span class="token punctuation">,</span>
     <span class="token string">'ALLOWED_VERSIONS'</span><span class="token punctuation">:</span> <span class="token boolean">None</span><span class="token punctuation">,</span>
     <span class="token string">'VERSION_PARAM'</span><span class="token punctuation">:</span> <span class="token string">'version'</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="03-APIView基本使用"><a href="#03-APIView基本使用" class="headerlink" title="03.APIView基本使用"></a>03.APIView基本使用</h2><h3 id="3-1-book-models-py"><a href="#3-1-book-models-py" class="headerlink" title="3.1 book&#x2F;models.py"></a>3.1 book&#x2F;models.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="03apiview基本使用"><a class="markdownIt-Anchor" href="#03apiview基本使用"></a> 03.APIView基本使用</h2>
+<h3 id="31-bookmodelspy"><a class="markdownIt-Anchor" href="#31-bookmodelspy"></a> 3.1 book/models.py</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
 
 <span class="token comment">#定义图书模型类BookInfo</span>
 <span class="token keyword">class</span> <span class="token class-name">BookInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -217,9 +227,9 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
 
     <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""定义每个数据对象的显示信息"""</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>btitle<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-2-book-serializers-py"><a href="#3-2-book-serializers-py" class="headerlink" title="3.2 book&#x2F;serializers.py"></a>3.2 book&#x2F;serializers.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>btitle</code></pre>
+<h3 id="32-bookserializerspy"><a class="markdownIt-Anchor" href="#32-bookserializerspy"></a> 3.2 book/serializers.py</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token keyword">from</span> rest_framework <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo
 
@@ -227,9 +237,9 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
     <span class="token triple-quoted-string string">"""图书序列化器类"""</span>
     <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
         model <span class="token operator">=</span> BookInfo
-        fields <span class="token operator">=</span> <span class="token string">'__all__'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-3-book-views-py"><a href="#3-3-book-views-py" class="headerlink" title="3.3 book&#x2F;views.py"></a>3.3 book&#x2F;views.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
+        fields <span class="token operator">=</span> <span class="token string">'__all__'</span></code></pre>
+<h3 id="33-bookviewspy"><a class="markdownIt-Anchor" href="#33-bookviewspy"></a> 3.3 book/views.py</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>response <span class="token keyword">import</span> Response
 <span class="token keyword">from</span> book <span class="token keyword">import</span> serializers
 <span class="token keyword">from</span> book<span class="token punctuation">.</span>models <span class="token keyword">import</span> BookInfo
@@ -238,19 +248,20 @@ REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuat
     <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">:</span>
         obj <span class="token operator">=</span> BookInfo<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer2<span class="token punctuation">(</span>instance<span class="token operator">=</span>obj<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 关联数据多条</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-4-book-urls-py"><a href="#3-4-book-urls-py" class="headerlink" title="3.4 book&#x2F;urls.py"></a>3.4 book&#x2F;urls.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> re_path<span class="token punctuation">,</span>path
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+<h3 id="34-bookurlspy"><a class="markdownIt-Anchor" href="#34-bookurlspy"></a> 3.4 book/urls.py</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> re_path<span class="token punctuation">,</span>path
 <span class="token keyword">from</span> book <span class="token keyword">import</span> views
 
 urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
     path<span class="token punctuation">(</span><span class="token string">'book1/'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>APIViewBookInfoViewSet<span class="token punctuation">.</span>as_view<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-5-测试接口"><a href="#3-5-测试接口" class="headerlink" title="3.5 测试接口"></a>3.5 测试接口</h3><h4 id="3-5-1-get获取数据"><a href="#3-5-1-get获取数据" class="headerlink" title="3.5.1 get获取数据"></a>3.5.1 get获取数据</h4><blockquote>
+<span class="token punctuation">]</span></code></pre>
+<h3 id="35-测试接口"><a class="markdownIt-Anchor" href="#35-测试接口"></a> 3.5 测试接口</h3>
+<h4 id="351-get获取数据"><a class="markdownIt-Anchor" href="#351-get获取数据"></a> 3.5.1 get获取数据</h4>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
 </blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
     <span class="token punctuation">&#123;</span>
         <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
         <span class="token string">"btitle"</span><span class="token punctuation">:</span> <span class="token string">"西游记"</span><span class="token punctuation">,</span>
@@ -269,17 +280,20 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         <span class="token string">"heroinfo_set"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
         <span class="token string">"xxx"</span><span class="token punctuation">:</span> <span class="token string">"水浒传"</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="3-5-2-post添加数据"><a href="#3-5-2-post添加数据" class="headerlink" title="3.5.2 post添加数据"></a>3.5.2 post添加数据</h4><blockquote>
+<span class="token punctuation">]</span></code></pre>
+<h4 id="352-post添加数据"><a class="markdownIt-Anchor" href="#352-post添加数据"></a> 3.5.2 post添加数据</h4>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/">http://127.0.0.1:8000/book/book1/</a></p>
 </blockquote>
 <p><img src="./assets/image-20210217181023301.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h4 id="3-5-3-put修改数据"><a href="#3-5-3-put修改数据" class="headerlink" title="3.5.3 put修改数据"></a>3.5.3 put修改数据</h4><blockquote>
+<h4 id="353-put修改数据"><a class="markdownIt-Anchor" href="#353-put修改数据"></a> 3.5.3 put修改数据</h4>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?pk=4">http://127.0.0.1:8000/book/book1/?pk=4</a></p>
 </blockquote>
 <p><img src="./assets/image-20210217181515171.png" style="width: 700px; margin-left: 20px;"> </img></p>
-<h2 id="04-自定义分页"><a href="#04-自定义分页" class="headerlink" title="04.自定义分页"></a>04.自定义分页</h2><h3 id="4-1-自定义分页"><a href="#4-1-自定义分页" class="headerlink" title="4.1 自定义分页"></a>4.1 自定义分页</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
+<h2 id="04自定义分页"><a class="markdownIt-Anchor" href="#04自定义分页"></a> 04.自定义分页</h2>
+<h3 id="41-自定义分页"><a class="markdownIt-Anchor" href="#41-自定义分页"></a> 4.1 自定义分页</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>views <span class="token keyword">import</span> APIView
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>response <span class="token keyword">import</span> Response
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>pagination <span class="token keyword">import</span> PageNumberPagination
 <span class="token keyword">from</span> book <span class="token keyword">import</span> serializers
@@ -302,14 +316,16 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         pg <span class="token operator">=</span> PageNum<span class="token punctuation">(</span><span class="token punctuation">)</span>
         page_objs <span class="token operator">=</span> pg<span class="token punctuation">.</span>paginate_queryset<span class="token punctuation">(</span>queryset<span class="token operator">=</span>queryset<span class="token punctuation">,</span> request<span class="token operator">=</span>request<span class="token punctuation">,</span> view<span class="token operator">=</span>self<span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer2<span class="token punctuation">(</span>instance<span class="token operator">=</span>page_objs<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 关联数据多条</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-2-测试分页效果"><a href="#4-2-测试分页效果" class="headerlink" title="4.2 测试分页效果"></a>4.2 测试分页效果</h3><blockquote>
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+<h3 id="42-测试分页效果"><a class="markdownIt-Anchor" href="#42-测试分页效果"></a> 4.2 测试分页效果</h3>
+<blockquote>
 <p><code>查找第一页，每页显示两条数据</code></p>
-<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?page=1&page_size=2">http://127.0.0.1:8000/book/book1/?page=1&amp;page_size=2</a></p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?page=1&amp;page_size=2">http://127.0.0.1:8000/book/book1/?page=1&amp;page_size=2</a></p>
 </blockquote>
 <p><img src="./assets/image-20210217213123806.png" style="width: 400px; margin-left: 20px;"> </img></p>
-<h2 id="05-认证权限"><a href="#05-认证权限" class="headerlink" title="05.认证权限"></a>05.认证权限</h2><h3 id="5-1-使用自带权限"><a href="#5-1-使用自带权限" class="headerlink" title="5.1 使用自带权限"></a>5.1 使用自带权限</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 注：认证类都在 `rest_framework.authentication` 模块中</span>
+<h2 id="05认证权限"><a class="markdownIt-Anchor" href="#05认证权限"></a> 05.认证权限</h2>
+<h3 id="51-使用自带权限"><a class="markdownIt-Anchor" href="#51-使用自带权限"></a> 5.1 使用自带权限</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 注：认证类都在 `rest_framework.authentication` 模块中</span>
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>authentication <span class="token keyword">import</span> SessionAuthentication
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>permissions <span class="token keyword">import</span> IsAuthenticated<span class="token punctuation">,</span> AllowAny
 
@@ -325,9 +341,10 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         pg <span class="token operator">=</span> PageNum<span class="token punctuation">(</span><span class="token punctuation">)</span>
         page_objs <span class="token operator">=</span> pg<span class="token punctuation">.</span>paginate_queryset<span class="token punctuation">(</span>queryset<span class="token operator">=</span>queryset<span class="token punctuation">,</span> request<span class="token operator">=</span>request<span class="token punctuation">,</span> view<span class="token operator">=</span>self<span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer2<span class="token punctuation">(</span>instance<span class="token operator">=</span>page_objs<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 关联数据多条</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="5-2-自定义权限"><a href="#5-2-自定义权限" class="headerlink" title="5.2 自定义权限"></a>5.2 自定义权限</h3><h4 id="5-2-1-自定义权限"><a href="#5-2-1-自定义权限" class="headerlink" title="5.2.1 自定义权限"></a>5.2.1 自定义权限</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>permissions <span class="token keyword">import</span> BasePermission
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+<h3 id="52-自定义权限"><a class="markdownIt-Anchor" href="#52-自定义权限"></a> 5.2 自定义权限</h3>
+<h4 id="521-自定义权限"><a class="markdownIt-Anchor" href="#521-自定义权限"></a> 5.2.1 自定义权限</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>permissions <span class="token keyword">import</span> BasePermission
 
 <span class="token comment"># 自定义权限（局部）</span>
 <span class="token keyword">class</span> <span class="token class-name">MyPermission</span><span class="token punctuation">(</span>BasePermission<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -351,9 +368,9 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         <span class="token triple-quoted-string string">"""获取单个数据时,判断用户对某个数据对象是否有访问权限"""</span>
         <span class="token keyword">if</span> request<span class="token punctuation">.</span>user<span class="token punctuation">.</span><span class="token builtin">id</span> <span class="token operator">==</span> obj<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span> <span class="token boolean">True</span>
-        <span class="token keyword">return</span> <span class="token boolean">False</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="5-2-2-使用自定义权限"><a href="#5-2-2-使用自定义权限" class="headerlink" title="5.2.2 使用自定义权限"></a>5.2.2 使用自定义权限</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 注：认证类都在 `rest_framework.authentication` 模块中</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre>
+<h4 id="522-使用自定义权限"><a class="markdownIt-Anchor" href="#522-使用自定义权限"></a> 5.2.2 使用自定义权限</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 注：认证类都在 `rest_framework.authentication` 模块中</span>
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>authentication <span class="token keyword">import</span> SessionAuthentication
 
 <span class="token keyword">class</span> <span class="token class-name">APIViewBookInfoViewSet</span><span class="token punctuation">(</span>APIView<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -366,12 +383,13 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         pg <span class="token operator">=</span> PageNum<span class="token punctuation">(</span><span class="token punctuation">)</span>
         page_objs <span class="token operator">=</span> pg<span class="token punctuation">.</span>paginate_queryset<span class="token punctuation">(</span>queryset<span class="token operator">=</span>queryset<span class="token punctuation">,</span> request<span class="token operator">=</span>request<span class="token punctuation">,</span> view<span class="token operator">=</span>self<span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer2<span class="token punctuation">(</span>instance<span class="token operator">=</span>page_objs<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 关联数据多条</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="06-限流"><a href="#06-限流" class="headerlink" title="06.限流"></a>06.限流</h2><h3 id="6-1-全局配置"><a href="#6-1-全局配置" class="headerlink" title="6.1 全局配置"></a>6.1 全局配置</h3><ul>
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+<h2 id="06限流"><a class="markdownIt-Anchor" href="#06限流"></a> 06.限流</h2>
+<h3 id="61-全局配置"><a class="markdownIt-Anchor" href="#61-全局配置"></a> 6.1 全局配置</h3>
+<ul>
 <li><code>DEFAULT_THROTTLE_RATES</code> 可以使用 <code>second</code>、<code>minute</code>、<code>hour</code> 或 <code>day</code>来指明限流周期。</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+<pre class="language-python" data-language="python"><code class="language-python">REST_FRAMEWORK <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     <span class="token comment"># 针对匿名用户和认证通过用户分别进行限流控制</span>
     <span class="token string">'DEFAULT_THROTTLE_CLASSES'</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>
@@ -387,19 +405,20 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         <span class="token comment"># 匿名用户的限流频次</span>
         <span class="token string">'anon'</span><span class="token punctuation">:</span> <span class="token string">'3/minute'</span><span class="token punctuation">,</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="6-2-指定视图配置"><a href="#6-2-指定视图配置" class="headerlink" title="6.2 指定视图配置"></a>6.2 指定视图配置</h3><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="62-指定视图配置"><a class="markdownIt-Anchor" href="#62-指定视图配置"></a> 6.2 指定视图配置</h3>
+<ul>
 <li>也可以某个视图中通过 <code>throttle_classes</code> 属性来指定某视图所使用的限流控制类</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>throttling <span class="token keyword">import</span> AnonRateThrottle
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>throttling <span class="token keyword">import</span> AnonRateThrottle
 
 <span class="token keyword">class</span> <span class="token class-name">BookInfoViewSet</span><span class="token punctuation">(</span>ReadOnlyModelViewSet<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     <span class="token comment"># 此时设置当前视图仅针对匿名用户进行限流控制</span>
-    throttle_classes <span class="token operator">=</span> <span class="token punctuation">[</span>AnonRateThrottle<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="07-过滤"><a href="#07-过滤" class="headerlink" title="07.过滤"></a>07.过滤</h2><h3 id="7-1-自定义过滤"><a href="#7-1-自定义过滤" class="headerlink" title="7.1 自定义过滤"></a>7.1 自定义过滤</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django_filters<span class="token punctuation">.</span>rest_framework <span class="token keyword">import</span> DjangoFilterBackend
+    throttle_classes <span class="token operator">=</span> <span class="token punctuation">[</span>AnonRateThrottle<span class="token punctuation">]</span></code></pre>
+<h2 id="07过滤"><a class="markdownIt-Anchor" href="#07过滤"></a> 07.过滤</h2>
+<h3 id="71-自定义过滤"><a class="markdownIt-Anchor" href="#71-自定义过滤"></a> 7.1 自定义过滤</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django_filters<span class="token punctuation">.</span>rest_framework <span class="token keyword">import</span> DjangoFilterBackend
 
 <span class="token keyword">class</span> <span class="token class-name">APIViewBookInfoViewSet</span><span class="token punctuation">(</span>APIView<span class="token punctuation">)</span><span class="token punctuation">:</span>
     filter_backends <span class="token operator">=</span> <span class="token punctuation">(</span>DjangoFilterBackend<span class="token punctuation">,</span><span class="token punctuation">)</span>
@@ -420,11 +439,13 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
         pg <span class="token operator">=</span> PageNum<span class="token punctuation">(</span><span class="token punctuation">)</span>
         page_objs <span class="token operator">=</span> pg<span class="token punctuation">.</span>paginate_queryset<span class="token punctuation">(</span>queryset<span class="token operator">=</span>queryset<span class="token punctuation">,</span> request<span class="token operator">=</span>request<span class="token punctuation">,</span> view<span class="token operator">=</span>self<span class="token punctuation">)</span>
         ser <span class="token operator">=</span> serializers<span class="token punctuation">.</span>BookInfoSerializer2<span class="token punctuation">(</span>instance<span class="token operator">=</span>page_objs<span class="token punctuation">,</span> many<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 关联数据多条</span>
-        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="7-2-测试过滤功能"><a href="#7-2-测试过滤功能" class="headerlink" title="7.2 测试过滤功能"></a>7.2 测试过滤功能</h3><p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?btitle=%E8%A5%BF%E6%B8%B8%E8%AE%B0">http://127.0.0.1:8000/book/book1/?btitle=西游记</a></p>
+        <span class="token keyword">return</span> Response<span class="token punctuation">(</span>ser<span class="token punctuation">.</span>data<span class="token punctuation">)</span></code></pre>
+<h3 id="72-测试过滤功能"><a class="markdownIt-Anchor" href="#72-测试过滤功能"></a> 7.2 测试过滤功能</h3>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?btitle=%E8%A5%BF%E6%B8%B8%E8%AE%B0">http://127.0.0.1:8000/book/book1/?btitle=西游记</a></p>
 <p><img src="./assets/image-20210218085423621.png" style="width: 400px; margin-left: 20px;"> </img></p>
-<h2 id="08-排序"><a href="#08-排序" class="headerlink" title="08.排序"></a>08.排序</h2><h3 id="8-1-配置排序"><a href="#8-1-配置排序" class="headerlink" title="8.1 配置排序"></a>8.1 配置排序</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django_filters<span class="token punctuation">.</span>rest_framework <span class="token keyword">import</span> DjangoFilterBackend
+<h2 id="08排序"><a class="markdownIt-Anchor" href="#08排序"></a> 08.排序</h2>
+<h3 id="81-配置排序"><a class="markdownIt-Anchor" href="#81-配置排序"></a> 8.1 配置排序</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django_filters<span class="token punctuation">.</span>rest_framework <span class="token keyword">import</span> DjangoFilterBackend
 <span class="token keyword">from</span> rest_framework<span class="token punctuation">.</span>filters <span class="token keyword">import</span> OrderingFilter
 
 <span class="token keyword">class</span> <span class="token class-name">APIViewBookInfoViewSet</span><span class="token punctuation">(</span>APIView<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -437,9 +458,9 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
     <span class="token keyword">def</span> <span class="token function">filter_queryset</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> queryset<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">for</span> backend <span class="token keyword">in</span> <span class="token builtin">list</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>filter_backends<span class="token punctuation">)</span><span class="token punctuation">:</span>
             queryset <span class="token operator">=</span> backend<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>filter_queryset<span class="token punctuation">(</span>self<span class="token punctuation">.</span>request<span class="token punctuation">,</span> queryset<span class="token punctuation">,</span> self<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> queryset<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="8-2-测试排序功能"><a href="#8-2-测试排序功能" class="headerlink" title="8.2 测试排序功能"></a>8.2 测试排序功能</h3><p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?ordering=-id">http://127.0.0.1:8000/book/book1/?ordering=-id</a></p>
+        <span class="token keyword">return</span> queryset</code></pre>
+<h3 id="82-测试排序功能"><a class="markdownIt-Anchor" href="#82-测试排序功能"></a> 8.2 测试排序功能</h3>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/book/book1/?ordering=-id">http://127.0.0.1:8000/book/book1/?ordering=-id</a></p>
 <p><img src="./assets/image-20210218091655102.png" style="width: 500px; margin-left: 20px;"> </img></p>
 
                 

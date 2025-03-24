@@ -76,14 +76,19 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-机器配置"><a href="#01-机器配置" class="headerlink" title="01.机器配置"></a>01.机器配置</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="http://v5blog.cn/pages/76153a/">redis各种集群模式</a></p>
+                <h2 id="01机器配置"><a class="markdownIt-Anchor" href="#01机器配置"></a> 01.机器配置</h2>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="http://v5blog.cn/pages/76153a/">redis各种集群模式</a></p>
 </li>
-<li><p>VMware版本号：16.0.0</p>
+<li>
+<p>VMware版本号：16.0.0</p>
 </li>
-<li><p>在两台机器上分别安装好redis服务</p>
+<li>
+<p>在两台机器上分别安装好redis服务</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="http://v5blog.cn/pages/4d3a23/">安装redis</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="http://v5blog.cn/pages/4d3a23/">安装redis</a></p>
 </li>
 </ul>
 <table>
@@ -95,7 +100,8 @@
 <th>Redis版本</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>CentOS 7.5</td>
 <td>192.168.56.65</td>
 <td>7000<br/>7001<br/>7002</td>
@@ -107,14 +113,16 @@
 <td>7000<br/>7001<br/>7002</td>
 <td>redis-5.0.3</td>
 </tr>
-</tbody></table>
-<h2 id="02-192-168-56-65配置"><a href="#02-192-168-56-65配置" class="headerlink" title="02.192.168.56.65配置"></a>02.192.168.56.65配置</h2><ul>
+</tbody>
+</table>
+<h2 id="021921685665配置"><a class="markdownIt-Anchor" href="#021921685665配置"></a> 02.192.168.56.65配置</h2>
+<ul>
 <li>创建conf配置文件夹</li>
 <li>三个⽂件的配置区别在<code>port、pidfile、cluster-config-file</code>三项</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mkdir /root/conf/</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="2-1-7000-conf"><a href="#2-1-7000-conf" class="headerlink" title="2.1 7000.conf"></a>2.1 7000.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7000.conf</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mkdir /root/conf/</span></code></pre>
+<h3 id="21-7000conf"><a class="markdownIt-Anchor" href="#21-7000conf"></a> 2.1 7000.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7000.conf</span>
 port <span class="token number">7000</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span>
 daemonize yes
@@ -122,9 +130,9 @@ pidfile <span class="token number">7000</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7000_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-7001-conf"><a href="#2-2-7001-conf" class="headerlink" title="2.2 7001.conf"></a>2.2 7001.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7001.conf</span>
+appendonly yes</code></pre>
+<h3 id="22-7001conf"><a class="markdownIt-Anchor" href="#22-7001conf"></a> 2.2 7001.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7001.conf</span>
 port <span class="token number">7001</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span>
 daemonize yes
@@ -132,9 +140,9 @@ pidfile <span class="token number">7001</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7001_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-7002-conf"><a href="#2-3-7002-conf" class="headerlink" title="2.3 7002.conf"></a>2.3 7002.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7002.conf</span>
+appendonly yes</code></pre>
+<h3 id="23-7002conf"><a class="markdownIt-Anchor" href="#23-7002conf"></a> 2.3 7002.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7002.conf</span>
 port <span class="token number">7002</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span>
 daemonize yes
@@ -142,20 +150,20 @@ pidfile <span class="token number">7002</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7002_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-4-启动redis服务"><a href="#2-4-启动redis服务" class="headerlink" title="2.4 启动redis服务"></a>2.4 启动redis服务</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7000.conf</span>
+appendonly yes</code></pre>
+<h3 id="24-启动redis服务"><a class="markdownIt-Anchor" href="#24-启动redis服务"></a> 2.4 启动redis服务</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7000.conf</span>
 <span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7001.conf</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7002.conf</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7002.conf</span></code></pre>
 <p><img src="./assets/image-20210223215708483.png" style="width: 700px; margin-left: 20px;"> </img></p>
-<h2 id="03-192-168-56-66配置"><a href="#03-192-168-56-66配置" class="headerlink" title="03.192.168.56.66配置"></a>03.192.168.56.66配置</h2><ul>
+<h2 id="031921685666配置"><a class="markdownIt-Anchor" href="#031921685666配置"></a> 03.192.168.56.66配置</h2>
+<ul>
 <li>创建conf配置文件夹</li>
 <li>三个⽂件的配置区别在<code>port、pidfile、cluster-config-file</code>三项</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mkdir /root/conf/</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="2-1-7003-conf"><a href="#2-1-7003-conf" class="headerlink" title="2.1 7003.conf"></a>2.1 7003.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7003.conf</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># mkdir /root/conf/</span></code></pre>
+<h3 id="21-7003conf"><a class="markdownIt-Anchor" href="#21-7003conf"></a> 2.1 7003.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7003.conf</span>
 port <span class="token number">7003</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.66</span>
 daemonize yes
@@ -163,9 +171,9 @@ pidfile <span class="token number">7003</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7003_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-7004-conf"><a href="#2-2-7004-conf" class="headerlink" title="2.2 7004.conf"></a>2.2 7004.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7004.conf</span>
+appendonly yes</code></pre>
+<h3 id="22-7004conf"><a class="markdownIt-Anchor" href="#22-7004conf"></a> 2.2 7004.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7004.conf</span>
 port <span class="token number">7004</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.66</span>
 daemonize yes
@@ -173,9 +181,9 @@ pidfile <span class="token number">7004</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7004_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-7005-conf"><a href="#2-3-7005-conf" class="headerlink" title="2.3 7005.conf"></a>2.3 7005.conf</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7005.conf</span>
+appendonly yes</code></pre>
+<h3 id="23-7005conf"><a class="markdownIt-Anchor" href="#23-7005conf"></a> 2.3 7005.conf</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /root/conf/7005.conf</span>
 port <span class="token number">7005</span>
 bind <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.66</span>
 daemonize yes
@@ -183,66 +191,65 @@ pidfile <span class="token number">7005</span><span class="token punctuation">.<
 cluster<span class="token operator">-</span>enabled yes
 cluster<span class="token operator">-</span>config<span class="token operator">-</span><span class="token builtin">file</span> 7005_node<span class="token punctuation">.</span>conf
 cluster<span class="token operator">-</span>node<span class="token operator">-</span>timeout <span class="token number">15000</span>
-appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-4-启动redis服务-1"><a href="#2-4-启动redis服务-1" class="headerlink" title="2.4 启动redis服务"></a>2.4 启动redis服务</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7003.conf</span>
+appendonly yes</code></pre>
+<h3 id="24-启动redis服务-2"><a class="markdownIt-Anchor" href="#24-启动redis服务-2"></a> 2.4 启动redis服务</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7003.conf</span>
 <span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7004.conf</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7005.conf</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-server 7005.conf</span></code></pre>
 <p><img src="./assets/image-20210223220656457.png" style="width: 700px; margin-left: 20px;"> </img></p>
-<h2 id="04-创建集群"><a href="#04-创建集群" class="headerlink" title="04.创建集群"></a>04.创建集群</h2><h3 id="4-1-创建集群"><a href="#4-1-创建集群" class="headerlink" title="4.1 创建集群"></a>4.1 创建集群</h3><ul>
+<h2 id="04创建集群"><a class="markdownIt-Anchor" href="#04创建集群"></a> 04.创建集群</h2>
+<h3 id="41-创建集群"><a class="markdownIt-Anchor" href="#41-创建集群"></a> 4.1 创建集群</h3>
+<ul>
 <li>redis-trib.rb是官方提供的Redis Cluster的管理工具，无需额外下载，默认位于源码包的src目录下</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''将redis-trib.rb复制到/usr/local/bin/下，以便在任何⽬录下调⽤此命令'''</span>
-<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># cp /root/redis-5.0.3/src/redis-trib.rb  /usr/local/bin/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''将redis-trib.rb复制到/usr/local/bin/下，以便在任何⽬录下调⽤此命令'''</span>
+<span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># cp /root/redis-5.0.3/src/redis-trib.rb  /usr/local/bin/</span></code></pre>
 <ul>
 <li>但因该工具是用ruby开发的，所以需要准备相关的依赖环境</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 src<span class="token punctuation">]</span><span class="token comment"># yum -y install ruby</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 src<span class="token punctuation">]</span><span class="token comment"># yum -y install ruby</span></code></pre>
 <ul>
 <li><code>运⾏如下命令创建集群</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 src<span class="token punctuation">]</span><span class="token comment"># redis-cli --cluster create 192.168.56.65:7000 192.168.56.65:7001 192.168.56.65:7002 192.168.56.66:7003 192.168.56.66:7004 192.168.56.66:7005 --cluster-replicas 1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="4-2-查看集群创建结果"><a href="#4-2-查看集群创建结果" class="headerlink" title="4.2 查看集群创建结果"></a>4.2 查看集群创建结果</h3><ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node2 src<span class="token punctuation">]</span><span class="token comment"># redis-cli --cluster create 192.168.56.65:7000 192.168.56.65:7001 192.168.56.65:7002 192.168.56.66:7003 192.168.56.66:7004 192.168.56.66:7005 --cluster-replicas 1</span></code></pre>
+<h3 id="42-查看集群创建结果"><a class="markdownIt-Anchor" href="#42-查看集群创建结果"></a> 4.2 查看集群创建结果</h3>
+<ul>
 <li>根据下图可以看出，当前搭建的主服务器为7000、7001、7003，对应的从服务器是7004、7005、7002</li>
 </ul>
 <p><img src="./assets/image-20210223222939683.png" style="width: 600px; margin-left: 20px;"> </img></p>
-<h3 id="4-3-数据验证"><a href="#4-3-数据验证" class="headerlink" title="4.3 数据验证"></a>4.3 数据验证</h3><p><img src="./assets/image-20210223223610169.png" style="width: 600px; margin-left: 20px;"> </img></p>
+<h3 id="43-数据验证"><a class="markdownIt-Anchor" href="#43-数据验证"></a> 4.3 数据验证</h3>
+<p><img src="./assets/image-20210223223610169.png" style="width: 600px; margin-left: 20px;"> </img></p>
 <ul>
 <li>在7002上写入数据，会自动将操作转发给7003</li>
 <li>在7002和7003两台服务器中，<code>7003是master，master能写入</code></li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-cli -h 192.168.56.65 -c -p 7002</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@k8s<span class="token operator">-</span>node1 conf<span class="token punctuation">]</span><span class="token comment"># redis-cli -h 192.168.56.65 -c -p 7002</span>
 <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.65</span><span class="token punctuation">:</span><span class="token number">7002</span><span class="token operator">></span> <span class="token builtin">set</span> name tom
 <span class="token operator">-</span><span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">5798</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span><span class="token number">.56</span><span class="token number">.66</span><span class="token punctuation">:</span><span class="token number">7003</span>
-OK<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+OK</code></pre>
 <ul>
 <li>在7003中可以看到刚刚在7002中写入的数据</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">[root@k8s-node1 ~]# redis-cli -h 192.168.56.66 -c -p 7003
+<pre class="language-none"><code class="language-none">[root@k8s-node1 ~]# redis-cli -h 192.168.56.66 -c -p 7003
 192.168.56.66:7003&gt; get name
-&quot;tom&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+&quot;tom&quot;</code></pre>
 <ul>
 <li>在7000客户端去查找刚刚的数据，其实当前redis实例没有这条数据</li>
 <li>会将请求转发给了7003这个redis进行查找</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">[root@k8s-node1 ~]# redis-cli -h 192.168.56.65 -c -p 7000
+<pre class="language-none"><code class="language-none">[root@k8s-node1 ~]# redis-cli -h 192.168.56.65 -c -p 7000
 192.168.56.65:7000&gt; get name
 -&gt; Redirected to slot [5798] located at 192.168.56.66:7003
-&quot;tom&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="05-Python交互"><a href="#05-Python交互" class="headerlink" title="05.Python交互"></a>05.Python交互</h2><h3 id="5-1-安装redis-py-cluster"><a href="#5-1-安装redis-py-cluster" class="headerlink" title="5.1 安装redis-py-cluster"></a>5.1 安装redis-py-cluster</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">pip install redis<span class="token operator">==</span><span class="token number">2.10</span><span class="token number">.6</span>
-pip install redis<span class="token operator">-</span>py<span class="token operator">-</span>cluster<span class="token operator">==</span><span class="token number">1.3</span><span class="token number">.5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+&quot;tom&quot;</code></pre>
+<h2 id="05python交互"><a class="markdownIt-Anchor" href="#05python交互"></a> 05.Python交互</h2>
+<h3 id="51-安装redis-py-cluster"><a class="markdownIt-Anchor" href="#51-安装redis-py-cluster"></a> 5.1 安装redis-py-cluster</h3>
+<pre class="language-python" data-language="python"><code class="language-python">pip install redis<span class="token operator">==</span><span class="token number">2.10</span><span class="token number">.6</span>
+pip install redis<span class="token operator">-</span>py<span class="token operator">-</span>cluster<span class="token operator">==</span><span class="token number">1.3</span><span class="token number">.5</span></code></pre>
 <ul>
 <li>redis-py-cluster源码地址<a target="_blank" rel="noopener" href="https://github.com/Grokzen/redis-py-cluster">https://github.com/Grokzen/redis-py-cluster</a></li>
 </ul>
-<h3 id="5-2-python使用redis集群"><a href="#5-2-python使用redis集群" class="headerlink" title="5.2 python使用redis集群"></a>5.2 python使用redis集群</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rediscluster <span class="token keyword">import</span> <span class="token operator">*</span>
+<h3 id="52-python使用redis集群"><a class="markdownIt-Anchor" href="#52-python使用redis集群"></a> 5.2 python使用redis集群</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> rediscluster <span class="token keyword">import</span> <span class="token operator">*</span>
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
   <span class="token keyword">try</span><span class="token punctuation">:</span>
     <span class="token comment"># 构建所有的节点，Redis会使⽤CRC16算法，将键和值写到某个节点上</span>
@@ -268,21 +275,23 @@ pip install redis<span class="token operator">-</span>py<span class="token opera
 打印结果：
 True
 itheima
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="06-django中使用"><a href="#06-django中使用" class="headerlink" title="06.django中使用"></a>06.django中使用</h2><ul>
+'''</span></code></pre>
+<h2 id="06django中使用"><a class="markdownIt-Anchor" href="#06django中使用"></a> 06.django中使用</h2>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/glumu/django-redis-cluster">参考</a></li>
 </ul>
-<h3 id="6-1-Requirement"><a href="#6-1-Requirement" class="headerlink" title="6.1 Requirement"></a>6.1 Requirement</h3><p>Python 3.0+</p>
-<p>Django&gt;&#x3D;1.9.6</p>
-<p>redis&gt;&#x3D;2.10.5</p>
-<p>redis-py-cluster&gt;&#x3D;1.2.0</p>
-<p>msgpack-python&gt;&#x3D;0.4.7</p>
-<h3 id="6-2-How-to-install"><a href="#6-2-How-to-install" class="headerlink" title="6.2 How to install"></a>6.2 How to install</h3><pre class="line-numbers language-none"><code class="language-none">$python setup.py install
+<h3 id="61-requirement"><a class="markdownIt-Anchor" href="#61-requirement"></a> 6.1 Requirement</h3>
+<p>Python 3.0+</p>
+<p>Django&gt;=1.9.6</p>
+<p>redis&gt;=2.10.5</p>
+<p>redis-py-cluster&gt;=1.2.0</p>
+<p>msgpack-python&gt;=0.4.7</p>
+<h3 id="62-how-to-install"><a class="markdownIt-Anchor" href="#62-how-to-install"></a> 6.2 How to install</h3>
+<pre class="language-none"><code class="language-none">$python setup.py install
 or
-$pip install django-redis-cluster<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="6-3-Django-Settings"><a href="#6-3-Django-Settings" class="headerlink" title="6.3 Django Settings"></a>6.3 Django Settings</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">CACHES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+$pip install django-redis-cluster</code></pre>
+<h3 id="63-django-settings"><a class="markdownIt-Anchor" href="#63-django-settings"></a> 6.3 Django Settings</h3>
+<pre class="language-python" data-language="python"><code class="language-python">CACHES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
     <span class="token string">'default'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
         <span class="token string">'BACKEND'</span><span class="token punctuation">:</span> <span class="token string">'django_redis_cluster.cache.RedisClusterCache'</span><span class="token punctuation">,</span>
         <span class="token string">"LOCATION"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
@@ -294,7 +303,7 @@ $pip install django-redis-cluster<span aria-hidden="true" class="line-numbers-ro
             <span class="token string">"CLIENT_CLASS"</span><span class="token punctuation">:</span> <span class="token string">"django_redis_cluster.client.DefaultClient"</span><span class="token punctuation">,</span>
         <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
                 
                 <p class="end">__END__</p>
             </div>

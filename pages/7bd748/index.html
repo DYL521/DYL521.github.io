@@ -79,18 +79,21 @@
                 <blockquote>
 <p><strong>什么是nginx?</strong></p>
 </blockquote>
-<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/nginx/img.png"></p>
-<h1 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h1><ul>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/nginx/img.png" alt="" /></p>
+<h1 id="1-安装"><a class="markdownIt-Anchor" href="#1-安装"></a> 1、安装</h1>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/dunwu/nginx-tutorial/blob/master/docs/nginx-ops.md">https://github.com/dunwu/nginx-tutorial/blob/master/docs/nginx-ops.md</a></li>
 </ul>
-<h1 id="2、nginx-的常用命令"><a href="#2、nginx-的常用命令" class="headerlink" title="2、nginx 的常用命令"></a>2、nginx 的常用命令</h1><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">nginx <span class="token parameter variable">-s</span> stop <span class="token comment"># 快速关闭nginx</span>
+<h1 id="2-nginx-的常用命令"><a class="markdownIt-Anchor" href="#2-nginx-的常用命令"></a> 2、nginx 的常用命令</h1>
+<pre class="language-bash" data-language="bash"><code class="language-bash">nginx <span class="token parameter variable">-s</span> stop <span class="token comment"># 快速关闭nginx</span>
 nginx <span class="token parameter variable">-s</span> quit <span class="token comment"># 平稳关闭nginx，保存相关信息，有安排的结束web服务</span>
 nginx <span class="token parameter variable">-s</span> reload <span class="token comment"># 因改变nginx配置文件，需要重新加载配置</span>
 nginx <span class="token parameter variable">-s</span> reopen <span class="token comment"># 重新打开日志文件</span>
 nginx <span class="token parameter variable">-t</span>        <span class="token comment"># 不运行，仅仅测试配置文件的语法等等</span>
-nginx <span class="token parameter variable">-v</span>        <span class="token comment"># 显示nginx的版本</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="3、nginx实战"><a href="#3、nginx实战" class="headerlink" title="3、nginx实战"></a>3、nginx实战</h1><h2 id="3-1-http反向代理"><a href="#3-1-http反向代理" class="headerlink" title="3.1 http反向代理"></a>3.1 http反向代理</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#运行用户</span>
+nginx <span class="token parameter variable">-v</span>        <span class="token comment"># 显示nginx的版本</span></code></pre>
+<h1 id="3-nginx实战"><a class="markdownIt-Anchor" href="#3-nginx实战"></a> 3、nginx实战</h1>
+<h2 id="31-http反向代理"><a class="markdownIt-Anchor" href="#31-http反向代理"></a> 3.1 http反向代理</h2>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#运行用户</span>
 <span class="token comment">#user somebody;</span>
 
 <span class="token comment">#启动进程,通常设置成和cpu的数量相等</span>
@@ -197,16 +200,20 @@ http <span class="token punctuation">&#123;</span>
         <span class="token comment">#&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>好了，让我们来试试吧：</p>
-<p>1、启动 webapp，注意启动绑定的端口要和 nginx 中的 upstream 设置的端口保持一致。<br>2、更改 host：在 C:\Windows\System32\drivers\etc 目录下的 host 文件中添加一条 DNS 记录<br>127.0.0.1 <a target="_blank" rel="noopener" href="http://www.helloworld.com/">www.helloworld.com</a><br>3、启动前文中 startup.bat 的命令<br>在浏览器中访问 <a target="_blank" rel="noopener" href="http://www.helloworld.com,不出意外,已经可以访问了./">www.helloworld.com，不出意外，已经可以访问了。</a></p>
-<h2 id="3-2-https-反向代理"><a href="#3-2-https-反向代理" class="headerlink" title="3.2 https 反向代理"></a>3.2 https 反向代理</h2><p>配置https时，需要注意:</p>
+<p>1、启动 webapp，注意启动绑定的端口要和 nginx 中的 upstream 设置的端口保持一致。<br />
+2、更改 host：在 C:\Windows\System32\drivers\etc 目录下的 host 文件中添加一条 DNS 记录<br />
+127.0.0.1 <a target="_blank" rel="noopener" href="http://www.helloworld.com">www.helloworld.com</a><br />
+3、启动前文中 startup.bat 的命令<br />
+在浏览器中访问 <a target="_blank" rel="noopener" href="http://www.helloworld.com">www.helloworld.com</a>，不出意外，已经可以访问了。</p>
+<h2 id="32-https-反向代理"><a class="markdownIt-Anchor" href="#32-https-反向代理"></a> 3.2 https 反向代理</h2>
+<p>配置https时，需要注意:</p>
 <ul>
 <li>https 的固定端口号是443，不同于http的80端口</li>
 <li>ssl标准需要引入安全证书，需要在nginx.conf中你需要指定证书和它对应的 key</li>
 <li>其他和http反向代理一样，只是Server部分有些不同</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><div class="caption"><span>nginx.conf</span></div><code class="language-bash">code snippet
+<pre class="language-bash" data-language="bash"><div class="caption"><span>nginx.conf</span></div><code class="language-bash">code snippet
   <span class="token comment">#HTTP服务器</span>
   server <span class="token punctuation">&#123;</span>
       <span class="token comment">#监听443端口。443为知名端口号，主要用于HTTPS协议</span>
@@ -232,12 +239,15 @@ http <span class="token punctuation">&#123;</span>
           index  index.html index.htm<span class="token punctuation">;</span>
       <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-code snippet<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="3-2-负载均衡"><a href="#3-2-负载均衡" class="headerlink" title="3.2 负载均衡"></a>3.2 负载均衡</h2><blockquote>
-<p> 前面的例子中，仅仅只代理了一台服务器； 实际上网站运行都是多个服务器；<br> nginx就可以用来实现简单的负载均衡功能。<br>  主要有四种算法:<br>  1、加权轮询；2、轮询；3、最少链接； 4、加权最小链接；  5、ip hash</p>
+code snippet</code></pre>
+<h2 id="32-负载均衡"><a class="markdownIt-Anchor" href="#32-负载均衡"></a> 3.2 负载均衡</h2>
+<blockquote>
+<p>前面的例子中，仅仅只代理了一台服务器； 实际上网站运行都是多个服务器；<br />
+nginx就可以用来实现简单的负载均衡功能。<br />
+主要有四种算法:<br />
+1、加权轮询；2、轮询；3、最少链接； 4、加权最小链接；  5、ip hash</p>
 </blockquote>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">http <span class="token punctuation">&#123;</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash">http <span class="token punctuation">&#123;</span>
      <span class="token comment">#设定mime类型,类型由mime.type文件定义</span>
     include       /etc/nginx/mime.types<span class="token punctuation">;</span>
     default_type  application/octet-stream<span class="token punctuation">;</span>
@@ -284,8 +294,7 @@ code snippet<span aria-hidden="true" class="line-numbers-rows"><span></span><spa
             client_body_buffer_size 128k<span class="token punctuation">;</span>      <span class="token comment">#缓冲区代理缓冲用户端请求的最大字节数</span>
         <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token punctuation">&#125;</span></code></pre>
 
                 
                 <p class="end">__END__</p>

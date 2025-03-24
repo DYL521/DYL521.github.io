@@ -76,7 +76,8 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-python垃圾回收机制"><a href="#01-python垃圾回收机制" class="headerlink" title="01.python垃圾回收机制"></a>01.python垃圾回收机制</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">class Student<span class="token punctuation">(</span>object<span class="token punctuation">)</span>:
+                <h2 id="01python垃圾回收机制"><a class="markdownIt-Anchor" href="#01python垃圾回收机制"></a> 01.python垃圾回收机制</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash">class Student<span class="token punctuation">(</span>object<span class="token punctuation">)</span>:
     def __del__<span class="token punctuation">(</span>self<span class="token punctuation">)</span>:                <span class="token comment"># 作用：清除无用的实例对内存的暂用</span>
         print<span class="token punctuation">(</span><span class="token string">'__del__'</span><span class="token punctuation">)</span>
 
@@ -86,39 +87,44 @@ del s2
 del s1
 
 <span class="token function">import</span> <span class="token function">time</span>
-time.sleep<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-1-引计数"><a href="#1-1-引计数" class="headerlink" title="1.1 引计数"></a>1.1 引计数</h3><ul>
-<li>原理<ul>
+time.sleep<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span></code></pre>
+<h3 id="11-引计数"><a class="markdownIt-Anchor" href="#11-引计数"></a> 1.1 引计数</h3>
+<ul>
+<li>原理
+<ul>
 <li>当一个对象的引用被创建或者复制时，对象的引用计数加1；当一个对象的引用被销毁时，对象的引用计数减1.</li>
 <li>当对象的引用计数减少为0时，就意味着对象已经再没有被使用了，可以将其内存释放掉。</li>
 </ul>
 </li>
-<li>优点<ul>
+<li>优点
+<ul>
 <li>引用计数有一个很大的优点，即实时性，任何内存，一旦没有指向它的引用，就会被立即回收，而其他的垃圾收集技术必须在某种特殊条件下才能进行无效内存的回收。</li>
 </ul>
 </li>
-<li>缺点<ul>
+<li>缺点
+<ul>
 <li>引用计数机制所带来的维护引用计数的额外操作与Python运行中所进行的内存分配和释放，引用赋值的次数是成正比的，</li>
 <li>显然比其它那些垃圾收集技术所带来的额外操作只是与待回收的内存数量有关的效率要低。</li>
 <li>同时，因为对象之间相互引用，每个对象的引用都不会为0，所以这些对象所占用的内存始终都不会被释放掉。</li>
 </ul>
 </li>
 </ul>
-<h3 id="1-2-标记－清除"><a href="#1-2-标记－清除" class="headerlink" title="1.2 标记－清除"></a>1.2 标记－清除</h3><ul>
+<h3 id="12-标记-清除"><a class="markdownIt-Anchor" href="#12-标记-清除"></a> 1.2 标记－清除</h3>
+<ul>
 <li>它分为两个阶段：第一阶段是标记阶段，GC会把所有的活动对象打上标记，第二阶段是把那些没有标记的对象非活动对象进行回收。</li>
 <li>对象之间通过引用（指针）连在一起，构成一个有向图</li>
 <li>从根对象（root object）出发，沿着有向边遍历对象，可达的（reachable）对象标记为活动对象，不可达的对象就是要被清除的非活动对象。</li>
 <li>根对象就是全局变量、调用栈、寄存器。</li>
 </ul>
-<p><img src="./assets/image-20200311091914402.png"></p>
+<p><img src="./assets/image-20200311091914402.png" alt="" /></p>
 <ul>
 <li>在上图中，可以从程序变量直接访问块1，并且可以间接访问块2和3,程序无法访问块4和5</li>
 <li>第一步将标记块1，并记住块2和3以供稍后处理。</li>
 <li>第二步将标记块2，第三步将标记块3，但不记得块2，因为它已被标记。</li>
 <li>扫描阶段将忽略块1，2和3，因为它们已被标记，但会回收块4和5。</li>
 </ul>
-<h3 id="1-3-分代回收"><a href="#1-3-分代回收" class="headerlink" title="1.3 分代回收"></a>1.3 分代回收</h3><ul>
+<h3 id="13-分代回收"><a class="markdownIt-Anchor" href="#13-分代回收"></a> 1.3 分代回收</h3>
+<ul>
 <li>分代回收是建立在标记清除技术基础之上的，是一种以空间换时间的操作方式。</li>
 <li>Python将内存分为了3“代”，分别为年轻代（第0代）、中年代（第1代）、老年代（第2代）</li>
 <li>他们对应的是3个链表，它们的<strong>垃圾收集频率与对象的存活时间的增大而减小</strong>。</li>
@@ -166,7 +172,7 @@ time.sleep<span class="token punctuation">(</span><span class="token number">100
                         <br>
                     
                     
-                        <a href="../../pages/ff07de/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/ff07de/" title="发布于 2021-02-11 10:59">14.上下文管理</a>
+                        <a href="../../pages/2d9cd4/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/2d9cd4/" title="发布于 2021-02-11 10:59">15.网络七层</a>
                     
                 </div>
             </div>

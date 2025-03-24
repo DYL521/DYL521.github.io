@@ -76,14 +76,17 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-mapping映射"><a href="#01-mapping映射" class="headerlink" title="01.mapping映射"></a>01.mapping映射</h2><ul>
+                <h2 id="01mapping映射"><a class="markdownIt-Anchor" href="#01mapping映射"></a> 01.mapping映射</h2>
+<ul>
 <li>前面已经安装了ik中文分词器,这里就不介绍怎么安装了</li>
 <li>ik_max_word: 会将文本做最细粒度的拆分</li>
 <li>ik_smart: 会做最粗粒度的拆分</li>
 </ul>
-<h3 id="1-1-映射是什么"><a href="#1-1-映射是什么" class="headerlink" title="1.1 映射是什么"></a>1.1 映射是什么</h3><ul>
+<h3 id="11-映射是什么"><a class="markdownIt-Anchor" href="#11-映射是什么"></a> 1.1 映射是什么</h3>
+<ul>
 <li>映射：指定字段类型，将时间域视为时间，数字域视为数字，字符串域视为全文或精确值字符串</li>
-<li>Elasticsearch 支持如下简单域类型：<ul>
+<li>Elasticsearch 支持如下简单域类型：
+<ul>
 <li>字符串: text   string(高版本废弃)</li>
 <li>整数 : byte, short, integer, long</li>
 <li>浮点数: float, double</li>
@@ -92,7 +95,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="1-2-设置mapping"><a href="#1-2-设置mapping" class="headerlink" title="1.2 设置mapping"></a>1.2 设置mapping</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射关系</span>
+<h3 id="12-设置mapping"><a class="markdownIt-Anchor" href="#12-设置mapping"></a> 1.2 设置mapping</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射关系</span>
 GET /worker1/_mapping
 
 <span class="token comment">## 创建映射</span>
@@ -109,9 +113,9 @@ PUT /worker1
 			
 		<span class="token punctuation">&#125;</span>
 	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-3-添加和查询数据"><a href="#1-3-添加和查询数据" class="headerlink" title="1.3 添加和查询数据"></a>1.3 添加和查询数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询worker1中所有数据</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="13-添加和查询数据"><a class="markdownIt-Anchor" href="#13-添加和查询数据"></a> 1.3 添加和查询数据</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询worker1中所有数据</span>
 GET /worker1/_search
 
 <span class="token comment">## 不指定id在worker1中添加数据</span>
@@ -127,24 +131,29 @@ POST /worker1/_doc/2
 <span class="token punctuation">&#123;</span>
   <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"jack"</span>,
   <span class="token string">"age"</span>:18
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-分析器"><a href="#02-分析器" class="headerlink" title="02.分析器"></a>02.分析器</h2><h3 id="2-1-分析器类型"><a href="#2-1-分析器类型" class="headerlink" title="2.1 分析器类型"></a>2.1 分析器类型</h3><h4 id="2-1-1-三方中文分词器"><a href="#2-1-1-三方中文分词器" class="headerlink" title="2.1.1 三方中文分词器"></a>2.1.1 三方中文分词器</h4><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="02分析器"><a class="markdownIt-Anchor" href="#02分析器"></a> 02.分析器</h2>
+<h3 id="21-分析器类型"><a class="markdownIt-Anchor" href="#21-分析器类型"></a> 2.1 分析器类型</h3>
+<h4 id="211-三方中文分词器"><a class="markdownIt-Anchor" href="#211-三方中文分词器"></a> 2.1.1 三方中文分词器</h4>
+<ul>
 <li>ik_max_word：会做细粒度拆分</li>
 <li>ik_smart：会做最粗粒度的拆分</li>
 </ul>
 <p><img src="./assets/image-20210113115604228.png" style="width: 800px; margin-left: 10px;"> </img></p>
-<h4 id="2-2-自带分词器"><a href="#2-2-自带分词器" class="headerlink" title="2.2 自带分词器"></a>2.2 自带分词器</h4><ul>
+<h4 id="22-自带分词器"><a class="markdownIt-Anchor" href="#22-自带分词器"></a> 2.2 自带分词器</h4>
+<ul>
 <li>标准分析器（standard）：标准分析器是Elasticsearch默认使用的分析器。</li>
 <li>简单分析器（simple）：简单分析器在任何不是字母的地方分隔文本，将词条小写。</li>
 <li><code>空格分析器</code>（whitespace）：空格分析器在空格的地方划分文本。</li>
-<li><code>语言分析器</code>（english）：它们可以考虑指定语言的特点<ul>
-<li>例如， 英语 分析器附带了一组英语无用词（常用单词，例如 and 或者 the ，它们对相关性没有多少影响），它们会被删除。 </li>
+<li><code>语言分析器</code>（english）：它们可以考虑指定语言的特点
+<ul>
+<li>例如， 英语 分析器附带了一组英语无用词（常用单词，例如 and 或者 the ，它们对相关性没有多少影响），它们会被删除。</li>
 <li>由于理解英语语法的规则，这个分词器可以提取英语单词的词干 。</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-2-在mapping中指定分析"><a href="#2-2-在mapping中指定分析" class="headerlink" title="2.2 在mapping中指定分析"></a>2.2 在mapping中指定分析</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射</span>
+<h3 id="22-在mapping中指定分析"><a class="markdownIt-Anchor" href="#22-在mapping中指定分析"></a> 2.2 在mapping中指定分析</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看映射</span>
 GET /worker4/_mapping
 
 
@@ -167,9 +176,9 @@ PUT /worker
 			<span class="token punctuation">&#125;</span>
 		<span class="token punctuation">&#125;</span>
 	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-添加数据"><a href="#2-3-添加数据" class="headerlink" title="2.3 添加数据"></a>2.3 添加数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询所有数据</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="23-添加数据"><a class="markdownIt-Anchor" href="#23-添加数据"></a> 2.3 添加数据</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询所有数据</span>
 GET /worker/_search
 
 <span class="token comment">## 添加记录</span>
@@ -178,9 +187,9 @@ POST /worker/_doc/1
   <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang first"</span>,
   <span class="token string">"address"</span><span class="token builtin class-name">:</span><span class="token string">"xiao-nai-qiang henan"</span>,
   <span class="token string">"desc"</span><span class="token builtin class-name">:</span><span class="token string">"肖乃强是谁？"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-4-whitespace空格分析器"><a href="#2-4-whitespace空格分析器" class="headerlink" title="2.4 whitespace空格分析器"></a>2.4 whitespace空格分析器</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看刚刚设置的mapping映射</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="24-whitespace空格分析器"><a class="markdownIt-Anchor" href="#24-whitespace空格分析器"></a> 2.4 whitespace空格分析器</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查看刚刚设置的mapping映射</span>
 GET /worker/_mapping
 <span class="token comment">## 查询刚创建的数据 id=1</span>
 GET /worker/_doc/1
@@ -189,13 +198,13 @@ GET /worker/_doc/1
 GET /worker/_search?q<span class="token operator">=</span>name:xiao
 
 <span class="token comment">## 只有完整查询 ?q=name:xiao-nai-qiang 才能匹配到数据</span>
-GET /worker/_search?q<span class="token operator">=</span>name:xiao-nai-qiang<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-5-语言分析器（english）"><a href="#2-5-语言分析器（english）" class="headerlink" title="2.5 语言分析器（english）"></a>2.5 语言分析器（english）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 因为 note字段设置的是 "english" 语音分析器，所以通过 ?q=note:xiao 可以搜索到 xiao-nai-qiang</span>
-GET /worker4/_search?q<span class="token operator">=</span>address:xiao<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="2-6-ik-max-word中文分词"><a href="#2-6-ik-max-word中文分词" class="headerlink" title="2.6 ik_max_word中文分词"></a>2.6 ik_max_word中文分词</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## ik_max_word中文分词，可以通过 ?q=desc:肖乃强 查询到 "肖乃强是谁？"</span>
-GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+GET /worker/_search?q<span class="token operator">=</span>name:xiao-nai-qiang</code></pre>
+<h3 id="25-语言分析器english"><a class="markdownIt-Anchor" href="#25-语言分析器english"></a> 2.5 语言分析器（english）</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 因为 note字段设置的是 "english" 语音分析器，所以通过 ?q=note:xiao 可以搜索到 xiao-nai-qiang</span>
+GET /worker4/_search?q<span class="token operator">=</span>address:xiao</code></pre>
+<h3 id="26-ik_max_word中文分词"><a class="markdownIt-Anchor" href="#26-ik_max_word中文分词"></a> 2.6 ik_max_word中文分词</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## ik_max_word中文分词，可以通过 ?q=desc:肖乃强 查询到 "肖乃强是谁？"</span>
+GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强</code></pre>
                 
                 <p class="end">__END__</p>
             </div>
@@ -231,11 +240,11 @@ GET /worker/_search?q<span class="token operator">=</span>desc:肖乃强<span ar
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/d236d3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
+                        <a href="../../pages/df12b3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/df12b3/" title="发布于 2021-02-12 03:04">03.es基本使用</a>
                         <br>
                     
                     
-                        <a href="../../pages/df12b3/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/df12b3/" title="发布于 2021-02-12 03:04">03.es基本使用</a>
+                        <a href="../../pages/51290c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/51290c/" title="发布于 2021-02-12 03:04">05.python使用ES</a>
                     
                 </div>
             </div>

@@ -82,14 +82,18 @@
             <div class="article-body">
                 <ul>
 <li><a target="_blank" rel="noopener" href="https://realpython.com/python-gil/">https://realpython.com/python-gil/</a></li>
-<li><a target="_blank" rel="noopener" href="https://siskinc.github.io/post/python%E7%9A%84%E5%85%A8%E5%B1%80%E9%94%81_gil/">https://siskinc.github.io/post/python%E7%9A%84%E5%85%A8%E5%B1%80%E9%94%81_gil/</a></li>
+<li><a target="_blank" rel="noopener" href="https://siskinc.github.io/post/python%E7%9A%84%E5%85%A8%E5%B1%80%E9%94%81_gil/">https://siskinc.github.io/post/python的全局锁_gil/</a></li>
 </ul>
-<h1 id="1、为什么产生了GIL锁？"><a href="#1、为什么产生了GIL锁？" class="headerlink" title="1、为什么产生了GIL锁？"></a>1、为什么产生了GIL锁？</h1><pre><code>在python设计的年代，都是单核CPU，因为进程程是CPU是分配资源的最小单位，所以不会有数据操作混乱的问题。
+<h1 id="1-为什么产生了gil锁"><a class="markdownIt-Anchor" href="#1-为什么产生了gil锁"></a> 1、为什么产生了GIL锁？</h1>
+<pre><code>在python设计的年代，都是单核CPU，因为进程程是CPU是分配资源的最小单位，所以不会有数据操作混乱的问题。
 随计算机的发展，出现了多核CPU， pyhton为了利用多核的优势，开始支持多线程，解决多线程之间的数据完整性、状态同步就是加锁， 所以产生了GIL锁
 </code></pre>
-<p>GIL锁是python的全局解释性锁， 同一个进程中假设有多个线程运行， 其中一个线程会独占python解释器（GIL），使得其他线程无法运行，等该线程运行完成后其他线程才能运行<br>所以在多线程中，线程的执行仍然是有先后顺序的，并不是同时进行的（python的特点）</p>
-<h1 id="2、如何解决GIL？"><a href="#2、如何解决GIL？" class="headerlink" title="2、如何解决GIL？"></a>2、如何解决GIL？</h1><p>GIL最大的问题就是python的多线程程序并不能利用多核的优势（比如一个使用了多个线程的计算密集型程序只会在一个单CPU上执行）</p>
-<h2 id="2-1-如果是完全的python环境，使用multiprocessing"><a href="#2-1-如果是完全的python环境，使用multiprocessing" class="headerlink" title="2.1  如果是完全的python环境，使用multiprocessing"></a>2.1  如果是完全的python环境，使用multiprocessing</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Processing pool (see below for initiazation)</span>
+<p>GIL锁是python的全局解释性锁， 同一个进程中假设有多个线程运行， 其中一个线程会独占python解释器（GIL），使得其他线程无法运行，等该线程运行完成后其他线程才能运行<br />
+所以在多线程中，线程的执行仍然是有先后顺序的，并不是同时进行的（python的特点）</p>
+<h1 id="2-如何解决gil"><a class="markdownIt-Anchor" href="#2-如何解决gil"></a> 2、如何解决GIL？</h1>
+<p>GIL最大的问题就是python的多线程程序并不能利用多核的优势（比如一个使用了多个线程的计算密集型程序只会在一个单CPU上执行）</p>
+<h2 id="21-如果是完全的python环境使用multiprocessing"><a class="markdownIt-Anchor" href="#21-如果是完全的python环境使用multiprocessing"></a> 2.1  如果是完全的python环境，使用multiprocessing</h2>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># Processing pool (see below for initiazation)</span>
 pool <span class="token operator">=</span> <span class="token boolean">None</span>
 
 <span class="token comment"># Performs a large calculation (CPU bound)</span>
@@ -107,9 +111,9 @@ pool <span class="token operator">=</span> <span class="token boolean">None</spa
 <span class="token comment"># Initiaze the pool</span>
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
     <span class="token keyword">import</span> multiprocessing
-    pool <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Pool<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="2-另外一个方式，引入C扩展编程技术"><a href="#2-另外一个方式，引入C扩展编程技术" class="headerlink" title="2. 另外一个方式，引入C扩展编程技术"></a>2. 另外一个方式，引入C扩展编程技术</h2><pre class="line-numbers language-C" data-language="C"><code class="language-C">#include &quot;Python.h&quot;
+    pool <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Pool<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h2 id="2-另外一个方式引入c扩展编程技术"><a class="markdownIt-Anchor" href="#2-另外一个方式引入c扩展编程技术"></a> 2. 另外一个方式，引入C扩展编程技术</h2>
+<pre class="language-C" data-language="C"><code class="language-C">#include &quot;Python.h&quot;
 ...
 
 PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
@@ -119,7 +123,7 @@ PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
    ...
    Py_END_ALLOW_THREADS
    ...
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
                 
                 <p class="end">__END__</p>
@@ -163,7 +167,7 @@ PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/a18e2b/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a18e2b/" title="发布于 2021-02-11 10:59">16.高阶函数</a>
+                        <a href="../../pages/480866/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/480866/" title="发布于 2021-02-11 10:59">17.次重点</a>
                         <br>
                     
                     

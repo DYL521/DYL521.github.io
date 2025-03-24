@@ -76,9 +76,10 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="自动部署Tomcat"><a href="#自动部署Tomcat" class="headerlink" title="自动部署Tomcat"></a>自动部署Tomcat</h1><h2 id="01-部署文件"><a href="#01-部署文件" class="headerlink" title="01.部署文件"></a>01.部署文件</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim tomcat-palybook.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">---
+                <h1 id="自动部署tomcat"><a class="markdownIt-Anchor" href="#自动部署tomcat"></a> 自动部署Tomcat</h1>
+<h2 id="01部署文件"><a class="markdownIt-Anchor" href="#01部署文件"></a> 01.部署文件</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim tomcat-palybook.yaml</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">---
 - hosts: webservers 
   gather_facts: no
   vars:
@@ -100,20 +101,18 @@
     - name: Start tomcat   <span class="token comment">#### 第四：启动 Tomcat</span>
       shell: <span class="token builtin class-name">cd</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_install_dir <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token operator">&amp;&amp;</span>
         <span class="token function">mv</span> apache-tomcat-<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> tomcat_version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> tomcat8 <span class="token operator">&amp;&amp;</span>
-        <span class="token builtin class-name">cd</span> tomcat8/bin <span class="token operator">&amp;&amp;</span> <span class="token function">nohup</span> ./startup.sh <span class="token operator">&amp;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-部署"><a href="#02-部署" class="headerlink" title="02.部署"></a>02.部署</h2><ul>
+        <span class="token builtin class-name">cd</span> tomcat8/bin <span class="token operator">&amp;&amp;</span> <span class="token function">nohup</span> ./startup.sh <span class="token operator">&amp;</span></code></pre>
+<h2 id="02部署"><a class="markdownIt-Anchor" href="#02部署"></a> 02.部署</h2>
+<ul>
 <li>执行部署 Tomcat</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml --syntax-check       # 语法检查</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml                 # 执行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml --syntax-check       # 语法检查</span>
+<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook tomcat-palybook.yaml                 # 执行</span></code></pre>
 <ul>
 <li>查看Tomcat是否运行</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">[root@k8s-node2 ~]# ls &#x2F;usr&#x2F;local&#x2F;tomcat8&#x2F;
-[root@k8s-node2 ~]# ps -ef|grep tomcat<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre class="language-none"><code class="language-none">[root@k8s-node2 ~]# ls &#x2F;usr&#x2F;local&#x2F;tomcat8&#x2F;
+[root@k8s-node2 ~]# ps -ef|grep tomcat</code></pre>
 <ul>
 <li>访问Tomcat</li>
 </ul>

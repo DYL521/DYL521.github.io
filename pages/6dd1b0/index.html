@@ -80,18 +80,24 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-DRF核心任务"><a href="#01-DRF核心任务" class="headerlink" title="01.DRF核心任务"></a>01.DRF核心任务</h2><h3 id="1-1-DRF核心任务"><a href="#1-1-DRF核心任务" class="headerlink" title="1.1 DRF核心任务"></a>1.1 DRF核心任务</h3><ul>
-<li><p>序列化：将对象转换为字典或者json的过程。</p>
+                <h2 id="01drf核心任务"><a class="markdownIt-Anchor" href="#01drf核心任务"></a> 01.DRF核心任务</h2>
+<h3 id="11-drf核心任务"><a class="markdownIt-Anchor" href="#11-drf核心任务"></a> 1.1 DRF核心任务</h3>
+<ul>
+<li>
+<p>序列化：将对象转换为字典或者json的过程。</p>
 </li>
-<li><p>反序列化：将字典或json转换保存到对象中的过程。</p>
+<li>
+<p>反序列化：将字典或json转换保存到对象中的过程。</p>
 </li>
-<li><p>RestAPI核心工作：</p>
+<li>
+<p>RestAPI核心工作：</p>
 <ul>
 <li>将数据库中的数据序列化为前端所需的格式，并进行返回。</li>
 <li>将前端传递的数据反序列化保存为模型类对象，并保存到数据库。</li>
 </ul>
 </li>
-<li><p>在开发REST API接口时，视图中主要做了三件事：</p>
+<li>
+<p>在开发REST API接口时，视图中主要做了三件事：</p>
 <ul>
 <li>① 将请求的数据（如：JSON格式）转换为模型类对象</li>
 <li>② 操作数据库</li>
@@ -99,33 +105,42 @@
 </ul>
 </li>
 </ul>
-<h3 id="1-2-序列化"><a href="#1-2-序列化" class="headerlink" title="1.2 序列化"></a>1.2 序列化</h3><ul>
+<h3 id="12-序列化"><a class="markdownIt-Anchor" href="#12-序列化"></a> 1.2 序列化</h3>
+<ul>
 <li><strong>广义的概念</strong>：将一种数据转换为另外一种格式的过程。</li>
 <li><strong>本课程特指</strong>：<code>将对象转换为字典或json的过程</code>。</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20210217145158339.png" style="width: 900px; margin-left: 0px;"> </img></p>
-<h3 id="1-3-反序列化"><a href="#1-3-反序列化" class="headerlink" title="1.3 反序列化"></a>1.3 反序列化</h3><ul>
+<h3 id="13-反序列化"><a class="markdownIt-Anchor" href="#13-反序列化"></a> 1.3 反序列化</h3>
+<ul>
 <li><strong>广义的概念</strong>：和序列化相反的转换过程。</li>
 <li><strong>本课程特指</strong>：将字典或json转换为对象的过程。</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20210217145342846.png" style="width: 900px; margin-left: 0px;"> </img></p>
-<h2 id="02-Django-REST-framework-简介"><a href="#02-Django-REST-framework-简介" class="headerlink" title="02.Django REST framework 简介"></a>02.Django REST framework 简介</h2><h3 id="2-1-作用"><a href="#2-1-作用" class="headerlink" title="2.1 作用"></a>2.1 作用</h3><ul>
-<li><p><strong>Django REST framework可以帮助我们大大提高REST API的开发速度。</strong></p>
+<h2 id="02django-rest-framework-简介"><a class="markdownIt-Anchor" href="#02django-rest-framework-简介"></a> 02.Django REST framework 简介</h2>
+<h3 id="21-作用"><a class="markdownIt-Anchor" href="#21-作用"></a> 2.1 作用</h3>
+<ul>
+<li>
+<p><strong>Django REST framework可以帮助我们大大提高REST API的开发速度。</strong></p>
 </li>
-<li><p>在序列化与反序列化时，虽然操作的数据可能不同，但是过程是相似的，这部分操作DRF框架进行了封装。</p>
+<li>
+<p>在序列化与反序列化时，虽然操作的数据可能不同，但是过程是相似的，这部分操作DRF框架进行了封装。</p>
 </li>
-<li><p>在开发REST API的视图时，虽然每个视图操作的数据可能不同</p>
+<li>
+<p>在开发REST API的视图时，虽然每个视图操作的数据可能不同</p>
 </li>
-<li><p>但增、删、改、查的基本流程是一样的，这部分代码DRF框架也进行了封装。</p>
+<li>
+<p>但增、删、改、查的基本流程是一样的，这部分代码DRF框架也进行了封装。</p>
 <ul>
 <li><strong>增</strong>：校验请求数据 → 反序列化-将数据保存到对象中 → 保存数据到数据库 → 将保存的对象序列化返回</li>
 <li><strong>删</strong>：判断要删除的数据是否存在 → 执行数据库删除 → 返回响应</li>
 <li><strong>改</strong>：判断要修改的数据是否存在 → 校验请求的数据 → 反序列化-将数据保存到对象中 → 保存数据到数据库 → 将保存的对象序列化返回</li>
-<li>**查(1个或多个)**：查询数据库 → 将数据序列化返回</li>
+<li><strong>查(1个或多个)</strong>：查询数据库 → 将数据序列化返回</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-2-特点"><a href="#2-2-特点" class="headerlink" title="2.2 特点"></a>2.2 特点</h3><ul>
+<h3 id="22-特点"><a class="markdownIt-Anchor" href="#22-特点"></a> 2.2 特点</h3>
+<ul>
 <li><strong>提供了定义序列化器的方法，使用序列化器可以进行数据的序列化和反序列化</strong></li>
 <li><strong>提供了丰富的类视图、Mixin扩展类、子类视图、视图集，简化视图代码的编写</strong></li>
 <li>多种身份认证和权限控制方式的支持</li>
@@ -134,7 +149,7 @@
 <li>可扩展性，插件丰富</li>
 </ul>
 <p><strong>参考资料</strong>：<a target="_blank" rel="noopener" href="http://www.django-rest-framework.org/">DRF框架官方文档</a></p>
-<p>**<code>总结</code>**：</p>
+<p><strong><code>总结</code></strong>：</p>
 <ul>
 <li>作用：快速开发RestAPI接口。</li>
 <li>特点：进行了大量封装，提高API开发速度。</li>

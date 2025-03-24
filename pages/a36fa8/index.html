@@ -76,24 +76,29 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-MySQL优化方向"><a href="#01-MySQL优化方向" class="headerlink" title="01.MySQL优化方向"></a>01.MySQL优化方向</h1><h2 id="1-1-优化方向"><a href="#1-1-优化方向" class="headerlink" title="1.1 优化方向"></a>1.1 优化方向</h2><ol>
+                <h1 id="01mysql优化方向"><a class="markdownIt-Anchor" href="#01mysql优化方向"></a> 01.MySQL优化方向</h1>
+<h2 id="11-优化方向"><a class="markdownIt-Anchor" href="#11-优化方向"></a> 1.1 优化方向</h2>
+<ol>
 <li>存储引擎的选择：INnoDB MyISAM</li>
 <li>设计数据库的设计，尽量的遵循<strong>三范式</strong></li>
 <li><strong>适当</strong>的建立索引</li>
 <li>查询数据的时候，注意 … 这些</li>
 <li><code>使用explain检查索引命中率，分析这一条sql语句是否可优化</code></li>
-<li>数据量大的时候，主从分离、分库分表、垂直&#x2F;水平分割</li>
+<li>数据量大的时候，主从分离、分库分表、垂直/水平分割</li>
 <li>尽量采用 贵的，SSD硬盘。不选择机械硬盘</li>
 <li>一个和你项目有关数据库优化的例子</li>
 </ol>
-<h2 id="1-2-MySQL优化"><a href="#1-2-MySQL优化" class="headerlink" title="1.2 MySQL优化"></a>1.2 MySQL优化</h2><ul>
+<h2 id="12-mysql优化"><a class="markdownIt-Anchor" href="#12-mysql优化"></a> 1.2 MySQL优化</h2>
+<ul>
 <li>什么是MySQL的慢查询？</li>
 <li>如何去分析 慢查询的日志？</li>
 <li>遇到了慢查询如何解决？（最好有故事）</li>
 <li>索引的建立是越多越好？为什么不是越多越好？</li>
 <li><code>一个精彩的故事</code></li>
 </ul>
-<h1 id="02-简单说明"><a href="#02-简单说明" class="headerlink" title="02.简单说明"></a>02.简单说明</h1><h2 id="2-1-MySQL索引优化"><a href="#2-1-MySQL索引优化" class="headerlink" title="2.1 MySQL索引优化"></a>2.1 MySQL索引优化</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、最左前缀匹配原则，上面讲到了</span>
+<h1 id="02简单说明"><a class="markdownIt-Anchor" href="#02简单说明"></a> 02.简单说明</h1>
+<h2 id="21-mysql索引优化"><a class="markdownIt-Anchor" href="#21-mysql索引优化"></a> 2.1 MySQL索引优化</h2>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、最左前缀匹配原则，上面讲到了</span>
 <span class="token comment"># 2、主键外键一定要建索引</span>
 <span class="token comment"># 3、对 where,on,group by,order by 中出现的列使用索引</span>
 <span class="token comment"># 4、尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，</span>
@@ -118,23 +123,27 @@
     EXPLAIN SELECT * FROMaWHEREa="1" – 走索引 
     EXPLAIN SELECT * FROM a WHERE a=1 – 不走索引 
     正则表达式不使用索引,这应该很好理解,所以为什么在SQL中很难看到regexp关键字的原因
-'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="2-2-MySql分库分表"><a href="#2-2-MySql分库分表" class="headerlink" title="2.2 MySql分库分表"></a>2.2 MySql分库分表</h2><p><code>了解内容，不作为学习重点</code></p>
+'''</span></code></pre>
+<h2 id="22-mysql分库分表"><a class="markdownIt-Anchor" href="#22-mysql分库分表"></a> 2.2 MySql分库分表</h2>
+<p><code>了解内容，不作为学习重点</code></p>
 <ul>
-<li>mysql一主多从，读写分离：写主库，读从库（所有数据库的数据一样）<ul>
+<li>mysql一主多从，读写分离：写主库，读从库（所有数据库的数据一样）
+<ul>
 <li>数据一样的，那么当数据量太大的时候查询还是很慢</li>
 </ul>
 </li>
-<li>分库（根据用户id分库）<ul>
+<li>分库（根据用户id分库）
+<ul>
 <li>所有数据库的表结构一样，存储的数据完全不一样</li>
 <li>真实环境以用户id进行分库，每一个库的数据都很小，查询起来就快了</li>
 <li>无法解决问题：当一个数据库中表中量过大的时候，查询依然会慢</li>
 </ul>
 </li>
-<li>分表（根据时间分表）<ul>
+<li>分表（根据时间分表）
+<ul>
 <li>当一个表中数据过大的时候，我们必须要对表拆分</li>
-<li>购物清单表中有两千万数据<ul>
+<li>购物清单表中有两千万数据
+<ul>
 <li>最近半年的购物数据时 一百万</li>
 <li>半年到一年的数据有五百万</li>
 <li>一年以前的数据有一千万</li>
@@ -183,7 +192,7 @@
                         <br>
                     
                     
-                        <a href="../../pages/ee7415/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/ee7415/" title="发布于 2021-02-22 04:00">07.MySQL主从同步</a>
+                        <a href="../../pages/a2d0cb/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a2d0cb/" title="发布于 2021-02-22 04:00">03.MySQL锁</a>
                     
                 </div>
             </div>

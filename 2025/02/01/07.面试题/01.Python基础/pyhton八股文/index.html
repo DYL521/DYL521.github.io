@@ -81,18 +81,23 @@
                 <ul>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/banxia_frontend/article/details/138148777">https://blog.csdn.net/banxia_frontend/article/details/138148777</a></li>
 </ul>
-<h1 id="1、数据预处理"><a href="#1、数据预处理" class="headerlink" title="1、数据预处理"></a>1、数据预处理</h1><h1 id="2、介绍线性回归、逻辑回归模型"><a href="#2、介绍线性回归、逻辑回归模型" class="headerlink" title="2、介绍线性回归、逻辑回归模型"></a>2、介绍线性回归、逻辑回归模型</h1><h1 id="3、python的深拷贝、浅拷贝"><a href="#3、python的深拷贝、浅拷贝" class="headerlink" title="3、python的深拷贝、浅拷贝"></a>3、python的深拷贝、浅拷贝</h1><h2 id="3-1-浅拷贝"><a href="#3-1-浅拷贝" class="headerlink" title="3.1 浅拷贝"></a>3.1 浅拷贝</h2><pre><code>浅拷贝会创建一个新的对象，但是它包含是对原对象地址的引用，而不是其副本。因此如果原始对象的项是可变的，修改
+<h1 id="1-数据预处理"><a class="markdownIt-Anchor" href="#1-数据预处理"></a> 1、数据预处理</h1>
+<h1 id="2-介绍线性回归-逻辑回归模型"><a class="markdownIt-Anchor" href="#2-介绍线性回归-逻辑回归模型"></a> 2、介绍线性回归、逻辑回归模型</h1>
+<h1 id="3-python的深拷贝-浅拷贝"><a class="markdownIt-Anchor" href="#3-python的深拷贝-浅拷贝"></a> 3、python的深拷贝、浅拷贝</h1>
+<h2 id="31-浅拷贝"><a class="markdownIt-Anchor" href="#31-浅拷贝"></a> 3.1 浅拷贝</h2>
+<pre><code>浅拷贝会创建一个新的对象，但是它包含是对原对象地址的引用，而不是其副本。因此如果原始对象的项是可变的，修改
 这些项会影响到拷贝后的对象。
 </code></pre>
 <ul>
-<li>创建浅拷贝的方法：<ol>
+<li>创建浅拷贝的方法：
+<ol>
 <li>使用列表的list.copy()方法</li>
-<li>切片操作，例如 new_list &#x3D;  old_list[:]</li>
-<li>使用copy模块的copy函数： from copy import copy; new_list&#x3D;copy(old_list);</li>
+<li>切片操作，例如 new_list =  old_list[:]</li>
+<li>使用copy模块的copy函数： from copy import copy; new_list=copy(old_list);</li>
 </ol>
 </li>
 </ul>
-<pre class="line-numbers language-pyhton" data-language="pyhton"><code class="language-pyhton">import copy
+<pre class="language-pyhton" data-language="pyhton"><code class="language-pyhton">import copy
 
 original &#x3D; [1, 2, [3, 4]]
 shallow &#x3D; copy.copy(original)
@@ -100,22 +105,28 @@ shallow &#x3D; copy.copy(original)
 # 修改原始列表中的嵌套列表也会影响浅拷贝
 original[2][0] &#x3D; &quot;changed&quot;
 print(shallow)  # 输出：[1, 2, [&#39;changed&#39;, 4]]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="3-2-深拷贝"><a href="#3-2-深拷贝" class="headerlink" title="3.2 深拷贝"></a>3.2 深拷贝</h2><pre><code>深拷贝创建一个新的对象，并且递归拷贝原始对象中的所有项。这意味着它将创建所有项的副本，包括嵌套对象。
+</code></pre>
+<h2 id="32-深拷贝"><a class="markdownIt-Anchor" href="#32-深拷贝"></a> 3.2 深拷贝</h2>
+<pre><code>深拷贝创建一个新的对象，并且递归拷贝原始对象中的所有项。这意味着它将创建所有项的副本，包括嵌套对象。
 修改原始对象不会影响到新创建的副本。
 </code></pre>
 <ul>
-<li>创建深拷贝<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> copy <span class="token keyword">import</span> deepcopy
-deep <span class="token operator">=</span> deepcopy<span class="token punctuation">(</span>original<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>创建深拷贝</li>
 </ul>
-<h1 id="4、Python-lambda匿名函数"><a href="#4、Python-lambda匿名函数" class="headerlink" title="4、Python lambda匿名函数"></a>4、Python lambda匿名函数</h1><p>在python中,<strong>lambda</strong>函数是一种轻量级的匿名函数，它通常用以编写简单的，一行的函数，无须定义正式的函数名</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> copy <span class="token keyword">import</span> deepcopy
+deep <span class="token operator">=</span> deepcopy<span class="token punctuation">(</span>original<span class="token punctuation">)</span></code></pre>
+<h1 id="4-python-lambda匿名函数"><a class="markdownIt-Anchor" href="#4-python-lambda匿名函数"></a> 4、Python lambda匿名函数</h1>
+<p>在python中,<strong>lambda</strong>函数是一种轻量级的匿名函数，它通常用以编写简单的，一行的函数，无须定义正式的函数名</p>
 <ul>
-<li>基本语法：<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">lambda</span> arguments<span class="token punctuation">:</span> expression
+<li>基本语法：</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">lambda</span> arguments<span class="token punctuation">:</span> expression
 
 <span class="token operator">-</span> arguments<span class="token punctuation">:</span> 参数，可以是多个，用逗号隔开
-<span class="token operator">-</span> expression<span class="token punctuation">:</span> 一个表达式，描述函数的行为，返回值是个表达式的结果<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li>特点：<ol>
+<span class="token operator">-</span> expression<span class="token punctuation">:</span> 一个表达式，描述函数的行为，返回值是个表达式的结果</code></pre>
+<ul>
+<li>特点：
+<ol>
 <li>匿名：  lambda函数通常是匿名的，没有函数名</li>
 <li>一行表达式： 只能有一个表达式，不能包含其他的语句或者多个表达式</li>
 <li>可随时使用： 可以在任何地方使用</li>
@@ -123,18 +134,19 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 </ol>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 使用map将每个元素加倍</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 使用map将每个元素加倍</span>
 <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment"># [2,4,6,8]</span>
 
 <span class="token comment"># 使用filter()过滤大于2的元素</span>
 <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">filter</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">></span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># [3,4]</span>
 
 <span class="token comment"># 使用sorted()根据列表的元祖的第二个元素进行排序</span>
-<span class="token builtin">sorted</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'one'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'three'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="5、python装饰器"><a href="#5、python装饰器" class="headerlink" title="5、python装饰器"></a>5、python装饰器</h1><p>在python中，装饰器是一种很勇的设计模式，主要用于在不修改原始函数或方法定义的情况，给函数或方法添加新的功能。<br>这种功能添加通常关联跨系统的关注点，比兔日志、事务处理等等。。</p>
+<span class="token builtin">sorted</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'one'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'three'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h1 id="5-python装饰器"><a class="markdownIt-Anchor" href="#5-python装饰器"></a> 5、python装饰器</h1>
+<p>在python中，装饰器是一种很勇的设计模式，主要用于在不修改原始函数或方法定义的情况，给函数或方法添加新的功能。<br />
+这种功能添加通常关联跨系统的关注点，比兔日志、事务处理等等。。</p>
 <p>装饰器本质上是一个函数，它接受一个函数作为参数并返回一个新的函数。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Something is happening before the function is called."</span><span class="token punctuation">)</span>
         func<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -144,9 +156,10 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 <span class="token decorator annotation punctuation">@my_decorator</span>
 <span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Hello!"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="装饰器的高级用法："><a href="#装饰器的高级用法：" class="headerlink" title="装饰器的高级用法："></a>装饰器的高级用法：</h2><h3 id="1-带参数的装饰器："><a href="#1-带参数的装饰器：" class="headerlink" title="1.带参数的装饰器："></a>1.带参数的装饰器：</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">decorator_with_args</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+</code></pre>
+<h2 id="装饰器的高级用法"><a class="markdownIt-Anchor" href="#装饰器的高级用法"></a> 装饰器的高级用法：</h2>
+<h3 id="1带参数的装饰器"><a class="markdownIt-Anchor" href="#1带参数的装饰器"></a> 1.带参数的装饰器：</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">decorator_with_args</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Arguments received: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>arg1<span class="token punctuation">&#125;</span></span><span class="token string">, </span><span class="token interpolation"><span class="token punctuation">&#123;</span>arg2<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
@@ -157,8 +170,9 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 <span class="token decorator annotation punctuation">@decorator_with_args</span><span class="token punctuation">(</span><span class="token string">"arg1"</span><span class="token punctuation">,</span> <span class="token string">"arg2"</span><span class="token punctuation">)</span>
 <span class="token keyword">def</span> <span class="token function">say_hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Hello!"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她"><a href="#2-装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她" class="headerlink" title="2.装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的wrapper函数需要能够接受这些参数，并在调用的时候床底给她"></a>2.装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的<strong>wrapper</strong>函数需要能够接受这些参数，并在调用的时候床底给她</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">
+</code></pre>
+<h3 id="2装饰有参数的函数如果被装饰的函数有参数装饰器内部的wrapper函数需要能够接受这些参数并在调用的时候床底给她"><a class="markdownIt-Anchor" href="#2装饰有参数的函数如果被装饰的函数有参数装饰器内部的wrapper函数需要能够接受这些参数并在调用的时候床底给她"></a> 2.装饰有参数的函数：如果被装饰的函数有参数，装饰器内部的<strong>wrapper</strong>函数需要能够接受这些参数，并在调用的时候床底给她</h3>
+<pre class="language-python" data-language="python"><code class="language-python">
 <span class="token keyword">def</span> <span class="token function">my_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Before calling the function"</span><span class="token punctuation">)</span>
@@ -170,10 +184,9 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 <span class="token decorator annotation punctuation">@my_decorator</span>
 <span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> a <span class="token operator">+</span> b
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h1 id="6、python的执行过程"><a href="#6、python的执行过程" class="headerlink" title="6、python的执行过程"></a>6、python的执行过程</h1><p>python是一种解释性语言，这意味着python代码在执行时先转换成子字节码，然后由python虚拟机PVM执行</p>
+</code></pre>
+<h1 id="6-python的执行过程"><a class="markdownIt-Anchor" href="#6-python的执行过程"></a> 6、python的执行过程</h1>
+<p>python是一种解释性语言，这意味着python代码在执行时先转换成子字节码，然后由python虚拟机PVM执行</p>
 <ol>
 <li>源代码：：编写的Python文件</li>
 <li>编译：：Python解释器首先将源代码编译成字节码。这一过程涉及到语法分析和语义分析，确保代码符合Python的语法规则。字节码是一种低级、与平台无关的代码，保存在.pyc中</li>
@@ -181,8 +194,11 @@ deep <span class="token operator">=</span> deepcopy<span class="token punctuatio
 <li>python虚拟机：：Python虚拟机（PVM）是Python运行时环境的一部分，负责读取字节码，将其转换成机器码，然后执行。PVM是解释器的核心，它执行存储在pyc中</li>
 <li>执行：：PVM逐条执行字节码指令，进行函数调用、内存管理等</li>
 </ol>
-<h1 id="7、is-和-的区别"><a href="#7、is-和-的区别" class="headerlink" title="7、is 和&#x3D;&#x3D;的区别"></a>7、is 和&#x3D;&#x3D;的区别</h1><p>is是比较两个对象的内存地址是是否相等<br>&#x3D;&#x3D;比较的是两个对象的值是否相当，在使用&#x3D;&#x3D;时，实际上是调用了对象的__eq__()方法， 这意味这&#x3D;&#x3D;的行为可以根据对象不同改变</p>
-<h1 id="8、python多线程，-GIL"><a href="#8、python多线程，-GIL" class="headerlink" title="8、python多线程， GIL"></a>8、python多线程， GIL</h1>
+<h1 id="7-is-和的区别"><a class="markdownIt-Anchor" href="#7-is-和的区别"></a> 7、is 和==的区别</h1>
+<p>is是比较两个对象的内存地址是是否相等<br />
+<mark>比较的是两个对象的值是否相当，在使用</mark>时，实际上是调用了对象的__eq__()方法， 这意味这==的行为可以根据对象不同改变</p>
+<h1 id="8-python多线程-gil"><a class="markdownIt-Anchor" href="#8-python多线程-gil"></a> 8、python多线程， GIL</h1>
+
                 
                 <p class="end">__END__</p>
             </div>

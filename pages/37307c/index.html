@@ -76,40 +76,48 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-websocket"><a href="#01-websocket" class="headerlink" title="01.websocket"></a>01.websocket</h1><p>websocket：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12238651.html">https://www.cnblogs.com/xiaonq/p/12238651.html</a></p>
+                <h1 id="01websocket"><a class="markdownIt-Anchor" href="#01websocket"></a> 01.websocket</h1>
+<p>websocket：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12238651.html">https://www.cnblogs.com/xiaonq/p/12238651.html</a></p>
 <p>webssh：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12243024.html">https://www.cnblogs.com/xiaonq/p/12243024.html</a></p>
 <blockquote>
-<h4 id="2-websocket-3w1h"><a href="#2-websocket-3w1h" class="headerlink" title="2.websocket(3w1h)"></a>2.websocket(3w1h)</h4></blockquote>
+<h4 id="2websocket3w1h"><a class="markdownIt-Anchor" href="#2websocket3w1h"></a> 2.websocket(3w1h)</h4>
+</blockquote>
 <ul>
-<li><strong>什么是websocket</strong><ul>
+<li><strong>什么是websocket</strong>
+<ul>
 <li>webSocket是一种在单个TCP连接上进行全双工通信的协议</li>
 <li>客户端和服务器之间的数据交换变得更加简单，<strong>允许服务端主动向客户端推送数据</strong>。</li>
 <li>浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输</li>
 </ul>
 </li>
-<li><strong>websocket与http区别</strong><ul>
+<li><strong>websocket与http区别</strong>
+<ul>
 <li>http请求建立连接只能发送一次请求,不能有服务器端主动向客户端发送请求</li>
 <li>websocket建立的长连接，一次连接，后续一直通信，这样节省资源，可以有客户端发送请求给服务器端</li>
 </ul>
 </li>
-<li><strong>远古时期解决方案就是轮询</strong><ul>
+<li><strong>远古时期解决方案就是轮询</strong>
+<ul>
 <li>客户端以设定的时间间隔周期性地向服务端发送请求，频繁地查询是否有新的数据改动（浪费流量和资源）</li>
 </ul>
 </li>
-<li><strong>webSocket应用场景？</strong><ul>
-<li><strong>聊天软件：</strong>最著名的就是微信，QQ，这一类社交聊天的app</li>
-<li><strong>弹幕：</strong>各种直播的弹幕窗口</li>
-<li><strong>在线教育：</strong>可以视频聊天、即时聊天以及其与别人合作一起在网上讨论问题…</li>
+<li><strong>webSocket应用场景？</strong>
+<ul>
+<li>**聊天软件：**最著名的就是微信，QQ，这一类社交聊天的app</li>
+<li>**弹幕：**各种直播的弹幕窗口</li>
+<li>**在线教育：**可以视频聊天、即时聊天以及其与别人合作一起在网上讨论问题…</li>
 </ul>
 </li>
-<li><strong>websocket原理</strong><ul>
+<li><strong>websocket原理</strong>
+<ul>
 <li>websocket首先借助http协议（通过在http头部设置属性，请求和服务器进行协议升级，升级协议为websocket的应用层协议）</li>
 <li>建立好和服务器之间的数据流，数据流之间底层还是依靠TCP协议；</li>
 <li>websocket会接着使用这条建立好的数据流和服务器之间保持通信；</li>
 <li>由于复杂的网络环境，数据流可能会断开，在实际使用过程中，我们在onFailure或者onClosing回调方法中，实现重连</li>
 </ul>
 </li>
-<li>websocket<strong>实现心跳检测的思路</strong><ul>
+<li>websocket<strong>实现心跳检测的思路</strong>
+<ul>
 <li>通过setInterval定时任务每个3秒钟调用一次reconnect函数</li>
 <li>reconnect会通过socket.readyState来判断这个websocket连接是否正常</li>
 <li>如果不正常就会触发定时连接，每4s钟重试一次，直到连接成功</li>
@@ -119,7 +127,7 @@
 </li>
 <li>实现聊天功能</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 后端的django代码</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 后端的django代码</span>
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render
 <span class="token keyword">from</span> dwebsocket<span class="token punctuation">.</span>decorators <span class="token keyword">import</span> accept_websocket<span class="token punctuation">,</span>require_websocket
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>http <span class="token keyword">import</span> HttpResponse
@@ -157,9 +165,8 @@ tmp <span class="token operator">=</span> <span class="token punctuation">[</spa
         <span class="token comment"># d['lisi'].send(message)   ==>  request.websocket.send(message)</span>
 
         <span class="token comment"># 这只是个思路，如果正式使用的话，肯定会对group封装，也不会只保存在内存中，需要保存到redis中去</span>
-        <span class="token comment"># 并且对每个websocket对象设置有效期，过期清除，避免长期挂起状态消耗系统资源等</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"># 前端VUE代码
+        <span class="token comment"># 并且对每个websocket对象设置有效期，过期清除，避免长期挂起状态消耗系统资源等</span></code></pre>
+<pre class="language-markup" data-language="markup"><code class="language-markup"># 前端VUE代码
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>send<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>发消息<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
@@ -219,8 +226,7 @@ tmp <span class="token operator">=</span> <span class="token punctuation">[</spa
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
 
-</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span></code></pre>
 
                 
                 <p class="end">__END__</p>

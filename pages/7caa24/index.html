@@ -80,17 +80,22 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-Web框架本质–socket"><a href="#01-Web框架本质–socket" class="headerlink" title="01.Web框架本质–socket"></a>01.Web框架本质–socket</h2><h3 id="1-1-web框架本质"><a href="#1-1-web框架本质" class="headerlink" title="1.1 web框架本质"></a>1.1 web框架本质</h3><ul>
-<li><p>对于所有的Web应用，本质上其实就是一个socket服务端，用户的浏览器其实就是一个socket客户端。</p>
+                <h2 id="01web框架本质socket"><a class="markdownIt-Anchor" href="#01web框架本质socket"></a> 01.Web框架本质–socket</h2>
+<h3 id="11-web框架本质"><a class="markdownIt-Anchor" href="#11-web框架本质"></a> 1.1 web框架本质</h3>
+<ul>
+<li>
+<p>对于所有的Web应用，本质上其实就是一个socket服务端，用户的浏览器其实就是一个socket客户端。</p>
 </li>
-<li><p>真实web框架一般会分为两部分：服务器程序和应用程序。　　</p>
+<li>
+<p>真实web框架一般会分为两部分：服务器程序和应用程序。</p>
 <ul>
 <li>1）服务器程序：负责对socket服务器进行封装，并在请求到来时，对请求的各种数据进行整理</li>
 <li>2）应用程序：负责具体的逻辑处理</li>
 </ul>
 </li>
 </ul>
-<h3 id="1-2-socket创建web服务"><a href="#1-2-socket创建web服务" class="headerlink" title="1.2 socket创建web服务"></a>1.2 socket创建web服务</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
+<h3 id="12-socket创建web服务"><a class="markdownIt-Anchor" href="#12-socket创建web服务"></a> 1.2 socket创建web服务</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
 
 <span class="token keyword">def</span> <span class="token function">handle_request</span><span class="token punctuation">(</span>client<span class="token punctuation">)</span><span class="token punctuation">:</span>
     buf <span class="token operator">=</span> client<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span>
@@ -107,13 +112,13 @@
         connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    main<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214201207490.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h3 id="1-3-自定义Web框架"><a href="#1-3-自定义Web框架" class="headerlink" title="1.3 自定义Web框架"></a>1.3 自定义Web框架</h3><ul>
+<h3 id="13-自定义web框架"><a class="markdownIt-Anchor" href="#13-自定义web框架"></a> 1.3 自定义Web框架</h3>
+<ul>
 <li><code>说明：</code> 通过python标准库提供的wsgiref模块开发一个自己的Web框架</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> wsgiref<span class="token punctuation">.</span>simple_server <span class="token keyword">import</span> make_server
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> wsgiref<span class="token punctuation">.</span>simple_server <span class="token keyword">import</span> make_server
 
 <span class="token keyword">def</span> <span class="token function">handle_index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token string">'&lt;h1>Hello, Index!&lt;/h1>'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">]</span>
@@ -141,24 +146,30 @@ URl_DICT <span class="token operator">=</span> <span class="token punctuation">&
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
     httpd <span class="token operator">=</span> make_server<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token number">8001</span><span class="token punctuation">,</span> RunServer<span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Serving HTTP on port 8001..."</span><span class="token punctuation">)</span>
-    httpd<span class="token punctuation">.</span>serve_forever<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    httpd<span class="token punctuation">.</span>serve_forever<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214201831468.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h2 id="02-django框架介绍"><a href="#02-django框架介绍" class="headerlink" title="02.django框架介绍"></a>02.django框架介绍</h2><h3 id="1-1-django、tornado、flask比较"><a href="#1-1-django、tornado、flask比较" class="headerlink" title="1.1 django、tornado、flask比较"></a>1.1 django、tornado、flask比较</h3><ul>
-<li><p><strong>Django:</strong> 1个重武器，包含了web开发中常用的功能、组件的框架；（ORM、Session、Form、Admin、分页、中间件、信号、缓存….）；</p>
+<h2 id="02django框架介绍"><a class="markdownIt-Anchor" href="#02django框架介绍"></a> 02.django框架介绍</h2>
+<h3 id="11-django-tornado-flask比较"><a class="markdownIt-Anchor" href="#11-django-tornado-flask比较"></a> 1.1 django、tornado、flask比较</h3>
+<ul>
+<li>
+<p><strong>Django:</strong> 1个重武器，包含了web开发中常用的功能、组件的框架；（ORM、Session、Form、Admin、分页、中间件、信号、缓存…）；</p>
 </li>
-<li><p><strong>Flask:</strong> 封装功能不及Django完善，性能不及Tornado，但是Flask的第三方开源组件比丰富；</p>
+<li>
+<p><strong>Flask:</strong> 封装功能不及Django完善，性能不及Tornado，但是Flask的第三方开源组件比丰富；</p>
 </li>
-<li><p><strong>Tornado:</strong> 最大特性就是异步非阻塞、原生支持WebSocket协议；</p>
+<li>
+<p><strong>Tornado:</strong> 最大特性就是异步非阻塞、原生支持WebSocket协议；</p>
 </li>
-<li><p><code>以 京东、淘宝、楼下小卖部 比喻</code></p>
+<li>
+<p><code>以 京东、淘宝、楼下小卖部 比喻</code></p>
 <ul>
 <li><code>django就像京东</code>，服务齐全，有自营商品，有自己的仓库，有自己的快递，一条龙服务，你懂的</li>
 <li><code>flask就像是淘宝</code>，自己没有商品，没有仓库，没有快递，但是你可以选择三方的（韵达，中通等）</li>
 <li><code>tornado就像是门口小卖部</code>，一个特点，快，不用等，但是东西很少，没有三方组件，需要自己动手写</li>
 </ul>
 </li>
-<li><p><code>使用参考</code></p>
+<li>
+<p><code>使用参考</code></p>
 <ul>
 <li>1）小型web应用设计的功能点不多，使用Flask比较合适；</li>
 <li>2）大型web应用设计的功能点比较多，使用的组件也会比较多，使用Django（自带功能多不用去找插件）；</li>
@@ -166,17 +177,18 @@ URl_DICT <span class="token operator">=</span> <span class="token punctuation">&
 </ul>
 </li>
 </ul>
-<h3 id="1-2-MVC模式"><a href="#1-2-MVC模式" class="headerlink" title="1.2 MVC模式"></a>1.2 MVC模式</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 目的: 了解什么是MVC, MTV</span>
+<h3 id="12-mvc模式"><a class="markdownIt-Anchor" href="#12-mvc模式"></a> 1.2 MVC模式</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 目的: 了解什么是MVC, MTV</span>
 <span class="token comment"># 思考: 为什么要用设计模式</span>
-<span class="token comment"># 分工、解耦，让不同的代码块之间降低耦合，增强代码的可扩展性和可移植性，实现向后兼容**。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<span class="token comment"># 分工、解耦，让不同的代码块之间降低耦合，增强代码的可扩展性和可移植性，实现向后兼容**。</span></code></pre>
 <ul>
 <li>M全拼为Model，主要封装对数据库层的访问，对数据库中的数据进行增、删、改、查操作。</li>
 <li>V全拼为View，用于封装结果，生成页面展示的html内容。</li>
 <li>C全拼为Controller，用于接收请求，处理业务逻辑，与Model和View交互，返回结果。</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210214204226395.png" style="width: 800px; margin-left: 20px;"> </img></p>
-<h3 id="1-3-MVT-Django设计模式"><a href="#1-3-MVT-Django设计模式" class="headerlink" title="1.3 MVT(Django设计模式)"></a>1.3 MVT(Django设计模式)</h3><ul>
+<h3 id="13-mvtdjango设计模式"><a class="markdownIt-Anchor" href="#13-mvtdjango设计模式"></a> 1.3 MVT(Django设计模式)</h3>
+<ul>
 <li>M全拼为Model，与MVC中的M功能相同，负责和数据库交互，进行数据处理。</li>
 <li>V全拼为View，与MVC中的C功能相同，接收请求，进行业务处理，返回应答。</li>
 <li>T全拼为Template，与MVC中的V功能相同，负责封装构造要返回的html(<code>或者是json数据</code>)。</li>

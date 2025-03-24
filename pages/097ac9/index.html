@@ -76,11 +76,14 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="条件-循环"><a href="#条件-循环" class="headerlink" title="条件&amp;循环"></a>条件&amp;循环</h1><p><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html">https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html</a></p>
-<h2 id="01-条件：when"><a href="#01-条件：when" class="headerlink" title="01.条件：when"></a>01.条件：when</h2><h3 id="1-1-when测试"><a href="#1-1-when测试" class="headerlink" title="1.1 when测试"></a>1.1 when测试</h3><ul>
+                <h1 id="条件循环"><a class="markdownIt-Anchor" href="#条件循环"></a> 条件&amp;循环</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html">https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html</a></p>
+<h2 id="01条件when"><a class="markdownIt-Anchor" href="#01条件when"></a> 01.条件：when</h2>
+<h3 id="11-when测试"><a class="markdownIt-Anchor" href="#11-when测试"></a> 1.1 when测试</h3>
+<ul>
 <li>只有 192.168.56.65 机器才会执行</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim when.yaml </span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim when.yaml </span>
 ---
 - hosts: webservers 
   gather_facts: <span class="token function">yes</span>
@@ -88,12 +91,11 @@
   tasks:
     - name: <span class="token builtin class-name">test</span>
       debug: <span class="token assign-left variable">msg</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>ansible_default_ipv4.address<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-      when: <span class="token assign-left variable">ansible_default_ipv4.address</span><span class="token operator">==</span><span class="token string">'192.168.56.65'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+      when: <span class="token assign-left variable">ansible_default_ipv4.address</span><span class="token operator">==</span><span class="token string">'192.168.56.65'</span></code></pre>
 <ul>
 <li>执行</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook when.yaml </span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook when.yaml </span>
 TASK <span class="token punctuation">[</span>test<span class="token punctuation">]</span> *************************************************************************************************************************************************
 ok: <span class="token punctuation">[</span><span class="token number">192.168</span>.56.65<span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"192.168.56.65"</span>
@@ -101,12 +103,12 @@ ok: <span class="token punctuation">[</span><span class="token number">192.168</
 skipping: <span class="token punctuation">[</span><span class="token number">192.168</span>.56.66<span class="token punctuation">]</span>
 PLAY RECAP **************************************************************************************************************************************************
 <span class="token number">192.168</span>.56.65              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">2</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span>   
-<span class="token number">192.168</span>.56.66              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-2-when安装httpd"><a href="#1-2-when安装httpd" class="headerlink" title="1.2 when安装httpd"></a>1.2 when安装httpd</h3><ul>
+<span class="token number">192.168</span>.56.66              <span class="token builtin class-name">:</span> <span class="token assign-left variable">ok</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">changed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">unreachable</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">failed</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">skipped</span><span class="token operator">=</span><span class="token number">1</span>    <span class="token assign-left variable">rescued</span><span class="token operator">=</span><span class="token number">0</span>    <span class="token assign-left variable">ignored</span><span class="token operator">=</span><span class="token number">0</span>   </code></pre>
+<h3 id="12-when安装httpd"><a class="markdownIt-Anchor" href="#12-when安装httpd"></a> 1.2 when安装httpd</h3>
+<ul>
 <li>管理工具是yum用yum安装，管理工具为apt，用apt安装</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># cat when2.html </span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># cat when2.html </span>
 - hosts: webservers
   tasks:
     - name: Update apache version - yum
@@ -124,14 +126,14 @@ PLAY RECAP *********************************************************************
       service: <span class="token assign-left variable">name</span><span class="token operator">=</span>httpd <span class="token assign-left variable">state</span><span class="token operator">=</span>restarted
 
     - name: restart apache2
-      service: <span class="token assign-left variable">name</span><span class="token operator">=</span>apache2 <span class="token assign-left variable">state</span><span class="token operator">=</span>restarted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+      service: <span class="token assign-left variable">name</span><span class="token operator">=</span>apache2 <span class="token assign-left variable">state</span><span class="token operator">=</span>restarted</code></pre>
 <ul>
 <li>运行</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook when2.html</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="02-循环"><a href="#02-循环" class="headerlink" title="02 循环"></a>02 循环</h2><h3 id="2-1-with-list"><a href="#2-1-with-list" class="headerlink" title="2.1 with_list"></a>2.1 with_list</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim with-list1.yaml</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible-playbook when2.html</span></code></pre>
+<h2 id="02-循环"><a class="markdownIt-Anchor" href="#02-循环"></a> 02 循环</h2>
+<h3 id="21-with_list"><a class="markdownIt-Anchor" href="#21-with_list"></a> 2.1 with_list</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim with-list1.yaml</span>
 
 ---
 - hosts: <span class="token number">192.168</span>.56.66
@@ -142,9 +144,9 @@ PLAY RECAP *********************************************************************
       msg: <span class="token string">"&#123;&#123;item&#125;&#125;"</span>
     with_list:
     - <span class="token punctuation">[</span><span class="token number">1,2</span>,3<span class="token punctuation">]</span>
-    - <span class="token punctuation">[</span>a,b<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-loop"><a href="#2-2-loop" class="headerlink" title="2.2 loop"></a>2.2 loop</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim loop.yaml</span>
+    - <span class="token punctuation">[</span>a,b<span class="token punctuation">]</span></code></pre>
+<h3 id="22-loop"><a class="markdownIt-Anchor" href="#22-loop"></a> 2.2 loop</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># vim loop.yaml</span>
 
 ---
 - hosts: <span class="token number">192.168</span>.56.66
@@ -155,8 +157,7 @@ PLAY RECAP *********************************************************************
       msg: <span class="token string">"&#123;&#123;item&#125;&#125;"</span>
     loop:
     - <span class="token punctuation">[</span><span class="token number">1,2</span>,3<span class="token punctuation">]</span>
-    - <span class="token punctuation">[</span>a,b<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    - <span class="token punctuation">[</span>a,b<span class="token punctuation">]</span></code></pre>
 
                 
                 <p class="end">__END__</p>

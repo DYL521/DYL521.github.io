@@ -76,34 +76,42 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-项目部署并发分析"><a href="#01-项目部署并发分析" class="headerlink" title="01.项目部署并发分析"></a>01.项目部署并发分析</h1><h2 id="1-1-并发常用名词"><a href="#1-1-并发常用名词" class="headerlink" title="1.1 并发常用名词"></a>1.1 并发常用名词</h2><ol>
-<li><p>PV(访问量)： 页面访问量，页面刷新一次算一次。</p>
+                <h1 id="01项目部署并发分析"><a class="markdownIt-Anchor" href="#01项目部署并发分析"></a> 01.项目部署并发分析</h1>
+<h2 id="11-并发常用名词"><a class="markdownIt-Anchor" href="#11-并发常用名词"></a> 1.1 并发常用名词</h2>
+<ol>
+<li>
+<p>PV(访问量)： 页面访问量，页面刷新一次算一次。</p>
 </li>
-<li><p>UV(独立访客)： 即Unique Visitor，一个客户端（电脑，手机）为一个访客；</p>
+<li>
+<p>UV(独立访客)： 即Unique Visitor，一个客户端（电脑，手机）为一个访客；</p>
 </li>
-<li><p>DAU(日活跃用户数)：登录或使用了某个产品的用户数，这与流量统计工具里的访客（UV）概念相似。</p>
+<li>
+<p>DAU(日活跃用户数)：登录或使用了某个产品的用户数，这与流量统计工具里的访客（UV）概念相似。</p>
 </li>
-<li><p>峰值QPS：</p>
+<li>
+<p>峰值QPS：</p>
 </li>
 </ol>
-<p>　　　　原理：每天80%的访问集中在20%的时间里，这20%时间叫做峰值时间</p>
-<p>　　　　公式：( 总PV数 * 80% ) &#x2F; ( 每天秒数 * 20% ) &#x3D; 峰值时间每秒请求数(QPS)</p>
+<p>原理：每天80%的访问集中在20%的时间里，这20%时间叫做峰值时间</p>
+<p>公式：( 总PV数 * 80% ) / ( 每天秒数 * 20% ) = 峰值时间每秒请求数(QPS)</p>
 <ol start="5">
-<li>QPS&#x2F;TPS(每秒查询率)：每秒能够查询次数（QPS&#x2F;TPS&#x3D; 并发数 &#x2F; 平均响应时间）</li>
+<li>QPS/TPS(每秒查询率)：每秒能够查询次数（QPS/TPS= 并发数 / 平均响应时间）</li>
 </ol>
-<p>　　　　并发数：并发数是指系统同时能处理的请求数量，这个也是反应了系统的负载能力。</p>
-<p>　　　　吐吞量：吞吐量是指系统在单位时间内处理请求的数量</p>
-<p>　　　　响应时间（RT）：响应时间是指系统对请求作出响应的时间，一般取平均响应时间</p>
-<h2 id="1-2-单台django性能分析"><a href="#1-2-单台django性能分析" class="headerlink" title="1.2 单台django性能分析"></a>1.2 单台django性能分析</h2><ul>
+<p>并发数：并发数是指系统同时能处理的请求数量，这个也是反应了系统的负载能力。</p>
+<p>吐吞量：吞吐量是指系统在单位时间内处理请求的数量</p>
+<p>响应时间（RT）：响应时间是指系统对请求作出响应的时间，一般取平均响应时间</p>
+<h2 id="12-单台django性能分析"><a class="markdownIt-Anchor" href="#12-单台django性能分析"></a> 1.2 单台django性能分析</h2>
+<ul>
 <li>四核机器，可以开4个进程，每个进程开启50个线程</li>
 <li>那么如果每个请求处理1秒，最多可以处理<code> 4 * 50  = 200</code> 个请求（<code>所以QPS=200</code>）</li>
-<li>取决QPS主要因素：<ul>
+<li>取决QPS主要因素：
+<ul>
 <li>CPU核数（核数越多，能够开启的进程数越多）</li>
 <li>接口返回时间（每个接口处理速度，所以也是在于我们对接口优化）</li>
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>uwsgi<span class="token punctuation">]</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>uwsgi<span class="token punctuation">]</span>
 socket <span class="token operator">=</span> <span class="token number">0.0</span>.0.0:3031
 chdir <span class="token operator">=</span> /code/mmcsite
 wsgi-file <span class="token operator">=</span> /code/mmcsite/wsgi.py
@@ -114,8 +122,7 @@ daemonize <span class="token operator">=</span> /code/mmcsite/uwsgi.log
 <span class="token assign-left variable">module</span><span class="token operator">=</span>mmcsite.wsgi
 pidfile <span class="token operator">=</span> /code/mmcsite/uwsgi.pid
 chmod-socket<span class="token operator">=</span><span class="token number">666</span>
-enable-threads <span class="token operator">=</span> <span class="token boolean">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+enable-threads <span class="token operator">=</span> <span class="token boolean">true</span></code></pre>
 
                 
                 <p class="end">__END__</p>

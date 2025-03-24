@@ -76,11 +76,13 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-安装连接"><a href="#01-安装连接" class="headerlink" title="01.安装连接"></a>01.安装连接</h2><p>python ES客户端：<a target="_blank" rel="noopener" href="https://elasticsearch-py.readthedocs.io/">https://elasticsearch-py.readthedocs.io/</a> </p>
+                <h2 id="01安装连接"><a class="markdownIt-Anchor" href="#01安装连接"></a> 01.安装连接</h2>
+<p>python ES客户端：<a target="_blank" rel="noopener" href="https://elasticsearch-py.readthedocs.io/">https://elasticsearch-py.readthedocs.io/</a></p>
 <p>elasticsearch官方文档：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html</a></p>
-<h3 id="1-1-安装elasticsearch客户端"><a href="#1-1-安装elasticsearch客户端" class="headerlink" title="1.1 安装elasticsearch客户端"></a>1.1 安装elasticsearch客户端</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## pip install elasticsearch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="1-2-创建索引"><a href="#1-2-创建索引" class="headerlink" title="1.2 创建索引"></a>1.2 创建索引</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<h3 id="11-安装elasticsearch客户端"><a class="markdownIt-Anchor" href="#11-安装elasticsearch客户端"></a> 1.1 安装elasticsearch客户端</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## pip install elasticsearch</span></code></pre>
+<h3 id="12-创建索引"><a class="markdownIt-Anchor" href="#12-创建索引"></a> 1.2 创建索引</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 <span class="token comment">## 1.连接ES</span>
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
@@ -88,41 +90,41 @@ es <span class="token operator">=</span> Elasticsearch<span class="token punctua
 es.indices.create<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'python_es01'</span>,ignore<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span>   <span class="token comment">## 注意:ignore可以忽略异常</span>
 <span class="token comment">## 3.删除索引</span>
 es.indices.delete<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'python_es01'</span>, <span class="token assign-left variable">ignore</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">400</span>, <span class="token number">404</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+</code></pre>
 <ul>
 <li>若需验证</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## es = Elasticsearch(['192.168.56.66:9200'], http_auth=('xiao', '123456'), timeout=3600)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## es = Elasticsearch(['192.168.56.66:9200'], http_auth=('xiao', '123456'), timeout=3600)</span></code></pre>
 <ul>
 <li>然后在dev-tools中查看操作结果</li>
 </ul>
 <blockquote>
-<p>GET &#x2F;python_es01</p>
+<p>GET /python_es01</p>
 </blockquote>
-<h3 id="1-3-插入数据"><a href="#1-3-插入数据" class="headerlink" title="1.3 插入数据"></a>1.3 插入数据</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<h3 id="13-插入数据"><a class="markdownIt-Anchor" href="#13-插入数据"></a> 1.3 插入数据</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 from datetime <span class="token function">import</span> datetime
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 <span class="token comment">## 其中index表示插入的索引,doc_type表示数据类型,id表示主键,body表示要插入索引的内容</span>
 <span class="token comment">## 注意:因为elasticsearch中的数据格式为json,所以python中提供的数据类型为dict</span>
-es.index<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>, <span class="token assign-left variable">doc_type</span><span class="token operator">=</span><span class="token string">"test-type"</span>, <span class="token assign-left variable">id</span><span class="token operator">=</span><span class="token number">1</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"any"</span><span class="token builtin class-name">:</span> <span class="token string">"data01"</span>, <span class="token string">"timestamp"</span><span class="token builtin class-name">:</span> datetime.now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+es.index<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>, <span class="token assign-left variable">doc_type</span><span class="token operator">=</span><span class="token string">"test-type"</span>, <span class="token assign-left variable">id</span><span class="token operator">=</span><span class="token number">1</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"any"</span><span class="token builtin class-name">:</span> <span class="token string">"data01"</span>, <span class="token string">"timestamp"</span><span class="token builtin class-name">:</span> datetime.now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
 <ul>
 <li>在dev-tools中操作</li>
 </ul>
 <blockquote>
-<p>get &#x2F;my-index&#x2F;test-type&#x2F;1</p>
+<p>get /my-index/test-type/1</p>
 </blockquote>
-<h3 id="1-4-查询数据"><a href="#1-4-查询数据" class="headerlink" title="1.4 查询数据"></a>1.4 查询数据</h3><h4 id="1-4-1-法1-使用id查询"><a href="#1-4-1-法1-使用id查询" class="headerlink" title="1.4.1 法1:使用id查询"></a>1.4.1 法1:使用id查询</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<h3 id="14-查询数据"><a class="markdownIt-Anchor" href="#14-查询数据"></a> 1.4 查询数据</h3>
+<h4 id="141-法1使用id查询"><a class="markdownIt-Anchor" href="#141-法1使用id查询"></a> 1.4.1 法1:使用id查询</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 result <span class="token operator">=</span> es.get<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,id<span class="token operator">=</span><span class="token string">"1"</span><span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-4-2-法2：使用DevTools中方法进行查询"><a href="#1-4-2-法2：使用DevTools中方法进行查询" class="headerlink" title="1.4.2 法2：使用DevTools中方法进行查询"></a>1.4.2 法2：使用DevTools中方法进行查询</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h4 id="142-法2使用devtools中方法进行查询"><a class="markdownIt-Anchor" href="#142-法2使用devtools中方法进行查询"></a> 1.4.2 法2：使用DevTools中方法进行查询</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
@@ -132,12 +134,11 @@ es <span class="token operator">=</span> Elasticsearch<span class="token punctua
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result2 <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result2<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+print<span class="token punctuation">(</span>result2<span class="token punctuation">)</span></code></pre>
 <ul>
 <li>查询结果</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">&#123;
+<pre class="language-none"><code class="language-none">&#123;
 	&quot;_index&quot;: &quot;my-index&quot;,
 	&quot;_type&quot;: &quot;test-type&quot;,
 	&quot;_id&quot;: &quot;1&quot;,
@@ -149,35 +150,38 @@ print<span class="token punctuation">(</span>result2<span class="token punctuati
 		&quot;any&quot;: &quot;data01&quot;,
 		&quot;timestamp&quot;: &quot;2021-02-03T11:00:33.396408&quot;
 	&#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-5-删除数据"><a href="#1-5-删除数据" class="headerlink" title="1.5 删除数据"></a>1.5 删除数据</h3><ul>
-<li><code>等同于：</code>DELETE &#x2F;my-index&#x2F;test-type&#x2F;1</li>
+&#125;</code></pre>
+<h3 id="15-删除数据"><a class="markdownIt-Anchor" href="#15-删除数据"></a> 1.5 删除数据</h3>
+<ul>
+<li><code>等同于：</code>DELETE /my-index/test-type/1</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 result <span class="token operator">=</span> es.delete<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,id<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-创建mapping"><a href="#02-创建mapping" class="headerlink" title="02.创建mapping"></a>02.创建mapping</h2><h3 id="2-1-什么是mapping"><a href="#2-1-什么是mapping" class="headerlink" title="2.1 什么是mapping"></a>2.1 什么是mapping</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="02创建mapping"><a class="markdownIt-Anchor" href="#02创建mapping"></a> 02.创建mapping</h2>
+<h3 id="21-什么是mapping"><a class="markdownIt-Anchor" href="#21-什么是mapping"></a> 2.1 什么是mapping</h3>
+<ul>
 <li>mapping 在中的作用就是约束，数据类型声明</li>
 <li>它类似于静态语言中的数据类型声明，比如声明一个字段为<code>String</code>， 以后这个变量都只能存储<code>String</code>类型的数据。</li>
 <li>同样的， 一个<code>number</code>类型的mapping 字段只能存储<code>number</code>类型的数据。</li>
 </ul>
-<h3 id="2-2-自动创建mapping"><a href="#2-2-自动创建mapping" class="headerlink" title="2.2 自动创建mapping"></a>2.2 自动创建mapping</h3><h4 id="2-2-1-自动创建数据"><a href="#2-2-1-自动创建数据" class="headerlink" title="2.2.1 自动创建数据"></a>2.2.1 自动创建数据</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/1
+<h3 id="22-自动创建mapping"><a class="markdownIt-Anchor" href="#22-自动创建mapping"></a> 2.2 自动创建mapping</h3>
+<h4 id="221-自动创建数据"><a class="markdownIt-Anchor" href="#221-自动创建数据"></a> 2.2.1 自动创建数据</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/1
 <span class="token punctuation">&#123;</span>
   <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiangjiao"</span>,
   <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">"haochi tian"</span>,
   <span class="token string">"price"</span>:40,
   <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"feilvbin"</span>,
   <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"xiangjiao"</span>,<span class="token string">"haochi"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="2-2-2-查看mapping映射"><a href="#2-2-2-查看mapping映射" class="headerlink" title="2.2.2 查看mapping映射"></a>2.2.2 查看mapping映射</h4><blockquote>
-<p>GET &#x2F;goods&#x2F;_mapping</p>
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="222-查看mapping映射"><a class="markdownIt-Anchor" href="#222-查看mapping映射"></a> 2.2.2 查看mapping映射</h4>
+<blockquote>
+<p>GET /goods/_mapping</p>
 </blockquote>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"goods"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"mappings"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
       <span class="token property">"properties"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
@@ -223,49 +227,64 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
       <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-mapping说明"><a href="#2-3-mapping说明" class="headerlink" title="2.3 mapping说明"></a>2.3 mapping说明</h3><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
-<h4 id="2-3-1-mapping分词器"><a href="#2-3-1-mapping分词器" class="headerlink" title="2.3.1 mapping分词器"></a>2.3.1 mapping分词器</h4><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h3 id="23-mapping说明"><a class="markdownIt-Anchor" href="#23-mapping说明"></a> 2.3 mapping说明</h3>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
+<h4 id="231-mapping分词器"><a class="markdownIt-Anchor" href="#231-mapping分词器"></a> 2.3.1 mapping分词器</h4>
+<ul>
 <li><code>analyzer</code>是字段文本的分词器</li>
 <li><code>search_analyzer</code>是搜索词的分词器</li>
 <li><code>ik_max_word</code>分词器是插件<code>ik</code>提供的，可以对文本进行最大数量的分词</li>
 </ul>
-<h4 id="2-3-2-域类型"><a href="#2-3-2-域类型" class="headerlink" title="2.3.2 域类型"></a>2.3.2 域类型</h4><ul>
-<li>字符串: <code>text</code> , <code>keyword</code><ul>
+<h4 id="232-域类型"><a class="markdownIt-Anchor" href="#232-域类型"></a> 2.3.2 域类型</h4>
+<ul>
+<li>字符串: <code>text</code> , <code>keyword</code>
+<ul>
 <li><code>text</code>：当一个字段需要用于全文搜索(会被分词)</li>
 <li><code>keyword</code>：当一个字段需要按照<code>精确值</code>进行过滤、排序、聚合等操作时, 就应该使用keyword类型</li>
 </ul>
 </li>
-<li>整数 : <code>byte</code>, <code>short</code>, <code>integer</code>, <code>long</code><ul>
-<li><p>byte  有符号的8位整数, 范围: [-128 ~ 127]</p>
+<li>整数 : <code>byte</code>, <code>short</code>, <code>integer</code>, <code>long</code>
+<ul>
+<li>
+<p>byte  有符号的8位整数, 范围: [-128 ~ 127]</p>
 </li>
-<li><p>short 有符号的16位整数, 范围: [-32768 ~ 32767]</p>
+<li>
+<p>short 有符号的16位整数, 范围: [-32768 ~ 32767]</p>
 </li>
-<li><p>integer 有符号的32位整数, 范围: [$-2^{31}$ ~ $2^{31}$-1]</p>
+<li>
+<p>integer 有符号的32位整数, 范围: [<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>−</mo><msup><mn>2</mn><mrow><mn>3</mn><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">-2^{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="base textstyle uncramped"><span class="mord">−</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathrm">3</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span> ~ <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>3</mn><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathrm">3</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>-1]</p>
 </li>
-<li><p>long  有符号的32位整数, 范围: [$-2^{63}$ ~ $2^{63}$-1]</p>
-</li>
-</ul>
-</li>
-<li>浮点数: <code>float</code>, <code>double</code><ul>
-<li><p>float 32位单精度浮点数</p>
-</li>
-<li><p>double  64位双精度浮点数</p>
+<li>
+<p>long  有符号的32位整数, 范围: [<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>−</mo><msup><mn>2</mn><mrow><mn>6</mn><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">-2^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="base textstyle uncramped"><span class="mord">−</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathrm">6</span><span class="mord mathrm">3</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span> ~ <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>6</mn><mn>3</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathrm">6</span><span class="mord mathrm">3</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>-1]</p>
 </li>
 </ul>
 </li>
-<li>布尔型: <code>boolean</code><ul>
-<li><p>真值: true, “true”, “on”, “yes”, “1”…</p>
+<li>浮点数: <code>float</code>, <code>double</code>
+<ul>
+<li>
+<p>float 32位单精度浮点数</p>
 </li>
-<li><p>假值: false, “false”, “off”, “no”, “0”, “”(空字符串), 0.0, 0</p>
+<li>
+<p>double  64位双精度浮点数</p>
+</li>
+</ul>
+</li>
+<li>布尔型: <code>boolean</code>
+<ul>
+<li>
+<p>真值: true, “true”, “on”, “yes”, “1”…</p>
+</li>
+<li>
+<p>假值: false, “false”, “off”, “no”, “0”, “”(空字符串), 0.0, 0</p>
 </li>
 </ul>
 </li>
 <li>日期: <code>date</code></li>
 </ul>
 <p><img src="./assets/image-20210205155546382.png" style="width: 700px; margin-left: 50px;"> </img></p>
-<h2 id="04-手动创建mapping"><a href="#04-手动创建mapping" class="headerlink" title="04.手动创建mapping"></a>04.手动创建mapping</h2><table>
+<h2 id="04手动创建mapping"><a class="markdownIt-Anchor" href="#04手动创建mapping"></a> 04.手动创建mapping</h2>
+<table>
 <thead>
 <tr>
 <th>ID</th>
@@ -276,7 +295,8 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <th>出版时间</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>name</td>
 <td>author</td>
@@ -316,8 +336,9 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <td>石头记</td>
 <td>2021–09-18</td>
 </tr>
-</tbody></table>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
+</tbody>
+</table>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
 from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
@@ -351,15 +372,16 @@ mappings <span class="token operator">=</span> <span class="token punctuation">&
 	<span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 res <span class="token operator">=</span> es.indices.create<span class="token punctuation">(</span>index <span class="token operator">=</span> <span class="token string">'books'</span>,body <span class="token operator">=</span>mappings<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>res<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+print<span class="token punctuation">(</span>res<span class="token punctuation">)</span></code></pre>
 <ul>
 <li>在浏览器管理页面，查询mappings创建结果</li>
 </ul>
 <blockquote>
-<p>GET &#x2F;books&#x2F;_mapping</p>
+<p>GET /books/_mapping</p>
 </blockquote>
-<h2 id="04-添加数据"><a href="#04-添加数据" class="headerlink" title="04.添加数据"></a>04.添加数据</h2><h3 id="4-1-for循环添加数据"><a href="#4-1-for循环添加数据" class="headerlink" title="4.1 for循环添加数据"></a>4.1 for循环添加数据</h3><table>
+<h2 id="04添加数据"><a class="markdownIt-Anchor" href="#04添加数据"></a> 04.添加数据</h2>
+<h3 id="41-for循环添加数据"><a class="markdownIt-Anchor" href="#41-for循环添加数据"></a> 4.1 for循环添加数据</h3>
+<table>
 <thead>
 <tr>
 <th>D</th>
@@ -370,7 +392,8 @@ print<span class="token punctuation">(</span>res<span class="token punctuation">
 <th>出版时间</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>name</td>
 <td>author</td>
@@ -394,8 +417,9 @@ print<span class="token punctuation">(</span>res<span class="token punctuation">
 <td>宋江梁山起义</td>
 <td>2018-01-27</td>
 </tr>
-</tbody></table>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+</tbody>
+</table>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token string">'192.168.56.66:9200'</span><span class="token punctuation">)</span>
 list <span class="token operator">=</span> <span class="token punctuation">[</span>
@@ -416,9 +440,9 @@ list <span class="token operator">=</span> <span class="token punctuation">[</sp
 <span class="token punctuation">]</span>
 <span class="token keyword">for</span> <span class="token for-or-select variable">item</span> <span class="token keyword">in</span> list:
     res <span class="token operator">=</span> es.index<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'books'</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>item<span class="token punctuation">)</span>
-    print<span class="token punctuation">(</span>res<span class="token punctuation">[</span><span class="token string">'created'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-2-bulk批量添加数据"><a href="#4-2-bulk批量添加数据" class="headerlink" title="4.2 bulk批量添加数据"></a>4.2 bulk批量添加数据</h3><table>
+    print<span class="token punctuation">(</span>res<span class="token punctuation">[</span><span class="token string">'created'</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h3 id="42-bulk批量添加数据"><a class="markdownIt-Anchor" href="#42-bulk批量添加数据"></a> 4.2 bulk批量添加数据</h3>
+<table>
 <thead>
 <tr>
 <th>ID</th>
@@ -429,7 +453,8 @@ list <span class="token operator">=</span> <span class="token punctuation">[</sp
 <th>出版时间</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>name</td>
 <td>author</td>
@@ -453,8 +478,9 @@ list <span class="token operator">=</span> <span class="token punctuation">[</sp
 <td>石头记</td>
 <td>2021–09-18</td>
 </tr>
-</tbody></table>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
+</tbody>
+</table>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
 from elasticsearch <span class="token function">import</span> Elasticsearch
 from elasticsearch.helpers <span class="token function">import</span> bulk
 
@@ -493,15 +519,17 @@ i <span class="token operator">=</span> <span class="token number">10</span>
 
 <span class="token comment">## 批量处理</span>
 success, _ <span class="token operator">=</span> bulk<span class="token punctuation">(</span>es, ACTIONS, <span class="token assign-left variable">index</span><span class="token operator">=</span><span class="token string">'books'</span>, <span class="token assign-left variable">raise_on_error</span><span class="token operator">=</span>True<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span><span class="token string">'Performed %d actions'</span> % success<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="05-查询所有数据"><a href="#05-查询所有数据" class="headerlink" title="05.查询所有数据"></a>05.查询所有数据</h2><h3 id="5-1-查询所有数据"><a href="#5-1-查询所有数据" class="headerlink" title="5.1 查询所有数据"></a>5.1 查询所有数据</h3><h4 id="5-1-1-查询所有数据"><a href="#5-1-1-查询所有数据" class="headerlink" title="5.1.1 查询所有数据"></a>5.1.1 查询所有数据</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> elasticsearch <span class="token keyword">import</span> Elasticsearch
+print<span class="token punctuation">(</span><span class="token string">'Performed %d actions'</span> % success<span class="token punctuation">)</span></code></pre>
+<h2 id="05查询所有数据"><a class="markdownIt-Anchor" href="#05查询所有数据"></a> 05.查询所有数据</h2>
+<h3 id="51-查询所有数据"><a class="markdownIt-Anchor" href="#51-查询所有数据"></a> 5.1 查询所有数据</h3>
+<h4 id="511-查询所有数据"><a class="markdownIt-Anchor" href="#511-查询所有数据"></a> 5.1.1 查询所有数据</h4>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> elasticsearch <span class="token keyword">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 result <span class="token operator">=</span> es<span class="token punctuation">.</span>search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"es_test"</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="5-1-2-根据body查询所有数据"><a href="#5-1-2-根据body查询所有数据" class="headerlink" title="5.1.2 根据body查询所有数据"></a>5.1.2 根据body查询所有数据</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<h4 id="512-根据body查询所有数据"><a class="markdownIt-Anchor" href="#512-根据body查询所有数据"></a> 5.1.2 根据body查询所有数据</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -510,9 +538,9 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"es_test"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="5-2-查询结果"><a href="#5-2-查询结果" class="headerlink" title="5.2 查询结果"></a>5.2 查询结果</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="52-查询结果"><a class="markdownIt-Anchor" href="#52-查询结果"></a> 5.2 查询结果</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
 	<span class="token string">"took"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
 	<span class="token string">"timed_out"</span><span class="token builtin class-name">:</span> false,
 	<span class="token string">"_shards"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
@@ -577,17 +605,18 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 			<span class="token punctuation">&#125;</span>
 		<span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
 	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="06-term和terms模糊查询"><a href="#06-term和terms模糊查询" class="headerlink" title="06.term和terms模糊查询"></a>06.term和terms模糊查询</h2><ul>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="06term和terms模糊查询"><a class="markdownIt-Anchor" href="#06term和terms模糊查询"></a> 06.term和terms模糊查询</h2>
+<ul>
 <li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
 <li>terms与term区别是可以按照多个“关键字” 过滤</li>
 </ul>
-<h3 id="6-1-term"><a href="#6-1-term" class="headerlink" title="6.1 term"></a>6.1 term</h3><ul>
+<h3 id="61-term"><a class="markdownIt-Anchor" href="#61-term"></a> 6.1 term</h3>
+<ul>
 <li><code>查找 title 字段中包含：&quot;电视&quot;关键字的内容</code></li>
 <li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -600,12 +629,12 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="6-2-terms"><a href="#6-2-terms" class="headerlink" title="6.2 terms"></a>6.2 terms</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="62-terms"><a class="markdownIt-Anchor" href="#62-terms"></a> 6.2 terms</h3>
+<ul>
 <li><code>查找name字段包含：&quot;三国&quot;或者&quot;红楼&quot;关键字</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -619,17 +648,19 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="07-match和multi-match"><a href="#07-match和multi-match" class="headerlink" title="07.match和multi_match"></a>07.match和multi_match</h2><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="07match和multi_match"><a class="markdownIt-Anchor" href="#07match和multi_match"></a> 07.match和multi_match</h2>
+<ul>
 <li>match：智能在一个字段匹配</li>
 <li>multi_match：多个字段同时匹配</li>
-<li>作用：把搜索关键字 <code>先分词在搜索</code><ul>
-<li>比如”宝马多少马力”会被分词为”宝马 多少 马力”, 所有有关”宝马 多少 马力”, 那么所有包含这三个词中的一个或多个的文档就会被搜索出来。</li>
+<li>作用：把搜索关键字 <code>先分词在搜索</code>
+<ul>
+<li>比如&quot;宝马多少马力&quot;会被分词为&quot;宝马 多少 马力&quot;, 所有有关&quot;宝马 多少 马力&quot;, 那么所有包含这三个词中的一个或多个的文档就会被搜索出来。</li>
 </ul>
 </li>
 </ul>
-<h3 id="7-1-match"><a href="#7-1-match" class="headerlink" title="7.1 match"></a>7.1 match</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<h3 id="71-match"><a class="markdownIt-Anchor" href="#71-match"></a> 7.1 match</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -640,9 +671,9 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="7-2-multi-match"><a href="#7-2-multi-match" class="headerlink" title="7.2 multi_match"></a>7.2 multi_match</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="72-multi_match"><a class="markdownIt-Anchor" href="#72-multi_match"></a> 7.2 multi_match</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -654,9 +685,9 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="08-ids根据多个id查询"><a href="#08-ids根据多个id查询" class="headerlink" title="08.ids根据多个id查询"></a>08.ids根据多个id查询</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="08ids根据多个id查询"><a class="markdownIt-Anchor" href="#08ids根据多个id查询"></a> 08.ids根据多个id查询</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -667,20 +698,24 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="09-复合查询bool"><a href="#09-复合查询bool" class="headerlink" title="09.复合查询bool"></a>09.复合查询bool</h2><ul>
-<li><p>must:必须都满足条件</p>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="09复合查询bool"><a class="markdownIt-Anchor" href="#09复合查询bool"></a> 09.复合查询bool</h2>
+<ul>
+<li>
+<p>must:必须都满足条件</p>
 </li>
-<li><p>should:其中一个满足</p>
+<li>
+<p>should:其中一个满足</p>
 </li>
-<li><p>must_not:必须都不满足</p>
+<li>
+<p>must_not:必须都不满足</p>
 </li>
 </ul>
-<h3 id="9-1-must"><a href="#9-1-must" class="headerlink" title="9.1 must"></a>9.1 must</h3><ul>
+<h3 id="91-must"><a class="markdownIt-Anchor" href="#91-must"></a> 9.1 must</h3>
+<ul>
 <li><code>图书名称同时包含：&quot;西游&quot;   作者包含：&quot;唐僧&quot;</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -695,12 +730,12 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="9-2-should"><a href="#9-2-should" class="headerlink" title="9.2 should"></a>9.2 should</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="92-should"><a class="markdownIt-Anchor" href="#92-should"></a> 9.2 should</h3>
+<ul>
 <li>图书名称 包含 “西游” 或者 描述中 包含 “石头记”</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -715,10 +750,10 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="9-3-must-not"><a href="#9-3-must-not" class="headerlink" title="9.3 must_not"></a>9.3 must_not</h3><p>图书名称 不包含 “西游” 和 描述中 不包含 “石头记”得所有图书</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="93-must_not"><a class="markdownIt-Anchor" href="#93-must_not"></a> 9.3 must_not</h3>
+<p>图书名称 不包含 “西游” 和 描述中 不包含 “石头记”得所有图书</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -733,11 +768,10 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-<h2 id="10-分页"><a href="#10-分页" class="headerlink" title="10.分页"></a>10.分页</h2><h3 id="10-1-分页查询"><a href="#10-1-分页查询" class="headerlink" title="10.1 分页查询"></a>10.1 分页查询</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="10分页"><a class="markdownIt-Anchor" href="#10分页"></a> 10.分页</h2>
+<h3 id="101-分页查询"><a class="markdownIt-Anchor" href="#101-分页查询"></a> 10.1 分页查询</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
@@ -749,9 +783,9 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>         <span class="token comment">#一次查多少条数据</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="10-2-范围查询加分页"><a href="#10-2-范围查询加分页" class="headerlink" title="10.2 范围查询加分页"></a>10.2 范围查询加分页</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="102-范围查询加分页"><a class="markdownIt-Anchor" href="#102-范围查询加分页"></a> 10.2 范围查询加分页</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -767,9 +801,10 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="11-前缀查询"><a href="#11-前缀查询" class="headerlink" title="11.前缀查询"></a>11.前缀查询</h2><h3 id="11-前缀查询-1"><a href="#11-前缀查询-1" class="headerlink" title="11.前缀查询"></a>11.前缀查询</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="11前缀查询"><a class="markdownIt-Anchor" href="#11前缀查询"></a> 11.前缀查询</h2>
+<h3 id="11前缀查询-2"><a class="markdownIt-Anchor" href="#11前缀查询-2"></a> 11.前缀查询</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -782,14 +817,15 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="12-通配符查询"><a href="#12-通配符查询" class="headerlink" title="12.通配符查询"></a>12.通配符查询</h2><h3 id="12-通配符查询-1"><a href="#12-通配符查询-1" class="headerlink" title="12.通配符查询"></a>12.通配符查询</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="12通配符查询"><a class="markdownIt-Anchor" href="#12通配符查询"></a> 12.通配符查询</h2>
+<h3 id="12通配符查询-2"><a class="markdownIt-Anchor" href="#12通配符查询-2"></a> 12.通配符查询</h3>
+<ul>
 <li><code>*无忌</code>:  以无忌结尾的都要</li>
 <li><code>张*: </code>   以张开头的都要</li>
 <li><code>张*忌</code>:  张无忌,张有忌,张1234忌都是我的菜</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -802,12 +838,13 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="13-排序"><a href="#13-排序" class="headerlink" title="13.排序"></a>13.排序</h2><h3 id="13-排序-1"><a href="#13-排序-1" class="headerlink" title="13.排序"></a>13.排序</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="13排序"><a class="markdownIt-Anchor" href="#13排序"></a> 13.排序</h2>
+<h3 id="13排序-2"><a class="markdownIt-Anchor" href="#13排序-2"></a> 13.排序</h3>
+<ul>
 <li>Sort是数组,也可以同时对多个字段进行排序,<code>asc升序,desc降序</code></li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -823,17 +860,16 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-<h2 id="14-聚合函数"><a href="#14-聚合函数" class="headerlink" title="14.聚合函数"></a>14.聚合函数</h2><h3 id="14-聚合函数-1"><a href="#14-聚合函数-1" class="headerlink" title="14.聚合函数"></a>14.聚合函数</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="14聚合函数"><a class="markdownIt-Anchor" href="#14聚合函数"></a> 14.聚合函数</h2>
+<h3 id="14聚合函数-2"><a class="markdownIt-Anchor" href="#14聚合函数-2"></a> 14.聚合函数</h3>
+<ul>
 <li>求最小值:min</li>
 <li>求最大值:max</li>
 <li>求平均值:avg</li>
 <li>求和:sum</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -849,9 +885,10 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="15-同时查询多条聚合函数"><a href="#15-同时查询多条聚合函数" class="headerlink" title="15.同时查询多条聚合函数"></a>15.同时查询多条聚合函数</h2><h3 id="15-同时查询多条聚合函数-1"><a href="#15-同时查询多条聚合函数-1" class="headerlink" title="15.同时查询多条聚合函数"></a>15.同时查询多条聚合函数</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="15同时查询多条聚合函数"><a class="markdownIt-Anchor" href="#15同时查询多条聚合函数"></a> 15.同时查询多条聚合函数</h2>
+<h3 id="15同时查询多条聚合函数-2"><a class="markdownIt-Anchor" href="#15同时查询多条聚合函数-2"></a> 15.同时查询多条聚合函数</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -872,9 +909,10 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="16-过滤查询"><a href="#16-过滤查询" class="headerlink" title="16.过滤查询"></a>16.过滤查询</h2><h3 id="16-过滤查询-1"><a href="#16-过滤查询-1" class="headerlink" title="16.过滤查询"></a>16.过滤查询</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询_id属性:</span>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="16过滤查询"><a class="markdownIt-Anchor" href="#16过滤查询"></a> 16.过滤查询</h2>
+<h3 id="16过滤查询-2"><a class="markdownIt-Anchor" href="#16过滤查询-2"></a> 16.过滤查询</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询_id属性:</span>
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,filter_path<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"hits.hits._id"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 <span class="token comment">## 查询_source属性:</span>
@@ -884,11 +922,10 @@ result <span class="token operator">=</span> es.search<span class="token punctua
 result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,filter_path<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"hits.hits._*"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 <span class="token comment">## 查询当前数据总数</span>
-result <span class="token operator">=</span> es.count<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-<h2 id="17-删除"><a href="#17-删除" class="headerlink" title="17.删除"></a>17.删除</h2><h3 id="17-1-关键字删除"><a href="#17-1-关键字删除" class="headerlink" title="17.1 关键字删除"></a>17.1 关键字删除</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+result <span class="token operator">=</span> es.count<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span><span class="token punctuation">)</span></code></pre>
+<h2 id="17删除"><a class="markdownIt-Anchor" href="#17删除"></a> 17.删除</h2>
+<h3 id="171-关键字删除"><a class="markdownIt-Anchor" href="#171-关键字删除"></a> 17.1 关键字删除</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -899,9 +936,9 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.delete_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="17-2-年龄范围删除"><a href="#17-2-年龄范围删除" class="headerlink" title="17.2 年龄范围删除"></a>17.2 年龄范围删除</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h3 id="172-年龄范围删除"><a class="markdownIt-Anchor" href="#172-年龄范围删除"></a> 17.2 年龄范围删除</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -915,13 +952,14 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 
 result <span class="token operator">=</span> es.delete_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="18-按条件更新"><a href="#18-按条件更新" class="headerlink" title="18.按条件更新"></a>18.按条件更新</h2><h3 id="18-按条件更新-1"><a href="#18-按条件更新-1" class="headerlink" title="18.按条件更新"></a>18.按条件更新</h3><ul>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<h2 id="18按条件更新"><a class="markdownIt-Anchor" href="#18按条件更新"></a> 18.按条件更新</h2>
+<h3 id="18按条件更新-2"><a class="markdownIt-Anchor" href="#18按条件更新-2"></a> 18.按条件更新</h3>
+<ul>
 <li>重点: 更新查询条件为年龄小于等于20岁的人,</li>
 <li>其中script中为脚本语法(有坑,详细内容还未查询),修改多项内容,内容与内容之间用”;”号间隔</li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
+<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
 
 es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
 body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -937,7 +975,7 @@ body <span class="token operator">=</span> <span class="token punctuation">&#123
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 result <span class="token operator">=</span> es.update_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
                 
                 <p class="end">__END__</p>
             </div>
@@ -973,7 +1011,7 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/df12b3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/df12b3/" title="发布于 2021-02-12 03:04">03.es基本使用</a>
+                        <a href="../../pages/5021f3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/5021f3/" title="发布于 2021-02-12 03:04">04.中文分词检索</a>
                         <br>
                     
                     

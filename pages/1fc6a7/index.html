@@ -76,46 +76,45 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-使用Supervisor对后台服务和uwsgi操作，降低日常维护成本"><a href="#01-使用Supervisor对后台服务和uwsgi操作，降低日常维护成本" class="headerlink" title="01.使用Supervisor对后台服务和uwsgi操作，降低日常维护成本"></a>01.使用Supervisor对后台服务和uwsgi操作，降低日常维护成本</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12359448.html">https://www.cnblogs.com/xiaonq/p/12359448.html</a></p>
+                <h1 id="01使用supervisor对后台服务和uwsgi操作降低日常维护成本"><a class="markdownIt-Anchor" href="#01使用supervisor对后台服务和uwsgi操作降低日常维护成本"></a> 01.使用Supervisor对后台服务和uwsgi操作，降低日常维护成本</h1>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12359448.html">https://www.cnblogs.com/xiaonq/p/12359448.html</a></p>
 <ul>
-<li>1.什么是supervisor<ul>
-<li><p>Supervisor是用Python开发的一个client&#x2F;server服务，是Linux&#x2F;Unix系统下的一个进程管理工具，不支持Windows系统。、</p>
+<li>1.什么是supervisor
+<ul>
+<li>Supervisor是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。、</li>
+<li>作用：它可以很方便的<code>监听、启动、停止、重启</code>一个或多个进程。</li>
+<li>用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起</li>
+<li>很方便的做到<code>进程自动恢复的功能</code>，不再需要自己写shell脚本来控制。</li>
+<li>说白了，它真正有用的功能是俩个将非daemon(守护进程)程序变成deamon方式运行对程序进行监控，当程序退出时，可以自动拉起程序。</li>
+<li>但是它无法控制本身就是daemon的服务。</li>
+<li>2.常用命令
+<ul>
+<li>
+<p>#启动supervisord<br />
+supervisord -c /etc/supervisor/supervisord.conf</p>
 </li>
-<li><p>作用：它可以很方便的<code>监听、启动、停止、重启</code>一个或多个进程。</p>
+<li>
+<p>#关闭supervisord<br />
+supervisorctl -c /etc/supervisor/supervisord.conf shutdown</p>
 </li>
-<li><p>用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起</p>
+<li>
+<p>#查看supervisord管理的进程，【all】是可选参数，表示查看所有的子任务<br />
+supervisorctl -c /etc/supervisor/supervisord.conf status all</p>
 </li>
-<li><p>很方便的做到<code>进程自动恢复的功能</code>，不再需要自己写shell脚本来控制。</p>
+<li>
+<p>#重新加载配置<br />
+supervisorctl -c /etc/supervisor/supervisord.conf update</p>
 </li>
-<li><p>说白了，它真正有用的功能是俩个将非daemon(守护进程)程序变成deamon方式运行对程序进行监控，当程序退出时，可以自动拉起程序。</p>
+<li>
+<p>#重新启动supervisord<br />
+supervisorctl -c /etc/supervisor/supervisord.conf reload#停止supervisord管理的进程，【process_name】表示子任务名称<br />
+supervisorctl -c /etc/supervisor/supervisord.conf stop process_name</p>
 </li>
-<li><p>但是它无法控制本身就是daemon的服务。</p>
+<li>
+<p>#启动supervisord管理的进程，【process_name】表示子任务名称<br />
+supervisorctl -c /etc/supervisor/supervisord.conf start process_name</p>
 </li>
-<li><p>2.常用命令</p>
-<ul>
-<li>#启动supervisord</li>
 </ul>
-<p> supervisord -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf</p>
-<ul>
-<li>#关闭supervisord</li>
-</ul>
-<p>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf shutdown</p>
-<ul>
-<li>#查看supervisord管理的进程，【all】是可选参数，表示查看所有的子任务</li>
-</ul>
-<p>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf status all</p>
-<ul>
-<li>#重新加载配置</li>
-</ul>
-<p>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf update</p>
-<ul>
-<li>#重新启动supervisord</li>
-</ul>
-<p>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf reload#停止supervisord管理的进程，【process_name】表示子任务名称<br>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf stop process_name</p>
-<ul>
-<li>#启动supervisord管理的进程，【process_name】表示子任务名称</li>
-</ul>
-<p>supervisorctl -c &#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf start process_name</p>
 </li>
 </ul>
 </li>

@@ -76,32 +76,44 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-MySQL同步"><a href="#01-MySQL同步" class="headerlink" title="01.MySQL同步"></a>01.MySQL同步</h1><h2 id="1-1-Mysql主从复制原理"><a href="#1-1-Mysql主从复制原理" class="headerlink" title="1.1 Mysql主从复制原理"></a>1.1 Mysql主从复制原理</h2><ul>
-<li><p>1、master服务器将数据的改变都记录到二进制binlog日志中，<code>只要master上的数据发生改变，则将其改变写入二进制日志</code>；</p>
-</li>
-<li><p>2、salve服务器会在一定时间间隔内对master二进制日志进行探测其是否发生改变，如果发生改变，则<code>开始一个I/O Thread请求master二进制事件</code></p>
-</li>
-<li><p>3、同时<code>主节点为每个I/O线程启动一个dump线程</code>，用于向其发送二进制事件，并保<code>存至从节点本地的中继日志中</code></p>
-</li>
-<li><p>4、从节点将启动SQL线程从中继日志中读取二进制日志，在本地重放，使得其数据和主节点的保持一致</p>
-</li>
-<li><p>5、最后I&#x2F;O Thread和SQL Thread将进入睡眠状态，等待下一次被唤醒。</p>
-</li>
-<li><p><strong>需要理解：</strong></p>
+                <h1 id="01mysql同步"><a class="markdownIt-Anchor" href="#01mysql同步"></a> 01.MySQL同步</h1>
+<h2 id="11-mysql主从复制原理"><a class="markdownIt-Anchor" href="#11-mysql主从复制原理"></a> 1.1 Mysql主从复制原理</h2>
 <ul>
-<li>1）从库会生成两个线程,一个I&#x2F;O线程,一个SQL线程;</li>
-<li>2）I&#x2F;O线程会去请求主库的binlog,并将得到的binlog写到本地的relay-log(中继日志)文件中;</li>
-<li>3）主库会生成一个log dump线程,用来给从库I&#x2F;O线程传binlog;</li>
+<li>
+<p>1、master服务器将数据的改变都记录到二进制binlog日志中，<code>只要master上的数据发生改变，则将其改变写入二进制日志</code>；</p>
+</li>
+<li>
+<p>2、salve服务器会在一定时间间隔内对master二进制日志进行探测其是否发生改变，如果发生改变，则<code>开始一个I/O Thread请求master二进制事件</code></p>
+</li>
+<li>
+<p>3、同时<code>主节点为每个I/O线程启动一个dump线程</code>，用于向其发送二进制事件，并保<code>存至从节点本地的中继日志中</code></p>
+</li>
+<li>
+<p>4、从节点将启动SQL线程从中继日志中读取二进制日志，在本地重放，使得其数据和主节点的保持一致</p>
+</li>
+<li>
+<p>5、最后I/O Thread和SQL Thread将进入睡眠状态，等待下一次被唤醒。</p>
+</li>
+<li>
+<p><strong>需要理解：</strong></p>
+<ul>
+<li>1）从库会生成两个线程,一个I/O线程,一个SQL线程;</li>
+<li>2）I/O线程会去请求主库的binlog,并将得到的binlog写到本地的relay-log(中继日志)文件中;</li>
+<li>3）主库会生成一个log dump线程,用来给从库I/O线程传binlog;</li>
 <li><em>4）SQL线程,会读取relay log文件中的日志,并解析成sql语句逐一执行;</em></li>
 </ul>
 </li>
 </ul>
-<h2 id="1-2-Mysql复制流程图"><a href="#1-2-Mysql复制流程图" class="headerlink" title="1.2 Mysql复制流程图"></a>1.2 Mysql复制流程图</h2><ul>
-<li><p>1、master将操作语句记录到binlog日志中</p>
+<h2 id="12-mysql复制流程图"><a class="markdownIt-Anchor" href="#12-mysql复制流程图"></a> 1.2 Mysql复制流程图</h2>
+<ul>
+<li>
+<p>1、master将操作语句记录到binlog日志中</p>
 </li>
-<li><p>2、salve服务器会在一定时间间隔内对master二进制日志进行探测其是否发生改变，如果发生改变</p>
+<li>
+<p>2、salve服务器会在一定时间间隔内对master二进制日志进行探测其是否发生改变，如果发生改变</p>
 </li>
-<li><p>3、<code>salave开启两个线程</code>：IO线程和SQL线程</p>
+<li>
+<p>3、<code>salave开启两个线程</code>：IO线程和SQL线程</p>
 <ul>
 <li>1）<code>IO线程</code>：负责读取master的binlog内容到中继日志relay log里；</li>
 <li>2）<code>SQL线程</code>：负责从relay log日志里读出binlog内容，并更新到slave的数据库里（保证数据一致）</li>
@@ -109,17 +121,20 @@
 </li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/mysql/image-20210114204920671.png" style="width: 900px; margin-left: 0px;"> </img></p>
-<h2 id="1-3-MySQL同步延迟"><a href="#1-3-MySQL同步延迟" class="headerlink" title="1.3 MySQL同步延迟"></a>1.3 MySQL同步延迟</h2><ul>
-<li><p>1、造成mysql同步延迟常见原因</p>
+<h2 id="13-mysql同步延迟"><a class="markdownIt-Anchor" href="#13-mysql同步延迟"></a> 1.3 MySQL同步延迟</h2>
+<ul>
+<li>
+<p>1、造成mysql同步延迟常见原因</p>
 <ul>
 <li>1）网络：如主机或者从机的带宽打满、主从之间网络延迟很大，导致主上的binlog没有全量传输到从机，造成延迟。</li>
 <li>2）机器性能：从机使用了烂机器？比如主机使用SSD而从机还是使用的SATA。</li>
 <li>3）从机高负载：有很多业务会在从机上做统计，把从机服务器搞成高负载，从而造成从机延迟很大的情况</li>
 <li>4）大事务：比如在RBR模式下，执行带有大量的delete操作，这种通过查看processlist相关信息以及使用mysqlbinlog查看binlog中的SQL就能快速进行确认</li>
-<li>5）锁: 锁冲突问题也可能导致从机的SQL线程执行慢，比如从机上有一些select …. for update的SQL，或者使用了MyISAM引擎等。</li>
+<li>5）锁: 锁冲突问题也可能导致从机的SQL线程执行慢，比如从机上有一些select … for update的SQL，或者使用了MyISAM引擎等。</li>
 </ul>
 </li>
-<li><p>2、硬件方面（优化）</p>
+<li>
+<p>2、硬件方面（优化）</p>
 <ul>
 <li>1.采用好服务器，比如4u比2u性能明显好，2u比1u性能明显好。</li>
 <li>2.存储用ssd或者盘阵或者san，提升随机写的性能。</li>
@@ -164,11 +179,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/a36fa8/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a36fa8/" title="发布于 2021-02-22 04:00">06.MySQL优化</a>
+                        <a href="../../pages/a2d0cb/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a2d0cb/" title="发布于 2021-02-22 04:00">03.MySQL锁</a>
                         <br>
                     
                     
-                        <a href="../../pages/2bf5a2/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/2bf5a2/" title="发布于 2021-02-18 09:56">09.ModelViewSet</a>
+                        <a href="../../pages/ed510c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/ed510c/" title="发布于 2021-02-22 04:00">04.MySQL索引</a>
                     
                 </div>
             </div>

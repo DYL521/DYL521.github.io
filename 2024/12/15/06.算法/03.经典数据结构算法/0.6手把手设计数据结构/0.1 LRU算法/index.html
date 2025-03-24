@@ -85,16 +85,21 @@
             <div class="toc"></div>
             <div class="article-body">
                 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://labuladong.online/algo/data-structure/lru-cache/">https://labuladong.online/algo/data-structure/lru-cache/</a><br> LRU算法是一种常见的缓存淘汰策略，全称是Least Recently Used, 很久没使用的应该是无用的数据应该删除<br> LRU算法的核心数据结构是使用LinkedHashMap，首先借助链表的有序性使得插入的元素还是保持有序的状态，同时借助哈希映射的快速访问能力，O(1)任意元素。</p>
+<p><a target="_blank" rel="noopener" href="https://labuladong.online/algo/data-structure/lru-cache/">https://labuladong.online/algo/data-structure/lru-cache/</a><br />
+LRU算法是一种常见的缓存淘汰策略，全称是Least Recently Used, 很久没使用的应该是无用的数据应该删除<br />
+LRU算法的核心数据结构是使用LinkedHashMap，首先借助链表的有序性使得插入的元素还是保持有序的状态，同时借助哈希映射的快速访问能力，O(1)任意元素。</p>
 </blockquote>
-<h1 id="1、算法的描述"><a href="#1、算法的描述" class="headerlink" title="1、算法的描述"></a>1、算法的描述</h1><p>首先要接收一个 capacity 参数作为缓存的最大容量，然后实现两个 API，一个是 put(key, val) 方法存入键值对，另一个是 get(key) 方法获取 key 对应的 val，如果 key 不存在则返回 -1。<br>注意哦，get 和 put 方法必须都是 O(1)的时间复杂度，我们举个具体例子来看看 LRU 算法怎么工作。</p>
+<h1 id="1-算法的描述"><a class="markdownIt-Anchor" href="#1-算法的描述"></a> 1、算法的描述</h1>
+<p>首先要接收一个 capacity 参数作为缓存的最大容量，然后实现两个 API，一个是 put(key, val) 方法存入键值对，另一个是 get(key) 方法获取 key 对应的 val，如果 key 不存在则返回 -1。<br />
+注意哦，get 和 put 方法必须都是 O(1)的时间复杂度，我们举个具体例子来看看 LRU 算法怎么工作。</p>
 <ul>
 <li>LRU 缓存算法的核心数据结构就是哈希链表，双向链表和哈希表的结合体</li>
 <li>1、显然操作的元素必须有序，用来区分最近使用和最久未使用；</li>
 <li>2、我们要才cache中快速找到某个key，得到对应 的val</li>
 <li>3、每次访问某个key，必须将这个元素变为最近使用，也就是支持任意位置插入和查找；</li>
 </ul>
-<h1 id="2、代码实现"><a href="#2、代码实现" class="headerlink" title="2、代码实现"></a>2、代码实现</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> numpy<span class="token punctuation">.</span>ma<span class="token punctuation">.</span>core <span class="token keyword">import</span> swapaxes
+<h1 id="2-代码实现"><a class="markdownIt-Anchor" href="#2-代码实现"></a> 2、代码实现</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> numpy<span class="token punctuation">.</span>ma<span class="token punctuation">.</span>core <span class="token keyword">import</span> swapaxes
 
 
 <span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
@@ -213,12 +218,11 @@
             self<span class="token punctuation">.</span>removeLeastRecently<span class="token punctuation">(</span><span class="token punctuation">)</span>
         self<span class="token punctuation">.</span>makeRecently<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>我们最后用 Java 的内置类型 LinkedHashMap 来实现 LRU 算法，逻辑和之前完全一致：</p>
 <ul>
 <li>java LinkedHashMap实现</li>
 </ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">LRUCache</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">LRUCache</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">int</span> cap<span class="token punctuation">;</span>
     <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token class-name">LRUCache</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
@@ -258,11 +262,11 @@
         cache<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
         cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
+<span class="token punctuation">&#125;</span></code></pre>
 <ul>
-<li>python OrderedDict 实现<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> OrderedDict
+<li>python OrderedDict 实现</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> OrderedDict
 
 
 <span class="token keyword">class</span> <span class="token class-name">LRU</span><span class="token punctuation">:</span>
@@ -304,8 +308,7 @@
     d<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span>
     d<span class="token punctuation">.</span>popitem<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ul>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>

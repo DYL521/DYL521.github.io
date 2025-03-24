@@ -76,29 +76,37 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-Paramiko模块作用"><a href="#01-Paramiko模块作用" class="headerlink" title="01.Paramiko模块作用"></a>01.Paramiko模块作用</h2><ul>
-<li><p>1）如果需要使用SSH从一个平台连接到另外一个平台，进行一系列的操作时，</p>
+                <h2 id="01paramiko模块作用"><a class="markdownIt-Anchor" href="#01paramiko模块作用"></a> 01.Paramiko模块作用</h2>
 <ul>
-<li><strong>比如：</strong>批量执行命令，批量上传文件等操作，paramiko是最佳工具之一。</li>
+<li>
+<p>1）如果需要使用SSH从一个平台连接到另外一个平台，进行一系列的操作时，</p>
+<ul>
+<li>**比如：**批量执行命令，批量上传文件等操作，paramiko是最佳工具之一。</li>
 </ul>
 </li>
-<li><p>2）paramiko是用python语言写的一个模块,遵循SSH2协议,支持以加密和认证的方式，进行远程服务器的连接</p>
+<li>
+<p>2）paramiko是用python语言写的一个模块,遵循SSH2协议,支持以加密和认证的方式，进行远程服务器的连接</p>
 </li>
-<li><p>3）由于使用的是python这样的能够跨平台运行的语言，所以所有python支持的平台</p>
+<li>
+<p>3）由于使用的是python这样的能够跨平台运行的语言，所以所有python支持的平台</p>
 <ul>
 <li>如Linux, Solaris, BSD,MacOS X, Windows等，paramiko都可以支持</li>
 </ul>
 </li>
-<li><p>4）如果需要使用SSH从一个平台连接到另外一个平台，进行一系列的操作时，paramiko是最佳工具之一</p>
+<li>
+<p>4）如果需要使用SSH从一个平台连接到另外一个平台，进行一系列的操作时，paramiko是最佳工具之一</p>
 </li>
-<li><p>5）现在如果需要从windows服务器上下载Linux服务器文件：</p>
+<li>
+<p>5）现在如果需要从windows服务器上下载Linux服务器文件：</p>
 <ul>
 <li>a. 使用paramiko可以很好的解决以上问题，它仅需要在本地上安装相应的软件（python以及PyCrypto）</li>
 <li>b. 对远程服务器没有配置要求，对于连接多台服务器，进行复杂的连接操作特别有帮助。</li>
 </ul>
 </li>
 </ul>
-<h2 id="02-paramiko基于用户名密码连接"><a href="#02-paramiko基于用户名密码连接" class="headerlink" title="02.paramiko基于用户名密码连接"></a>02.paramiko基于用户名密码连接</h2><h3 id="2-1-远程执行命令"><a href="#2-1-远程执行命令" class="headerlink" title="2.1 远程执行命令"></a>2.1 远程执行命令</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
+<h2 id="02paramiko基于用户名密码连接"><a class="markdownIt-Anchor" href="#02paramiko基于用户名密码连接"></a> 02.paramiko基于用户名密码连接</h2>
+<h3 id="21-远程执行命令"><a class="markdownIt-Anchor" href="#21-远程执行命令"></a> 2.1 远程执行命令</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
 
 <span class="token comment"># 1 创建SSH对象</span>
 ssh <span class="token operator">=</span> paramiko<span class="token punctuation">.</span>SSHClient<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -115,9 +123,9 @@ result <span class="token operator">=</span> res <span class="token keyword">if<
 <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                              <span class="token comment">#运行结果： /root</span>
 
 <span class="token comment"># 6 关闭连接</span>
-ssh<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-上传和下载"><a href="#2-2-上传和下载" class="headerlink" title="2.2 上传和下载"></a>2.2 上传和下载</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
+ssh<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h3 id="22-上传和下载"><a class="markdownIt-Anchor" href="#22-上传和下载"></a> 2.2 上传和下载</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> paramiko
 
 <span class="token comment">#1 连接客户端</span>
 transport <span class="token operator">=</span> paramiko<span class="token punctuation">.</span>Transport<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'10.1.0.50'</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -132,8 +140,7 @@ sftp<span class="token punctuation">.</span>put<span class="token punctuation">(
 sftp<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'/tmp/file.txt'</span><span class="token punctuation">,</span><span class="token string">r'C:\bbb\file.txt'</span><span class="token punctuation">)</span>
 
 <span class="token comment">#5 关闭连接</span>
-transport<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+transport<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>
@@ -170,7 +177,7 @@ transport<span class="token punctuation">.</span>close<span class="token punctua
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/b0ac9b/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/b0ac9b/" title="发布于 2021-02-13 08:46">05.json与pickle</a>
+                        <a href="../../pages/a62e27/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a62e27/" title="发布于 2021-02-13 08:46">06.hashlib</a>
                         <br>
                     
                     

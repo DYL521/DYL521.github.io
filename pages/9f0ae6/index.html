@@ -76,26 +76,33 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h2 id="01-Session"><a href="#01-Session" class="headerlink" title="01.Session"></a>01.Session</h2><h3 id="1-1-原理"><a href="#1-1-原理" class="headerlink" title="1.1 原理"></a>1.1 原理</h3><p><code>session操作依赖cookie</code></p>
+                <h2 id="01session"><a class="markdownIt-Anchor" href="#01session"></a> 01.Session</h2>
+<h3 id="11-原理"><a class="markdownIt-Anchor" href="#11-原理"></a> 1.1 原理</h3>
+<p><code>session操作依赖cookie</code></p>
 <ul>
 <li>1.基于Cookie做用户验证时：敏感信息不适合放在cookie中</li>
 <li>2.用户成功登陆后服务端会生成一个随机字符串并将这个字符串作为字典key，将用户登录信息作为value</li>
 <li>3.当用户再次登陆时就会带着这个随机字符串过来，就不必再输入用户名和密码了</li>
-<li>4.用户使用cookie将这个随机字符串保存到客户端本地，当用户再来时携带这个随机字符串<ul>
+<li>4.用户使用cookie将这个随机字符串保存到客户端本地，当用户再来时携带这个随机字符串
+<ul>
 <li>服务端根据这个随机字符串查找对应的session中的值，这样就避免敏感信息泄露</li>
 </ul>
 </li>
 </ul>
-<h3 id="1-2-Cookie和Session对比"><a href="#1-2-Cookie和Session对比" class="headerlink" title="1.2 Cookie和Session对比"></a>1.2 Cookie和Session对比</h3><ul>
-<li><p>1、Cookie是保存在用户浏览器端的键值对</p>
+<h3 id="12-cookie和session对比"><a class="markdownIt-Anchor" href="#12-cookie和session对比"></a> 1.2 Cookie和Session对比</h3>
+<ul>
+<li>
+<p>1、Cookie是保存在用户浏览器端的键值对</p>
 </li>
-<li><p>2、Session是保存在服务器端的键值对</p>
+<li>
+<p>2、Session是保存在服务器端的键值对</p>
 </li>
 </ul>
-<h3 id="1-3-setting-py配置session"><a href="#1-3-setting-py配置session" class="headerlink" title="1.3 setting.py配置session"></a>1.3 setting.py配置session</h3><ul>
+<h3 id="13-settingpy配置session"><a class="markdownIt-Anchor" href="#13-settingpy配置session"></a> 1.3 setting.py配置session</h3>
+<ul>
 <li>公用配置</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、SESSION_COOKIE_NAME ＝ "sessionid"          # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、SESSION_COOKIE_NAME ＝ "sessionid"          # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）</span>
 <span class="token comment"># 2、SESSION_COOKIE_PATH ＝ "/"                  # Session的cookie保存的路径（默认）</span>
 <span class="token comment"># 3、SESSION_COOKIE_DOMAIN = None                # Session的cookie保存的域名（默认）</span>
 <span class="token comment"># 4、SESSION_COOKIE_SECURE = False               # 是否Https传输cookie（默认）</span>
@@ -103,12 +110,11 @@
 <span class="token comment"># 6、SESSION_COOKIE_AGE = 1209600                # Session的cookie失效日期（2周）（默认）</span>
 <span class="token comment"># 7、SESSION_EXPIRE_AT_BROWSER_CLOSE = False     # 是否关闭浏览器使得Session过期（默认）</span>
 <span class="token comment"># 8、SESSION_SAVE_EVERY_REQUEST = False          # 是否每次请求都保存Session，默认修改之后才保存（默认）</span>
-                                                 <span class="token comment"># 10s 免登陆时，这里必须配置成True</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+                                                 <span class="token comment"># 10s 免登陆时，这里必须配置成True</span></code></pre>
 <ul>
 <li>settings.py中配置使用session五种方法</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#1 数据库（默认）   #将session数据保存到数据库中</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#1 数据库（默认）   #将session数据保存到数据库中</span>
 SESSION_ENGINE <span class="token operator">=</span> <span class="token string">'django.contrib.sessions.backends.db'</span>
 
 <span class="token comment">#2 缓存             #将session数据保存到缓存中</span>
@@ -143,9 +149,9 @@ SESSION_FILE_PATH <span class="token operator">=</span> os<span class="token pun
 SESSION_ENGINE <span class="token operator">=</span> <span class="token string">'django.contrib.sessions.backends.cached_db'</span>
 
 <span class="token comment">#5 加密cookie Session        #其实质使用的是cookie，将数据放到了客户端，但是数据经过了加密</span>
-SESSION_ENGINE <span class="token operator">=</span> <span class="token string">'django.contrib.sessions.backends.signed_cookies'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-4-操作session"><a href="#1-4-操作session" class="headerlink" title="1.4 操作session"></a>1.4 操作session</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">index11</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>                <span class="token comment">#request.session中存放了所有用户信息</span>
+SESSION_ENGINE <span class="token operator">=</span> <span class="token string">'django.contrib.sessions.backends.signed_cookies'</span></code></pre>
+<h3 id="14-操作session"><a class="markdownIt-Anchor" href="#14-操作session"></a> 1.4 操作session</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">index11</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>                <span class="token comment">#request.session中存放了所有用户信息</span>
     <span class="token comment">#1 获取   Session中数据</span>
     request<span class="token punctuation">.</span>session<span class="token punctuation">[</span><span class="token string">'k1'</span><span class="token punctuation">]</span>
     request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'k1'</span><span class="token punctuation">,</span><span class="token boolean">None</span><span class="token punctuation">)</span>
@@ -185,29 +191,34 @@ SESSION_ENGINE <span class="token operator">=</span> <span class="token string">
     request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>clear_expired<span class="token punctuation">(</span><span class="token punctuation">)</span>
     
     <span class="token comment"># 检查 用户session的随机字符串 在数据库中是否存在（不常用）</span>
-    request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">"session_key"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="02-session登录和注销"><a href="#02-session登录和注销" class="headerlink" title="02.session登录和注销"></a>02.session登录和注销</h2><ul>
+    request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">"session_key"</span><span class="token punctuation">)</span></code></pre>
+<h2 id="02session登录和注销"><a class="markdownIt-Anchor" href="#02session登录和注销"></a> 02.session登录和注销</h2>
+<ul>
 <li><code>session实现用户十秒免登陆，以及注销功能</code></li>
 </ul>
-<h3 id="2-0-主要功能说明"><a href="#2-0-主要功能说明" class="headerlink" title="2.0 主要功能说明"></a>2.0 主要功能说明</h3><ul>
-<li>1.session默认使用数据库session，使用前必须先执行下面命令<ul>
-<li>python manage.py makemigrations</li>
-<li>python manage.py migrate</li>
+<h3 id="20-主要功能说明"><a class="markdownIt-Anchor" href="#20-主要功能说明"></a> 2.0 主要功能说明</h3>
+<ul>
+<li>1.session默认使用数据库session，使用前必须先执行下面命令
+<ul>
+<li>python <a target="_blank" rel="noopener" href="http://manage.py">manage.py</a> makemigrations</li>
+<li>python <a target="_blank" rel="noopener" href="http://manage.py">manage.py</a> migrate</li>
 </ul>
 </li>
-<li>2.settings.py中配置每次用户访问都会推辞更新时间<ul>
-<li>SESSION_SAVE_EVERY_REQUEST &#x3D; True</li>
+<li>2.settings.py中配置每次用户访问都会推辞更新时间
+<ul>
+<li>SESSION_SAVE_EVERY_REQUEST = True</li>
 </ul>
 </li>
-<li>3.实现10s免登陆关键步骤<ul>
-<li>1）设置session ：  request.session[‘is_login’] &#x3D; True</li>
+<li>3.实现10s免登陆关键步骤
+<ul>
+<li>1）设置session ：  request.session[‘is_login’] = True</li>
 <li>2）设置10s超时：  request.session.set_expiry(10)</li>
 <li>3）获取session ：  request.session.get(‘is_login’)</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-1-views-py"><a href="#2-1-views-py" class="headerlink" title="2.1 views.py"></a>2.1 views.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse<span class="token punctuation">,</span>redirect
+<h3 id="21-viewspy"><a class="markdownIt-Anchor" href="#21-viewspy"></a> 2.1 <a target="_blank" rel="noopener" href="http://views.py">views.py</a></h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> render<span class="token punctuation">,</span>HttpResponse<span class="token punctuation">,</span>redirect
 
 <span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'is_login'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -240,9 +251,9 @@ SESSION_ENGINE <span class="token operator">=</span> <span class="token string">
 
 <span class="token keyword">def</span> <span class="token function">logout</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
     request<span class="token punctuation">.</span>session<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>                         <span class="token comment">#5 访问'/logout/'时注销登陆</span>
-    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span><span class="token string">'/login/'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-login-html"><a href="#2-2-login-html" class="headerlink" title="2.2 login.html"></a>2.2 login.html</h3><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span><span class="token string">'/login/'</span><span class="token punctuation">)</span></code></pre>
+<h3 id="22-loginhtml"><a class="markdownIt-Anchor" href="#22-loginhtml"></a> 2.2 login.html</h3>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -256,9 +267,9 @@ SESSION_ENGINE <span class="token operator">=</span> <span class="token string">
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>提交<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-3-index-html"><a href="#2-3-index-html" class="headerlink" title="2.3 index.html"></a>2.3 index.html</h3><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<h3 id="23-indexhtml"><a class="markdownIt-Anchor" href="#23-indexhtml"></a> 2.3 index.html</h3>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -268,10 +279,9 @@ SESSION_ENGINE <span class="token operator">=</span> <span class="token string">
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>欢饮登陆：&#123;&#123; username &#125;&#125;,&#123;&#123; request.session.username &#125;&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/logout/<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>注销<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-4-settings-py"><a href="#2-4-settings-py" class="headerlink" title="2.4 settings.py"></a>2.4 settings.py</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">SESSION_SAVE_EVERY_REQUEST <span class="token operator">=</span> <span class="token boolean">True</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<h3 id="24-settingspy"><a class="markdownIt-Anchor" href="#24-settingspy"></a> 2.4 <a target="_blank" rel="noopener" href="http://settings.py">settings.py</a></h3>
+<pre class="language-python" data-language="python"><code class="language-python">SESSION_SAVE_EVERY_REQUEST <span class="token operator">=</span> <span class="token boolean">True</span></code></pre>
 
                 
                 <p class="end">__END__</p>

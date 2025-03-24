@@ -76,26 +76,32 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-基于Redis搭建高可用集群"><a href="#01-基于Redis搭建高可用集群" class="headerlink" title="01.基于Redis搭建高可用集群"></a>01.基于Redis搭建高可用集群</h1><blockquote>
+                <h1 id="01基于redis搭建高可用集群"><a class="markdownIt-Anchor" href="#01基于redis搭建高可用集群"></a> 01.基于Redis搭建高可用集群</h1>
+<blockquote>
 <p>实现可靠缓存服务即热点数据保存。redis持久化，集群，哨兵，主从，缓存击穿，热点key。</p>
 </blockquote>
 <ul>
-<li>redis有哪几种集群<ul>
+<li>redis有哪几种集群
+<ul>
 <li>主从模式</li>
 <li>哨兵模式</li>
 <li>codis</li>
 </ul>
 </li>
-<li>redis主动同步机制<ul>
-<li><strong>RDB</strong><ul>
+<li>redis主动同步机制
+<ul>
+<li><strong>RDB</strong>
+<ul>
 <li>全量同步：从服务器把有的数据全部丢弃，让主服务把所有数据全部发给他</li>
 </ul>
 </li>
-<li><strong>AOF</strong><ul>
+<li><strong>AOF</strong>
+<ul>
 <li>增量同步：主服务器只发送从服务器缺少的数据</li>
 </ul>
 </li>
-<li><strong>redis主从同步应该采用哪种方式</strong><ul>
+<li><strong>redis主从同步应该采用哪种方式</strong>
+<ul>
 <li>主从刚刚连接的时候，进行全量同步；全同步结束后，进行增量同步。</li>
 <li>当然，如果有需要，slave 在任何时候都可以发起全量同步。</li>
 <li>redis 策略是，无论如何，首先会尝试进行增量同步，如不成功，要求从机进行全量同步。</li>
@@ -103,45 +109,52 @@
 </li>
 </ul>
 </li>
-<li>redis主从<ul>
+<li>redis主从
+<ul>
 <li>写主库、读从库，减轻服务器读压力</li>
 <li>缺点：但是redis主从不能自动切换master，所以master如果挂掉了，整个集群都不可以写入啦</li>
 </ul>
 </li>
 </ul>
-<p><img src="./assets/1582594403768.png" alt="1582594403768"></p>
+<p><img src="./assets/1582594403768.png" alt="1582594403768" /></p>
 <ul>
-<li><p>哨兵模式如何解决主从问题</p>
+<li>
+<p>哨兵模式如何解决主从问题</p>
 <ul>
 <li>当用Redis做主从方案时，假如master宕机，Redis本身无法自动进行主备切换</li>
 <li>而Redis-sentinel本身也是一个独立运行的进程，它能监控多个master-slave集群，发现master宕机后能进行自动切换。</li>
 </ul>
 </li>
-<li><p><strong>sentinel原理</strong></p>
+<li>
+<p><strong>sentinel原理</strong></p>
 <ul>
 <li>sentinel负责持续监控主节点的健康，当主节挂掉时，自动选择一个最优的从节点切换成主节点</li>
 <li>从节点来连接集群时会首先连接sentinel，通过sentinel来查询主节点的地址</li>
 <li>当主节点发生故障时，sentinel会将最新的主节点地址告诉客户端，可以实现无需重启自动切换redis</li>
 </ul>
-<p>   <img src="./assets/1582596207680.png" alt="1582596207680"></p>
+<p><img src="./assets/1582596207680.png" alt="1582596207680" /></p>
 <ul>
-<li>sentinel缺点<ul>
+<li>sentinel缺点
+<ul>
 <li>redis的slave和master数据时完全一样的，但是有个问题，redis数据时存储在内存中</li>
 <li>内存空间有限，所以哨兵模式不能处理大的数据量</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>codis</p>
+<li>
+<p>codis</p>
 <ul>
-<li><p><strong>为什么会出现codis</strong></p>
+<li>
+<p><strong>为什么会出现codis</strong></p>
 <ul>
 <li>在大数据高并发场景下，单个redis实例往往会无法应对</li>
 <li>首先redis内存不易过大，内存太大会导致rdb文件过大，导致主从同步时间过长</li>
 <li>其次在CPU利用率中上，单个redis实例只能利用单核，数据量太大，压力就会特别</li>
 </ul>
 </li>
-<li><p><strong>codis部署方案</strong></p>
+<li>
+<p><strong>codis部署方案</strong></p>
 <ul>
 <li>单个codis代理支撑的QPS比较有限，通过启动多个codis代理可以显著增加整体QPS</li>
 <li>多codis还能起到容灾功能，挂掉一个codis代理还有很多codis代理可以继续服务</li>
@@ -152,7 +165,8 @@
 </ul>
 <p><img src="./assets/image-20210113154233462.png" style="width: 600px; margin-left: 10px;"> </img></p>
 <ul>
-<li><strong>codis分片的原理</strong><ul>
+<li><strong>codis分片的原理</strong>
+<ul>
 <li>codis负责将特定key转发到特定redis实例，codis默认将所有key划分为1024个槽位</li>
 <li>首先会对客户端传来的key进行crc32计算hash值，然后将hash后的整数值对1024进行取模，这个余数就是对应的key槽</li>
 <li>每个槽位都会唯一映射到后面的多个redis实例之一，codis会在内存中维护槽位和redis实例的映射关系</li>
@@ -161,7 +175,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="./assets/1582599097281.png" alt="1582599097281"></p>
+<p><img src="./assets/1582599097281.png" alt="1582599097281" /></p>
 
                 
                 <p class="end">__END__</p>

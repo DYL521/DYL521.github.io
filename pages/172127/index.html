@@ -80,11 +80,14 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-mysql事务"><a href="#01-mysql事务" class="headerlink" title="01.mysql事务"></a>01.mysql事务</h1><h2 id="1-1-InnoDB事务原理"><a href="#1-1-InnoDB事务原理" class="headerlink" title="1.1 InnoDB事务原理"></a>1.1 InnoDB事务原理</h2><ul>
+                <h1 id="01mysql事务"><a class="markdownIt-Anchor" href="#01mysql事务"></a> 01.mysql事务</h1>
+<h2 id="11-innodb事务原理"><a class="markdownIt-Anchor" href="#11-innodb事务原理"></a> 1.1 InnoDB事务原理</h2>
+<ul>
 <li>事务（Transaction）是数据库区别于文件系统的重要特性之一，事务会把数据库从一种一致性状态转换为另一种一致性状态。</li>
 <li>在数据库提交时，<strong>可以确保要么所有修改都已保存</strong>，<strong>要么所有修改都不保存</strong>。</li>
 </ul>
-<h2 id="1-2-事务四大特性"><a href="#1-2-事务四大特性" class="headerlink" title="1.2 事务四大特性"></a>1.2 事务四大特性</h2><ul>
+<h2 id="12-事务四大特性"><a class="markdownIt-Anchor" href="#12-事务四大特性"></a> 1.2 事务四大特性</h2>
+<ul>
 <li>原子性：整个事物的所有操作要么全部提交成功，要么全部失败回滚(<code>要么全部执行，要么全部回滚</code>)。</li>
 <li>一致性：几个并行执行的事务，其执行结果必须与按某一顺序串行执行的结果相一致（<code>几个并行事务执行结果相同</code>）。</li>
 <li>隔离性：事务的执行不受其他事务的干扰，事务执行的中间结果对其他事务必须是透明的。</li>
@@ -97,57 +100,82 @@
 <li>原子性并不能保证一致性，在多事务并行情况下，即使保证每个事物原子性，仍然可能数据不一致</li>
 <li>比如：假如同时开启两个事物A和B都要给tom账号转100元，可能增加两次，但是有一次被另一个事物覆盖</li>
 </ul>
-<h2 id="1-3-InnoDB与MyISAM"><a href="#1-3-InnoDB与MyISAM" class="headerlink" title="1.3 InnoDB与MyISAM"></a>1.3 InnoDB与MyISAM</h2><ul>
+<h2 id="13-innodb与myisam"><a class="markdownIt-Anchor" href="#13-innodb与myisam"></a> 1.3 InnoDB与MyISAM</h2>
+<ul>
 <li><strong><code>MyISAM不支持事物回滚，InnoDB是支持事物</code></strong></li>
 <li><strong>MyISAM</strong>和MEMORY存储引擎采用的是<strong>表级锁</strong>（table-level locking）。</li>
-<li><strong>InnoDB</strong>存储引擎既支持<strong>行级锁</strong>（row-level locking），也支持<strong>表级锁</strong>，但默认情况下是采用行级锁。<ul>
+<li><strong>InnoDB</strong>存储引擎既支持<strong>行级锁</strong>（row-level locking），也支持<strong>表级锁</strong>，但默认情况下是采用行级锁。
+<ul>
 <li>MyISAM更适合查询多的情况</li>
 <li>InnoDB更适合写入多的</li>
 </ul>
 </li>
 </ul>
-<h2 id="1-4-事务隔离级别"><a href="#1-4-事务隔离级别" class="headerlink" title="1.4 事务隔离级别"></a>1.4 事务隔离级别</h2><h3 id="1-4-1-未提交读-脏读"><a href="#1-4-1-未提交读-脏读" class="headerlink" title="1.4.1 未提交读: 脏读"></a>1.4.1 未提交读: 脏读</h3><ul>
-<li><p><code>读取到其他事务修改但未提交数据</code></p>
+<h2 id="14-事务隔离级别"><a class="markdownIt-Anchor" href="#14-事务隔离级别"></a> 1.4 事务隔离级别</h2>
+<h3 id="141-未提交读-脏读"><a class="markdownIt-Anchor" href="#141-未提交读-脏读"></a> 1.4.1 未提交读: 脏读</h3>
+<ul>
+<li>
+<p><code>读取到其他事务修改但未提交数据</code></p>
 </li>
-<li><p>1）事务2查询到的数据是事务1中修改但未提交的数据，但因为事务1回滚了数据</p>
+<li>
+<p>1）事务2查询到的数据是事务1中修改但未提交的数据，但因为事务1回滚了数据</p>
 </li>
-<li><p>2）所以事务2查询的数据是不正确的，因此出现了脏读的问题。</p>
-</li>
-</ul>
-<h3 id="1-4-2-提交读-不可重复读"><a href="#1-4-2-提交读-不可重复读" class="headerlink" title="1.4.2 提交读: 不可重复读"></a>1.4.2 提交读: 不可重复读</h3><ul>
-<li><p><code>事务1读取到事务2修改前和修改后的数据，两次读取数据不一样</code></p>
-</li>
-<li><p><strong>注：</strong>一个事务从开始到提交之前对数据所做的改变对其它事务是不可见的，这样就解决在READ-UNCOMMITTED级别下的脏读问题。</p>
-</li>
-<li><p>1）事务2执行update语句但未提交前，事务1的前两个select操作返回结果是相同的。</p>
-</li>
-<li><p>2）但事务2执行commit操作后，事务1的第三个select操作就读取到事务2对数据的改变。</p>
-</li>
-<li><p>3）导致与前两次select操作返回不同的数据，因此出现了不可重复读的问题。</p>
+<li>
+<p>2）所以事务2查询的数据是不正确的，因此出现了脏读的问题。</p>
 </li>
 </ul>
-<h3 id="1-4-3-可重复读-幻读-mysql默认"><a href="#1-4-3-可重复读-幻读-mysql默认" class="headerlink" title="1.4.3 可重复读: 幻读(mysql默认)"></a>1.4.3 可重复读: 幻读(mysql默认)</h3><ul>
-<li><p><code>事务1在自己版本号中，查询到另一个事务插入新的数据行，这就会导致该事物中凭空多出数据行</code></p>
+<h3 id="142-提交读-不可重复读"><a class="markdownIt-Anchor" href="#142-提交读-不可重复读"></a> 1.4.2 提交读: 不可重复读</h3>
+<ul>
+<li>
+<p><code>事务1读取到事务2修改前和修改后的数据，两次读取数据不一样</code></p>
 </li>
-<li><p><code>这是MySQL的默认事务隔离级别</code></p>
+<li>
+<p>**注：**一个事务从开始到提交之前对数据所做的改变对其它事务是不可见的，这样就解决在READ-UNCOMMITTED级别下的脏读问题。</p>
 </li>
-<li><p>1）事务每开启一个实例，都会分配一个版本号给它，如果读取的数据行正在被其它事务执行DELETE或UPDATE操作（即该行上有排他锁）</p>
+<li>
+<p>1）事务2执行update语句但未提交前，事务1的前两个select操作返回结果是相同的。</p>
 </li>
-<li><p>2）这时该事物的读取操作不会等待行上的锁释放，而是根据版本号去读取行的快照数据（记录在undo log中）</p>
+<li>
+<p>2）但事务2执行commit操作后，事务1的第三个select操作就读取到事务2对数据的改变。</p>
 </li>
-<li><p>3）这样，事务中的查询操作返回的都是同一版本下的数据，解决了不可重复读问题。</p>
-</li>
-<li><p>4）虽然该隔离级别下解决了不可重复读问题，但理论上会导致另一个问题：幻读（Phantom Read）。</p>
-</li>
-<li><p>5）一个事务在执行过程中，另一个事物对已有数据行的更改，MVCC机制可保障该事物读取到的原有数据行的内容相同</p>
-</li>
-<li><p>6）但并不能阻止另一个事务插入新的数据行，这就会导致该事物中凭空多出数据行，像出现了幻读一样，这便是幻读问题。</p>
+<li>
+<p>3）导致与前两次select操作返回不同的数据，因此出现了不可重复读的问题。</p>
 </li>
 </ul>
-<h3 id="1-4-4-可串行读"><a href="#1-4-4-可串行读" class="headerlink" title="1.4.4 可串行读"></a>1.4.4 可串行读</h3><ul>
-<li><p>1）这是事务的最高隔离级别，通过强制事务排序，使之不可能相互冲突，就是在每个读的数据行加上共享锁来实现。</p>
+<h3 id="143-可重复读-幻读mysql默认"><a class="markdownIt-Anchor" href="#143-可重复读-幻读mysql默认"></a> 1.4.3 可重复读: 幻读(mysql默认)</h3>
+<ul>
+<li>
+<p><code>事务1在自己版本号中，查询到另一个事务插入新的数据行，这就会导致该事物中凭空多出数据行</code></p>
 </li>
-<li><p>2）在该隔离级别下，可以解决前面出现的脏读、不可重复读和幻读问题，但也会导致大量的超时和锁竞争现象，一般不推荐使用。</p>
+<li>
+<p><code>这是MySQL的默认事务隔离级别</code></p>
+</li>
+<li>
+<p>1）事务每开启一个实例，都会分配一个版本号给它，如果读取的数据行正在被其它事务执行DELETE或UPDATE操作（即该行上有排他锁）</p>
+</li>
+<li>
+<p>2）这时该事物的读取操作不会等待行上的锁释放，而是根据版本号去读取行的快照数据（记录在undo log中）</p>
+</li>
+<li>
+<p>3）这样，事务中的查询操作返回的都是同一版本下的数据，解决了不可重复读问题。</p>
+</li>
+<li>
+<p>4）虽然该隔离级别下解决了不可重复读问题，但理论上会导致另一个问题：幻读（Phantom Read）。</p>
+</li>
+<li>
+<p>5）一个事务在执行过程中，另一个事物对已有数据行的更改，MVCC机制可保障该事物读取到的原有数据行的内容相同</p>
+</li>
+<li>
+<p>6）但并不能阻止另一个事务插入新的数据行，这就会导致该事物中凭空多出数据行，像出现了幻读一样，这便是幻读问题。</p>
+</li>
+</ul>
+<h3 id="144-可串行读"><a class="markdownIt-Anchor" href="#144-可串行读"></a> 1.4.4 可串行读</h3>
+<ul>
+<li>
+<p>1）这是事务的最高隔离级别，通过强制事务排序，使之不可能相互冲突，就是在每个读的数据行加上共享锁来实现。</p>
+</li>
+<li>
+<p>2）在该隔离级别下，可以解决前面出现的脏读、不可重复读和幻读问题，但也会导致大量的超时和锁竞争现象，一般不推荐使用。</p>
 </li>
 </ul>
 

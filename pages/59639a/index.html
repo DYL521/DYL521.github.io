@@ -76,17 +76,20 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="01-redis缓存"><a href="#01-redis缓存" class="headerlink" title="01.redis缓存"></a>01.redis缓存</h1><pre class="line-numbers language-none"><code class="language-none">第一步：查询redis缓存是否存在这个key
+                <h1 id="01redis缓存"><a class="markdownIt-Anchor" href="#01redis缓存"></a> 01.redis缓存</h1>
+<pre class="language-none"><code class="language-none">第一步：查询redis缓存是否存在这个key
 第二步：如果存在这个key，不用去mysql中查询，直接从redis中取出数据即可（减轻了mysql压力）
-第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-1-2B青年操作"><a href="#1-1-2B青年操作" class="headerlink" title="1.1 2B青年操作"></a>1.1 2B青年操作</h2><ul>
-<li><p>2B青年每一个需要使用缓存的数据，我都写一个方法获取数据，再写一个方法处理缓存。</p>
+第三步：如果查询的key不存在，先到mysql中查询数据，让后设置到redis中，下次查询就有了</code></pre>
+<h2 id="11-2b青年操作"><a class="markdownIt-Anchor" href="#11-2b青年操作"></a> 1.1 2B青年操作</h2>
+<ul>
+<li>
+<p>2B青年每一个需要使用缓存的数据，我都写一个方法获取数据，再写一个方法处理缓存。</p>
 </li>
-<li><p>若需要用到缓存的地方越来越多，每一个都需要这么写一套代码，代码冗余繁琐。</p>
+<li>
+<p>若需要用到缓存的地方越来越多，每一个都需要这么写一套代码，代码冗余繁琐。</p>
 </li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
 <span class="token keyword">import</span> time
 
@@ -113,12 +116,12 @@
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
     test1<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    test2<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-2-NB青年"><a href="#1-2-NB青年" class="headerlink" title="1.2 NB青年"></a>1.2 NB青年</h2><ul>
+    test2<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h2 id="12-nb青年"><a class="markdownIt-Anchor" href="#12-nb青年"></a> 1.2 NB青年</h2>
+<ul>
 <li>NB青年可以使用三级装饰器，在装饰器中判断key如果存在就从reids中获取，如果不存在就从数据库查询，并设置到reids中</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># coding:utf-8</span>
 <span class="token keyword">from</span> django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>cache <span class="token keyword">import</span> cache
 
 <span class="token comment"># 获取redis缓存的装饰器</span>
@@ -157,8 +160,7 @@
     <span class="token keyword">return</span> data
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    get_test_data<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    get_test_data<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
                 
                 <p class="end">__END__</p>
