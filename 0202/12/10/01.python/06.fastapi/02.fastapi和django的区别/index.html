@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            01.预备章
+            02.fastAPI和django的区别
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,7 +37,7 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">01.预备章</h1>
+                <h1 class="header-subtitle">02.fastAPI和django的区别</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
@@ -45,13 +45,13 @@
                         </span>
                         
                             
-                                <span id="/0202/12/10/01.python/06.Pandas/01.预备章/" class="leancloud_visitors" data-flag-title="01.预备章">
+                                <span id="/0202/12/10/01.python/06.fastapi/02.fastapi和django的区别/" class="leancloud_visitors" data-flag-title="02.fastAPI和django的区别">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/0202/12/10/01.python/06.Pandas/01.预备章/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/0202/12/10/01.python/06.fastapi/02.fastapi和django的区别/"></span>
                                 </span>
                               
                         
@@ -60,12 +60,12 @@
                         
                             <span class="category-color">python</span>
                         
-                            <span class="category-color">Pandas</span>
+                            <span class="category-color">fastAPI</span>
                         
                     
                     
                         
-                            <span class="tag-color">-Pandas</span>
+                            <span class="tag-color">fastAPI</span>
                         
                     
                 </div>
@@ -80,7 +80,91 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                
+                <h1 id="1-架构设计"><a class="markdownIt-Anchor" href="#1-架构设计"></a> 1、架构设计</h1>
+<ul>
+<li>
+<p>django</p>
+<ul>
+<li>Django是一个<strong>全栈框架</strong>，它提供了完整的工具集来构建web应用，包括ORM、表单、认证系统、<br />
+后台管理系统、模版引擎等等。django提供了很多开箱即用的功能，能够快速具有丰富功能的应用程序</li>
+<li>Django适合构建传统的、数据驱动的应用，尤其是适合快速开发原型和生产环境应用；</li>
+</ul>
+</li>
+<li>
+<p>FastAPI</p>
+<ul>
+<li>FastAPI是一个<strong>轻量级的web框架</strong>, 主要专注高效的API构建。它并不像Django那样提供完整的工具集，如内置的后台管理系统等等。<br />
+FastAPI更侧重构建现代、快速的RESTFul APIs,并具有非常高的性能。</li>
+<li>FastAPI更适合需要构建高性能API或者微服务架构的应用。</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-性能"><a class="markdownIt-Anchor" href="#2-性能"></a> 2、性能</h1>
+<ul>
+<li>
+<p>django</p>
+<ul>
+<li>Django是一个<strong>同步框架</strong>，虽然它已经引入了ASGI支持异步操作（在Django 3.x之后），但是整体上，django对于IO，密集型任务的处理不如FastAPI高效。</li>
+<li>Django在处理请求时，通常会阻塞，尤其是在大量并发请求的情况下，性能可能会受到影响。</li>
+</ul>
+</li>
+<li>
+<p>FastAPI</p>
+<ul>
+<li>FastAPI是一个<strong>异步框架</strong>,默认支持异步I/O(async/wait), 因此，FastAPI在处理大量并发请求时，有显著的性能优势。对于IO密集型应用（如数据库操作、外部API调用等），FastAPI可以显著提高响应时速度和吞吐量。</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-易用性"><a class="markdownIt-Anchor" href="#3-易用性"></a> 3、易用性</h1>
+<h1 id="4-开发方式"><a class="markdownIt-Anchor" href="#4-开发方式"></a> 4、开发方式</h1>
+<h1 id="5-文档生成"><a class="markdownIt-Anchor" href="#5-文档生成"></a> 5、文档生成</h1>
+<h1 id="6-数据验证"><a class="markdownIt-Anchor" href="#6-数据验证"></a> 6、数据验证</h1>
+<ul>
+<li>
+<p>Django</p>
+<ul>
+<li>Django使用表单（Forms）或者（models）来进行验证，这些验证通常是手动的，开发者需要编写表单验证逻辑。</li>
+<li>Django ORM会自动验证数据库模型，但是对于请求体（JSON数据）需要额外的工作。</li>
+</ul>
+</li>
+<li>
+<p>FastAPI</p>
+<ul>
+<li>FastAPI使用<strong>Pydantic</strong>进行数据验证，Pydantic利用pyhton的类型提示进行自动的请求数据验证。开发者需要定义数据模型，FastAPI就可以自动验证和解析数据，极大减少了次重复验证工作。</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-支持的数据库"><a class="markdownIt-Anchor" href="#7-支持的数据库"></a> 7、支持的数据库</h1>
+<ul>
+<li>
+<p>Django:</p>
+<ul>
+<li>Django自带ORM， 为多种数据提供支持，如SQLite、PostgreSQL、MYSQL等等，内置数据库迁移和查询优化；</li>
+<li>Django ORM提供高层抽象，适合不想直接操作SQL的开发者。</li>
+</ul>
+</li>
+<li>
+<p>FastAPI:</p>
+<ul>
+<li>FastAPI没有内部的ORM支持，开发者可以自由选择适合的数据库工具，如（SQLAlchemy、Tortoise ORM、Databases 等）</li>
+<li>FastAPI更注重<strong>灵活</strong>，允许开发者根据需要选择数据库解决方案。</li>
+</ul>
+</li>
+</ul>
+<h1 id="8-异步支持"><a class="markdownIt-Anchor" href="#8-异步支持"></a> 8、异步支持</h1>
+<ul>
+<li>Django
+<ul>
+<li>django直到3.x才开始加入对异步视图（async views）。虽然Django支持了异步，但是在很多场景下任然是同步的。</li>
+</ul>
+</li>
+<li>FastAPI
+<ul>
+<li>FastAPI在设计之初就完全支持异步操作（async/awit）,非常适合高并发场景，尤其是自IO密集型操作中表现出色。</li>
+</ul>
+</li>
+</ul>
+
                 
                 <p class="end">__END__</p>
             </div>
@@ -92,7 +176,7 @@
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>DYL521
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">01.预备章</a>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">02.fastAPI和django的区别</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -109,7 +193,7 @@
                         
                             <a href="../../../../../../categories/python/">python</a>
                         
-                            <a href="../../../../../../categories/python/Pandas/">Pandas</a>
+                            <a href="../../../../../../categories/python/fastAPI/">fastAPI</a>
                         
                     </div>
                 
@@ -117,15 +201,17 @@
                     <div class="tag">
                         标签：
                         
-                            <a href="../../../../../../tag/Pandas/">-Pandas</a>
+                            <a href="../../../../../../tag/fastAPI/">fastAPI</a>
                         
                     </div>
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../../../../../pages/a2af69/" class="prev-prefix">« </a> 上一篇：    <a href="../../../../../../pages/a2af69/" title="发布于 2020-02-12 10:32">11.时间复杂度</a>
+                        <a href="../01.fastAPI%E7%9F%A5%E8%AF%86%E7%82%B9/" class="prev-prefix">« </a> 上一篇：    <a href="../01.fastAPI%E7%9F%A5%E8%AF%86%E7%82%B9/" title="发布于 0202-12-10 04:05">01.知识点</a>
                         <br>
                     
+                    
+                        <a href="../../07.Pandas/01.%E9%A2%84%E5%A4%87%E7%AB%A0/" class="next-prefix">» </a> 下一篇：    <a href="../../07.Pandas/01.%E9%A2%84%E5%A4%87%E7%AB%A0/" title="发布于 0202-12-10 04:05">01.预备章</a>
                     
                 </div>
             </div>
