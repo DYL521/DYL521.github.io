@@ -81,11 +81,9 @@
             <div class="toc"></div>
             <div class="article-body">
                 <ul>
-<li>
-<p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/zh/">https://fastapi.tiangolo.com/zh/</a></p>
-</li>
-<li>
-<p>关键特性：</p>
+<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/zh/">https://fastapi.tiangolo.com/zh/</a></li>
+</ul>
+<h1 id="1-关键特性"><a class="markdownIt-Anchor" href="#1-关键特性"></a> 1、关键特性：</h1>
 <ul>
 <li>快速： 归功于 Starlette 和 Pydantic</li>
 <li>高效编程： 提高开发效率</li>
@@ -94,8 +92,37 @@
 <li>简短：使代码重复最小化。通过不同的参数声明实现丰富功能。bug 更少。</li>
 <li>健壮：生产可用级别的代码。还有自动生成的交互式文档。</li>
 </ul>
-</li>
+<h1 id="2-为什么fastapi"><a class="markdownIt-Anchor" href="#2-为什么fastapi"></a> 2、为什么FastAPI？</h1>
+<h2 id="21-异步编程asyncawait"><a class="markdownIt-Anchor" href="#21-异步编程asyncawait"></a> 2.1 异步编程（async/await）</h2>
+<p>FastAPI完全支持<strong>异步编程</strong>，即通过async/await来处理IO操作（如数据库查询、文件操作、外部API请求），这是的它能够在等待IO操作时不会阻塞其他请求，从何提高并发性能。</p>
+<ul>
+<li><strong>异步操作</strong>： 当FastAPI需要执行IO密集型任务时（如数据库查询或许调用外部API），它不会阻塞当前线程，允许其他继续处理，这样显著提高系统的吞吐量。</li>
+<li><strong>事件驱动</strong>：FastAPI使用异步框架<strong>Starlette</strong>，它通过事件循环（Event Loop）管理请求，允许高效并行处理多个请求。</li>
 </ul>
+<h2 id="22-基于starlette构建"><a class="markdownIt-Anchor" href="#22-基于starlette构建"></a> 2.2 基于Starlette构建</h2>
+<p>Starlette 是一个高性能的异步框架，它为 FastAPI 提供了强大的异步支持。Starlette 是专为高效处理大量并发请求而设计的，支持 WebSocket、长轮询、异步 HTTP 请求等，FastAPI 使用它来管理请求的生命周期。<br />
+Starlette 的事件循环模型使得 FastAPI 能够在处理多个请求时，快速切换执行上下文，并避免了传统同步框架中的阻塞和等待时间。</p>
+<h2 id="23-pydantic-进行高效数据验证"><a class="markdownIt-Anchor" href="#23-pydantic-进行高效数据验证"></a> 2.3  Pydantic 进行高效数据验证</h2>
+<pre><code>FastAPI 使用 Pydantic 来进行数据验证和解析，Pydantic 利用 Python 的 类型提示（Type Hints）进行数据验证，确保请求数据的类型安全。
+Pydantic 的验证过程是高度优化的，它不仅支持数据的结构化验证，还支持 类型检查 和 嵌套模型验证，并且比传统的手动验证方式要快得多。
+Pydantic 的实现是基于 dataclasses 和 typing，它的设计使得验证过程非常高效。
+</code></pre>
+<h2 id="24-自动化的请求解析和响应生成"><a class="markdownIt-Anchor" href="#24-自动化的请求解析和响应生成"></a> 2.4 自动化的请求解析和响应生成</h2>
+<pre><code>FastAPI 通过自动解析和生成请求/响应的 JSON 数据，避免了传统 Web 框架中手动处理这些数据的开销。
+它自动将请求体解析为 Python 类型（如字典、列表等），并使用 Pydantic 校验数据。这使得开发者无需写冗余的解析和验证代码，大大节省了开发时间和性能开销
+</code></pre>
+<h2 id="25-优化的-json-编码解码"><a class="markdownIt-Anchor" href="#25-优化的-json-编码解码"></a> 2.5  优化的 JSON 编码/解码</h2>
+<ul>
+<li>FastAPI默认使用ujson和orjson进行JSON的序列化和反序列化，而不是python内置json模块。这些优化过的性能比内置json库高很多。</li>
+<li>高效的JSON序列化和反序列化可以减少请求和响应的延时，从而提高API性能。</li>
+</ul>
+<h2 id="26-自动生成-openapi-文档和-swagger-ui"><a class="markdownIt-Anchor" href="#26-自动生成-openapi-文档和-swagger-ui"></a> 2.6. 自动生成 OpenAPI 文档和 Swagger UI</h2>
+<h2 id="27-高效的异常处理机制"><a class="markdownIt-Anchor" href="#27-高效的异常处理机制"></a> 2.7. 高效的异常处理机制</h2>
+<pre><code>FastAPI 的异常处理机制是经过优化的，当发生异常时，框架能够高效地捕获并返回错误响应。它支持通过声明式的方式处理不同的错误类型（如 404、500 错误），并且异常信息可以自定义，响应速度非常快。
+</code></pre>
+<h2 id="28-asgi-支持"><a class="markdownIt-Anchor" href="#28-asgi-支持"></a> 2.8. ASGI 支持</h2>
+<h2 id="29-类型提示和静态类型检查"><a class="markdownIt-Anchor" href="#29-类型提示和静态类型检查"></a> 2.9. 类型提示和静态类型检查</h2>
+<h2 id="210-精简的框架"><a class="markdownIt-Anchor" href="#210-精简的框架"></a> 2.10. 精简的框架</h2>
 
                 
                 <p class="end">__END__</p>
