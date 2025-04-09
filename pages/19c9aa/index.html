@@ -124,6 +124,37 @@ possible_keys: PRIMARY          <span class="token comment"># 可能使用的索
                                 
                           
 ******************************************************</code></pre>
+<ul>
+<li>慢查询应该关注项
+<ol>
+<li>type = ALL</li>
+</ol>
+<ul>
+<li>全表扫描，说明没有使用索引</li>
+<li>优化方向： 增加索引或者修改查询条件</li>
+</ul>
+<ol start="2">
+<li>key = NULL
+<ul>
+<li>没有实际使用索引</li>
+<li>优化方向：检查possible_keys，可能是索引设计不合理或者写法阻碍使用索引。</li>
+</ul>
+</li>
+<li>rows 数值很大
+<ul>
+<li>说明扫描的行数哦很多，预估成本很高</li>
+<li>优化方向：是否可以通过索引减少扫描的数据量？</li>
+</ul>
+</li>
+<li>Extra包含Using filesort 或者 Using temporary
+<ul>
+<li>说明使用了磁盘排序或者临时表，这通常是性能瓶颈</li>
+<li>优化方向： 尽量通过索引避免这类操作，比如 ORDER BY 字段加索引。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
 
                 
                 <p class="end">__END__</p>
@@ -164,7 +195,7 @@ possible_keys: PRIMARY          <span class="token comment"># 可能使用的索
                         <br>
                     
                     
-                        <a href="../../pages/a36fa8/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a36fa8/" title="发布于 2021-02-22 04:00">06.MySQL优化</a>
+                        <a href="../../pages/ee7415/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/ee7415/" title="发布于 2021-02-22 04:00">07.MySQL主从同步</a>
                     
                 </div>
             </div>
