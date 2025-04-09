@@ -109,18 +109,20 @@ mysqldumpslow <span class="token parameter variable">-s</span> r <span class="to
 </ul>
 <pre class="language-bash" data-language="bash"><code class="language-bash">mysql<span class="token operator">></span> explain <span class="token keyword">select</span> * from subject where <span class="token function">id</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">\</span>G
 ******************************************************
-           id: <span class="token number">1</span>
-  select_type: SIMPLE
+           id: <span class="token number">1</span>                <span class="token comment"># 查询中每个SELECT子句的标识符； 数字越大优先级越高；联合查询中可有多个 ID。</span>
+  select_type: SIMPLE           <span class="token comment"># 查询的类型          ；SIMPLE（简单查询）、PRIMARY（主查询）、SUBQUERY（子查询）、DERIVED（派生表/子查询派生结果）</span>
         table: user             <span class="token comment"># 表示访问那个表</span>
    partitions: NULL
-         type: const
-possible_keys: PRIMARY
+         type: const            <span class="token comment"># 连接的类型         ；关键字段，system > const > eq_ref > range > index > ALL 。 ALL表示全表扫描，性能最差</span>
+possible_keys: PRIMARY          <span class="token comment"># 可能使用的索引。    ；为空表示没有合适的索引</span>
           key: PRIMARY           <span class="token comment"># 使用了主键索引，如果为null代表没有使用索引</span>
       key_len: <span class="token number">4</span>                <span class="token comment"># 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度</span>
           ref: const
-         rows: <span class="token number">1</span>
-     filtered: <span class="token number">100.00</span>             <span class="token comment"># 查询的表行占表的百分比</span>
-        Extra: NULL
+         rows: <span class="token number">1</span>                <span class="token comment"># 预计读取的行数 ； 越少越好，说明索引命中率越高； </span>
+     filtered: <span class="token number">100.00</span>           <span class="token comment"># 查询的表行占表的百分比； 10表示只留下10%的行</span>
+        Extra: NULL             <span class="token comment"># 执行过程的额外信息；  - Using index（覆盖索引）、Using where(用了where条件)、Using Temporary（使用临时表，可能影响性能）、Using filesort（使用文件排序，可能影响性能）</span>
+                                
+                          
 ******************************************************</code></pre>
 
                 
