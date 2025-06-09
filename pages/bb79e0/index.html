@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -78,63 +80,39 @@
             <div class="article-body">
                 <h2 id="01centos7安装mongodb"><a class="markdownIt-Anchor" href="#01centos7安装mongodb"></a> 01.centos7安装MongoDB</h2>
 <h3 id="11-安装mongodb"><a class="markdownIt-Anchor" href="#11-安装mongodb"></a> 1.1 安装MongoDB</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/yum.repos.d/mongodb-org-4.0.repo</span>
-<span class="token punctuation">[</span>mongodb-org-4.0<span class="token punctuation">]</span>
-<span class="token assign-left variable">name</span><span class="token operator">=</span>MongoDB Repository
-<span class="token assign-left variable">baseurl</span><span class="token operator">=</span>https://repo.mongodb.org/yum/redhat/<span class="token variable">$releasever</span>/mongodb-org/4.0/x86_64/
-<span class="token assign-left variable">gpgcheck</span><span class="token operator">=</span><span class="token number">1</span>
-<span class="token assign-left variable">enabled</span><span class="token operator">=</span><span class="token number">1</span>
-<span class="token assign-left variable">gpgkey</span><span class="token operator">=</span>https://www.mongodb.org/static/pgp/server-4.0.asc</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# vim /etc/yum.repos.d/mongodb-org-4.0.repo</span><br><span class="line">[mongodb-org-4.0]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>yum安装</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment">#  sudo yum install -y mongodb-org</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]#  sudo yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
 <h3 id="12-配置mongodb"><a class="markdownIt-Anchor" href="#12-配置mongodb"></a> 1.2 配置MongoDB</h3>
 <ul>
 <li>配置<code>mongod.conf</code>允许远程连接</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment">#  vim /etc/mongod.conf</span>
-<span class="token comment"># network interfaces</span>
-net:
-  port: <span class="token number">27017</span>
-  bindIp: <span class="token number">0.0</span>.0.0  <span class="token comment"># Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]#  vim /etc/mongod.conf</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">network interfaces</span></span><br><span class="line">net:</span><br><span class="line">  port: 27017</span><br><span class="line">  bindIp: 0.0.0.0  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>启动mongo</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># sudo service mongod start</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# sudo service mongod start</span><br></pre></td></tr></table></figure>
 <h3 id="13-创建管理员"><a class="markdownIt-Anchor" href="#13-创建管理员"></a> 1.3 创建管理员</h3>
 <ul>
 <li>创建管理员用户</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># mongo</span>
-<span class="token operator">></span> use admin
-<span class="token operator">></span> db.createUser<span class="token punctuation">(</span>
-  <span class="token punctuation">&#123;</span>
-    user: <span class="token string">"myUserAdmin"</span>,
-    pwd: <span class="token string">"abc123"</span>,
-    roles: <span class="token punctuation">[</span> <span class="token punctuation">&#123;</span> role: <span class="token string">"userAdminAnyDatabase"</span>, db: <span class="token string">"admin"</span> <span class="token punctuation">&#125;</span>, <span class="token string">"readWriteAnyDatabase"</span> <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
- <span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# mongo</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">use admin</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">db.createUser(</span></span><br><span class="line">  &#123;</span><br><span class="line">    user: &quot;myUserAdmin&quot;,</span><br><span class="line">    pwd: &quot;abc123&quot;,</span><br><span class="line">    roles: [ &#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125;, &quot;readWriteAnyDatabase&quot; ]</span><br><span class="line">  &#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
 <ul>
 <li>启用权限管理</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/mongod.conf</span>
-<span class="token comment">#security </span>
-security:
-  authorization: enabled</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# vim /etc/mongod.conf</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">security</span> </span><br><span class="line">security:</span><br><span class="line">  authorization: enabled</span><br></pre></td></tr></table></figure>
 <ul>
 <li>重启mongodb</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># sudo service mongod restart</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# sudo service mongod restart</span><br></pre></td></tr></table></figure>
 <ul>
 <li>登录MongoDB</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># mongo --host 127.0.0.1 -u "myUserAdmin" --authenticationDatabase "admin" -p'abc123'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# mongo --host 127.0.0.1 -u &quot;myUserAdmin&quot; --authenticationDatabase &quot;admin&quot; -p&#x27;abc123&#x27;</span><br></pre></td></tr></table></figure>
 <h3 id="14-测试可用性"><a class="markdownIt-Anchor" href="#14-测试可用性"></a> 1.4 测试可用性</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node1 ~<span class="token punctuation">]</span><span class="token comment"># mongo --host 127.0.0.1 -u "myUserAdmin" --authenticationDatabase "admin" -p'abc123'</span>
-<span class="token operator">></span>  show dbs             <span class="token comment"># 查看所有db</span>
-<span class="token operator">></span>  use mydemo             <span class="token comment"># 使用我们的数据库（如果没有这个数据库会自动创建）</span>
-<span class="token operator">></span>  db.test1.insert<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>id:1,<span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"Tom"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>       <span class="token comment"># 在test1表中插入一条数据（如果没有这个表会自动创建）</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]# mongo --host 127.0.0.1 -u &quot;myUserAdmin&quot; --authenticationDatabase &quot;admin&quot; -p&#x27;abc123&#x27;</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"> show dbs             <span class="comment"># 查看所有db</span></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"> use mydemo             <span class="comment"># 使用我们的数据库（如果没有这个数据库会自动创建）</span></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"> db.test1.insert(&#123;<span class="built_in">id</span>:1,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;Tom&quot;</span>&#125;)       <span class="comment"># 在test1表中插入一条数据（如果没有这个表会自动创建）</span></span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -824,6 +802,8 @@ security:
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

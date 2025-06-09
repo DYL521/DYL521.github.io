@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -79,54 +81,25 @@
                 <h2 id="01基本测试"><a class="markdownIt-Anchor" href="#01基本测试"></a> 01.基本测试</h2>
 <h3 id="11-测试分词功能"><a class="markdownIt-Anchor" href="#11-测试分词功能"></a> 1.1 测试分词功能</h3>
 <p><a target="_blank" rel="noopener" href="http://192.168.56.66:5601">http://192.168.56.66:5601</a></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /*          <span class="token comment">## 获取所有数据</span>
-
-DELETE /*        <span class="token comment">## 删除所有数据</span>
-
-GET /_analyze     <span class="token comment">## 测试分词</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-  <span class="token string">"text"</span><span class="token builtin class-name">:</span> <span class="token string">"2001A第一帅是谁？"</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /*          ## 获取所有数据</span><br><span class="line"></span><br><span class="line">DELETE /*        ## 删除所有数据</span><br><span class="line"></span><br><span class="line">GET /_analyze     ## 测试分词</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;2001A第一帅是谁？&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="./assets/image-20210111202234040.png" style="width: 700px; margin-left: 50px;"> </img></p>
 <h3 id="12-测试添加数据"><a class="markdownIt-Anchor" href="#12-测试添加数据"></a> 1.2 测试添加数据</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">PUT test1/type1/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"kitty"</span>,
-  <span class="token string">"age"</span>:12
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT test1/type1/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;kitty&quot;,</span><br><span class="line">  &quot;age&quot;:12</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="./assets/image-20210111204251160.png" style="width: 800px; margin-left: 50px;"> </img></p>
 <h2 id="02商品文档的基础操作crud"><a class="markdownIt-Anchor" href="#02商品文档的基础操作crud"></a> 02.商品文档的基础操作(CRUD)</h2>
 <h3 id="21-新增商品"><a class="markdownIt-Anchor" href="#21-新增商品"></a> 2.1 新增商品</h3>
 <ul>
 <li>标准语法</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">put /index/type/id
-<span class="token punctuation">&#123;</span>
-	k-v类型的数据
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">put /index/type/id</span><br><span class="line">&#123;</span><br><span class="line">	k-v类型的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>添加第一条数据</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiangjiao"</span>,
-  <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">"haochi tian"</span>,
-  <span class="token string">"price"</span>:40,
-  <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"feilvbin"</span>,
-  <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"xiangjiao"</span>,<span class="token string">"haochi"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put /goods/fruit/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;xiangjiao&quot;,</span><br><span class="line">  &quot;describe&quot;:&quot;haochi tian&quot;,</span><br><span class="line">  &quot;price&quot;:40,</span><br><span class="line">  &quot;producer&quot;:&quot;feilvbin&quot;,</span><br><span class="line">  &quot;tags&quot;:[&quot;xiangjiao&quot;,&quot;haochi&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>添加第二条数据</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/2
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"pingguo"</span>,
-  <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">" cui"</span>,
-  <span class="token string">"price"</span>:60,
-  <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"zhongguo"</span>,
-  <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"haokan"</span>,<span class="token string">"xiang"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put /goods/fruit/2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;pingguo&quot;,</span><br><span class="line">  &quot;describe&quot;:&quot; cui&quot;,</span><br><span class="line">  &quot;price&quot;:60,</span><br><span class="line">  &quot;producer&quot;:&quot;zhongguo&quot;,</span><br><span class="line">  &quot;tags&quot;:[&quot;haokan&quot;,&quot;xiang&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>其中 goods表示要创建的索引名称(数据库),fruit表示要创建的数据类别（表）,1表示插入的数据的主键,这里需要明确一个概念就是倒排索引</li>
 </ul>
@@ -137,51 +110,20 @@ GET /_analyze     <span class="token comment">## 测试分词</span>
 <ul>
 <li>标准语法:</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /index /type/id</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># GET /index /type/id</span></span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>测试查询</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /goods/fruit/1</span>
-<span class="token comment">## 查询结果如下:</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"_index"</span> <span class="token builtin class-name">:</span> <span class="token string">"goods"</span>,
-  <span class="token string">"_type"</span> <span class="token builtin class-name">:</span> <span class="token string">"fruit"</span>,
-  <span class="token string">"_id"</span> <span class="token builtin class-name">:</span> <span class="token string">"1"</span>,
-  <span class="token string">"_version"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,               ----------------表示当前的操作版本号
-  <span class="token string">"found"</span> <span class="token builtin class-name">:</span> true,
-  <span class="token string">"_source"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>                ------------------表示元数据,内部信息就是当前的这条记录信息
-    <span class="token string">"name"</span> <span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>,
-    <span class="token string">"describe"</span> <span class="token builtin class-name">:</span> <span class="token string">"haochi tian"</span>,
-    <span class="token string">"price"</span> <span class="token builtin class-name">:</span> <span class="token number">40</span>,
-    <span class="token string">"producer"</span> <span class="token builtin class-name">:</span> <span class="token string">"feilvbin"</span>,
-    <span class="token string">"tags"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-      <span class="token string">"xiangjiao"</span>,
-      <span class="token string">"haochi"</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">## 注意:带下划线的都是es自带的属性</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># GET /goods/fruit/1</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询结果如下:</span></span></span><br><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot; : &quot;goods&quot;,</span><br><span class="line">  &quot;_type&quot; : &quot;fruit&quot;,</span><br><span class="line">  &quot;_id&quot; : &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot; : 1,               ----------------表示当前的操作版本号</span><br><span class="line">  &quot;found&quot; : true,</span><br><span class="line">  &quot;_source&quot; : &#123;                ------------------表示元数据,内部信息就是当前的这条记录信息</span><br><span class="line">    &quot;name&quot; : &quot;xiangjiao&quot;,</span><br><span class="line">    &quot;describe&quot; : &quot;haochi tian&quot;,</span><br><span class="line">    &quot;price&quot; : 40,</span><br><span class="line">    &quot;producer&quot; : &quot;feilvbin&quot;,</span><br><span class="line">    &quot;tags&quot; : [</span><br><span class="line">      &quot;xiangjiao&quot;,</span><br><span class="line">      &quot;haochi&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 注意:带下划线的都是es自带的属性</span></span></span><br></pre></td></tr></table></figure>
 <h3 id="23-修改商品"><a class="markdownIt-Anchor" href="#23-修改商品"></a> 2.3 修改商品</h3>
 <ul>
 <li>标准语法</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## POST /index/type/id/_update</span>
-
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"doc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"field"</span><span class="token builtin class-name">:</span> <span class="token string">"vaule"</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># POST /index/type/id/_update</span></span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">	&quot;doc&quot;: &#123;</span><br><span class="line">		&quot;field&quot;: &quot;vaule&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>测试修改</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## POST /goods/fruit/1/_update</span>
-
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"doc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"yutou"</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># POST /goods/fruit/1/_update</span></span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123;</span><br><span class="line">    &quot;name&quot;:&quot;yutou&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>可以同时修改多条属性的值,值与值之间用”,”号间隔,还有一种非主流的写法也是可以的</li>
 </ul>
@@ -189,17 +131,13 @@ GET /_analyze     <span class="token comment">## 测试分词</span>
 <ul>
 <li>标准语法:</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## DELETE /index/type/id</span>
-
-DELETE /goods/fruit/1</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># DELETE /index/type/id</span></span></span><br><span class="line"></span><br><span class="line">DELETE /goods/fruit/1</span><br></pre></td></tr></table></figure>
 <h2 id="03es查询操作"><a class="markdownIt-Anchor" href="#03es查询操作"></a> 03.es查询操作</h2>
 <h3 id="31-全部查询"><a class="markdownIt-Anchor" href="#31-全部查询"></a> 3.1 全部查询</h3>
 <ul>
 <li>标准语法:</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## GET /index/type/_search</span>
-
-GET /goods/fruit/_search                     <span class="token comment">## 查询所有</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># GET /index/type/_search</span></span></span><br><span class="line"></span><br><span class="line">GET /goods/fruit/_search                     ## 查询所有</span><br></pre></td></tr></table></figure>
 <ul>
 <li>
 <p>查询结果说明</p>
@@ -216,146 +154,37 @@ GET /goods/fruit/_search                     <span class="token comment">## 查�
 <p>查询结果</p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
-  <span class="token string">"took"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,                  <span class="token comment">## 耗费了几毫秒</span>
-  <span class="token string">"timed_out"</span> <span class="token builtin class-name">:</span> false,            <span class="token comment">## 是否超时，这里是没有</span>
-  <span class="token string">"_shards"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"total"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-    <span class="token string">"successful"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-    <span class="token string">"skipped"</span> <span class="token builtin class-name">:</span> <span class="token number">0</span>,
-    <span class="token string">"failed"</span> <span class="token builtin class-name">:</span> <span class="token number">0</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"hits"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"total"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"value"</span> <span class="token builtin class-name">:</span> <span class="token number">1</span>,
-      <span class="token string">"relation"</span> <span class="token builtin class-name">:</span> <span class="token string">"eq"</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token string">"max_score"</span> <span class="token builtin class-name">:</span> <span class="token number">0.6931472</span>,
-    <span class="token string">"hits"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-      <span class="token punctuation">&#123;</span>
-        <span class="token string">"_index"</span> <span class="token builtin class-name">:</span> <span class="token string">"goods"</span>,
-        <span class="token string">"_type"</span> <span class="token builtin class-name">:</span> <span class="token string">"fruit"</span>,
-        <span class="token string">"_id"</span> <span class="token builtin class-name">:</span> <span class="token string">"1"</span>,
-        <span class="token string">"_score"</span> <span class="token builtin class-name">:</span> <span class="token number">0.6931472</span>,
-        <span class="token string">"_source"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token string">"name"</span> <span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>,
-          <span class="token string">"describe"</span> <span class="token builtin class-name">:</span> <span class="token string">"haochi tian"</span>,
-          <span class="token string">"price"</span> <span class="token builtin class-name">:</span> <span class="token number">40</span>,
-          <span class="token string">"producer"</span> <span class="token builtin class-name">:</span> <span class="token string">"feilvbin"</span>,
-          <span class="token string">"tags"</span> <span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-            <span class="token string">"xiangjiao"</span>,
-            <span class="token string">"haochi"</span>
-          <span class="token punctuation">]</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot; : 1,                  ## 耗费了几毫秒</span><br><span class="line">  &quot;timed_out&quot; : false,            ## 是否超时，这里是没有</span><br><span class="line">  &quot;_shards&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : 1,</span><br><span class="line">    &quot;successful&quot; : 1,</span><br><span class="line">    &quot;skipped&quot; : 0,</span><br><span class="line">    &quot;failed&quot; : 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot; : &#123;</span><br><span class="line">    &quot;total&quot; : &#123;</span><br><span class="line">      &quot;value&quot; : 1,</span><br><span class="line">      &quot;relation&quot; : &quot;eq&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;max_score&quot; : 0.6931472,</span><br><span class="line">    &quot;hits&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot; : &quot;goods&quot;,</span><br><span class="line">        &quot;_type&quot; : &quot;fruit&quot;,</span><br><span class="line">        &quot;_id&quot; : &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot; : 0.6931472,</span><br><span class="line">        &quot;_source&quot; : &#123;</span><br><span class="line">          &quot;name&quot; : &quot;xiangjiao&quot;,</span><br><span class="line">          &quot;describe&quot; : &quot;haochi tian&quot;,</span><br><span class="line">          &quot;price&quot; : 40,</span><br><span class="line">          &quot;producer&quot; : &quot;feilvbin&quot;,</span><br><span class="line">          &quot;tags&quot; : [</span><br><span class="line">            &quot;xiangjiao&quot;,</span><br><span class="line">            &quot;haochi&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="32-条件查询"><a class="markdownIt-Anchor" href="#32-条件查询"></a> 3.2 条件查询</h3>
 <ul>
 <li>name=xiangjiao的</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 方法1</span>
-GET goods/fruit/_search/?q<span class="token operator">=</span>name:xiangjiao         <span class="token comment">## 查询名字为xiangjiao的</span>
-<span class="token comment">## 方法2</span>
-GET goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 方法1</span></span></span><br><span class="line">GET goods/fruit/_search/?q=name:xiangjiao         ## 查询名字为xiangjiao的</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 方法2</span></span></span><br><span class="line">GET goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;xiangjiao&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="33-按条件查询和排序"><a class="markdownIt-Anchor" href="#33-按条件查询和排序"></a> 3.3 按条件查询和排序</h3>
 <ul>
 <li>查询 name=pingguo 使用价格进行正向排序</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"pingguo"</span>
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"sort"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-	  <span class="token punctuation">&#123;</span>
-	    <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-	      <span class="token string">"order"</span><span class="token builtin class-name">:</span> <span class="token string">"desc"</span>
-	    <span class="token punctuation">&#125;</span>
-	  <span class="token punctuation">&#125;</span>
-	<span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">	&quot;query&quot;: &#123;</span><br><span class="line">		&quot;match&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &quot;pingguo&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;sort&quot;: [</span><br><span class="line">	  &#123;</span><br><span class="line">	    &quot;price&quot;: &#123;</span><br><span class="line">	      &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">	    &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="34-分页查询"><a class="markdownIt-Anchor" href="#34-分页查询"></a> 3.4 分页查询</h3>
 <ul>
 <li>注意: 这里的检索结果是倒排索引,不是按照id排序的,是按照倒排的方式来进行检索的,再强调下,不是根据id排序</li>
 <li>每页显示两条数据</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-	<span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">	&quot;query&quot;: &#123;</span><br><span class="line">		&quot;match_all&quot;: &#123;&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;from&quot;: 0,</span><br><span class="line">	&quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="35-只显示指定字段"><a class="markdownIt-Anchor" href="#35-只显示指定字段"></a> 3.5 只显示指定字段</h3>
 <ul>
 <li>检索出来的内容也就只包含了name和price字段的内容</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-	<span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token string">"name"</span>,<span class="token string">"price"</span><span class="token punctuation">]</span>, 
-	<span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-	<span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">	&quot;query&quot;: &#123;</span><br><span class="line">		&quot;match_all&quot;: &#123;&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;_source&quot;: [&quot;name&quot;,&quot;price&quot;], </span><br><span class="line">	&quot;from&quot;: 0,</span><br><span class="line">	&quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="36-多条件匹配查询"><a class="markdownIt-Anchor" href="#36-多条件匹配查询"></a> 3.6 多条件匹配查询</h3>
 <ul>
 <li>查询 name=xiangjiao 并且 price=25</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"must"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token string">"25"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &quot;xiangjiao&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;price&quot;: &quot;25&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>查询 name=xiangjiao  或者 price=45</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"should"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token string">"45"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &quot;xiangjiao&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;price&quot;: &quot;45&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="37-过滤查询"><a class="markdownIt-Anchor" href="#37-过滤查询"></a> 3.7 过滤查询</h3>
 <ul>
 <li>
@@ -368,40 +197,12 @@ GET goods/fruit/_search
 <p>查询 <code>name=xiangjiao 或者 价格在 10~40</code>之间的水果</p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"should"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"xiangjiao"</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>,
-      <span class="token string">"filter"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"range"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"gte"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>,
-            <span class="token string">"lte"</span><span class="token builtin class-name">:</span> <span class="token number">40</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>  
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &quot;xiangjiao&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">          &quot;price&quot;: &#123;</span><br><span class="line">            &quot;gte&quot;: 10,</span><br><span class="line">            &quot;lte&quot;: 40</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;  </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="38-全文检索"><a class="markdownIt-Anchor" href="#38-全文检索"></a> 3.8 全文检索</h3>
 <ul>
 <li>查询 name=pingguo 或者  name=xiangjiao的</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">GET /goods/fruit/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"pingguo xiangjiao"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/fruit/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;pingguo xiangjiao&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 
                 <p class="end">__END__</p>
             </div>
@@ -437,11 +238,11 @@ GET goods/fruit/_search
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/d236d3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
+                        <a href="../../pages/b66577/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/b66577/" title="发布于 2021-02-12 03:04">01.ES安装</a>
                         <br>
                     
                     
-                        <a href="../../pages/5021f3/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/5021f3/" title="发布于 2021-02-12 03:04">04.中文分词检索</a>
+                        <a href="../../pages/d236d3/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
                     
                 </div>
             </div>
@@ -1090,6 +891,8 @@ GET goods/fruit/_search
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

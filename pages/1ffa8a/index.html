@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -98,11 +100,7 @@
 <li>能不能选出k个数使得和是sum</li>
 </ul>
 <h2 id="lintcode-669-coin-change"><a class="markdownIt-Anchor" href="#lintcode-669-coin-change"></a> LintCode 669: Coin Change</h2>
-<pre class="language-none"><code class="language-none">- 你有三种硬币，分别面值是2元、5元、7原，每种硬币足够做
-- 买一本书，需要27问
-- 如何用最少得硬币组合正好付清27元，不需要对方付钱
-
- 求最大最小值动态规划！</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- 你有三种硬币，分别面值是2元、5元、7原，每种硬币足够做</span><br><span class="line">- 买一本书，需要27问</span><br><span class="line">- 如何用最少得硬币组合正好付清27元，不需要对方付钱</span><br><span class="line"></span><br><span class="line"> 求最大最小值动态规划！</span><br></pre></td></tr></table></figure>
 <h3 id="动态规划的组成部分之一-确定状态"><a class="markdownIt-Anchor" href="#动态规划的组成部分之一-确定状态"></a> 动态规划的组成部分之一： 确定状态</h3>
 <ul>
 <li>状态在动态规划中的作用是定海神针</li>
@@ -141,21 +139,7 @@
 所以最小， <strong>f(x)=min{f(27-2)+1,f(27-5)+1,f(27-7)+1}</strong></li>
 </ul>
 <p>递归解法： 效率比较低</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 最少用多少枚硬币，拼出x</span>
-    <span class="token keyword">if</span> x <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>  <span class="token comment"># x=0 </span>
-        <span class="token keyword">return</span> <span class="token number">0</span>
-    res <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span>  <span class="token comment"># 无穷大</span>
-    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">2</span><span class="token punctuation">:</span>
-        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是2  A</span>
-    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">5</span><span class="token punctuation">:</span>
-        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是5</span>
-    <span class="token keyword">if</span> x <span class="token operator">>=</span> <span class="token number">7</span><span class="token punctuation">:</span>
-        res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">7</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> res<span class="token punctuation">)</span>  <span class="token comment"># 最后一枚是7</span>
-    <span class="token keyword">return</span> res
-
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):  <span class="comment"># 最少用多少枚硬币，拼出x</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">0</span>:  <span class="comment"># x=0 </span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    res = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)  <span class="comment"># 无穷大</span></span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">2</span>:</span><br><span class="line">        res = <span class="built_in">min</span>(f(x - <span class="number">2</span>) + <span class="number">1</span>, res)  <span class="comment"># 最后一枚是2  A</span></span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">5</span>:</span><br><span class="line">        res = <span class="built_in">min</span>(f(x - <span class="number">5</span>) + <span class="number">1</span>, res)  <span class="comment"># 最后一枚是5</span></span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">7</span>:</span><br><span class="line">        res = <span class="built_in">min</span>(f(x - <span class="number">7</span>) + <span class="number">1</span>, res)  <span class="comment"># 最后一枚是7</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(f(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 <ul>
 <li>递归做了很对的重复计算，效率低下</li>
 <li>如何避免？</li>
@@ -213,25 +197,7 @@
 </li>
 </ul>
 <p>消除冗余，加速计算</p>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token comment"># A: &#123; 2,5,7 &#125;    M: 目标数27</span>
-<span class="token keyword">def</span> <span class="token function">coinChange</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 最少用多少枚硬币，拼出x</span>
-    f <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span> <span class="token keyword">for</span>  i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>M<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-    n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>
-
-    f<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
-
-    <span class="token comment"># f[1],f[2]...f[27]</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        f<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span> <span class="token comment"># 假设无穷大</span>
-        <span class="token comment"># last coin A[0]、A[1]...A[n-1]</span>
-        <span class="token comment"># f[i]= min&#123;f[27-A[0]]+1,f[27-A[1]]+1....f[27-A[n-1]]+1&#125;</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#  27*3</span>
-            <span class="token keyword">if</span> i <span class="token operator">>=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token keyword">and</span> f<span class="token punctuation">[</span>i <span class="token operator">-</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-                f<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> f<span class="token punctuation">[</span>i <span class="token operator">-</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">if</span> f<span class="token punctuation">[</span>M<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        f<span class="token punctuation">[</span>M<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
-    <span class="token keyword">return</span> f<span class="token punctuation">[</span>M<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># A: &#123; 2,5,7 &#125;    M: 目标数27</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">coinChange</span>(<span class="params">A, M</span>):  <span class="comment"># 最少用多少枚硬币，拼出x</span></span><br><span class="line">    f = [<span class="number">0</span> <span class="keyword">for</span>  i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,M+<span class="number">1</span>)]</span><br><span class="line">    n = <span class="built_in">len</span>(A)</span><br><span class="line"></span><br><span class="line">    f[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># f[1],f[2]...f[27]</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, M):</span><br><span class="line">        f[i] = <span class="built_in">float</span>(<span class="string">&quot;inf&quot;</span>) <span class="comment"># 假设无穷大</span></span><br><span class="line">        <span class="comment"># last coin A[0]、A[1]...A[n-1]</span></span><br><span class="line">        <span class="comment"># f[i]= min&#123;f[27-A[0]]+1,f[27-A[1]]+1....f[27-A[n-1]]+1&#125;</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n): <span class="comment">#  27*3</span></span><br><span class="line">            <span class="keyword">if</span> i &gt;= A[j] <span class="keyword">and</span> f[i - A[j]] != <span class="built_in">float</span>(<span class="string">&quot;inf&quot;</span>):</span><br><span class="line">                f[i] = <span class="built_in">min</span>(f[i], f[i - A[j]] + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> f[M] == <span class="built_in">float</span>(<span class="string">&quot;inf&quot;</span>):</span><br><span class="line">        f[M] = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> f[M]</span><br></pre></td></tr></table></figure>
 <p>OrderDict</p>
 
                 
@@ -931,6 +897,8 @@
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

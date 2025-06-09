@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -91,10 +93,7 @@
 <p><strong>变基就是：将某一分支上的所有修改复制到另一分支上</strong></p>
 <p>除了<code>merge</code>，还有一种方法：你可以提取在 <code>C4</code> 中引入的补丁和修改，然后在 <code>C3</code> 的基础上应用一次。 在 Git 中，这种操作就叫做 <strong>变基（rebase）</strong>。 你可以使用 <code>rebase</code> 命令将提交到某一分支上的所有修改都移到另一分支上，就好像“重新播放”一样。</p>
 <p>在这个例子中，你可以检出 <code>experiment</code> 分支，然后将它变基到 <code>master</code> 分支上：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> checkout experiment
-$ <span class="token function">git</span> rebase master <span class="token comment"># 将experiment上的修改变基到master分支上（将experiment的提交移动到master上。）</span>
-First, rewinding <span class="token function">head</span> to replay your work on <span class="token function">top</span> of it<span class="token punctuation">..</span>.
-Applying: added staged <span class="token builtin class-name">command</span></code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout experiment</span><br><span class="line">$ git rebase master <span class="comment"># 将experiment上的修改变基到master分支上（将experiment的提交移动到master上。）</span></span><br><span class="line">First, rewinding <span class="built_in">head</span> to replay your work on top of it...</span><br><span class="line">Applying: added staged <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
 <p>它的原理是首先找到这两个分支（即当前分支 <code>experiment</code>、变基操作的目标基底分支 <code>master</code>） 的最近共同祖先 <code>C2</code>，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件， 然后将当前分支指向目标基底 <code>C3</code>, 最后以此将之前另存为临时文件的修改依序应用。 （译注：写明了 commit id，以便理解，下同）</p>
 <h3 id="原理"><a class="markdownIt-Anchor" href="#原理"></a> 原理</h3>
 <ol>
@@ -117,17 +116,12 @@ Applying: added staged <span class="token builtin class-name">command</span></co
 <p><img src="https://git-scm.com/book/en/v2/images/basic-rebase-3.png" alt="将  中的修改变基到  上。" /></p>
 <p align="center">图2.将 C4 中的修改变基到 C3 上 ▲</p>
 <p>现在回到 <code>master</code> 分支，进行一次快进合并。</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> checkout master
-$ <span class="token function">git</span> merge experiment</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge experiment</span><br></pre></td></tr></table></figure>
 <p><img src="https://git-scm.com/book/en/v2/images/basic-rebase-4.png" alt=" 分支的快进合并。" /></p>
 <p align="center">图3.master 分支的快进合并 ▲</p>
 <h3 id="步骤"><a class="markdownIt-Anchor" href="#步骤"></a> 步骤</h3>
 <p><strong>先检出源分支，将源分支的修改变基到目标分支。切回目标分支，进行一次快进合并</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 示意：</span>
-<span class="token function">git</span> checkout <span class="token operator">&lt;</span>源分支<span class="token operator">></span>
-<span class="token function">git</span> <span class="token punctuation">(</span>源分支的修改<span class="token punctuation">)</span>rebase<span class="token punctuation">(</span>到<span class="token punctuation">)</span> <span class="token operator">&lt;</span>目标分支<span class="token operator">></span>
-<span class="token function">git</span> checkout <span class="token operator">&lt;</span>目标分支<span class="token operator">></span>
-<span class="token function">git</span> merge <span class="token operator">&lt;</span>源分支<span class="token operator">></span></code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示意：</span></span><br><span class="line">git checkout &lt;源分支&gt;</span><br><span class="line">git (源分支的修改)rebase(到) &lt;目标分支&gt;</span><br><span class="line">git checkout &lt;目标分支&gt;</span><br><span class="line">git merge &lt;源分支&gt;</span><br></pre></td></tr></table></figure>
 <p>此时，<code>C4'</code> 指向的快照就和 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/ch00/ebasing-merging-example">the merge example</a> 中 <code>C5</code> 指向的快照一模一样了。 这两种整合方法的最终结果没有任何区别，但是 <strong>变基使得提交历史更加整洁</strong>。 你在查看一个经过变基的分支的历史记录时会发现，尽管实际的开发工作是并行的， 但它们看上去就像是串行的一样，提交历史是一条直线没有分叉。</p>
 <p>一般我们这样做的目的是为了确保在向远程分支推送时能保持提交历史的整洁——<strong>例如向某个其他人维护的项目贡献代码时。 在这种情况下，你首先在自己的分支里进行开发，当开发完成时你需要先将你的代码变基到 <code>origin/master</code> 上，然后再向主项目提交修改</strong>。 这样的话，该项目的维护者就不再需要进行整合工作，只需要快进合并便可。</p>
 <p>请注意，无论是通过变基，还是通过三方合并，整合的最终结果所指向的快照始终是一样的，只不过提交历史不同罢了。 变基是将一系列提交按照原有次序依次应用到另一分支上，而合并是把最终结果合在一起。</p>
@@ -140,33 +134,28 @@ $ <span class="token function">git</span> merge experiment</code></pre>
 <p><img src="https://git-scm.com/book/en/v2/images/interesting-rebase-1.png" alt="从一个主题分支里再分出一个主题分支的提交历史。" /></p>
 <p align="center">图4.从一个主题分支里再分出一个主题分支的提交历史 ▲</p>
 <p>假设你希望将 <code>client</code> 中的修改合并到主分支并发布，但暂时并不想合并 <code>server</code> 中的修改， 因为它们还需要经过更全面的测试。这时，你就可以使用 <code>git rebase</code> 命令的 <strong><code>--onto</code> 选项， 选中在 <code>client</code> 分支里但不在 <code>server</code> 分支里的修改（即 <code>C8</code> 和 <code>C9</code>），将它们在 <code>master</code> 分支上重放</strong>：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> rebase <span class="token parameter variable">--onto</span> master server client</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --onto master server client</span><br></pre></td></tr></table></figure>
 <p>以上命令的意思是：“取出 <code>client</code> 分支，找出它从 <code>server</code> 分支分歧之后的补丁， 然后把这些补丁在 <code>master</code> 分支上重放一遍，让 <code>client</code> 看起来像直接基于 <code>master</code> 修改一样”。这理解起来有一点复杂，不过效果非常酷。</p>
 <h3 id="onto选项"><a class="markdownIt-Anchor" href="#onto选项"></a> –onto选项</h3>
 <p><strong>选中C分支中的但不在B分支里的修改，应用到A分支。</strong></p>
 <p><img src="https://git-scm.com/book/en/v2/images/interesting-rebase-2.png" alt="截取主题分支上的另一个主题分支，然后变基到其他分支。" /></p>
  <p align="center">图5.截取主题分支上的另一个主题分支，然后变基到其他分支 ▲</p>
 <p>现在可以快进合并 <code>master</code> 分支了。（如图 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/ch00/bdiag_g">快进合并 <code>master</code> 分支，使之包含来自 <code>client</code> 分支的修改</a>）：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> checkout master
-$ <span class="token function">git</span> merge client</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge client</span><br></pre></td></tr></table></figure>
 <p><img src="https://git-scm.com/book/en/v2/images/interesting-rebase-3.png" alt="快进合并  分支，使之包含来自  分支的修改。" /></p>
  <p align="center">图6.快进合并 `master` 分支，使之包含来自 `client` 分支的修改 ▲</p>
 <h3 id="省去先切换到源分支的步骤"><a class="markdownIt-Anchor" href="#省去先切换到源分支的步骤"></a> 省去先切换到源分支的步骤</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> rebase <span class="token operator">&lt;</span>目标<span class="token punctuation">(</span>当前<span class="token punctuation">)</span>分支<span class="token operator">></span> <span class="token operator">&lt;</span>源分支<span class="token operator">></span> <span class="token comment"># 将源分支变基到目标分支。执行此命令后会自动切换到源分支</span>
-<span class="token function">git</span> checkout <span class="token operator">&lt;</span>目标分支<span class="token operator">></span>
-<span class="token function">git</span> merge <span class="token operator">&lt;</span>源分支<span class="token operator">></span></code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rebase &lt;目标(当前)分支&gt; &lt;源分支&gt; <span class="comment"># 将源分支变基到目标分支。执行此命令后会自动切换到源分支</span></span><br><span class="line">git checkout &lt;目标分支&gt;</span><br><span class="line">git merge &lt;源分支&gt;</span><br></pre></td></tr></table></figure>
 <p><strong>注意：使用这个方法要确保源分支上的代码是最新的。</strong></p>
 <p>接下来你决定将 <code>server</code> 分支中的修改也整合进来。 使用 <code>git rebase &lt;basebranch&gt; &lt;topicbranch&gt;</code> 命令可以直接将主题分支 （即本例中的 <code>server</code>）变基到目标分支（即 <code>master</code>）上。 这样做能省去你先切换到 <code>server</code> 分支，再对其执行变基命令的多个步骤。</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> rebase master server</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase master server</span><br></pre></td></tr></table></figure>
 <p>如图 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/ch00/bdiag_h">将 <code>server</code> 中的修改变基到 <code>master</code> 上</a> 所示，<code>server</code> 中的代码被“续”到了 <code>master</code> 后面。</p>
 <p><img src="https://git-scm.com/book/en/v2/images/interesting-rebase-4.png" alt="将  中的修改变基到  上。" /></p>
 <p align="center">图7.将 `server` 中的修改变基到 `master` 上 ▲</p>
 <p>然后就可以快进合并主分支 <code>master</code> 了：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> checkout master
-$ <span class="token function">git</span> merge server</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge server</span><br></pre></td></tr></table></figure>
 <p>至此，<code>client</code> 和 <code>server</code> 分支中的修改都已经整合到主分支里了， 你可以删除这两个分支，最终提交历史会变成图 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/ch00/bdiag_i">最终的提交历史</a> 中的样子：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> branch <span class="token parameter variable">-d</span> client
-$ <span class="token function">git</span> branch <span class="token parameter variable">-d</span> server</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d client</span><br><span class="line">$ git branch -d server</span><br></pre></td></tr></table></figure>
 <p><img src="https://git-scm.com/book/en/v2/images/interesting-rebase-5.png" alt="最终的提交历史。" /></p>
 <p align="center">图8. 最终的提交历史 ▲</p>
 <h2 id="变基的风险"><a class="markdownIt-Anchor" href="#变基的风险"></a> 变基的风险</h2>
@@ -911,6 +900,8 @@ $ <span class="token function">git</span> branch <span class="token parameter va
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -86,54 +88,15 @@
 <p>APIView<br />
 GenericAPIView</p>
 <h1 id="viewset"><a class="markdownIt-Anchor" href="#viewset"></a> ViewSet</h1>
-<pre class="language-python" data-language="python"><code class="language-python">ViewSetMixin
-ViewSet<span class="token punctuation">(</span>ViewSetMixin<span class="token punctuation">,</span>APIView<span class="token punctuation">)</span>
-GenericViewSet<span class="token punctuation">(</span>ViewSetMixin<span class="token punctuation">,</span>GenericAPIView<span class="token punctuation">)</span>
-ReadOnlyModelViewSet<span class="token punctuation">(</span>RetrieveModelMixin<span class="token punctuation">,</span>
-                ListModelMixin<span class="token punctuation">,</span>
-                GenericAPIView<span class="token punctuation">)</span>
-
-ModelViewSet<span class="token punctuation">(</span>CreateModelMixin<span class="token punctuation">,</span>
-             RetrieveModelMixin<span class="token punctuation">,</span>
-            UpdateModelMixin<span class="token punctuation">,</span>
-            DestroyModelMixin<span class="token punctuation">,</span>
-            ListModelMixin<span class="token punctuation">,</span>
-            GenericViewSet<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ViewSetMixin</span><br><span class="line">ViewSet(ViewSetMixin,APIView)</span><br><span class="line">GenericViewSet(ViewSetMixin,GenericAPIView)</span><br><span class="line">ReadOnlyModelViewSet(RetrieveModelMixin,</span><br><span class="line">                ListModelMixin,</span><br><span class="line">                GenericAPIView)</span><br><span class="line"></span><br><span class="line">ModelViewSet(CreateModelMixin,</span><br><span class="line">             RetrieveModelMixin,</span><br><span class="line">            UpdateModelMixin,</span><br><span class="line">            DestroyModelMixin,</span><br><span class="line">            ListModelMixin,</span><br><span class="line">            GenericViewSet)</span><br></pre></td></tr></table></figure>
 <p>‘“”“”“”“”“”“”“”“”“”“”“”“”“”“”“”“”“”“”“</p>
 <h1 id="五个视图扩展类"><a class="markdownIt-Anchor" href="#五个视图扩展类"></a> 五个视图扩展类</h1>
-<pre class="language-python" data-language="python"><code class="language-python">CreateModelMixin
-    <span class="token operator">-</span> create
-
-ListModelMixin
-    <span class="token operator">-</span> <span class="token builtin">list</span>
-
-RetrieveModelMixin
-    <span class="token operator">-</span> retrieve
-
-UpdateModelMixin
-    <span class="token operator">-</span> update
-    <span class="token operator">-</span> perform_update
-    <span class="token operator">-</span> partial_update
-
-DestroyModelMixin
-    <span class="token operator">-</span> destroy
-    <span class="token operator">-</span> perform_destroy</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">CreateModelMixin</span><br><span class="line">    - create</span><br><span class="line"></span><br><span class="line">ListModelMixin</span><br><span class="line">    - <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line">RetrieveModelMixin</span><br><span class="line">    - retrieve</span><br><span class="line"></span><br><span class="line">UpdateModelMixin</span><br><span class="line">    - update</span><br><span class="line">    - perform_update</span><br><span class="line">    - partial_update</span><br><span class="line"></span><br><span class="line">DestroyModelMixin</span><br><span class="line">    - destroy</span><br><span class="line">    - perform_destroy</span><br></pre></td></tr></table></figure>
 <h1 id="九个视图扩展子类继承上面5个视图扩展类加视图类"><a class="markdownIt-Anchor" href="#九个视图扩展子类继承上面5个视图扩展类加视图类"></a> 九个视图扩展子类，继承上面5个视图扩展类加视图类</h1>
 <p>View(Django)   -&gt; dispatch  -&gt; 对应的视图方法</p>
-<pre class="language-python" data-language="python"><code class="language-python">ListAPIView<span class="token punctuation">:</span>                      ListModelMixin<span class="token punctuation">,</span>APIView
-CreateAPIView<span class="token punctuation">:</span>                    CreateModelMixin<span class="token punctuation">,</span>APIView
-ListCreateAPIView<span class="token punctuation">:</span>                ListModelMixin<span class="token punctuation">,</span>CreateModelMixin<span class="token punctuation">,</span>APIView
-RetrieveAPIView<span class="token punctuation">:</span>                  RetrieveModelMixin<span class="token punctuation">,</span>APIView
-UpdateAPIView<span class="token punctuation">:</span>                    UpdateModelMixin<span class="token punctuation">,</span>APIView
-DestoryAPIView<span class="token punctuation">:</span>                   DestoryModelMixin<span class="token punctuation">,</span>APIView
-RetrieveDestoryAPIView<span class="token punctuation">:</span>RetrieveModelMixin<span class="token punctuation">,</span>DestoryModelMixin<span class="token punctuation">,</span>APIView
-RetrieveUpdateAPIView<span class="token punctuation">:</span>RetrieveModelMixin<span class="token punctuation">,</span>UpdateModelMixin<span class="token punctuation">,</span>APIView
-RetrieveDestoryUpdateAPIView<span class="token punctuation">:</span>RetrieveModelMixin<span class="token punctuation">,</span>DestoryModelMixin<span class="token punctuation">,</span>UpdateModelMixin<span class="token punctuation">,</span>APIView</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ListAPIView:                      ListModelMixin,APIView</span><br><span class="line">CreateAPIView:                    CreateModelMixin,APIView</span><br><span class="line">ListCreateAPIView:                ListModelMixin,CreateModelMixin,APIView</span><br><span class="line">RetrieveAPIView:                  RetrieveModelMixin,APIView</span><br><span class="line">UpdateAPIView:                    UpdateModelMixin,APIView</span><br><span class="line">DestoryAPIView:                   DestoryModelMixin,APIView</span><br><span class="line">RetrieveDestoryAPIView:RetrieveModelMixin,DestoryModelMixin,APIView</span><br><span class="line">RetrieveUpdateAPIView:RetrieveModelMixin,UpdateModelMixin,APIView</span><br><span class="line">RetrieveDestoryUpdateAPIView:RetrieveModelMixin,DestoryModelMixin,UpdateModelMixin,APIView</span><br></pre></td></tr></table></figure>
 <h1 id="视图集"><a class="markdownIt-Anchor" href="#视图集"></a> 视图集</h1>
-<pre class="language-python" data-language="python"><code class="language-python">GenericViewSet<span class="token punctuation">:</span>ViewSetMixin<span class="token punctuation">,</span>GenericAPIView <span class="token comment"># 没有提供任何actions，但是提供了GenericAPIView的两个属性和5个方法。</span>
-ModelViewSet<span class="token punctuation">:</span>ListAPIView<span class="token punctuation">,</span>CreateAPIView<span class="token punctuation">,</span>RetrieveAPIView<span class="token punctuation">,</span>UpdateAPIView<span class="token punctuation">,</span>DestoryAPIView<span class="token punctuation">,</span>GenericAPIView  <span class="token comment"># 提供了5个actions，2个属性和5个方法</span>
-ReadOnlyModelViewSet<span class="token punctuation">:</span>ListModelMixis<span class="token punctuation">,</span>RetrieveModelMixin<span class="token punctuation">,</span>GenericAPIView  <span class="token comment"># 提供了两个actions，读全部数据，读单条数据</span>
-ViewSet<span class="token punctuation">:</span>ViewSetMixin<span class="token punctuation">,</span>APIView  <span class="token comment"># 需要自己写actions，填写映射关系</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GenericViewSet:ViewSetMixin,GenericAPIView <span class="comment"># 没有提供任何actions，但是提供了GenericAPIView的两个属性和5个方法。</span></span><br><span class="line">ModelViewSet:ListAPIView,CreateAPIView,RetrieveAPIView,UpdateAPIView,DestoryAPIView,GenericAPIView  <span class="comment"># 提供了5个actions，2个属性和5个方法</span></span><br><span class="line">ReadOnlyModelViewSet:ListModelMixis,RetrieveModelMixin,GenericAPIView  <span class="comment"># 提供了两个actions，读全部数据，读单条数据</span></span><br><span class="line">ViewSet:ViewSetMixin,APIView  <span class="comment"># 需要自己写actions，填写映射关系</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -832,6 +795,8 @@ ViewSet<span class="token punctuation">:</span>ViewSetMixin<span class="token pu
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

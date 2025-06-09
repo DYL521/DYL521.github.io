@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -101,15 +103,7 @@
 <ul>
 <li><code>面向资源编程</code>： 路径，视网络上任何东西都是资源，均使用名词表示（可复数）,不要使用动词</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 不好的例子：url中含有动词</span>
-<span class="token operator">/</span>getProducts
-<span class="token operator">/</span>listOrders
-
-<span class="token comment"># 正确的例子：地址使用名词复数</span>
-GET <span class="token operator">/</span>products      <span class="token comment"># 将返回所有产品信息</span>
-POST <span class="token operator">/</span>products     <span class="token comment"># 将新建产品信息</span>
-GET <span class="token operator">/</span>products<span class="token operator">/</span><span class="token number">4</span>     <span class="token comment"># 将获取产品4</span>
-PUT <span class="token operator">/</span>products<span class="token operator">/</span><span class="token number">4</span>     <span class="token comment"># 将更新产品4</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不好的例子：url中含有动词</span></span><br><span class="line">/getProducts</span><br><span class="line">/listOrders</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确的例子：地址使用名词复数</span></span><br><span class="line">GET /products      <span class="comment"># 将返回所有产品信息</span></span><br><span class="line">POST /products     <span class="comment"># 将新建产品信息</span></span><br><span class="line">GET /products/<span class="number">4</span>     <span class="comment"># 将获取产品4</span></span><br><span class="line">PUT /products/<span class="number">4</span>     <span class="comment"># 将更新产品4</span></span><br></pre></td></tr></table></figure>
 <h3 id="22-请求方式"><a class="markdownIt-Anchor" href="#22-请求方式"></a> 2.2 请求方式</h3>
 <ul>
 <li>访问同一个URL地址，采用不同的请求方式，代表要执行不同的操作</li>
@@ -144,64 +138,22 @@ PUT <span class="token operator">/</span>products<span class="token operator">/<
 <ul>
 <li>例如</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">GET <span class="token operator">/</span>books          <span class="token comment"># 获取所有图书数据</span>
-POST <span class="token operator">/</span>books          <span class="token comment"># 新建一本图书数据</span>
-GET <span class="token operator">/</span>books<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token builtin">id</span><span class="token operator">></span><span class="token operator">/</span>       <span class="token comment"># 获取某个指定的图书数据</span>
-PUT <span class="token operator">/</span>books<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token builtin">id</span><span class="token operator">></span><span class="token operator">/</span>       <span class="token comment"># 更新某个指定的图书数据</span>
-DELETE <span class="token operator">/</span>books<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token builtin">id</span><span class="token operator">></span><span class="token operator">/</span>     <span class="token comment"># 删除某个指定的图书数据</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /books          <span class="comment"># 获取所有图书数据</span></span><br><span class="line">POST /books          <span class="comment"># 新建一本图书数据</span></span><br><span class="line">GET /books/&lt;<span class="built_in">id</span>&gt;/       <span class="comment"># 获取某个指定的图书数据</span></span><br><span class="line">PUT /books/&lt;<span class="built_in">id</span>&gt;/       <span class="comment"># 更新某个指定的图书数据</span></span><br><span class="line">DELETE /books/&lt;<span class="built_in">id</span>&gt;/     <span class="comment"># 删除某个指定的图书数据</span></span><br></pre></td></tr></table></figure>
 <h3 id="23-过滤信息"><a class="markdownIt-Anchor" href="#23-过滤信息"></a> 2.3 过滤信息</h3>
 <ul>
 <li><code>过滤，分页，排序</code>：通过在url上传参的形式传递搜索条件</li>
 <li>常见的参数：</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">?limit<span class="token operator">=</span><span class="token number">10</span>                   <span class="token comment"># 指定返回记录的数量。</span>
-?offset<span class="token operator">=</span><span class="token number">10</span>                   <span class="token comment"># 指定返回记录的开始位置。</span>
-?page<span class="token operator">=</span><span class="token number">2</span><span class="token operator">&amp;</span>pagesize<span class="token operator">=</span><span class="token number">100</span>             <span class="token comment"># 指定第几页，以及每页的记录数。</span>
-?sortby<span class="token operator">=</span>name<span class="token operator">&amp;</span>order<span class="token operator">=</span>asc             <span class="token comment"># 指定返回结果按照哪个属性排序，以及排序顺序。</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?limit=<span class="number">10</span>                   <span class="comment"># 指定返回记录的数量。</span></span><br><span class="line">?offset=<span class="number">10</span>                   <span class="comment"># 指定返回记录的开始位置。</span></span><br><span class="line">?page=<span class="number">2</span>&amp;pagesize=<span class="number">100</span>             <span class="comment"># 指定第几页，以及每页的记录数。</span></span><br><span class="line">?sortby=name&amp;order=asc             <span class="comment"># 指定返回结果按照哪个属性排序，以及排序顺序。</span></span><br></pre></td></tr></table></figure>
 <h3 id="24-响应状态码"><a class="markdownIt-Anchor" href="#24-响应状态码"></a> 2.4 响应状态码</h3>
 <ul>
 <li>重点状态码</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 2XX请求成功'''</span>
-<span class="token comment"># 1.1 200 请求成功，一般用于GET与POST请求</span>
-<span class="token comment"># 1.2 201 Created - [POST/PUT/PATCH]：用户新建或修改数据成功。</span>
-<span class="token comment"># 204 NO CONTENT - [DELETE]：用户删除数据成功。</span>
-
-<span class="token triple-quoted-string string">'''3. 4XX客户端错误'''</span>
-<span class="token comment"># 3.1 400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误。</span>
-<span class="token comment"># 3.2 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</span>
-<span class="token comment"># 3.3 403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。</span>
-<span class="token comment"># 3.4 404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录。</span>
-
-<span class="token triple-quoted-string string">'''4. 5XX服务端错误'''</span>
-<span class="token comment"># 500 INTERNAL SERVER ERROR - [*]：服务器内部错误，无法完成请求</span>
-<span class="token comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span>
-
-更多状态码参考：https<span class="token punctuation">:</span><span class="token operator">//</span>www<span class="token punctuation">.</span>runoob<span class="token punctuation">.</span>com<span class="token operator">/</span>http<span class="token operator">/</span>http<span class="token operator">-</span>status<span class="token operator">-</span>codes<span class="token punctuation">.</span>html</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;1. 2XX请求成功&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 1.1 200 请求成功，一般用于GET与POST请求</span></span><br><span class="line"><span class="comment"># 1.2 201 Created - [POST/PUT/PATCH]：用户新建或修改数据成功。</span></span><br><span class="line"><span class="comment"># 204 NO CONTENT - [DELETE]：用户删除数据成功。</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;3. 4XX客户端错误&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 3.1 400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误。</span></span><br><span class="line"><span class="comment"># 3.2 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</span></span><br><span class="line"><span class="comment"># 3.3 403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。</span></span><br><span class="line"><span class="comment"># 3.4 404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录。</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;4. 5XX服务端错误&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 500 INTERNAL SERVER ERROR - [*]：服务器内部错误，无法完成请求</span></span><br><span class="line"><span class="comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span></span><br><span class="line"></span><br><span class="line">更多状态码参考：https://www.runoob.com/http/http-status-codes.html</span><br></pre></td></tr></table></figure>
 <ul>
 <li>详细状态码</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 2XX请求成功'''</span>
-<span class="token comment"># 1.1 200 请求成功，一般用于GET与POST请求</span>
-<span class="token comment"># 1.2 201 Created - [POST/PUT/PATCH]：用户新建或修改数据成功。</span>
-<span class="token comment"># 202 Accepted - [*]：表示一个请求已经进入后台排队（异步任务）</span>
-<span class="token comment"># 204 NO CONTENT - [DELETE]：用户删除数据成功。</span>
-<span class="token triple-quoted-string string">'''2. 3XX重定向'''</span>
-<span class="token comment"># 301 NO CONTENT - 永久重定向</span>
-<span class="token comment"># 302 NO CONTENT - 临时重定向</span>
-<span class="token triple-quoted-string string">'''3. 4XX客户端错误'''</span>
-<span class="token comment"># 3.1 400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误。</span>
-<span class="token comment"># 3.2 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</span>
-<span class="token comment"># 3.3 403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。</span>
-<span class="token comment"># 3.4 404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录。</span>
-<span class="token comment"># 406 Not Acceptable - [GET]：用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。</span>
-<span class="token comment"># 410 Gone -[GET]：用户请求的资源被永久删除，且不会再得到的。</span>
-<span class="token comment"># 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。</span>
-<span class="token triple-quoted-string string">'''4. 5XX服务端错误'''</span>
-<span class="token comment"># 500 INTERNAL SERVER ERROR - [*]：服务器内部错误，无法完成请求</span>
-<span class="token comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span>
-
-更多状态码参考：https<span class="token punctuation">:</span><span class="token operator">//</span>www<span class="token punctuation">.</span>runoob<span class="token punctuation">.</span>com<span class="token operator">/</span>http<span class="token operator">/</span>http<span class="token operator">-</span>status<span class="token operator">-</span>codes<span class="token punctuation">.</span>html</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;1. 2XX请求成功&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 1.1 200 请求成功，一般用于GET与POST请求</span></span><br><span class="line"><span class="comment"># 1.2 201 Created - [POST/PUT/PATCH]：用户新建或修改数据成功。</span></span><br><span class="line"><span class="comment"># 202 Accepted - [*]：表示一个请求已经进入后台排队（异步任务）</span></span><br><span class="line"><span class="comment"># 204 NO CONTENT - [DELETE]：用户删除数据成功。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;2. 3XX重定向&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 301 NO CONTENT - 永久重定向</span></span><br><span class="line"><span class="comment"># 302 NO CONTENT - 临时重定向</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;3. 4XX客户端错误&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 3.1 400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误。</span></span><br><span class="line"><span class="comment"># 3.2 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</span></span><br><span class="line"><span class="comment"># 3.3 403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。</span></span><br><span class="line"><span class="comment"># 3.4 404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录。</span></span><br><span class="line"><span class="comment"># 406 Not Acceptable - [GET]：用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。</span></span><br><span class="line"><span class="comment"># 410 Gone -[GET]：用户请求的资源被永久删除，且不会再得到的。</span></span><br><span class="line"><span class="comment"># 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;4. 5XX服务端错误&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 500 INTERNAL SERVER ERROR - [*]：服务器内部错误，无法完成请求</span></span><br><span class="line"><span class="comment"># 501 Not Implemented     服务器不支持请求的功能，无法完成请求</span></span><br><span class="line"></span><br><span class="line">更多状态码参考：https://www.runoob.com/http/http-status-codes.html</span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -898,6 +850,8 @@ DELETE <span class="token operator">/</span>books<span class="token operator">/<
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

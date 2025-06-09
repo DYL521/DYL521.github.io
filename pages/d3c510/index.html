@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -101,7 +103,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -a "df -hl"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible webservers -a &quot;df -hl&quot;</span><br></pre></td></tr></table></figure>
 <h3 id="12-shell"><a class="markdownIt-Anchor" href="#12-shell"></a> 1.2 Shell</h3>
 <ul>
 <li>用来在远程主机上执行命令，使用-m 选项指定使用shell模块</li>
@@ -112,11 +114,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m shell -a "ifconfig | grep '192.168.56'"</span>
-<span class="token number">192.168</span>.56.66 <span class="token operator">|</span> CHANGED <span class="token operator">|</span> <span class="token assign-left variable">rc</span><span class="token operator">=</span><span class="token number">0</span> <span class="token operator">>></span>
-        inet <span class="token number">192.168</span>.56.66  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">192.168</span>.56.255
-<span class="token number">192.168</span>.56.65 <span class="token operator">|</span> CHANGED <span class="token operator">|</span> <span class="token assign-left variable">rc</span><span class="token operator">=</span><span class="token number">0</span> <span class="token operator">>></span>
-        inet <span class="token number">192.168</span>.56.65  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">192.168</span>.56.255</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible webservers -m shell -a &quot;ifconfig | grep &#x27;192.168.56&#x27;&quot;</span><br><span class="line">192.168.56.66 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">        inet 192.168.56.66  netmask 255.255.255.0  broadcast 192.168.56.255</span><br><span class="line">192.168.56.65 | CHANGED | rc=0 &gt;&gt;</span><br><span class="line">        inet 192.168.56.65  netmask 255.255.255.0  broadcast 192.168.56.255</span><br></pre></td></tr></table></figure>
 <p>5.2</p>
 <h2 id="02文件传输copy和file"><a class="markdownIt-Anchor" href="#02文件传输copy和file"></a> 02.文件传输（copy和file）</h2>
 <p><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html">https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html</a></p>
@@ -124,31 +122,24 @@
 <ul>
 <li><code>copy</code>：文件传输模块，可以将文件并行拷贝到多台主机上</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># touch file_test.txt</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m copy -a "src=/root/file_test.txt dest=/tmp/file_test.txt"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# touch file_test.txt</span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m copy -a &quot;src=/root/file_test.txt dest=/tmp/file_test.txt&quot;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用copy模块传输文件时，可以通过参数设置文件属主、属组和权限</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m copy -a "src=/root/file_test.txt dest=/tmp/ owner=root group=root mode=600"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible webservers -m copy -a &quot;src=/root/file_test.txt dest=/tmp/ owner=root group=root mode=600&quot;</span><br></pre></td></tr></table></figure>
 <h3 id="22-file模块"><a class="markdownIt-Anchor" href="#22-file模块"></a> 2.2 file模块</h3>
 <ul>
 <li>使用file模块可以创建文件和更改文件的所有和权限</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m file -a "dest=/tmp/file_test.txt mode=666" -l 192.168.56.65</span>
-<span class="token comment"># 修改远程文件权限为：666；</span>
-<span class="token comment"># -l 指定运行目标主机（过滤），从webservers主机组中找出满足过滤条件的主机来执行远程操作。</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible webservers -m file -a &quot;dest=/tmp/file_test.txt mode=666&quot; -l 192.168.56.65</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改远程文件权限为：666；</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-l 指定运行目标主机（过滤），从webservers主机组中找出满足过滤条件的主机来执行远程操作。</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用file模块创建目录</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建文件夹</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m file -a "dest=/tmp/dir_test owner=root state=directory"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建文件夹</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m file -a &quot;dest=/tmp/dir_test owner=root state=directory&quot;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用file模块删除文件</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建文件</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m file -a "dest=/tmp/t1.txt owner=root state=touch"</span>
-<span class="token comment"># 删除文件</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m file -a "dest=/tmp/file_test.txt state=absent"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建文件</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m file -a &quot;dest=/tmp/t1.txt owner=root state=touch&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除文件</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m file -a &quot;dest=/tmp/file_test.txt state=absent&quot;</span><br></pre></td></tr></table></figure>
 <h2 id="03管理软件包yum"><a class="markdownIt-Anchor" href="#03管理软件包yum"></a> 03.管理软件包（yum）</h2>
 <ul>
 <li>
@@ -166,70 +157,50 @@
 </ul>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 安装</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m yum -a "name=tcpdump state=latest"</span>
-<span class="token comment"># 卸载</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m yum -a "name=tcpdump state=absent"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m yum -a &quot;name=tcpdump state=latest&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">卸载</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m yum -a &quot;name=tcpdump state=absent&quot;</span><br></pre></td></tr></table></figure>
 <h2 id="04用户和组user"><a class="markdownIt-Anchor" href="#04用户和组user"></a> 04.用户和组（user）</h2>
 <ul>
 <li>在所有服务器中创建test用户，若已存在，不进行任何操作</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>在所有服务器中删除test用户，但不删除此用户的家目录</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test state=absent'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test state=absent&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>在所有服务器中删除test用户，且删除此用户的家目录</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test state=absent remove=yes'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test state=absent remove=yes&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>指定所有服务器中test用户的基本组为admin(需提前存在)，不指定时默认与用户名一样</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test group=admin'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test group=admin&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>指定所有服务器中test用户的附加组为root和admin</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test groups=root,admin append=yes'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test groups=root,admin append=yes&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>指定所有服务器中test用户过期时间是2020-05-20</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># date -d 2021-05-20 +%s            #获取对应日期的unix时间戳</span>
-<span class="token number">1621440000</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test expires=1621440000'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# date -d 2021-05-20 +%s            #获取对应日期的unix时间戳</span><br><span class="line">1621440000</span><br><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test expires=1621440000&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>修改所有服务器中test用户的密码为’123455’</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># python</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token function">import</span> crypt
-<span class="token operator">>></span><span class="token operator">></span> crypt.crypt<span class="token punctuation">(</span><span class="token string">'123455'</span><span class="token punctuation">)</span>
-<span class="token string">'$6$B0zo/bCGaUmqFKx8$apGEf9i1Yd4/PE.bhL7P86T6FDir45jE5DQ549CjG3SoWtfPmAQSCDkz2Wt5kXppAlhbTLqOclg45yOz7YH9K/'</span>
-<span class="token operator">>></span><span class="token operator">></span> exit<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test password="$6$B0zo/bCGaUmqFKx8$apGEf9i1Yd4/PE.bhL7P86T6FDir45jE5DQ549CjG3SoWtfPmAQSCDkz2Wt5kXppAlhbTLqOclg45yOz7YH9K/"'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# python</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; import crypt</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; crypt.crypt(<span class="string">&#x27;123455&#x27;</span>)</span></span><br><span class="line">&#x27;$6$B0zo/bCGaUmqFKx8$apGEf9i1Yd4/PE.bhL7P86T6FDir45jE5DQ549CjG3SoWtfPmAQSCDkz2Wt5kXppAlhbTLqOclg45yOz7YH9K/&#x27;</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; <span class="built_in">exit</span>()</span></span><br><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test password=&quot;$6$B0zo/bCGaUmqFKx8$apGEf9i1Yd4/PE.bhL7P86T6FDir45jE5DQ549CjG3SoWtfPmAQSCDkz2Wt5kXppAlhbTLqOclg45yOz7YH9K/&quot;&#x27;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>为所有服务器中test用户生成ssh密钥对，生成在/opt目录下，私钥名id_rsa_test，注释信息&quot;test rsa&quot;，私钥密码123455</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible all -m user -a 'name=test generate_ssh_key=yes ssh_key_file=/opt/id_rsa_test ssh_key_comment="test rsa" ssh_key_passphrase=123455'</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible all -m user -a &#x27;name=test generate_ssh_key=yes ssh_key_file=/opt/id_rsa_test ssh_key_comment=&quot;test rsa&quot; ssh_key_passphrase=123455&#x27;</span><br></pre></td></tr></table></figure>
 <h2 id="05从源代码管理系统部署git"><a class="markdownIt-Anchor" href="#05从源代码管理系统部署git"></a> 05.从源代码管理系统部署（git）</h2>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 拉取ansible代码</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible 192.168.56.66 -m git -a "repo=https://github.com/ansible/ansible.git dest=/tmp/ansible" -u root</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">拉取ansible代码</span></span><br><span class="line">[root@k8s-node2 ~]# ansible 192.168.56.66 -m git -a &quot;repo=https://github.com/ansible/ansible.git dest=/tmp/ansible&quot; -u root</span><br></pre></td></tr></table></figure>
 <h2 id="06管理服务service"><a class="markdownIt-Anchor" href="#06管理服务service"></a> 06.管理服务（service）</h2>
 <ul>
 <li>主要是管理服务：启动服务、停止服务</li>
 <li>几种服务： <code>started</code> 、 <code>restarted</code> 、 <code>stopped</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 安装 memcached</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m yum -a "name=memcached state=latest"</span>
-<span class="token comment"># 启动 memcached</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m service -a "name=memcached state=started"</span>
-<span class="token comment"># 设置ansible开机自启动</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m service -a "name=memcached enabled=true"</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 memcached</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m yum -a &quot;name=memcached state=latest&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动 memcached</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m service -a &quot;name=memcached state=started&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置ansible开机自启动</span></span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m service -a &quot;name=memcached enabled=true&quot;</span><br></pre></td></tr></table></figure>
 <h2 id="07收集目标主机信息setup"><a class="markdownIt-Anchor" href="#07收集目标主机信息setup"></a> 07.收集目标主机信息（setup）</h2>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m setup                                # 获取主机的信息</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m setup -a "filter=ansible_nodename"            # 获取集群名称</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m setup -a "filter=ansible_all_ipv4_addresses"     # 获取ipv4地址</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m setup -a "filter=ansible_memory_mb"           # 获取主机内存</span>
-<span class="token punctuation">[</span>root@k8s-node2 ~<span class="token punctuation">]</span><span class="token comment"># ansible webservers -m setup -a "filter=*mb"          "           # 通过通配符实现模糊匹配，比如以”mb”关键字结尾的信息</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node2 ~]# ansible webservers -m setup                                # 获取主机的信息</span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m setup -a &quot;filter=ansible_nodename&quot;            # 获取集群名称</span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m setup -a &quot;filter=ansible_all_ipv4_addresses&quot;     # 获取ipv4地址</span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m setup -a &quot;filter=ansible_memory_mb&quot;           # 获取主机内存</span><br><span class="line">[root@k8s-node2 ~]# ansible webservers -m setup -a &quot;filter=*mb&quot;          &quot;           # 通过通配符实现模糊匹配，比如以”mb”关键字结尾的信息</span><br></pre></td></tr></table></figure>
 <ul>
 <li>其他常用信息列出如下</li>
 </ul>
@@ -942,6 +913,8 @@ ansible_processor_vcpus：<code>显示cpu个数(只显示总的个数)</code></p
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

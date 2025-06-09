@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -81,36 +83,10 @@
             <div class="toc"></div>
             <div class="article-body">
                 <h2 id="01初始化项目结构"><a class="markdownIt-Anchor" href="#01初始化项目结构"></a> 01.初始化项目结构</h2>
-<pre class="language-python" data-language="python"><code class="language-python">└─shiyanlou_project          <span class="token comment"># 项目根路径</span>
-    │  <span class="token punctuation">.</span>gitignore             <span class="token comment"># 提交git仓库时，不提交的文件必须要在这里进行标注</span>
-    │  README<span class="token punctuation">.</span>en<span class="token punctuation">.</span>md           <span class="token comment"># 英文（项目介绍）</span>
-    │  README<span class="token punctuation">.</span>md              <span class="token comment"># 中文项目简介</span>
-    │  requirements<span class="token punctuation">.</span>txt       <span class="token comment"># django项目安装文件</span>
-    │
-    ├─celery_task            <span class="token comment"># 用来存放celery相关文件（以便分布式部署）</span>
-    │      __init__<span class="token punctuation">.</span>py
-    │
-    ├─db                     <span class="token comment"># 数据库相关：1.数据库初始化sql脚本； 2.数据库维护脚本，清理，备份脚本</span>
-    ├─scrips                 <span class="token comment"># 脚本目录：1.定时任务脚本；2.页面静态化脚本；处理项目脚本</span>
-    ├─logs                   <span class="token comment"># 存放日志</span>
-    ├─packages               <span class="token comment"># 外部包，原始的，未配置的：1.七牛云sdk；2.阿里云短信；</span>
-    └─uwsgi_conf             <span class="token comment"># uwsgi配置，日志，pid</span>
-    │
-    │
-    └─syl                    <span class="token comment"># 真正的django项目（代码）django-admin startproject   项目名</span>
-        │  apps （python包）                   <span class="token comment"># Django各种app模块 </span>
-        │  libs （python包）                   <span class="token comment"># 七牛云sdk+配置（外部下载）</span>
-        │  utils （python包）                  <span class="token comment"># 小工具，常用函数(自己写的)</span>
-        │  static               
-        │  templates
-        │  syl（项目配置）
-        │  manager<span class="token punctuation">.</span>py</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└─shiyanlou_project          <span class="comment"># 项目根路径</span></span><br><span class="line">    │  .gitignore             <span class="comment"># 提交git仓库时，不提交的文件必须要在这里进行标注</span></span><br><span class="line">    │  README.en.md           <span class="comment"># 英文（项目介绍）</span></span><br><span class="line">    │  README.md              <span class="comment"># 中文项目简介</span></span><br><span class="line">    │  requirements.txt       <span class="comment"># django项目安装文件</span></span><br><span class="line">    │</span><br><span class="line">    ├─celery_task            <span class="comment"># 用来存放celery相关文件（以便分布式部署）</span></span><br><span class="line">    │      __init__.py</span><br><span class="line">    │</span><br><span class="line">    ├─db                     <span class="comment"># 数据库相关：1.数据库初始化sql脚本； 2.数据库维护脚本，清理，备份脚本</span></span><br><span class="line">    ├─scrips                 <span class="comment"># 脚本目录：1.定时任务脚本；2.页面静态化脚本；处理项目脚本</span></span><br><span class="line">    ├─logs                   <span class="comment"># 存放日志</span></span><br><span class="line">    ├─packages               <span class="comment"># 外部包，原始的，未配置的：1.七牛云sdk；2.阿里云短信；</span></span><br><span class="line">    └─uwsgi_conf             <span class="comment"># uwsgi配置，日志，pid</span></span><br><span class="line">    │</span><br><span class="line">    │</span><br><span class="line">    └─syl                    <span class="comment"># 真正的django项目（代码）django-admin startproject   项目名</span></span><br><span class="line">        │  apps （python包）                   <span class="comment"># Django各种app模块 </span></span><br><span class="line">        │  libs （python包）                   <span class="comment"># 七牛云sdk+配置（外部下载）</span></span><br><span class="line">        │  utils （python包）                  <span class="comment"># 小工具，常用函数(自己写的)</span></span><br><span class="line">        │  static               </span><br><span class="line">        │  templates</span><br><span class="line">        │  syl（项目配置）</span><br><span class="line">        │  manager.py</span><br></pre></td></tr></table></figure>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20200925112025607.png" style="width: 800px; margin-left: 20px;"> </img></p>
 <h2 id="02创建django项目"><a class="markdownIt-Anchor" href="#02创建django项目"></a> 02.创建Django项目</h2>
-<pre class="language-python" data-language="python"><code class="language-python">root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># workon syl</span>
-<span class="token punctuation">(</span>syl<span class="token punctuation">)</span> root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># cd /aaa/shiyanlou_project/</span>
-<span class="token punctuation">(</span>syl<span class="token punctuation">)</span> root@dev<span class="token punctuation">:</span>shiyanlou_project<span class="token comment"># django-admin startproject syl</span>
-<span class="token comment"># 注：创建三个python包， apps、utils、libs</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@dev:shiyanlou_project<span class="comment"># workon syl</span></span><br><span class="line">(syl) root@dev:shiyanlou_project<span class="comment"># cd /aaa/shiyanlou_project/</span></span><br><span class="line">(syl) root@dev:shiyanlou_project<span class="comment"># django-admin startproject syl</span></span><br><span class="line"><span class="comment"># 注：创建三个python包， apps、utils、libs</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>
 <p>使用pycharm打开项目</p>
@@ -121,21 +97,7 @@
 <li>
 <pre class="highlight"><code class="">   PYTHONUNBUFFERED               1 
    DJANGO_SETTINGS_MODULE         syl.settings
-<pre class="language-none"><code class="language-none">    - &lt;img src&#x3D;&quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;DYL521&#x2F;DYL521.github.io&#x2F;image-save&#x2F;doc_image&#x2F;03_DRF框架&#x2F;image-20201026153155814.png&quot; style&#x3D;&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;&#x2F;img&gt;
-
-  - 2.文件----&gt;设置-----&gt;
-
-    - &lt;img src&#x3D;&quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;DYL521&#x2F;DYL521.github.io&#x2F;image-save&#x2F;doc_image&#x2F;03_DRF框架&#x2F;image-20201026153355278.png&quot; style&#x3D;&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;&#x2F;img&gt;
-
-  - 3.文件----&gt;设置-----&gt;
-    - &lt;img src&#x3D;&quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;DYL521&#x2F;DYL521.github.io&#x2F;image-save&#x2F;doc_image&#x2F;03_DRF框架&#x2F;image-20201026153527196.png&quot; style&#x3D;&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;&#x2F;img&gt;
-
-## 03.创建user模型
-
-### 3.1 创建用户模型user
-
-&#96;&#96;&#96;python
-python ..&#x2F;manage.py startapp user  # 创建user模型</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">    - &lt;img src=&quot;https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20201026153155814.png&quot; style=&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">  - 2.文件----&gt;设置-----&gt;</span><br><span class="line"></span><br><span class="line">    - &lt;img src=&quot;https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20201026153355278.png&quot; style=&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">  - 3.文件----&gt;设置-----&gt;</span><br><span class="line">    - &lt;img src=&quot;https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/03_DRF框架/image-20201026153527196.png&quot; style=&quot;width: 800px; margin-left: 20px;&quot;&gt; &lt;/img&gt;</span><br><span class="line"></span><br><span class="line">## 03.创建user模型</span><br><span class="line"></span><br><span class="line">### 3.1 创建用户模型user</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">python ../manage.py startapp user  # 创建user模型</span><br></pre></td></tr></table></figure>
 
 </code></pre>
 </li>
@@ -145,10 +107,7 @@ python ..&#x2F;manage.py startapp user  # 创建user模型</code></pre>
 </li>
 </ul>
 <h3 id="32-在settingpy中注册user模型第一步"><a class="markdownIt-Anchor" href="#32-在settingpy中注册user模型第一步"></a> 3.2 在setting.py中注册user模型（第一步）</h3>
-<pre class="language-python" data-language="python"><code class="language-python">INSTALLED_APPS <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token string">'user.apps.UserConfig'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span>
-<span class="token comment"># 注：pycharm无法联想，需要把apps文件夹设置为源根</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">&#x27;user.apps.UserConfig&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"><span class="comment"># 注：pycharm无法联想，需要把apps文件夹设置为源根</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>要想让pycharm识别要这样操作
 <ul>
@@ -157,76 +116,36 @@ python ..&#x2F;manage.py startapp user  # 创建user模型</code></pre>
 </li>
 </ul>
 <h3 id="33-sylurlspy添加主路由第二步"><a class="markdownIt-Anchor" href="#33-sylurlspy添加主路由第二步"></a> 3.3 syl/urls.py添加主路由（第二步）</h3>
-<pre class="language-python" data-language="python"><code class="language-python">urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    path<span class="token punctuation">(</span><span class="token string">'user/'</span><span class="token punctuation">,</span> include<span class="token punctuation">(</span><span class="token string">'user.urls'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;user/&#x27;</span>, include(<span class="string">&#x27;user.urls&#x27;</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h3 id="35-sylsettingspy中添加apps路径"><a class="markdownIt-Anchor" href="#35-sylsettingspy中添加apps路径"></a> 3.5 syl/settings.py中添加apps路径</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 把apps目录插入，到系统包搜索路径第一个位置中</span>
-sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span><span class="token string">'apps'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把apps目录插入，到系统包搜索路径第一个位置中</span></span><br><span class="line">sys.path.insert(<span class="number">0</span>,os.path.join(BASE_DIR,<span class="string">&#x27;apps&#x27;</span>))</span><br></pre></td></tr></table></figure>
 <h3 id="34-创建-userurlspy子路由文件第三步"><a class="markdownIt-Anchor" href="#34-创建-userurlspy子路由文件第三步"></a> 3.4 创建 user/urls.py子路由文件（第三步）</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h2 id="04重写django默认认证用户模型"><a class="markdownIt-Anchor" href="#04重写django默认认证用户模型"></a> 04.重写Django默认认证用户模型</h2>
 <h3 id="41-重写django-user表"><a class="markdownIt-Anchor" href="#41-重写django-user表"></a> 4.1 重写django user表</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib<span class="token punctuation">.</span>auth<span class="token punctuation">.</span>models <span class="token keyword">import</span> AbstractUser
-
-<span class="token comment"># Create your models here.</span>
-<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span>AbstractUser<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    phone <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'手机号'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
-    img <span class="token operator">=</span> models<span class="token punctuation">.</span>ImageField<span class="token punctuation">(</span>upload_to<span class="token operator">=</span><span class="token string">'user'</span><span class="token punctuation">,</span>null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-    nick_name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'昵称'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
-    address <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span><span class="token string">'地址'</span><span class="token punctuation">,</span>max_length<span class="token operator">=</span><span class="token number">255</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-        db_table <span class="token operator">=</span> <span class="token string">'tb_user'</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> AbstractUser</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create your models here.</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(<span class="title class_ inherited__">AbstractUser</span>):</span><br><span class="line">    phone = models.CharField(<span class="string">&#x27;手机号&#x27;</span>,max_length=<span class="number">20</span>)</span><br><span class="line">    img = models.ImageField(upload_to=<span class="string">&#x27;user&#x27;</span>,null=<span class="literal">True</span>)</span><br><span class="line">    nick_name = models.CharField(<span class="string">&#x27;昵称&#x27;</span>,max_length=<span class="number">20</span>)</span><br><span class="line">    address = models.CharField(<span class="string">&#x27;地址&#x27;</span>,max_length=<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        db_table = <span class="string">&#x27;tb_user&#x27;</span></span><br></pre></td></tr></table></figure>
 <h3 id="42-sylsettingspy中注册"><a class="markdownIt-Anchor" href="#42-sylsettingspy中注册"></a> 4.2 syl/settings.py中注册</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 注册自己的用户模型类: 应用名.模型名，指定我们重写的User表进行身份验证</span>
-AUTH_USER_MODEL <span class="token operator">=</span> <span class="token string">'user.User'</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注册自己的用户模型类: 应用名.模型名，指定我们重写的User表进行身份验证</span></span><br><span class="line">AUTH_USER_MODEL = <span class="string">&#x27;user.User&#x27;</span></span><br></pre></td></tr></table></figure>
 <h3 id="43-配置mysql"><a class="markdownIt-Anchor" href="#43-配置mysql"></a> 4.3 配置mysql</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1.创建mysql数据库'''</span>
-mysql<span class="token operator">></span> create database syldatabase charset utf8<span class="token punctuation">;</span>
-
-<span class="token triple-quoted-string string">'''2.在syl/settings.py中配置mysql'''</span>
-DATABASES <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">'default'</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">'ENGINE'</span><span class="token punctuation">:</span> <span class="token string">'django.db.backends.mysql'</span><span class="token punctuation">,</span>
-        <span class="token string">'NAME'</span><span class="token punctuation">:</span> <span class="token string">'syldatabase'</span><span class="token punctuation">,</span>              <span class="token comment"># 指定数据库名称：syldatabase</span>
-        <span class="token string">'USER'</span><span class="token punctuation">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span>
-        <span class="token string">'PASSWORD'</span><span class="token punctuation">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span>
-        <span class="token string">'HOST'</span><span class="token punctuation">:</span> <span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span>
-        <span class="token string">'PORT'</span><span class="token punctuation">:</span> <span class="token string">'3306'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;1.创建mysql数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">mysql&gt; create database syldatabase charset utf8;</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;2.在syl/settings.py中配置mysql&#x27;&#x27;&#x27;</span></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.mysql&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>: <span class="string">&#x27;syldatabase&#x27;</span>,              <span class="comment"># 指定数据库名称：syldatabase</span></span><br><span class="line">        <span class="string">&#x27;USER&#x27;</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PASSWORD&#x27;</span>: <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>: <span class="string">&#x27;3306&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="44生成表"><a class="markdownIt-Anchor" href="#44生成表"></a> 4.4生成表</h3>
-<pre class="language-python" data-language="python"><code class="language-python">python manage<span class="token punctuation">.</span>py makemigrations
-python manage<span class="token punctuation">.</span>py migrate</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
 <h2 id="05python中的三种路径"><a class="markdownIt-Anchor" href="#05python中的三种路径"></a> 05.python中的三种路径</h2>
 <h3 id="51-操作系统绝对路径第一种"><a class="markdownIt-Anchor" href="#51-操作系统绝对路径第一种"></a> 5.1 操作系统绝对路径（第一种）</h3>
 <ul>
 <li>django 静态文件查找, 模板查找（第一种）</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 去配置好的 文件夹 中查找指定的文件</span>
-BASE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-STATIC_URL <span class="token operator">=</span> <span class="token string">'/static/'</span>
-<span class="token comment"># /teach/shiyanlou_project/syl/apps/user/   # linux</span>
-<span class="token comment"># E:\_000\XSX</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 去配置好的 文件夹 中查找指定的文件</span></span><br><span class="line">BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</span><br><span class="line">STATIC_URL = <span class="string">&#x27;/static/&#x27;</span></span><br><span class="line"><span class="comment"># /teach/shiyanlou_project/syl/apps/user/   # linux</span></span><br><span class="line"><span class="comment"># E:\_000\XSX</span></span><br></pre></td></tr></table></figure>
 <h3 id="52-django-导包路径第二种"><a class="markdownIt-Anchor" href="#52-django-导包路径第二种"></a> 5.2 django 导包路径（第二种）</h3>
 <ul>
 <li>第一：<code>当期文件夹</code></li>
 <li>第二：<code>sys.path</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">导包之前<span class="token punctuation">,</span> 包的上级路径<span class="token punctuation">,</span> 需要存在于 python system 的 path
-sys<span class="token punctuation">.</span>path  这是一个列表</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">导包之前, 包的上级路径, 需要存在于 python system 的 path</span><br><span class="line">sys.path  这是一个列表</span><br></pre></td></tr></table></figure>
 <p>sys.path.insert(0, os.path.join(BASE_DIR, ‘apps’))</p>
-<pre class="language-none"><code class="language-none">from xxx import yyy  才能成功</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from xxx import yyy  才能成功</span><br></pre></td></tr></table></figure>
 <h3 id="53-django模型引用第三种"><a class="markdownIt-Anchor" href="#53-django模型引用第三种"></a> 5.3 django模型引用（第三种）</h3>
-<pre class="language-python" data-language="python"><code class="language-python">想使用 一个 models<span class="token punctuation">.</span>py 文件中的模型
-apps名称<span class="token punctuation">.</span>model模型名
-<span class="token string">'users.User'</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">想使用 一个 models.py 文件中的模型</span><br><span class="line">apps名称.model模型名</span><br><span class="line"><span class="string">&#x27;users.User&#x27;</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -923,6 +842,8 @@ apps名称<span class="token punctuation">.</span>model模型名
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

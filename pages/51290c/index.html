@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -80,21 +82,13 @@
 <p>python ES客户端：<a target="_blank" rel="noopener" href="https://elasticsearch-py.readthedocs.io/">https://elasticsearch-py.readthedocs.io/</a></p>
 <p>elasticsearch官方文档：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html</a></p>
 <h3 id="11-安装elasticsearch客户端"><a class="markdownIt-Anchor" href="#11-安装elasticsearch客户端"></a> 1.1 安装elasticsearch客户端</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## pip install elasticsearch</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># pip install elasticsearch</span></span></span><br></pre></td></tr></table></figure>
 <h3 id="12-创建索引"><a class="markdownIt-Anchor" href="#12-创建索引"></a> 1.2 创建索引</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-<span class="token comment">## 1.连接ES</span>
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment">## 2.创建索引</span>
-es.indices.create<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'python_es01'</span>,ignore<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span>   <span class="token comment">## 注意:ignore可以忽略异常</span>
-<span class="token comment">## 3.删除索引</span>
-es.indices.delete<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'python_es01'</span>, <span class="token assign-left variable">ignore</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">400</span>, <span class="token number">404</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 1.连接ES</span></span></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 2.创建索引</span></span></span><br><span class="line">es.indices.create(index=&#x27;python_es01&#x27;,ignore=400)   ## 注意:ignore可以忽略异常</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 3.删除索引</span></span></span><br><span class="line">es.indices.delete(index=&#x27;python_es01&#x27;, ignore=[400, 404])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>若需验证</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## es = Elasticsearch(['192.168.56.66:9200'], http_auth=('xiao', '123456'), timeout=3600)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># es = Elasticsearch([&#x27;192.168.56.66:9200&#x27;], http_auth=(&#x27;xiao&#x27;, &#x27;123456&#x27;), timeout=3600)</span></span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>然后在dev-tools中查看操作结果</li>
 </ul>
@@ -102,14 +96,7 @@ es.indices.delete<span class="token punctuation">(</span>index<span class="token
 <p>GET /python_es01</p>
 </blockquote>
 <h3 id="13-插入数据"><a class="markdownIt-Anchor" href="#13-插入数据"></a> 1.3 插入数据</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-from datetime <span class="token function">import</span> datetime
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment">## 其中index表示插入的索引,doc_type表示数据类型,id表示主键,body表示要插入索引的内容</span>
-<span class="token comment">## 注意:因为elasticsearch中的数据格式为json,所以python中提供的数据类型为dict</span>
-es.index<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>, <span class="token assign-left variable">doc_type</span><span class="token operator">=</span><span class="token string">"test-type"</span>, <span class="token assign-left variable">id</span><span class="token operator">=</span><span class="token number">1</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"any"</span><span class="token builtin class-name">:</span> <span class="token string">"data01"</span>, <span class="token string">"timestamp"</span><span class="token builtin class-name">:</span> datetime.now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line">from datetime import datetime</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 其中index表示插入的索引,doc_type表示数据类型,id表示主键,body表示要插入索引的内容</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 注意:因为elasticsearch中的数据格式为json,所以python中提供的数据类型为dict</span></span></span><br><span class="line">es.index(index=&quot;my-index&quot;, doc_type=&quot;test-type&quot;, id=1, body=&#123;&quot;any&quot;: &quot;data01&quot;, &quot;timestamp&quot;: datetime.now()&#125;)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>在dev-tools中操作</li>
 </ul>
@@ -118,48 +105,18 @@ es.index<span class="token punctuation">(</span>index<span class="token operator
 </blockquote>
 <h3 id="14-查询数据"><a class="markdownIt-Anchor" href="#14-查询数据"></a> 1.4 查询数据</h3>
 <h4 id="141-法1使用id查询"><a class="markdownIt-Anchor" href="#141-法1使用id查询"></a> 1.4.1 法1:使用id查询</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-result <span class="token operator">=</span> es.get<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,id<span class="token operator">=</span><span class="token string">"1"</span><span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">result = es.get(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,id=&quot;1&quot;)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h4 id="142-法2使用devtools中方法进行查询"><a class="markdownIt-Anchor" href="#142-法2使用devtools中方法进行查询"></a> 1.4.2 法2：使用DevTools中方法进行查询</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token assign-left variable">body</span><span class="token operator">=</span><span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-    <span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result2 <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result2<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"></span><br><span class="line">body=&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result2 = es.search(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,body=body)</span><br><span class="line">print(result2)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>查询结果</li>
 </ul>
-<pre class="language-none"><code class="language-none">&#123;
-	&quot;_index&quot;: &quot;my-index&quot;,
-	&quot;_type&quot;: &quot;test-type&quot;,
-	&quot;_id&quot;: &quot;1&quot;,
-	&quot;_version&quot;: 1,
-	&quot;_seq_no&quot;: 0,
-	&quot;_primary_term&quot;: 1,
-	&quot;found&quot;: true,
-	&quot;_source&quot;: &#123;
-		&quot;any&quot;: &quot;data01&quot;,
-		&quot;timestamp&quot;: &quot;2021-02-03T11:00:33.396408&quot;
-	&#125;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;_index&quot;: &quot;my-index&quot;,</span><br><span class="line">	&quot;_type&quot;: &quot;test-type&quot;,</span><br><span class="line">	&quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">	&quot;_version&quot;: 1,</span><br><span class="line">	&quot;_seq_no&quot;: 0,</span><br><span class="line">	&quot;_primary_term&quot;: 1,</span><br><span class="line">	&quot;found&quot;: true,</span><br><span class="line">	&quot;_source&quot;: &#123;</span><br><span class="line">		&quot;any&quot;: &quot;data01&quot;,</span><br><span class="line">		&quot;timestamp&quot;: &quot;2021-02-03T11:00:33.396408&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="15-删除数据"><a class="markdownIt-Anchor" href="#15-删除数据"></a> 1.5 删除数据</h3>
 <ul>
 <li><code>等同于：</code>DELETE /my-index/test-type/1</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-result <span class="token operator">=</span> es.delete<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"my-index"</span>,doc_type<span class="token operator">=</span><span class="token string">"test-type"</span>,id<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">result = es.delete(index=&quot;my-index&quot;,doc_type=&quot;test-type&quot;,id=1)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="02创建mapping"><a class="markdownIt-Anchor" href="#02创建mapping"></a> 02.创建mapping</h2>
 <h3 id="21-什么是mapping"><a class="markdownIt-Anchor" href="#21-什么是mapping"></a> 2.1 什么是mapping</h3>
 <ul>
@@ -169,65 +126,12 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 </ul>
 <h3 id="22-自动创建mapping"><a class="markdownIt-Anchor" href="#22-自动创建mapping"></a> 2.2 自动创建mapping</h3>
 <h4 id="221-自动创建数据"><a class="markdownIt-Anchor" href="#221-自动创建数据"></a> 2.2.1 自动创建数据</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash">put /goods/fruit/1
-<span class="token punctuation">&#123;</span>
-  <span class="token string">"name"</span><span class="token builtin class-name">:</span><span class="token string">"xiangjiao"</span>,
-  <span class="token string">"describe"</span><span class="token builtin class-name">:</span><span class="token string">"haochi tian"</span>,
-  <span class="token string">"price"</span>:40,
-  <span class="token string">"producer"</span><span class="token builtin class-name">:</span><span class="token string">"feilvbin"</span>,
-  <span class="token string">"tags"</span>:<span class="token punctuation">[</span><span class="token string">"xiangjiao"</span>,<span class="token string">"haochi"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put /goods/fruit/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;xiangjiao&quot;,</span><br><span class="line">  &quot;describe&quot;:&quot;haochi tian&quot;,</span><br><span class="line">  &quot;price&quot;:40,</span><br><span class="line">  &quot;producer&quot;:&quot;feilvbin&quot;,</span><br><span class="line">  &quot;tags&quot;:[&quot;xiangjiao&quot;,&quot;haochi&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="222-查看mapping映射"><a class="markdownIt-Anchor" href="#222-查看mapping映射"></a> 2.2.2 查看mapping映射</h4>
 <blockquote>
 <p>GET /goods/_mapping</p>
 </blockquote>
-<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"goods"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"mappings"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"properties"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token property">"describe"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"keyword"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-              <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span>
-              <span class="token property">"ignore_above"</span> <span class="token operator">:</span> <span class="token number">256</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token property">"name"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"keyword"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-              <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span>
-              <span class="token property">"ignore_above"</span> <span class="token operator">:</span> <span class="token number">256</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token property">"price"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"long"</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token property">"producer"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"keyword"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-              <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span>
-              <span class="token property">"ignore_above"</span> <span class="token operator">:</span> <span class="token number">256</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token property">"tags"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
-          <span class="token property">"fields"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"keyword"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-              <span class="token property">"type"</span> <span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span>
-              <span class="token property">"ignore_above"</span> <span class="token operator">:</span> <span class="token number">256</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;goods&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;properties&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;describe&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;price&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;long&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;producer&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;tags&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <h3 id="23-mapping说明"><a class="markdownIt-Anchor" href="#23-mapping说明"></a> 2.3 mapping说明</h3>
 <p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html">http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html</a></p>
 <h4 id="231-mapping分词器"><a class="markdownIt-Anchor" href="#231-mapping分词器"></a> 2.3.1 mapping分词器</h4>
@@ -338,41 +242,7 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 </tr>
 </tbody>
 </table>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
-from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-mappings <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-	<span class="token string">"mappings"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"properties"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-				<span class="token string">"search_analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-				<span class="token string">"search_analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"long"</span>,
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-				<span class="token string">"search_analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
-			<span class="token punctuation">&#125;</span>,
-			<span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"text"</span>,
-				<span class="token string">"analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>,
-				<span class="token string">"search_analyzer"</span><span class="token builtin class-name">:</span> <span class="token string">"ik_max_word"</span>
-			<span class="token punctuation">&#125;</span>,
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-res <span class="token operator">=</span> es.indices.create<span class="token punctuation">(</span>index <span class="token operator">=</span> <span class="token string">'books'</span>,body <span class="token operator">=</span>mappings<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>res<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># -*- coding: utf-8 -*-</span></span></span><br><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">mappings = &#123;</span><br><span class="line">	&quot;mappings&quot;: &#123;</span><br><span class="line">		&quot;properties&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;author&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;price&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;long&quot;,</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;desc&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;pub_date&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;text&quot;,</span><br><span class="line">				&quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">				&quot;search_analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">res = es.indices.create(index = &#x27;books&#x27;,body =mappings)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>在浏览器管理页面，查询mappings创建结果</li>
 </ul>
@@ -419,28 +289,7 @@ print<span class="token punctuation">(</span>res<span class="token punctuation">
 </tr>
 </tbody>
 </table>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token string">'192.168.56.66:9200'</span><span class="token punctuation">)</span>
-list <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-     <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"三国演义"</span>,
-     <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"罗贯中"</span>,
-     <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">88</span>,
-     <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"三国争雄"</span>,
-     <span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2014-09-12"</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token punctuation">&#123;</span>
-     <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"水浒传"</span>,
-     <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"施耐庵"</span>,
-     <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">106</span>,
-     <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"宋江梁山起义"</span>,
-     <span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2018-01-27"</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span>
-<span class="token keyword">for</span> <span class="token for-or-select variable">item</span> <span class="token keyword">in</span> list:
-    res <span class="token operator">=</span> es.index<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'books'</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>item<span class="token punctuation">)</span>
-    print<span class="token punctuation">(</span>res<span class="token punctuation">[</span><span class="token string">'created'</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch(&#x27;192.168.56.66:9200&#x27;)</span><br><span class="line">list = [</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;三国演义&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;罗贯中&quot;,</span><br><span class="line">     &quot;price&quot;: 88,</span><br><span class="line">     &quot;desc&quot;: &quot;三国争雄&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2014-09-12&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;水浒传&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;施耐庵&quot;,</span><br><span class="line">     &quot;price&quot;: 106,</span><br><span class="line">     &quot;desc&quot;: &quot;宋江梁山起义&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2018-01-27&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">for item in list:</span><br><span class="line">    res = es.index(index=&#x27;books&#x27;, body=item)</span><br><span class="line">    print(res[&#x27;created&#x27;])</span><br></pre></td></tr></table></figure>
 <h3 id="42-bulk批量添加数据"><a class="markdownIt-Anchor" href="#42-bulk批量添加数据"></a> 4.2 bulk批量添加数据</h3>
 <table>
 <thead>
@@ -480,132 +329,15 @@ list <span class="token operator">=</span> <span class="token punctuation">[</sp
 </tr>
 </tbody>
 </table>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## -*- coding: utf-8 -*-</span>
-from elasticsearch <span class="token function">import</span> Elasticsearch
-from elasticsearch.helpers <span class="token function">import</span> bulk
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-list <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-     <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"西游记"</span>,
-     <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"吴承恩"</span>,
-     <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">206</span>,
-     <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"唐僧师徒四人"</span>,
-     <span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2020-10-10"</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token punctuation">&#123;</span>
-     <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"红楼梦"</span>,
-     <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"曹雪芹"</span>,
-     <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">88</span>,
-     <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"石头记"</span>,
-     <span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2021–09-18"</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span>
-ACTIONS <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-i <span class="token operator">=</span> <span class="token number">10</span>
-<span class="token keyword">for</span> <span class="token for-or-select variable">line</span> <span class="token keyword">in</span> list:
-    action <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"_index"</span><span class="token builtin class-name">:</span> <span class="token string">'books'</span>,
-        <span class="token string">"_id"</span><span class="token builtin class-name">:</span> i,  <span class="token comment">## _id 也可以默认生成，不赋值</span>
-        <span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"name"</span><span class="token builtin class-name">:</span> line<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span>,
-            <span class="token string">"author"</span><span class="token builtin class-name">:</span> line<span class="token punctuation">[</span><span class="token string">'author'</span><span class="token punctuation">]</span>,
-            <span class="token string">"price"</span><span class="token builtin class-name">:</span> line<span class="token punctuation">[</span><span class="token string">'price'</span><span class="token punctuation">]</span>,
-            <span class="token string">"desc"</span><span class="token builtin class-name">:</span> line<span class="token punctuation">[</span><span class="token string">'desc'</span><span class="token punctuation">]</span>,
-            <span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> line<span class="token punctuation">[</span><span class="token string">'pub_date'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-    i <span class="token operator">+=</span> <span class="token number">1</span>
-    ACTIONS.append<span class="token punctuation">(</span>action<span class="token punctuation">)</span>
-
-<span class="token comment">## 批量处理</span>
-success, _ <span class="token operator">=</span> bulk<span class="token punctuation">(</span>es, ACTIONS, <span class="token assign-left variable">index</span><span class="token operator">=</span><span class="token string">'books'</span>, <span class="token assign-left variable">raise_on_error</span><span class="token operator">=</span>True<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span><span class="token string">'Performed %d actions'</span> % success<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># -*- coding: utf-8 -*-</span></span></span><br><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line">from elasticsearch.helpers import bulk</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">list = [</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;西游记&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;吴承恩&quot;,</span><br><span class="line">     &quot;price&quot;: 206,</span><br><span class="line">     &quot;desc&quot;: &quot;唐僧师徒四人&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2020-10-10&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">     &quot;name&quot;: &quot;红楼梦&quot;,</span><br><span class="line">     &quot;author&quot;: &quot;曹雪芹&quot;,</span><br><span class="line">     &quot;price&quot;: 88,</span><br><span class="line">     &quot;desc&quot;: &quot;石头记&quot;,</span><br><span class="line">     &quot;pub_date&quot;: &quot;2021–09-18&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">ACTIONS = []</span><br><span class="line">i = 10</span><br><span class="line">for line in list:</span><br><span class="line">    action = &#123;</span><br><span class="line">        &quot;_index&quot;: &#x27;books&#x27;,</span><br><span class="line">        &quot;_id&quot;: i,  ## _id 也可以默认生成，不赋值</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: line[&#x27;name&#x27;],</span><br><span class="line">            &quot;author&quot;: line[&#x27;author&#x27;],</span><br><span class="line">            &quot;price&quot;: line[&#x27;price&#x27;],</span><br><span class="line">            &quot;desc&quot;: line[&#x27;desc&#x27;],</span><br><span class="line">            &quot;pub_date&quot;: line[&#x27;pub_date&#x27;]&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i += 1</span><br><span class="line">    ACTIONS.append(action)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 批量处理</span></span></span><br><span class="line">success, _ = bulk(es, ACTIONS, index=&#x27;books&#x27;, raise_on_error=True)</span><br><span class="line">print(&#x27;Performed %d actions&#x27; % success)</span><br></pre></td></tr></table></figure>
 <h2 id="05查询所有数据"><a class="markdownIt-Anchor" href="#05查询所有数据"></a> 05.查询所有数据</h2>
 <h3 id="51-查询所有数据"><a class="markdownIt-Anchor" href="#51-查询所有数据"></a> 5.1 查询所有数据</h3>
 <h4 id="511-查询所有数据"><a class="markdownIt-Anchor" href="#511-查询所有数据"></a> 5.1.1 查询所有数据</h4>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> elasticsearch <span class="token keyword">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-result <span class="token operator">=</span> es<span class="token punctuation">.</span>search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"es_test"</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([<span class="string">&quot;192.168.56.66:9200&quot;</span>,])</span><br><span class="line">result = es.search(index=<span class="string">&quot;es_test&quot;</span>,)</span><br><span class="line"><span class="built_in">print</span>((result))</span><br></pre></td></tr></table></figure>
 <h4 id="512-根据body查询所有数据"><a class="markdownIt-Anchor" href="#512-根据body查询所有数据"></a> 5.1.2 根据body查询所有数据</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-        <span class="token string">"match_all"</span>:<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"es_test"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">        &quot;match_all&quot;:&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;es_test&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="52-查询结果"><a class="markdownIt-Anchor" href="#52-查询结果"></a> 5.2 查询结果</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">&#123;</span>
-	<span class="token string">"took"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-	<span class="token string">"timed_out"</span><span class="token builtin class-name">:</span> false,
-	<span class="token string">"_shards"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"total"</span><span class="token builtin class-name">:</span> <span class="token number">1</span>,
-		<span class="token string">"successful"</span><span class="token builtin class-name">:</span> <span class="token number">1</span>,
-		<span class="token string">"skipped"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-		<span class="token string">"failed"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>
-	<span class="token punctuation">&#125;</span>,
-	<span class="token string">"hits"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-		<span class="token string">"total"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-			<span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token number">4</span>,
-			<span class="token string">"relation"</span><span class="token builtin class-name">:</span> <span class="token string">"eq"</span>
-		<span class="token punctuation">&#125;</span>,
-		<span class="token string">"max_score"</span><span class="token builtin class-name">:</span> <span class="token number">1.0</span>,
-		<span class="token string">"hits"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span>
-			<span class="token string">"_index"</span><span class="token builtin class-name">:</span> <span class="token string">"books"</span>,
-			<span class="token string">"_type"</span><span class="token builtin class-name">:</span> <span class="token string">"_doc"</span>,
-			<span class="token string">"_id"</span><span class="token builtin class-name">:</span> <span class="token string">"Vac9bXcBpdA8au-rDwE0"</span>,
-			<span class="token string">"_score"</span><span class="token builtin class-name">:</span> <span class="token number">1.0</span>,
-			<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"水浒传"</span>,
-				<span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"施耐庵"</span>,
-				<span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">106</span>,
-				<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"宋江梁山起义"</span>,
-				<span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2018-01-27"</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>, <span class="token punctuation">&#123;</span>
-			<span class="token string">"_index"</span><span class="token builtin class-name">:</span> <span class="token string">"books"</span>,
-			<span class="token string">"_type"</span><span class="token builtin class-name">:</span> <span class="token string">"_doc"</span>,
-			<span class="token string">"_id"</span><span class="token builtin class-name">:</span> <span class="token string">"10"</span>,
-			<span class="token string">"_score"</span><span class="token builtin class-name">:</span> <span class="token number">1.0</span>,
-			<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"西游记"</span>,
-				<span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"吴承恩"</span>,
-				<span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">206</span>,
-				<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"唐僧师徒四人"</span>,
-				<span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2020-10-10"</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>, <span class="token punctuation">&#123;</span>
-			<span class="token string">"_index"</span><span class="token builtin class-name">:</span> <span class="token string">"books"</span>,
-			<span class="token string">"_type"</span><span class="token builtin class-name">:</span> <span class="token string">"_doc"</span>,
-			<span class="token string">"_id"</span><span class="token builtin class-name">:</span> <span class="token string">"11"</span>,
-			<span class="token string">"_score"</span><span class="token builtin class-name">:</span> <span class="token number">1.0</span>,
-			<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"红楼梦"</span>,
-				<span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"曹雪芹"</span>,
-				<span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">88</span>,
-				<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"石头记"</span>,
-				<span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2021–09-18"</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>, <span class="token punctuation">&#123;</span>
-			<span class="token string">"_index"</span><span class="token builtin class-name">:</span> <span class="token string">"books"</span>,
-			<span class="token string">"_type"</span><span class="token builtin class-name">:</span> <span class="token string">"_doc"</span>,
-			<span class="token string">"_id"</span><span class="token builtin class-name">:</span> <span class="token string">"VqdJbXcBpdA8au-r0AHI"</span>,
-			<span class="token string">"_score"</span><span class="token builtin class-name">:</span> <span class="token number">1.0</span>,
-			<span class="token string">"_source"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-				<span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"三国演义"</span>,
-				<span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token string">"罗贯中"</span>,
-				<span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token number">88</span>,
-				<span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token string">"三国争雄"</span>,
-				<span class="token string">"pub_date"</span><span class="token builtin class-name">:</span> <span class="token string">"2014-09-12"</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;took&quot;: 0,</span><br><span class="line">	&quot;timed_out&quot;: false,</span><br><span class="line">	&quot;_shards&quot;: &#123;</span><br><span class="line">		&quot;total&quot;: 1,</span><br><span class="line">		&quot;successful&quot;: 1,</span><br><span class="line">		&quot;skipped&quot;: 0,</span><br><span class="line">		&quot;failed&quot;: 0</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;hits&quot;: &#123;</span><br><span class="line">		&quot;total&quot;: &#123;</span><br><span class="line">			&quot;value&quot;: 4,</span><br><span class="line">			&quot;relation&quot;: &quot;eq&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;max_score&quot;: 1.0,</span><br><span class="line">		&quot;hits&quot;: [&#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;Vac9bXcBpdA8au-rDwE0&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;水浒传&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;施耐庵&quot;,</span><br><span class="line">				&quot;price&quot;: 106,</span><br><span class="line">				&quot;desc&quot;: &quot;宋江梁山起义&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2018-01-27&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;10&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;西游记&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;吴承恩&quot;,</span><br><span class="line">				&quot;price&quot;: 206,</span><br><span class="line">				&quot;desc&quot;: &quot;唐僧师徒四人&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2020-10-10&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;11&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;红楼梦&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;曹雪芹&quot;,</span><br><span class="line">				&quot;price&quot;: 88,</span><br><span class="line">				&quot;desc&quot;: &quot;石头记&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2021–09-18&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;_index&quot;: &quot;books&quot;,</span><br><span class="line">			&quot;_type&quot;: &quot;_doc&quot;,</span><br><span class="line">			&quot;_id&quot;: &quot;VqdJbXcBpdA8au-r0AHI&quot;,</span><br><span class="line">			&quot;_score&quot;: 1.0,</span><br><span class="line">			&quot;_source&quot;: &#123;</span><br><span class="line">				&quot;name&quot;: &quot;三国演义&quot;,</span><br><span class="line">				&quot;author&quot;: &quot;罗贯中&quot;,</span><br><span class="line">				&quot;price&quot;: 88,</span><br><span class="line">				&quot;desc&quot;: &quot;三国争雄&quot;,</span><br><span class="line">				&quot;pub_date&quot;: &quot;2014-09-12&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="06term和terms模糊查询"><a class="markdownIt-Anchor" href="#06term和terms模糊查询"></a> 06.term和terms模糊查询</h2>
 <ul>
 <li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
@@ -616,39 +348,12 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <li><code>查找 title 字段中包含：&quot;电视&quot;关键字的内容</code></li>
 <li>term是代表完全匹配，即不进行分词器分析，文档中必须包含整个搜索的词汇</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-    <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"三国"</span>     <span class="token comment">## 查找 title 字段中包含："三国"关键字的内容</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;三国&quot;     ## 查找 title 字段中包含：&quot;三国&quot;关键字的内容</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="62-terms"><a class="markdownIt-Anchor" href="#62-terms"></a> 6.2 terms</h3>
 <ul>
 <li><code>查找name字段包含：&quot;三国&quot;或者&quot;红楼&quot;关键字</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-    <span class="token string">"terms"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>     <span class="token comment">## 查找name字段包含："三国"或者"红楼"关键字</span>
-        <span class="token string">"三国"</span>,
-        <span class="token string">"西游"</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;terms&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: [     ## 查找name字段包含：&quot;三国&quot;或者&quot;红楼&quot;关键字</span><br><span class="line">        &quot;三国&quot;,</span><br><span class="line">        &quot;西游&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="07match和multi_match"><a class="markdownIt-Anchor" href="#07match和multi_match"></a> 07.match和multi_match</h2>
 <ul>
 <li>match：智能在一个字段匹配</li>
@@ -660,45 +365,11 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 </li>
 </ul>
 <h3 id="71-match"><a class="markdownIt-Anchor" href="#71-match"></a> 7.1 match</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-    <span class="token string">"match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token string">"三国"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;三国&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="72-multi_match"><a class="markdownIt-Anchor" href="#72-multi_match"></a> 7.2 multi_match</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"multi_match"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token string">"吴承恩"</span>,                   <span class="token comment">#查询的内容为  吴承恩</span>
-      <span class="token string">"fields"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token string">"name"</span>,<span class="token string">"author"</span><span class="token punctuation">]</span>          <span class="token comment">#查询 图书名称 或者 作者包含 吴承恩 关键字</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;multi_match&quot;: &#123;</span><br><span class="line">      &quot;query&quot;: &quot;吴承恩&quot;,                   #查询的内容为  吴承恩</span><br><span class="line">      &quot;fields&quot;: [&quot;name&quot;,&quot;author&quot;]          #查询 图书名称 或者 作者包含 吴承恩 关键字</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;, body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="08ids根据多个id查询"><a class="markdownIt-Anchor" href="#08ids根据多个id查询"></a> 08.ids根据多个id查询</h2>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"ids"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"values"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span><span class="token number">10,11</span><span class="token punctuation">]</span>      <span class="token comment">## 查询id为：10或者11的数据</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;ids&quot;: &#123;</span><br><span class="line">      &quot;values&quot;: [10,11]      ## 查询id为：10或者11的数据</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="09复合查询bool"><a class="markdownIt-Anchor" href="#09复合查询bool"></a> 09.复合查询bool</h2>
 <ul>
 <li>
@@ -715,109 +386,23 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <ul>
 <li><code>图书名称同时包含：&quot;西游&quot;   作者包含：&quot;唐僧&quot;</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"must"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"西游"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"唐僧"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;唐僧&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="92-should"><a class="markdownIt-Anchor" href="#92-should"></a> 9.2 should</h3>
 <ul>
 <li>图书名称 包含 “西游” 或者 描述中 包含 “石头记”</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"should"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"西游"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"石头记"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;石头记&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="93-must_not"><a class="markdownIt-Anchor" href="#93-must_not"></a> 9.3 must_not</h3>
 <p>图书名称 不包含 “西游” 和 描述中 不包含 “石头记”得所有图书</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"bool"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"must_not"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"name"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"西游"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>,
-        <span class="token punctuation">&#123;</span> <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"desc"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span> <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"石头记"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must_not&quot;: [</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;name&quot;: &#123; &quot;value&quot;: &quot;西游&quot; &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;term&quot;: &#123; &quot;desc&quot;: &#123; &quot;value&quot;: &quot;石头记&quot; &#125; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="10分页"><a class="markdownIt-Anchor" href="#10分页"></a> 10.分页</h2>
 <h3 id="101-分页查询"><a class="markdownIt-Anchor" href="#101-分页查询"></a> 10.1 分页查询</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>   <span class="token comment">#这里是查询的条件部分</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,         <span class="token comment">#从第几条开始查</span>
-  <span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">2</span>         <span class="token comment">#一次查多少条数据</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line"></span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;   #这里是查询的条件部分</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,         #从第几条开始查</span><br><span class="line">  &quot;size&quot;: 2         #一次查多少条数据</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="102-范围查询加分页"><a class="markdownIt-Anchor" href="#102-范围查询加分页"></a> 10.2 范围查询加分页</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"range"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>      <span class="token comment">## 查找图书价格在 10~100 之间的书籍</span>
-      <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"gte"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>,
-        <span class="token string">"lte"</span><span class="token builtin class-name">:</span> <span class="token number">100</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"from"</span><span class="token builtin class-name">:</span> <span class="token number">0</span>,
-  <span class="token string">"size"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;range&quot;: &#123;      ## 查找图书价格在 10~100 之间的书籍</span><br><span class="line">      &quot;price&quot;: &#123;</span><br><span class="line">        &quot;gte&quot;: 10,</span><br><span class="line">        &quot;lte&quot;: 100</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 10</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="11前缀查询"><a class="markdownIt-Anchor" href="#11前缀查询"></a> 11.前缀查询</h2>
 <h3 id="11前缀查询-2"><a class="markdownIt-Anchor" href="#11前缀查询-2"></a> 11.前缀查询</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"prefix"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"吴"</span>     <span class="token comment">## 查找图书作者 姓 吴 </span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;prefix&quot;: &#123;</span><br><span class="line">      &quot;author&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;吴&quot;     ## 查找图书作者 姓 吴 </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="12通配符查询"><a class="markdownIt-Anchor" href="#12通配符查询"></a> 12.通配符查询</h2>
 <h3 id="12通配符查询-2"><a class="markdownIt-Anchor" href="#12通配符查询-2"></a> 12.通配符查询</h3>
 <ul>
@@ -825,42 +410,13 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <li><code>张*: </code>   以张开头的都要</li>
 <li><code>张*忌</code>:  张无忌,张有忌,张1234忌都是我的菜</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"wildcard"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>       <span class="token comment">#使用通配符</span>
-      <span class="token string">"author"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"value"</span><span class="token builtin class-name">:</span> <span class="token string">"*承恩"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;wildcard&quot;: &#123;       #使用通配符</span><br><span class="line">      &quot;author&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;*承恩&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="13排序"><a class="markdownIt-Anchor" href="#13排序"></a> 13.排序</h2>
 <h3 id="13排序-2"><a class="markdownIt-Anchor" href="#13排序-2"></a> 13.排序</h3>
 <ul>
 <li>Sort是数组,也可以同时对多个字段进行排序,<code>asc升序,desc降序</code></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"sort"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token string">"price"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"order"</span><span class="token builtin class-name">:</span> <span class="token string">"desc"</span>    <span class="token comment">## 查找所有图书，以 价格 降序</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;price&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;    ## 查找所有图书，以 价格 降序</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="14聚合函数"><a class="markdownIt-Anchor" href="#14聚合函数"></a> 14.聚合函数</h2>
 <h3 id="14聚合函数-2"><a class="markdownIt-Anchor" href="#14聚合函数-2"></a> 14.聚合函数</h3>
 <ul>
@@ -869,113 +425,25 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
 <li>求平均值:avg</li>
 <li>求和:sum</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"aggs"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>               <span class="token comment">#这里是聚合函数的意思</span>
-    <span class="token string">"价格最低书籍"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>          <span class="token comment">#自定义的字段名称</span>
-      <span class="token string">"min"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>            <span class="token comment">#求最小值</span>
-        <span class="token string">"field"</span><span class="token builtin class-name">:</span> <span class="token string">"price"</span>      <span class="token comment">#要求那个字段的最小值</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;               #这里是聚合函数的意思</span><br><span class="line">    &quot;价格最低书籍&quot;: &#123;          #自定义的字段名称</span><br><span class="line">      &quot;min&quot;: &#123;            #求最小值</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;      #要求那个字段的最小值</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="15同时查询多条聚合函数"><a class="markdownIt-Anchor" href="#15同时查询多条聚合函数"></a> 15.同时查询多条聚合函数</h2>
 <h3 id="15同时查询多条聚合函数-2"><a class="markdownIt-Anchor" href="#15同时查询多条聚合函数-2"></a> 15.同时查询多条聚合函数</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"match_all"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>,
-  <span class="token string">"aggs"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"图书总价格"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"sum"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"field"</span><span class="token builtin class-name">:</span> <span class="token string">"price"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token string">"图书平均价格"</span>:<span class="token punctuation">&#123;</span>
-      <span class="token string">"avg"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"field"</span><span class="token builtin class-name">:</span> <span class="token string">"price"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"books"</span>, <span class="token assign-left variable">body</span><span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;图书总价格&quot;: &#123;</span><br><span class="line">      &quot;sum&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;图书平均价格&quot;:&#123;</span><br><span class="line">      &quot;avg&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;price&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=&quot;books&quot;, body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="16过滤查询"><a class="markdownIt-Anchor" href="#16过滤查询"></a> 16.过滤查询</h2>
 <h3 id="16过滤查询-2"><a class="markdownIt-Anchor" href="#16过滤查询-2"></a> 16.过滤查询</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## 查询_id属性:</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,filter_path<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"hits.hits._id"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment">## 查询_source属性:</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,filter_path<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"hits.hits._source"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment">## 默认全查:</span>
-result <span class="token operator">=</span> es.search<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,filter_path<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"hits.hits._*"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment">## 查询当前数据总数</span>
-result <span class="token operator">=</span> es.count<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询_id属性:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._id&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询_source属性:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._source&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 默认全查:</span></span></span><br><span class="line">result = es.search(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,filter_path=[&quot;hits.hits._*&quot;])</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查询当前数据总数</span></span></span><br><span class="line">result = es.count(index=&quot;person&quot;,doc_type=&quot;daxia&quot;)</span><br></pre></td></tr></table></figure>
 <h2 id="17删除"><a class="markdownIt-Anchor" href="#17删除"></a> 17.删除</h2>
 <h3 id="171-关键字删除"><a class="markdownIt-Anchor" href="#171-关键字删除"></a> 17.1 关键字删除</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"query"</span>:<span class="token punctuation">&#123;</span>
-    <span class="token string">"term"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"school.name"</span><span class="token builtin class-name">:</span> <span class="token string">"华山派"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.delete_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;school.name&quot;: &quot;华山派&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.delete_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h3 id="172-年龄范围删除"><a class="markdownIt-Anchor" href="#172-年龄范围删除"></a> 17.2 年龄范围删除</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"range"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string">"age"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"lte"</span><span class="token builtin class-name">:</span> <span class="token number">20</span>      <span class="token comment">#删除小于等于20岁的人</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-result <span class="token operator">=</span> es.delete_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">    &quot;range&quot;: &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;lte&quot;: 20      #删除小于等于20岁的人</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result = es.delete_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
 <h2 id="18按条件更新"><a class="markdownIt-Anchor" href="#18按条件更新"></a> 18.按条件更新</h2>
 <h3 id="18按条件更新-2"><a class="markdownIt-Anchor" href="#18按条件更新-2"></a> 18.按条件更新</h3>
 <ul>
 <li>重点: 更新查询条件为年龄小于等于20岁的人,</li>
 <li>其中script中为脚本语法(有坑,详细内容还未查询),修改多项内容,内容与内容之间用”;”号间隔</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">from elasticsearch <span class="token function">import</span> Elasticsearch
-
-es <span class="token operator">=</span> Elasticsearch<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"192.168.56.66:9200"</span>,<span class="token punctuation">]</span><span class="token punctuation">)</span>
-body <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"script"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"source"</span><span class="token builtin class-name">:</span> <span class="token string">"ctx._source['age']=21;ctx._source['name']='renyy'"</span>
-    <span class="token punctuation">&#125;</span>,
-    <span class="token string">"query"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"range"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">"age"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
-                <span class="token string">"lte"</span><span class="token builtin class-name">:</span> <span class="token number">20</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-result <span class="token operator">=</span> es.update_by_query<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">"person"</span>,doc_type<span class="token operator">=</span><span class="token string">"daxia"</span>,body<span class="token operator">=</span>body<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch([&quot;192.168.56.66:9200&quot;,])</span><br><span class="line">body = &#123;</span><br><span class="line">    &quot;script&quot;: &#123;</span><br><span class="line">        &quot;source&quot;: &quot;ctx._source[&#x27;age&#x27;]=21;ctx._source[&#x27;name&#x27;]=&#x27;renyy&#x27;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">            &quot;age&quot;: &#123;</span><br><span class="line">                &quot;lte&quot;: 20</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.update_by_query(index=&quot;person&quot;,doc_type=&quot;daxia&quot;,body=body)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
                 
                 <p class="end">__END__</p>
             </div>
@@ -1011,7 +479,7 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/5021f3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/5021f3/" title="发布于 2021-02-12 03:04">04.中文分词检索</a>
+                        <a href="../../pages/d236d3/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/d236d3/" title="发布于 2021-02-12 03:04">02.es介绍</a>
                         <br>
                     
                     
@@ -1664,6 +1132,8 @@ print<span class="token punctuation">(</span>result<span class="token punctuatio
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

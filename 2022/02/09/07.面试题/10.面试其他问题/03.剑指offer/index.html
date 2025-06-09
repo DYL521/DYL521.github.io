@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -92,74 +94,16 @@
 0 1 2 6     第3次 删除5<br />
 0 1 2       第4次 删除6</p>
 <p>…        第n次</p>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token comment"># 方法1: 递归 </span>
-<span class="token keyword">def</span> <span class="token function">lastRemaining</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> m<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment"># 递归方法，最后剩下的数字的编号</span>
-    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token number">0</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>lastRemaining<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> m<span class="token punctuation">)</span> <span class="token operator">+</span> m<span class="token punctuation">)</span> <span class="token operator">%</span> n
-
-<span class="token comment"># 方法2: 动态规划</span>
-<span class="token keyword">def</span> <span class="token function">lastRemaining</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> m<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    last <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment"># 当只剩下一个数字时，最后的数字是0</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 从2开始，因为我们已经知道当n=1时，结果是0</span>
-        last <span class="token operator">=</span> <span class="token punctuation">(</span>last <span class="token operator">+</span> m<span class="token punctuation">)</span> <span class="token operator">%</span> i
-    <span class="token keyword">return</span> last
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 方法1: 递归 </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lastRemaining</span>(<span class="params">n, m</span>):</span><br><span class="line">    <span class="comment"># 递归方法，最后剩下的数字的编号</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> (lastRemaining(n - <span class="number">1</span>, m) + m) % n</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2: 动态规划</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lastRemaining</span>(<span class="params">n, m</span>):</span><br><span class="line">    last = <span class="number">0</span>  <span class="comment"># 当只剩下一个数字时，最后的数字是0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):  <span class="comment"># 从2开始，因为我们已经知道当n=1时，结果是0</span></span><br><span class="line">        last = (last + m) % i</span><br><span class="line">    <span class="keyword">return</span> last</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="0003-无重复字符的最长子串"><a class="markdownIt-Anchor" href="#0003-无重复字符的最长子串"></a> 0003. 无重复字符的最长子串</h1>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">lengthOfLongestSubstring</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
-        left <span class="token operator">=</span> <span class="token number">0</span>
-        right <span class="token operator">=</span> <span class="token number">0</span>
-        window <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        ans <span class="token operator">=</span> <span class="token number">0</span>
-
-        <span class="token keyword">while</span> right <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> s<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token keyword">not</span> <span class="token keyword">in</span> window<span class="token punctuation">:</span>
-                window<span class="token punctuation">[</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                window<span class="token punctuation">[</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
-
-            <span class="token keyword">while</span> window<span class="token punctuation">[</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">:</span>
-                window<span class="token punctuation">[</span>s<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">-=</span> <span class="token number">1</span>
-                left <span class="token operator">+=</span> <span class="token number">1</span>
-
-            ans <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> right <span class="token operator">-</span> left <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-            right <span class="token operator">+=</span> <span class="token number">1</span>
-
-        <span class="token keyword">return</span> ans
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lengthOfLongestSubstring</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        left = <span class="number">0</span></span><br><span class="line">        right = <span class="number">0</span></span><br><span class="line">        window = <span class="built_in">dict</span>()</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> right &lt; <span class="built_in">len</span>(s):</span><br><span class="line">            <span class="keyword">if</span> s[right] <span class="keyword">not</span> <span class="keyword">in</span> window:</span><br><span class="line">                window[s[right]] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                window[s[right]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> window[s[right]] &gt; <span class="number">1</span>:</span><br><span class="line">                window[s[left]] -= <span class="number">1</span></span><br><span class="line">                left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            ans = <span class="built_in">max</span>(ans, right - left + <span class="number">1</span>)</span><br><span class="line">            right += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="0014-最长公共前缀"><a class="markdownIt-Anchor" href="#0014-最长公共前缀"></a> 0014. 最长公共前缀</h1>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token triple-quoted-string string">"""
-
-1、依次遍历所有字符串的每一列，比较相同位置上的字符是否相同。
-    如果相同，则继续对下一列进行比较。
-    如果不相同，则当前列字母不再属于公共前缀，直接返回当前列之前的部分。
-2、如果遍历结束，说明字符串数组中的所有字符串都相等，则可将字符串数组中的第一个字符串作为公共前缀进行返回。
-
-
-"""</span>
-
-strs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"flower"</span><span class="token punctuation">,</span> <span class="token string">"flow"</span><span class="token punctuation">,</span> <span class="token string">"flight"</span><span class="token punctuation">]</span>
-
-length <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-count <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>strs<span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    c <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>strs<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> i <span class="token keyword">or</span> strs<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> c<span class="token punctuation">:</span>
-            result <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span>
-    result <span class="token operator">=</span> strs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">1、依次遍历所有字符串的每一列，比较相同位置上的字符是否相同。</span></span><br><span class="line"><span class="string">    如果相同，则继续对下一列进行比较。</span></span><br><span class="line"><span class="string">    如果不相同，则当前列字母不再属于公共前缀，直接返回当前列之前的部分。</span></span><br><span class="line"><span class="string">2、如果遍历结束，说明字符串数组中的所有字符串都相等，则可将字符串数组中的第一个字符串作为公共前缀进行返回。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">strs = [<span class="string">&quot;flower&quot;</span>, <span class="string">&quot;flow&quot;</span>, <span class="string">&quot;flight&quot;</span>]</span><br><span class="line"></span><br><span class="line">length = <span class="built_in">len</span>(strs[<span class="number">0</span>])</span><br><span class="line">count = <span class="built_in">len</span>(strs)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length):</span><br><span class="line">    c = strs[<span class="number">0</span>][i]</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, count):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(strs[j]) == i <span class="keyword">or</span> strs[j][i] != c:</span><br><span class="line">            result = strs[<span class="number">0</span>][:i]</span><br><span class="line">    result = strs[<span class="number">0</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="0151-反转字符串中的单词"><a class="markdownIt-Anchor" href="#0151-反转字符串中的单词"></a> 0151. 反转字符串中的单词</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://algo.itcharge.cn/Solutions/0100-0199/reverse-words-in-a-string/">https://algo.itcharge.cn/Solutions/0100-0199/reverse-words-in-a-string/</a></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">s <span class="token operator">=</span> <span class="token string">"  hello world  "</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token builtin">sorted</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">,</span>reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;  hello world  &quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot; &quot;</span>.join(<span class="built_in">sorted</span>(s.strip().split(<span class="string">&quot; &quot;</span>),reverse=<span class="literal">True</span>)))</span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -858,6 +802,8 @@ count <span class="token operator">=</span> <span class="token builtin">len</spa
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

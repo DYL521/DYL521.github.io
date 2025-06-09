@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -98,54 +100,24 @@
 <blockquote>
 <h4 id="3crond管理"><a class="markdownIt-Anchor" href="#3crond管理"></a> 3.crond管理</h4>
 </blockquote>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token operator">/</span>sbin<span class="token operator">/</span>service crond start       <span class="token comment"># 启动服务</span>
-
-<span class="token operator">/</span>sbin<span class="token operator">/</span>service crond stop        <span class="token comment"># 关闭服务</span>
-
-<span class="token operator">/</span>sbin<span class="token operator">/</span>service crond restart     <span class="token comment"># 重启服务</span>
-
-<span class="token operator">/</span>sbin<span class="token operator">/</span>service crond <span class="token builtin">reload</span>      <span class="token comment"># 重新载入配置</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/sbin/service crond start       <span class="comment"># 启动服务</span></span><br><span class="line"></span><br><span class="line">/sbin/service crond stop        <span class="comment"># 关闭服务</span></span><br><span class="line"></span><br><span class="line">/sbin/service crond restart     <span class="comment"># 重启服务</span></span><br><span class="line"></span><br><span class="line">/sbin/service crond reload      <span class="comment"># 重新载入配置</span></span><br></pre></td></tr></table></figure>
 <h2 id="02crond语法"><a class="markdownIt-Anchor" href="#02crond语法"></a> 02.crond语法</h2>
 <h3 id="21-crond基本使用"><a class="markdownIt-Anchor" href="#21-crond基本使用"></a> 2.1 crond基本使用</h3>
 <blockquote>
 <h4 id="1crond基本使用"><a class="markdownIt-Anchor" href="#1crond基本使用"></a> 1.crond基本使用</h4>
 </blockquote>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># crontab -l      # 查看当前定时任务</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># crontab -e      # 添加新的定时任务</span>
-<span class="token operator">*</span><span class="token operator">/</span><span class="token number">1</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> echo <span class="token string">"Hello World!"</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># tail -f /var/log/cron         # 查看定时任务执行日志</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># crontab -r                    # 清空任务计划</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 ~]<span class="comment"># crontab -l      # 查看当前定时任务</span></span><br><span class="line">[root@linux-node1 ~]<span class="comment"># crontab -e      # 添加新的定时任务</span></span><br><span class="line">*/<span class="number">1</span> * * * * echo <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">[root@linux-node1 ~]<span class="comment"># tail -f /var/log/cron         # 查看定时任务执行日志</span></span><br><span class="line">[root@linux-node1 ~]<span class="comment"># crontab -r                    # 清空任务计划</span></span><br></pre></td></tr></table></figure>
 <h3 id="22-crond基本语法"><a class="markdownIt-Anchor" href="#22-crond基本语法"></a> 2.2 crond基本语法</h3>
 <blockquote>
 <h4 id="2crond基本语法"><a class="markdownIt-Anchor" href="#2crond基本语法"></a> 2.crond基本语法</h4>
 </blockquote>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''1. 每隔一分钟执行一次 ls 命令'''</span>
-<span class="token operator">*</span><span class="token operator">/</span><span class="token number">1</span>    <span class="token number">12</span>    <span class="token operator">*</span>   <span class="token operator">*</span>    <span class="token operator">*</span>    ls
-<span class="token comment">#分     时   日   月   周    |《==============命令行=======================》|</span>
-
-<span class="token triple-quoted-string string">'''2. 参数说明'''</span>
-<span class="token string">"*"</span>  ： 代表取值范围内的数字
-<span class="token string">"/"</span>  ： 代表<span class="token string">"每"</span>
-<span class="token string">"-"</span>  ： 代表从某个数字到某个数字
-<span class="token string">","</span>  ： 分开几个离散的数字</code></pre>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''3. 定时任务常用配置'''</span>
-<span class="token operator">*</span><span class="token operator">/</span><span class="token number">2</span>     <span class="token operator">*</span>       <span class="token operator">*</span>       <span class="token operator">*</span>      <span class="token operator">*</span>      ls             <span class="token comment"># 每2分钟执行一次ls命令</span>
-<span class="token number">5</span>       <span class="token operator">*</span>       <span class="token operator">*</span>       <span class="token operator">*</span>      <span class="token operator">*</span>      ls             <span class="token comment"># 指定每小时的第5分钟执行一次ls命令</span>
-<span class="token number">30</span>      <span class="token number">5</span>       <span class="token operator">*</span>       <span class="token operator">*</span>      <span class="token operator">*</span>      ls             <span class="token comment"># 指定每天的 5:30 执行ls命令</span>
-<span class="token number">30</span>      <span class="token number">7</span>       <span class="token number">8</span>       <span class="token operator">*</span>      <span class="token operator">*</span>      ls             <span class="token comment"># 指定每月8号的7：30分执行ls命令</span>
-<span class="token number">30</span>      <span class="token number">5</span>       <span class="token number">8</span>       <span class="token number">6</span>      <span class="token operator">*</span>      ls             <span class="token comment"># 指定每年的6月8日5：30执行ls命令</span>
-<span class="token number">30</span>      <span class="token number">6</span>       <span class="token operator">*</span>       <span class="token operator">*</span>      <span class="token number">0</span>      ls             <span class="token comment"># 指定每星期日的6:30执行ls命令[注：0表示星期天，1表示星期1，以此类</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;1. 每隔一分钟执行一次 ls 命令&#x27;&#x27;&#x27;</span></span><br><span class="line">*/<span class="number">1</span>    <span class="number">12</span>    *   *    *    ls</span><br><span class="line"><span class="comment">#分     时   日   月   周    |《==============命令行=======================》|</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;2. 参数说明&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&quot;*&quot;</span>  ： 代表取值范围内的数字</span><br><span class="line"><span class="string">&quot;/&quot;</span>  ： 代表<span class="string">&quot;每&quot;</span></span><br><span class="line"><span class="string">&quot;-&quot;</span>  ： 代表从某个数字到某个数字</span><br><span class="line"><span class="string">&quot;,&quot;</span>  ： 分开几个离散的数字</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;3. 定时任务常用配置&#x27;&#x27;&#x27;</span></span><br><span class="line">*/<span class="number">2</span>     *       *       *      *      ls             <span class="comment"># 每2分钟执行一次ls命令</span></span><br><span class="line"><span class="number">5</span>       *       *       *      *      ls             <span class="comment"># 指定每小时的第5分钟执行一次ls命令</span></span><br><span class="line"><span class="number">30</span>      <span class="number">5</span>       *       *      *      ls             <span class="comment"># 指定每天的 5:30 执行ls命令</span></span><br><span class="line"><span class="number">30</span>      <span class="number">7</span>       <span class="number">8</span>       *      *      ls             <span class="comment"># 指定每月8号的7：30分执行ls命令</span></span><br><span class="line"><span class="number">30</span>      <span class="number">5</span>       <span class="number">8</span>       <span class="number">6</span>      *      ls             <span class="comment"># 指定每年的6月8日5：30执行ls命令</span></span><br><span class="line"><span class="number">30</span>      <span class="number">6</span>       *       *      <span class="number">0</span>      ls             <span class="comment"># 指定每星期日的6:30执行ls命令[注：0表示星期天，1表示星期1，以此类</span></span><br></pre></td></tr></table></figure>
 <h3 id="23-添加调度任务"><a class="markdownIt-Anchor" href="#23-添加调度任务"></a> 2.3 添加调度任务</h3>
 <blockquote>
 <h4 id="3新增调度任务可用两种方法"><a class="markdownIt-Anchor" href="#3新增调度任务可用两种方法"></a> 3.新增调度任务可用两种方法</h4>
 </blockquote>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''法1：在命令行输入: crontab -e 然后添加相应的任务，wq存盘退出 '''</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># crontab -e            </span>
-<span class="token operator">*</span><span class="token operator">/</span><span class="token number">1</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> echo <span class="token string">"Hello World!"</span>
-
-<span class="token triple-quoted-string string">'''法2： 直接编辑/etc/crontab 文件'''</span>
-<span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># vim /etc/crontab</span>
-<span class="token operator">*</span><span class="token operator">/</span><span class="token number">1</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> root  echo <span class="token string">"test02"</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;法1：在命令行输入: crontab -e 然后添加相应的任务，wq存盘退出 &#x27;&#x27;&#x27;</span></span><br><span class="line">[root@linux-node1 ~]<span class="comment"># crontab -e            </span></span><br><span class="line">*/<span class="number">1</span> * * * * echo <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;法2： 直接编辑/etc/crontab 文件&#x27;&#x27;&#x27;</span></span><br><span class="line">[root@linux-node1 ~]<span class="comment"># vim /etc/crontab</span></span><br><span class="line">*/<span class="number">1</span> * * * * root  echo <span class="string">&quot;test02&quot;</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -835,6 +807,8 @@
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

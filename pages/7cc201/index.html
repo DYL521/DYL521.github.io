@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -93,37 +95,9 @@
 <h1 id="2-如何解决gil"><a class="markdownIt-Anchor" href="#2-如何解决gil"></a> 2、如何解决GIL？</h1>
 <p>GIL最大的问题就是python的多线程程序并不能利用多核的优势（比如一个使用了多个线程的计算密集型程序只会在一个单CPU上执行）</p>
 <h2 id="21-如果是完全的python环境使用multiprocessing"><a class="markdownIt-Anchor" href="#21-如果是完全的python环境使用multiprocessing"></a> 2.1  如果是完全的python环境，使用multiprocessing</h2>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># Processing pool (see below for initiazation)</span>
-pool <span class="token operator">=</span> <span class="token boolean">None</span>
-
-<span class="token comment"># Performs a large calculation (CPU bound)</span>
-<span class="token keyword">def</span> <span class="token function">some_work</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token keyword">return</span> result
-
-<span class="token comment"># A thread that calls the above function</span>
-<span class="token keyword">def</span> <span class="token function">some_thread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-        r <span class="token operator">=</span> pool<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>some_work<span class="token punctuation">,</span> <span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-
-<span class="token comment"># Initiaze the pool</span>
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token keyword">import</span> multiprocessing
-    pool <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Pool<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Processing pool (see below for initiazation)</span></span><br><span class="line">pool = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Performs a large calculation (CPU bound)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">some_work</span>(<span class="params">args</span>):</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that calls the above function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">some_thread</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        ...</span><br><span class="line">        r = pool.apply(some_work, (args))</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Initiaze the pool</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">import</span> multiprocessing</span><br><span class="line">    pool = multiprocessing.Pool()</span><br></pre></td></tr></table></figure>
 <h2 id="2-另外一个方式引入c扩展编程技术"><a class="markdownIt-Anchor" href="#2-另外一个方式引入c扩展编程技术"></a> 2. 另外一个方式，引入C扩展编程技术</h2>
-<pre class="language-C" data-language="C"><code class="language-C">#include &quot;Python.h&quot;
-...
-
-PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
-   ...
-   Py_BEGIN_ALLOW_THREADS
-   &#x2F;&#x2F; Threaded C code
-   ...
-   Py_END_ALLOW_THREADS
-   ...
-&#125;</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Python.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">PyObject *<span class="title function_">pyfunc</span><span class="params">(PyObject *self, PyObject *args)</span> &#123;</span><br><span class="line">   ...</span><br><span class="line">   Py_BEGIN_ALLOW_THREADS</span><br><span class="line">   <span class="comment">// Threaded C code</span></span><br><span class="line">   ...</span><br><span class="line">   Py_END_ALLOW_THREADS</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -820,6 +794,8 @@ PyObject *pyfunc(PyObject *self, PyObject *args) &#123;
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

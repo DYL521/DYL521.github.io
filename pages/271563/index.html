@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -124,90 +126,30 @@
 </tbody>
 </table>
 <h3 id="13-grep命令操作练习"><a class="markdownIt-Anchor" href="#13-grep命令操作练习"></a> 1.3 grep命令操作练习</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#1. 在 dks.txt 文件中匹配上 test 的行数</span>
-grep <span class="token operator">-</span>c <span class="token string">"test"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#2. 统计在 dks.txt 文件中，test 字符串出现的次数</span>
-grep <span class="token operator">-</span>o <span class="token string">"test"</span> dks<span class="token punctuation">.</span>txt <span class="token operator">|</span>wc <span class="token operator">-</span>l
-
-<span class="token comment">#3. 打印 test 的行及行号</span>
-grep <span class="token operator">-</span>n <span class="token string">"test"</span> dks<span class="token punctuation">.</span>txt
-
-<span class="token comment">#4. 不区分大小写查找 tEst 所有行</span>
-grep <span class="token operator">-</span>i <span class="token string">"tEst"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#5. 匹配以字符包含test5或test3的行</span>
-grep <span class="token string">"test[53]"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#6. 输出不是以 test开头的行</span>
-grep <span class="token string">"^[^test]"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#7. 匹配 M 或 m 开头的行</span>
-grep <span class="token string">"^[mM].*"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#8. 匹配 K 和 D，并且 K 和 D 中间有两个任意字符</span>
-grep <span class="token string">"K..D"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#9. 匹配大写字母，紧跟 9D 的字符行</span>
-grep <span class="token string">"[A-Z]9D"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#10. 打印 T 字符连续出现 2 次以上的行</span>
-grep <span class="token string">"T\&#123;2,\&#125;"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#11.打印 T 字符连续出现 2 次至 6 次之间的行</span>
-grep <span class="token string">"T\&#123;2,6\&#125;"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#12. 打印空行所在的行号</span>
-grep <span class="token operator">-</span>n <span class="token string">"^$"</span> dks<span class="token punctuation">.</span>tx
- 
-<span class="token comment">#13. 不匹配文件中的#号和空行</span>
-grep <span class="token operator">-</span>vE <span class="token string">"^$|#"</span> dks<span class="token punctuation">.</span>txt
- 
-<span class="token comment">#14. 在/data 目录下，匹配文件中包含 db 或者 config 或者 sql 的文件</span>
-grep <span class="token operator">-</span>ra <span class="token operator">-</span>E <span class="token string">"db|config|sql"</span> <span class="token operator">/</span>data
- 
-<span class="token comment">#15. 匹配 ip 地址</span>
-ifconfig eth0 <span class="token operator">|</span>grep <span class="token string">"inet "</span><span class="token operator">|</span>grep <span class="token operator">-</span>E <span class="token string">"\&lt;([0-9]&#123;1,3&#125;\.?)&#123;4&#125;"</span> <span class="token operator">-</span>o<span class="token operator">|</span>head <span class="token operator">-</span><span class="token number">1</span>    </code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1. 在 dks.txt 文件中匹配上 test 的行数</span></span><br><span class="line">grep -c <span class="string">&quot;test&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#2. 统计在 dks.txt 文件中，test 字符串出现的次数</span></span><br><span class="line">grep -o <span class="string">&quot;test&quot;</span> dks.txt |wc -l</span><br><span class="line"></span><br><span class="line"><span class="comment">#3. 打印 test 的行及行号</span></span><br><span class="line">grep -n <span class="string">&quot;test&quot;</span> dks.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">#4. 不区分大小写查找 tEst 所有行</span></span><br><span class="line">grep -i <span class="string">&quot;tEst&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#5. 匹配以字符包含test5或test3的行</span></span><br><span class="line">grep <span class="string">&quot;test[53]&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#6. 输出不是以 test开头的行</span></span><br><span class="line">grep <span class="string">&quot;^[^test]&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#7. 匹配 M 或 m 开头的行</span></span><br><span class="line">grep <span class="string">&quot;^[mM].*&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#8. 匹配 K 和 D，并且 K 和 D 中间有两个任意字符</span></span><br><span class="line">grep <span class="string">&quot;K..D&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#9. 匹配大写字母，紧跟 9D 的字符行</span></span><br><span class="line">grep <span class="string">&quot;[A-Z]9D&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#10. 打印 T 字符连续出现 2 次以上的行</span></span><br><span class="line">grep <span class="string">&quot;T\&#123;2,\&#125;&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#11.打印 T 字符连续出现 2 次至 6 次之间的行</span></span><br><span class="line">grep <span class="string">&quot;T\&#123;2,6\&#125;&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#12. 打印空行所在的行号</span></span><br><span class="line">grep -n <span class="string">&quot;^$&quot;</span> dks.tx</span><br><span class="line"> </span><br><span class="line"><span class="comment">#13. 不匹配文件中的#号和空行</span></span><br><span class="line">grep -vE <span class="string">&quot;^$|#&quot;</span> dks.txt</span><br><span class="line"> </span><br><span class="line"><span class="comment">#14. 在/data 目录下，匹配文件中包含 db 或者 config 或者 sql 的文件</span></span><br><span class="line">grep -ra -E <span class="string">&quot;db|config|sql&quot;</span> /data</span><br><span class="line"> </span><br><span class="line"><span class="comment">#15. 匹配 ip 地址</span></span><br><span class="line">ifconfig eth0 |grep <span class="string">&quot;inet &quot;</span>|grep -E <span class="string">&quot;\&lt;([0-9]&#123;1,3&#125;\.?)&#123;4&#125;&quot;</span> -o|head -<span class="number">1</span>    </span><br></pre></td></tr></table></figure>
 <h2 id="02grep常用方法"><a class="markdownIt-Anchor" href="#02grep常用方法"></a> 02.grep常用方法</h2>
 <h3 id="21-查找包含root字符串的文件"><a class="markdownIt-Anchor" href="#21-查找包含root字符串的文件"></a> 2.1 查找包含root字符串的文件</h3>
 <ul>
 <li>1.<span style="color: red"> grep -n ‘root’ /etc/passwd</span> ：查找/etc/passwd下包含 root字符串的文件</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># grep -n 'root' /etc/passwd</span>
-<span class="token number">1</span><span class="token punctuation">:</span>root<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>root<span class="token punctuation">:</span><span class="token operator">/</span>root<span class="token punctuation">:</span><span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>bash
-<span class="token number">10</span><span class="token punctuation">:</span>operator<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>operator<span class="token punctuation">:</span><span class="token operator">/</span>root<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token operator">/</span>nologin</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># grep -n &#x27;root&#x27; /etc/passwd</span></span><br><span class="line"><span class="number">1</span>:root:x:<span class="number">0</span>:<span class="number">0</span>:root:/root:/<span class="built_in">bin</span>/bash</span><br><span class="line"><span class="number">10</span>:operator:x:<span class="number">11</span>:<span class="number">0</span>:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
 <h3 id="22-查找不包含root关键字的行"><a class="markdownIt-Anchor" href="#22-查找不包含root关键字的行"></a> 2.2 查找不包含root关键字的行</h3>
 <ul>
 <li>2.<span style="color: red"> grep -Ev “root|nologin” /etc/passwd  </span>：查找不包含root和nologin关键字的行</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># grep -Ev "root|nologin" /etc/passwd</span>
-sync<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>sync<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token punctuation">:</span><span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>sync
-shutdown<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>shutdown<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token operator">/</span>shutdown
-halt<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">7</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>halt<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token operator">/</span>halt</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># grep -Ev &quot;root|nologin&quot; /etc/passwd</span></span><br><span class="line">sync:x:<span class="number">5</span>:<span class="number">0</span>:sync:/sbin:/<span class="built_in">bin</span>/sync</span><br><span class="line">shutdown:x:<span class="number">6</span>:<span class="number">0</span>:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:<span class="number">7</span>:<span class="number">0</span>:halt:/sbin:/sbin/halt</span><br></pre></td></tr></table></figure>
 <h3 id="23-包含root关键字的行"><a class="markdownIt-Anchor" href="#23-包含root关键字的行"></a> 2.3 包含root关键字的行</h3>
 <ul>
 <li>3.<span style="color: red">grep “root” /etc/{passwd,shadow} </span>：查找/etc/passwd和/etc/shadow文件中包含root关键字的行</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># grep "root" /etc/&#123;passwd,shadow&#125;</span>
-<span class="token operator">/</span>etc<span class="token operator">/</span>passwd<span class="token punctuation">:</span>root<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>root<span class="token punctuation">:</span><span class="token operator">/</span>root<span class="token punctuation">:</span><span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>bash
-<span class="token operator">/</span>etc<span class="token operator">/</span>passwd<span class="token punctuation">:</span>operator<span class="token punctuation">:</span>x<span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">:</span>operator<span class="token punctuation">:</span><span class="token operator">/</span>root<span class="token punctuation">:</span><span class="token operator">/</span>sbin<span class="token operator">/</span>nologin</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># grep &quot;root&quot; /etc/&#123;passwd,shadow&#125;</span></span><br><span class="line">/etc/passwd:root:x:<span class="number">0</span>:<span class="number">0</span>:root:/root:/<span class="built_in">bin</span>/bash</span><br><span class="line">/etc/passwd:operator:x:<span class="number">11</span>:<span class="number">0</span>:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
 <h3 id="24-统计文件包含root字符串行的数量"><a class="markdownIt-Anchor" href="#24-统计文件包含root字符串行的数量"></a> 2.4 统计文件包含root字符串行的数量</h3>
 <ul>
 <li>4.<span style="color: red">grep -c root /etc/passwd  </span>：统计/etc/passwd文件中包含root字符串行的数量</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@linux<span class="token operator">-</span>node1 <span class="token operator">/</span><span class="token punctuation">]</span><span class="token comment"># grep -c root /etc/passwd       # 统计包含root单词的行数</span>
-<span class="token number">2</span>
-
-<span class="token punctuation">[</span>root@redis <span class="token operator">~</span><span class="token punctuation">]</span><span class="token comment"># grep -o root /etc/passwd | wc -l     # 统计root单词出现的次数</span>
-<span class="token number">4</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@linux-node1 /]<span class="comment"># grep -c root /etc/passwd       # 统计包含root单词的行数</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line">[root@redis ~]<span class="comment"># grep -o root /etc/passwd | wc -l     # 统计root单词出现的次数</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
 <h2 id="03grep综合使用"><a class="markdownIt-Anchor" href="#03grep综合使用"></a> 03.grep综合使用</h2>
-<pre class="language-python" data-language="python"><code class="language-python">grep <span class="token operator">-</span>E <span class="token operator">-</span>v <span class="token string">"^$|^#"</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>nginx<span class="token punctuation">.</span>conf          <span class="token comment"># 去除空号和以#号开头的行</span>
-seq <span class="token number">1</span> <span class="token number">20</span> <span class="token operator">|</span>grep <span class="token operator">-</span>m <span class="token number">5</span> <span class="token operator">-</span>E <span class="token string">'[0-9]&#123;2&#125;'</span>               <span class="token comment"># 输出匹配的前五个结果</span>
-seq <span class="token number">1</span> <span class="token number">20</span> <span class="token operator">|</span>grep <span class="token operator">-</span>c <span class="token operator">-</span>E <span class="token string">'[0-9]&#123;2&#125;'</span>                 <span class="token comment"># 输出匹配多少行</span>
-echo <span class="token string">"a bc de"</span> <span class="token operator">|</span>xargs <span class="token operator">-</span>n1 <span class="token operator">|</span>grep <span class="token string">'^b'</span>             <span class="token comment"># 匹配以字符串"b"开头的行</span>
-echo <span class="token string">"a ab abc abcd abcde"</span> <span class="token operator">|</span>xargs <span class="token operator">-</span>n1 <span class="token operator">|</span>grep <span class="token operator">-</span>n <span class="token string">'de$'</span>        <span class="token comment"># 匹配以"de"字符串结尾的行</span>
-grep <span class="token operator">-</span>r <span class="token string">'sshd'</span> <span class="token operator">/</span>etc <span class="token operator">-</span><span class="token operator">-</span>include <span class="token operator">*</span><span class="token punctuation">.</span>conf             <span class="token comment"># 递归搜索/etc 目录下包含 "sshd"字符串 的 conf 后缀文件</span>
-seq <span class="token number">41</span> <span class="token number">45</span> <span class="token operator">|</span>grep <span class="token operator">-</span>E <span class="token string">'4[12]'</span>                    <span class="token comment"># 匹配41/42数字</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grep -E -v <span class="string">&quot;^$|^#&quot;</span> /etc/nginx/nginx.conf          <span class="comment"># 去除空号和以#号开头的行</span></span><br><span class="line">seq <span class="number">1</span> <span class="number">20</span> |grep -m <span class="number">5</span> -E <span class="string">&#x27;[0-9]&#123;2&#125;&#x27;</span>               <span class="comment"># 输出匹配的前五个结果</span></span><br><span class="line">seq <span class="number">1</span> <span class="number">20</span> |grep -c -E <span class="string">&#x27;[0-9]&#123;2&#125;&#x27;</span>                 <span class="comment"># 输出匹配多少行</span></span><br><span class="line">echo <span class="string">&quot;a bc de&quot;</span> |xargs -n1 |grep <span class="string">&#x27;^b&#x27;</span>             <span class="comment"># 匹配以字符串&quot;b&quot;开头的行</span></span><br><span class="line">echo <span class="string">&quot;a ab abc abcd abcde&quot;</span> |xargs -n1 |grep -n <span class="string">&#x27;de$&#x27;</span>        <span class="comment"># 匹配以&quot;de&quot;字符串结尾的行</span></span><br><span class="line">grep -r <span class="string">&#x27;sshd&#x27;</span> /etc --include *.conf             <span class="comment"># 递归搜索/etc 目录下包含 &quot;sshd&quot;字符串 的 conf 后缀文件</span></span><br><span class="line">seq <span class="number">41</span> <span class="number">45</span> |grep -E <span class="string">&#x27;4[12]&#x27;</span>                    <span class="comment"># 匹配41/42数字</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -897,6 +839,8 @@ seq <span class="token number">41</span> <span class="token number">45</span> <s
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

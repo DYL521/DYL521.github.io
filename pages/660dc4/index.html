@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -78,59 +80,21 @@
             <div class="article-body">
                 <h2 id="01数据库管理"><a class="markdownIt-Anchor" href="#01数据库管理"></a> 01.数据库管理</h2>
 <h3 id="11-创建数据库"><a class="markdownIt-Anchor" href="#11-创建数据库"></a> 1.1 创建数据库</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 1.创建数据库</span>
-mysql<span class="token operator">></span> show databases<span class="token punctuation">;</span>
-mysql<span class="token operator">></span> create database tomdb charset utf8<span class="token punctuation">;</span>     <span class="token comment">#创建数据库tomdb，使用utf-8做字符编码</span>
-mysql<span class="token operator">></span> use tomdb                      <span class="token comment">#选择使用tomdb数据库</span>
-mysql<span class="token operator">></span> drop database tomdb<span class="token punctuation">;</span>
-mysql<span class="token operator">></span> show create database tomdb<span class="token punctuation">;</span>          <span class="token comment"># 查看创建数据库的语法</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.创建数据库</span></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">mysql&gt; create database tomdb charset utf8;     <span class="comment">#创建数据库tomdb，使用utf-8做字符编码</span></span><br><span class="line">mysql&gt; use tomdb                      <span class="comment">#选择使用tomdb数据库</span></span><br><span class="line">mysql&gt; drop database tomdb;</span><br><span class="line">mysql&gt; show create database tomdb;          <span class="comment"># 查看创建数据库的语法</span></span><br></pre></td></tr></table></figure>
 <h3 id="12-用户管理"><a class="markdownIt-Anchor" href="#12-用户管理"></a> 1.2 用户管理</h3>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 1、创建用户</span>
-mysql<span class="token operator">></span> create user <span class="token string">'tom'</span>@<span class="token string">'%'</span> identified by <span class="token string">'123456'</span><span class="token punctuation">;</span>
-
-<span class="token comment"># 2、授予mup用户授予对mup数据库的操作权限</span>
-mysql<span class="token operator">></span> GRANT ALL ON tomdb<span class="token punctuation">.</span><span class="token operator">*</span> TO <span class="token string">'tom'</span>@<span class="token string">'%'</span><span class="token punctuation">;</span>
-mysql<span class="token operator">></span> flush privileges<span class="token punctuation">;</span>
-mysql<span class="token operator">></span> select host<span class="token punctuation">,</span>user <span class="token keyword">from</span> mysql<span class="token punctuation">.</span>user<span class="token punctuation">;</span>
-mysql<span class="token operator">></span> show grants <span class="token keyword">for</span> tom<span class="token punctuation">;</span>
-
-<span class="token comment"># 3、删除用户</span>
-mysql<span class="token operator">></span> Delete FROM mysql<span class="token punctuation">.</span>user Where User<span class="token operator">=</span><span class="token string">'mup'</span> <span class="token keyword">and</span> Host<span class="token operator">=</span>”localhost”<span class="token punctuation">;</span> 
-mysql<span class="token operator">></span> Delete FROM mysql<span class="token punctuation">.</span>user Where User<span class="token operator">=</span><span class="token string">'mup'</span><span class="token punctuation">;</span> 
-
-<span class="token comment"># 4、修改tom用户密码</span>
-mysql<span class="token operator">></span> select user<span class="token punctuation">,</span>host <span class="token keyword">from</span> mysql<span class="token punctuation">.</span>user where user<span class="token operator">=</span><span class="token string">'tom'</span> <span class="token keyword">and</span> host<span class="token operator">=</span><span class="token string">'%'</span><span class="token punctuation">;</span>
-mysql<span class="token operator">></span> update mysql<span class="token punctuation">.</span>user <span class="token builtin">set</span> authentication_string<span class="token operator">=</span>password<span class="token punctuation">(</span><span class="token string">'chnsys'</span><span class="token punctuation">)</span> where user<span class="token operator">=</span><span class="token string">'tom'</span> <span class="token keyword">and</span> host<span class="token operator">=</span><span class="token string">'%'</span><span class="token punctuation">;</span>
-mysql<span class="token operator">></span> flush privileges<span class="token punctuation">;</span>
-
-<span class="token comment"># 5、修改root密码</span>
-mysql<span class="token operator">></span> update mysql<span class="token punctuation">.</span>user <span class="token builtin">set</span> authentication_string<span class="token operator">=</span>password<span class="token punctuation">(</span><span class="token string">'mysqlRootPwd'</span><span class="token punctuation">)</span> where user<span class="token operator">=</span><span class="token string">'root'</span> <span class="token keyword">and</span> Host <span class="token operator">=</span> <span class="token string">'localhost'</span><span class="token punctuation">;</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、创建用户</span></span><br><span class="line">mysql&gt; create user <span class="string">&#x27;tom&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified by <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、授予mup用户授予对mup数据库的操作权限</span></span><br><span class="line">mysql&gt; GRANT ALL ON tomdb.* TO <span class="string">&#x27;tom&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line">mysql&gt; select host,user <span class="keyword">from</span> mysql.user;</span><br><span class="line">mysql&gt; show grants <span class="keyword">for</span> tom;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3、删除用户</span></span><br><span class="line">mysql&gt; Delete FROM mysql.user Where User=<span class="string">&#x27;mup&#x27;</span> <span class="keyword">and</span> Host=”localhost”; </span><br><span class="line">mysql&gt; Delete FROM mysql.user Where User=<span class="string">&#x27;mup&#x27;</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment"># 4、修改tom用户密码</span></span><br><span class="line">mysql&gt; select user,host <span class="keyword">from</span> mysql.user where user=<span class="string">&#x27;tom&#x27;</span> <span class="keyword">and</span> host=<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">mysql&gt; update mysql.user <span class="built_in">set</span> authentication_string=password(<span class="string">&#x27;chnsys&#x27;</span>) where user=<span class="string">&#x27;tom&#x27;</span> <span class="keyword">and</span> host=<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5、修改root密码</span></span><br><span class="line">mysql&gt; update mysql.user <span class="built_in">set</span> authentication_string=password(<span class="string">&#x27;mysqlRootPwd&#x27;</span>) where user=<span class="string">&#x27;root&#x27;</span> <span class="keyword">and</span> Host = <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="02简单创建表测试"><a class="markdownIt-Anchor" href="#02简单创建表测试"></a> 02.简单创建表测试</h2>
 <h3 id="21-创建表语法"><a class="markdownIt-Anchor" href="#21-创建表语法"></a> 2.1 创建表语法</h3>
 <ul>
 <li>创建学生表</li>
 </ul>
-<pre class="language-mysql" data-language="mysql"><code class="language-mysql">create table student(
-  id int auto_increment,
-  name char(32) not null,
-  age int not null,
-  register_data date not null,
-  primary key (id)
-);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create table student(</span><br><span class="line">  id int auto_increment,</span><br><span class="line">  name char(32) not null,</span><br><span class="line">  age int not null,</span><br><span class="line">  register_data date not null,</span><br><span class="line">  primary key (id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <ul>
 <li>创建表解释</li>
 </ul>
-<pre class="language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt; create table student(               #在tomdb数据库中创建表：student
-    -&gt; id int auto_increment,              #在表中创建第一个字段：“id”
-    -&gt; name char(32) not null,             #在表中创建第二个字段：“name”
-    -&gt; age int not null,                   #在表中创建第三个字段：“age”
-    -&gt; register_data date not null,        #在表中创建第四个字段：日期
-    -&gt; primary key (id));                  #将表的主键设置为字段：“id
-Query OK, 0 rows affected (0.10 sec)       #这里是创建成功的提示</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table student(               #在tomdb数据库中创建表：student</span><br><span class="line">    -&gt; id int auto_increment,              #在表中创建第一个字段：“id”</span><br><span class="line">    -&gt; name char(32) not null,             #在表中创建第二个字段：“name”</span><br><span class="line">    -&gt; age int not null,                   #在表中创建第三个字段：“age”</span><br><span class="line">    -&gt; register_data date not null,        #在表中创建第四个字段：日期</span><br><span class="line">    -&gt; primary key (id));                  #将表的主键设置为字段：“id</span><br><span class="line">Query OK, 0 rows affected (0.10 sec)       #这里是创建成功的提示</span><br></pre></td></tr></table></figure>
 <h3 id="22-插入数据"><a class="markdownIt-Anchor" href="#22-插入数据"></a> 2.2 插入数据</h3>
-<pre class="language-python" data-language="python"><code class="language-python">mysql<span class="token operator">></span> desc student<span class="token punctuation">;</span>                             <span class="token comment"># 查看student表所有字段</span>
-mysql<span class="token operator">></span> insert into student<span class="token punctuation">(</span>name<span class="token punctuation">,</span>age<span class="token punctuation">,</span>register_data<span class="token punctuation">)</span> values<span class="token punctuation">(</span><span class="token string">"zhangsan"</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">,</span><span class="token string">"2016-06-20"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-mysql<span class="token operator">></span> select <span class="token operator">*</span> <span class="token keyword">from</span> student<span class="token punctuation">;</span>                       <span class="token comment">#查看student表有哪些数据</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc student;                             <span class="comment"># 查看student表所有字段</span></span><br><span class="line">mysql&gt; insert into student(name,age,register_data) values(<span class="string">&quot;zhangsan&quot;</span>,<span class="number">100</span>,<span class="string">&quot;2016-06-20&quot;</span>);</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> student;                       <span class="comment">#查看student表有哪些数据</span></span><br></pre></td></tr></table></figure>
 <h2 id="03mysql三种数据类型"><a class="markdownIt-Anchor" href="#03mysql三种数据类型"></a> 03.MySQL三种数据类型</h2>
 <h3 id="31-数值格式有哪"><a class="markdownIt-Anchor" href="#31-数值格式有哪"></a> 3.1 数值格式有哪</h3>
 <p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/mysql/image-20210224093709901.png" style="width: 900px; margin-left: 0px;"> </img></p>
@@ -143,28 +107,18 @@ mysql<span class="token operator">></span> select <span class="token operator">*
 <ul>
 <li>首先linux 下查看mysql相关目录</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>root@op<span class="token operator">-</span>workorder <span class="token builtin">bin</span><span class="token punctuation">]</span><span class="token comment"># whereis mysql</span>
-mysql<span class="token punctuation">:</span> <span class="token operator">/</span>usr<span class="token operator">/</span><span class="token builtin">bin</span><span class="token operator">/</span>mysql <span class="token operator">/</span>usr<span class="token operator">/</span>lib64<span class="token operator">/</span>mysql <span class="token operator">/</span>usr<span class="token operator">/</span>include<span class="token operator">/</span>mysql</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@op-workorder <span class="built_in">bin</span>]<span class="comment"># whereis mysql</span></span><br><span class="line">mysql: /usr/<span class="built_in">bin</span>/mysql /usr/lib64/mysql /usr/include/mysql</span><br></pre></td></tr></table></figure>
 <h3 id="42-导出数据库"><a class="markdownIt-Anchor" href="#42-导出数据库"></a> 4.2 导出数据库</h3>
 <ul>
 <li><code>导出数据和表结构</code></li>
 </ul>
-<pre class="language-mysql" data-language="mysql"><code class="language-mysql">[root@k8s-master ~]# cd &#x2F;home&#x2F;work&#x2F;mysql&#x2F;bin       # 先cd到mysql的运行路径下，再执行一下命令
-# mysqldump -u用户名 -p密码 数据库名 &gt; 数据库名.sql
-[root@k8s-master ~]# .&#x2F;mysqldump  -uroot  -p  bsp  &gt;  bsp.sql</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]# cd /home/work/mysql/bin       # 先cd到mysql的运行路径下，再执行一下命令</span><br><span class="line"># mysqldump -u用户名 -p密码 数据库名 &gt; 数据库名.sql</span><br><span class="line">[root@k8s-master ~]# ./mysqldump  -uroot  -p  bsp  &gt;  bsp.sql</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>只导出表结构</code></li>
 </ul>
-<pre class="language-mysql" data-language="mysql"><code class="language-mysql">&#39;&#39;&#39; mysqldump -u用户名 -p密码 -d 数据库名 &gt; 数据库名.sql &#39;&#39;&#39;
-[root@k8s-master ~]#  mysqldump -uroot -p -d dbname &gt; dbname .sql</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27; mysqldump -u用户名 -p密码 -d 数据库名 &gt; 数据库名.sql &#x27;&#x27;&#x27;</span><br><span class="line">[root@k8s-master ~]#  mysqldump -uroot -p -d dbname &gt; dbname .sql</span><br></pre></td></tr></table></figure>
 <h3 id="43-导入数据库"><a class="markdownIt-Anchor" href="#43-导入数据库"></a> 4.3 导入数据库</h3>
-<pre class="language-mysql" data-language="mysql"><code class="language-mysql"># 1、首先建空数据库
-mysql&gt; create database bsp charset utf8;
-# 2、导入数据库（方法一）
-mysql&gt; use bsp;       # 1）选择数据库
-mysql&gt; source &#x2F;home&#x2F;work&#x2F;project&#x2F;bsp&#x2F;bsp.sql    # 2）导入数据（注意sql文件的路径）
-# 3、导入数据库（方法二）
-mysql -u用户名 -p密码 数据库名 &lt; 数据库名.sql </code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1、首先建空数据库</span><br><span class="line">mysql&gt; create database bsp charset utf8;</span><br><span class="line"># 2、导入数据库（方法一）</span><br><span class="line">mysql&gt; use bsp;       # 1）选择数据库</span><br><span class="line">mysql&gt; source /home/work/project/bsp/bsp.sql    # 2）导入数据（注意sql文件的路径）</span><br><span class="line"># 3、导入数据库（方法二）</span><br><span class="line">mysql -u用户名 -p密码 数据库名 &lt; 数据库名.sql </span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -854,6 +808,8 @@ mysql -u用户名 -p密码 数据库名 &lt; 数据库名.sql </code></pre>
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

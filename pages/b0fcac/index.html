@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -80,52 +82,23 @@
 <ul>
 <li><code>mysite/urls.py</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># mysite/urls.py</span>
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>contrib <span class="token keyword">import</span> admin
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> include
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    path<span class="token punctuation">(</span><span class="token string">'admin/'</span><span class="token punctuation">,</span> admin<span class="token punctuation">.</span>site<span class="token punctuation">.</span>urls<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token comment"># 配置路由分发</span>
-    path<span class="token punctuation">(</span><span class="token string">'app01/'</span><span class="token punctuation">,</span> include<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'app01.urls'</span><span class="token punctuation">,</span> <span class="token string">'app01'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> namespace<span class="token operator">=</span><span class="token string">'app01'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mysite/urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    <span class="comment"># 配置路由分发</span></span><br><span class="line">    path(<span class="string">&#x27;app01/&#x27;</span>, include((<span class="string">&#x27;app01.urls&#x27;</span>, <span class="string">&#x27;app01&#x27;</span>), namespace=<span class="string">&#x27;app01&#x27;</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h2 id="12-普通url"><a class="markdownIt-Anchor" href="#12-普通url"></a> 1.2 普通url</h2>
 <h4 id="121-app01urlspy"><a class="markdownIt-Anchor" href="#121-app01urlspy"></a> 1.2.1 app01/urls.py</h4>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    re_path<span class="token punctuation">(</span><span class="token string">'index1/$'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>index1<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'indexname1'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>          <span class="token comment"># 方法1：无正则匹配url</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, re_path</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    re_path(<span class="string">&#x27;index1/$&#x27;</span>, views.index1, name=<span class="string">&#x27;indexname1&#x27;</span>),          <span class="comment"># 方法1：无正则匹配url</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="122-app01viewspy"><a class="markdownIt-Anchor" href="#122-app01viewspy"></a> 1.2.2 app01/views.py</h4>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-
-<span class="token comment"># 方法1：无正则匹配url（ http://127.0.0.1:8000/index1/?uid=1 ）</span>
-<span class="token keyword">def</span> <span class="token function">index1</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span> request<span class="token punctuation">.</span>GET <span class="token punctuation">)</span>             <span class="token comment"># &#123;"uid": "1"&#125;</span>
-    nid <span class="token operator">=</span> request<span class="token punctuation">.</span>GET<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'uid'</span><span class="token punctuation">)</span>    <span class="token comment"># 1</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'无正则匹配url'</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法1：无正则匹配url（ http://127.0.0.1:8000/index1/?uid=1 ）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index1</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="built_in">print</span>( request.GET )             <span class="comment"># &#123;&quot;uid&quot;: &quot;1&quot;&#125;</span></span><br><span class="line">    nid = request.GET.get(<span class="string">&#x27;uid&#x27;</span>)    <span class="comment"># 1</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;无正则匹配url&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="13-正则的url-d"><a class="markdownIt-Anchor" href="#13-正则的url-d"></a> 1.3 正则的url <code>(\d+)</code></h2>
 <h4 id="131-app01urlspy"><a class="markdownIt-Anchor" href="#131-app01urlspy"></a> 1.3.1 app01/urls.py</h4>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/app01/index1/">http://127.0.0.1:8000/app01/index1/</a></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    re_path<span class="token punctuation">(</span><span class="token string">'index2/(\d+)/$'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>index2<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'indexname2'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>     <span class="token comment"># 方法2：基于(\d+)正则的url</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, re_path</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    re_path(<span class="string">&#x27;index2/(\d+)/$&#x27;</span>, views.index2, name=<span class="string">&#x27;indexname2&#x27;</span>),     <span class="comment"># 方法2：基于(\d+)正则的url</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="132-app01viewspy"><a class="markdownIt-Anchor" href="#132-app01viewspy"></a> 1.3.2 app01/views.py</h4>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/app01/index2/1/">http://127.0.0.1:8000/app01/index2/1/</a></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-
-<span class="token comment"># 方法2：基于(\d+)正则的url（  http://127.0.0.1:8000/index2/1/  ）</span>
-<span class="token keyword">def</span> <span class="token function">index2</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span> uid <span class="token punctuation">)</span>                    <span class="token comment"># 1</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'基于(\d+)正则的url'</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：基于(\d+)正则的url（  http://127.0.0.1:8000/index2/1/  ）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index2</span>(<span class="params">request, uid</span>):</span><br><span class="line">    <span class="built_in">print</span>( uid )                    <span class="comment"># 1</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;基于(\d+)正则的url&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="14-正则分组pnidd"><a class="markdownIt-Anchor" href="#14-正则分组pnidd"></a> 1.4 正则分组<code>(?P&lt;nid&gt;\d+)</code></h2>
 <ul>
 <li>基于正则分组<code>(?P&lt;nid&gt;\d+)</code>，可以不考虑接收参数顺序 (推荐)</li>
@@ -134,47 +107,22 @@ urlpatterns <span class="token operator">=</span> <span class="token punctuation
 <ul>
 <li><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/app01/index3/1/2/">http://127.0.0.1:8000/app01/index3/1/2/</a></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    re_path<span class="token punctuation">(</span><span class="token string">'index3/(?P&lt;nid>\d+)/(?P&lt;pid>\d+)/$'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>index3<span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'indexname3'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>        <span class="token comment"># 方法3：基于(\d+)正则的url</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, re_path</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    re_path(<span class="string">&#x27;index3/(?P&lt;nid&gt;\d+)/(?P&lt;pid&gt;\d+)/$&#x27;</span>, views.index3, name=<span class="string">&#x27;indexname3&#x27;</span>),        <span class="comment"># 方法3：基于(\d+)正则的url</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="142-app01viewspy"><a class="markdownIt-Anchor" href="#142-app01viewspy"></a> 1.4.2 app01/views.py</h4>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-
-<span class="token comment"># 方法3：基于正则分组(?P&lt;nid>\d+)（  http://127.0.0.1:8000/app01/index3/1/2/  ）</span>
-<span class="token keyword">def</span> <span class="token function">index3</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> nid<span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>nid<span class="token punctuation">)</span>                     <span class="token comment"># 1</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>pid<span class="token punctuation">)</span>                     <span class="token comment"># 2</span>
-    <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'基于正则分组url'</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法3：基于正则分组(?P&lt;nid&gt;\d+)（  http://127.0.0.1:8000/app01/index3/1/2/  ）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index3</span>(<span class="params">request, nid, pid</span>):</span><br><span class="line">    <span class="built_in">print</span>(nid)                     <span class="comment"># 1</span></span><br><span class="line">    <span class="built_in">print</span>(pid)                     <span class="comment"># 2</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;基于正则分组url&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="15-使用name构建自己想要的url"><a class="markdownIt-Anchor" href="#15-使用name构建自己想要的url"></a> 1.5 使用name构建自己想要的url</h2>
 <h4 id="151-app01urlspy"><a class="markdownIt-Anchor" href="#151-app01urlspy"></a> 1.5.1 app01/urls.py</h4>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/app01/index3/1/2/">http://127.0.0.1:8000/app01/index3/1/2/</a></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> path<span class="token punctuation">,</span> re_path
-<span class="token keyword">from</span> app01 <span class="token keyword">import</span> views
-
-urlpatterns <span class="token operator">=</span> <span class="token punctuation">[</span>
-    re_path<span class="token punctuation">(</span><span class="token string">'index4/$'</span><span class="token punctuation">,</span> views<span class="token punctuation">.</span>index4<span class="token punctuation">)</span><span class="token punctuation">,</span>                               <span class="token comment"># 方法4：使用name构建自己想要的url</span>
-<span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, re_path</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    re_path(<span class="string">&#x27;index4/$&#x27;</span>, views.index4),                               <span class="comment"># 方法4：使用name构建自己想要的url</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="152-app01viewspy"><a class="markdownIt-Anchor" href="#152-app01viewspy"></a> 1.5.2 app01/views.py</h4>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>shortcuts <span class="token keyword">import</span> HttpResponse
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>urls <span class="token keyword">import</span> reverse
-
-<span class="token comment"># 方法4：使用name构建自己想要的url （http://127.0.0.1:8000/index4/）</span>
-<span class="token keyword">def</span> <span class="token function">index4</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    url1 <span class="token operator">=</span> reverse<span class="token punctuation">(</span><span class="token string">'indexname1'</span><span class="token punctuation">)</span>                         <span class="token comment"># /index1/</span>
-    url2 <span class="token operator">=</span> reverse<span class="token punctuation">(</span><span class="token string">'indexname2'</span><span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                  <span class="token comment"># /index2/1/2/</span>
-    url3 <span class="token operator">=</span> reverse<span class="token punctuation">(</span><span class="token string">'indexname3'</span><span class="token punctuation">,</span> kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'pid'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"nid"</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>       <span class="token comment"># /index3/1/2/</span>
-    <span class="token keyword">return</span> render<span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token string">'index.html'</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> reverse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法4：使用name构建自己想要的url （http://127.0.0.1:8000/index4/）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index4</span>(<span class="params">request</span>):</span><br><span class="line">    url1 = reverse(<span class="string">&#x27;indexname1&#x27;</span>)                         <span class="comment"># /index1/</span></span><br><span class="line">    url2 = reverse(<span class="string">&#x27;indexname2&#x27;</span>, args=(<span class="number">1</span>,))                  <span class="comment"># /index2/1/2/</span></span><br><span class="line">    url3 = reverse(<span class="string">&#x27;indexname3&#x27;</span>, kwargs=&#123;<span class="string">&#x27;pid&#x27;</span>: <span class="number">1</span>, <span class="string">&quot;nid&quot;</span>:<span class="number">2</span>&#125;)       <span class="comment"># /index3/1/2/</span></span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">&#x27;index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="153-反解出url中的name"><a class="markdownIt-Anchor" href="#153-反解出url中的name"></a> 1.5.3 反解出url中的name</h4>
 <ul>
 <li>根据request.path中的绝对路径反解出url中的name名字</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">resolve_url_obj <span class="token operator">=</span> resolve<span class="token punctuation">(</span>request<span class="token punctuation">.</span>path<span class="token punctuation">)</span>         <span class="token comment"># request.path路径： /student/homework_detail/52</span>
-resolve_url_obj<span class="token punctuation">.</span>url_name                   <span class="token comment"># 从path中解析出url名字 url_name = homework_detail</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">resolve_url_obj = resolve(request.path)         <span class="comment"># request.path路径： /student/homework_detail/52</span></span><br><span class="line">resolve_url_obj.url_name                   <span class="comment"># 从path中解析出url名字 url_name = homework_detail</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -864,6 +812,8 @@ resolve_url_obj<span class="token punctuation">.</span>url_name                 
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

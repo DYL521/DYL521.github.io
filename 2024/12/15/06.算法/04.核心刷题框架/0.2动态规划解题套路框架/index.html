@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -97,30 +99,12 @@
 <p>代码框架：</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 自顶向下递归的动态规划</span>
-<span class="token keyword">def</span> <span class="token function">dp</span><span class="token punctuation">(</span>状态<span class="token number">1</span><span class="token punctuation">,</span> 状态<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> 选择 <span class="token keyword">in</span> 所有可能的选择<span class="token punctuation">:</span>
-        <span class="token comment"># 此时的状态已经因为做了选择而改变</span>
-        result <span class="token operator">=</span> 求最值<span class="token punctuation">(</span>result<span class="token punctuation">,</span> dp<span class="token punctuation">(</span>状态<span class="token number">1</span><span class="token punctuation">,</span> 状态<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> result
-
-<span class="token comment"># 自底向上迭代的动态规划</span>
-<span class="token comment"># 初始化 base case</span>
-dp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token operator">=</span> base <span class="token keyword">case</span>
-<span class="token comment"># 进行状态转移</span>
-<span class="token keyword">for</span> 状态<span class="token number">1</span> <span class="token keyword">in</span> 状态<span class="token number">1</span>的所有取值：
-    <span class="token keyword">for</span> 状态<span class="token number">2</span> <span class="token keyword">in</span> 状态<span class="token number">2</span>的所有取值：
-        <span class="token keyword">for</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-            dp<span class="token punctuation">[</span>状态<span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>状态<span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token operator">=</span> 求最值<span class="token punctuation">(</span>选择<span class="token number">1</span>，选择<span class="token number">2.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自顶向下递归的动态规划</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dp</span>(<span class="params">状态<span class="number">1</span>, 状态<span class="number">2</span>, ...</span>):</span><br><span class="line">    <span class="keyword">for</span> 选择 <span class="keyword">in</span> 所有可能的选择:</span><br><span class="line">        <span class="comment"># 此时的状态已经因为做了选择而改变</span></span><br><span class="line">        result = 求最值(result, dp(状态<span class="number">1</span>, 状态<span class="number">2</span>, ...))</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自底向上迭代的动态规划</span></span><br><span class="line"><span class="comment"># 初始化 base case</span></span><br><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>][...] = base <span class="keyword">case</span></span><br><span class="line"><span class="comment"># 进行状态转移</span></span><br><span class="line"><span class="keyword">for</span> 状态<span class="number">1</span> <span class="keyword">in</span> 状态<span class="number">1</span>的所有取值：</span><br><span class="line">    <span class="keyword">for</span> 状态<span class="number">2</span> <span class="keyword">in</span> 状态<span class="number">2</span>的所有取值：</span><br><span class="line">        <span class="keyword">for</span> ...</span><br><span class="line">            dp[状态<span class="number">1</span>][状态<span class="number">2</span>][...] = 求最值(选择<span class="number">1</span>，选择<span class="number">2.</span>..)</span><br></pre></td></tr></table></figure>
 <h1 id="1-斐波那契数列"><a class="markdownIt-Anchor" href="#1-斐波那契数列"></a> 1、斐波那契数列</h1>
 <pre><code>严格来说斐波那契不属于动态规划问题， 因为没有求最值问题，只存在重叠子问题！
 </code></pre>
 <h2 id="11-暴力递归"><a class="markdownIt-Anchor" href="#11-暴力递归"></a> 1.1 暴力递归</h2>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>N<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> N <span class="token operator">==</span> <span class="token number">1</span> <span class="token keyword">or</span> N <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token number">1</span>
-    <span class="token keyword">return</span> fib<span class="token punctuation">(</span>N <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib<span class="token punctuation">(</span>N <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">N: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">if</span> N == <span class="number">1</span> <span class="keyword">or</span> N == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> fib(N - <span class="number">1</span>) + fib(N - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 <h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
 
                 
@@ -820,6 +804,8 @@ dp<span class="token punctuation">[</span><span class="token number">0</span><sp
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

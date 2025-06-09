@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -84,17 +86,7 @@
 <li><code>long_query_time</code>的默认值为<code>10</code>，意思是记录运行<code>10</code>秒以上的语句。</li>
 </ul>
 <h2 id="12-查找那些语句慢"><a class="markdownIt-Anchor" href="#12-查找那些语句慢"></a> 1.2 查找那些语句慢</h2>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 比如，得到返回记录集最多的10个SQL。</span>
-mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">10</span> /database/mysql/mysql06_slow.log
-
-<span class="token comment"># 得到访问次数最多的10个SQL</span>
-mysqldumpslow <span class="token parameter variable">-s</span> c <span class="token parameter variable">-t</span> <span class="token number">10</span> /database/mysql/mysql06_slow.log
-
-<span class="token comment"># 得到按照时间排序的前10条里面含有左连接的查询语句。</span>
-mysqldumpslow <span class="token parameter variable">-s</span> t <span class="token parameter variable">-t</span> <span class="token number">10</span> <span class="token parameter variable">-g</span> “left join” /database/mysql/mysql06_slow.log
-
-<span class="token comment"># 另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现刷屏的情况。</span>
-mysqldumpslow <span class="token parameter variable">-s</span> r <span class="token parameter variable">-t</span> <span class="token number">20</span> /mysqldata/mysql/mysql06-slow.log <span class="token operator">|</span> <span class="token function">more</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">比如，得到返回记录集最多的10个SQL。</span></span><br><span class="line">mysqldumpslow -s r -t 10 /database/mysql/mysql06_slow.log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">得到访问次数最多的10个SQL</span></span><br><span class="line">mysqldumpslow -s c -t 10 /database/mysql/mysql06_slow.log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">得到按照时间排序的前10条里面含有左连接的查询语句。</span></span><br><span class="line">mysqldumpslow -s t -t 10 -g “left join” /database/mysql/mysql06_slow.log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现刷屏的情况。</span></span><br><span class="line">mysqldumpslow -s r -t 20 /mysqldata/mysql/mysql06-slow.log | more</span><br></pre></td></tr></table></figure>
 <h2 id="13-explain分析慢查询原因"><a class="markdownIt-Anchor" href="#13-explain分析慢查询原因"></a> 1.3 explain分析慢查询原因</h2>
 <ul>
 <li>
@@ -107,23 +99,7 @@ mysqldumpslow <span class="token parameter variable">-s</span> r <span class="to
 <p>explain的执行效果</p>
 </li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">mysql<span class="token operator">></span> explain <span class="token keyword">select</span> * from subject where <span class="token function">id</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">\</span>G
-******************************************************
-           id: <span class="token number">1</span>                <span class="token comment"># 查询中每个SELECT子句的标识符； 数字越大优先级越高；联合查询中可有多个 ID。</span>
-  select_type: SIMPLE           <span class="token comment"># 查询的类型          ；SIMPLE（简单查询）、PRIMARY（主查询）、SUBQUERY（子查询）、DERIVED（派生表/子查询派生结果）</span>
-        table: user             <span class="token comment"># 表示访问那个表</span>
-   partitions: NULL
-         type: const            <span class="token comment"># 连接的类型         ；关键字段，system > const > eq_ref > range > index > ALL 。 ALL表示全表扫描，性能最差</span>
-possible_keys: PRIMARY          <span class="token comment"># 可能使用的索引。    ；为空表示没有合适的索引</span>
-          key: PRIMARY           <span class="token comment"># 使用了主键索引，如果为null代表没有使用索引</span>
-      key_len: <span class="token number">4</span>                <span class="token comment"># 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度</span>
-          ref: const
-         rows: <span class="token number">1</span>                <span class="token comment"># 预计读取的行数 ； 越少越好，说明索引命中率越高； </span>
-     filtered: <span class="token number">100.00</span>           <span class="token comment"># 查询的表行占表的百分比； 10表示只留下10%的行</span>
-        Extra: NULL             <span class="token comment"># 执行过程的额外信息；  - Using index（覆盖索引）、Using where(用了where条件)、Using Temporary（使用临时表，可能影响性能）、Using filesort（使用文件排序，可能影响性能）</span>
-                                
-                          
-******************************************************</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">mysql&gt; </span><span class="language-bash">explain <span class="keyword">select</span> * from subject <span class="built_in">where</span> <span class="built_in">id</span> = 1 \G</span></span><br><span class="line">******************************************************</span><br><span class="line">           id: 1                # 查询中每个SELECT子句的标识符； 数字越大优先级越高；联合查询中可有多个 ID。</span><br><span class="line">  select_type: SIMPLE           # 查询的类型          ；SIMPLE（简单查询）、PRIMARY（主查询）、SUBQUERY（子查询）、DERIVED（派生表/子查询派生结果）</span><br><span class="line">        table: user             # 表示访问那个表</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: const            # 连接的类型         ；关键字段，system &gt; const &gt; eq_ref &gt; range &gt; index &gt; ALL 。 ALL表示全表扫描，性能最差</span><br><span class="line">possible_keys: PRIMARY          # 可能使用的索引。    ；为空表示没有合适的索引</span><br><span class="line">          key: PRIMARY           # 使用了主键索引，如果为null代表没有使用索引</span><br><span class="line">      key_len: 4                # 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1                # 预计读取的行数 ； 越少越好，说明索引命中率越高； </span><br><span class="line">     filtered: 100.00           # 查询的表行占表的百分比； 10表示只留下10%的行</span><br><span class="line">        Extra: NULL             # 执行过程的额外信息；  - Using index（覆盖索引）、Using where(用了where条件)、Using Temporary（使用临时表，可能影响性能）、Using filesort（使用文件排序，可能影响性能）</span><br><span class="line">                                </span><br><span class="line">                          </span><br><span class="line">******************************************************</span><br></pre></td></tr></table></figure>
 <ul>
 <li>慢查询应该关注项
 <ol>
@@ -191,11 +167,11 @@ possible_keys: PRIMARY          <span class="token comment"># 可能使用的索
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/ed510c/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/ed510c/" title="发布于 2021-02-22 04:00">04.MySQL索引</a>
+                        <a href="../../pages/a2d0cb/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a2d0cb/" title="发布于 2021-02-22 04:00">03.MySQL锁</a>
                         <br>
                     
                     
-                        <a href="../../pages/a36fa8/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/a36fa8/" title="发布于 2021-02-22 04:00">06.MySQL优化</a>
+                        <a href="../../pages/ed510c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/ed510c/" title="发布于 2021-02-22 04:00">04.MySQL索引</a>
                     
                 </div>
             </div>
@@ -844,6 +820,8 @@ possible_keys: PRIMARY          <span class="token comment"># 可能使用的索
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

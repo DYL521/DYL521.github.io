@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -94,42 +96,22 @@
 </ul>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">  <span class="token comment"># 例子：查询所有作者及其书籍信息</span>
-authors <span class="token operator">=</span> Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>select_related<span class="token punctuation">(</span><span class="token string">'book'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment"># 例子：查询所有作者及其书籍信息</span></span><br><span class="line">authors = Author.objects.select_related(<span class="string">&#x27;book&#x27;</span>).<span class="built_in">all</span>()</span><br></pre></td></tr></table></figure>
 <ul>
 <li>prefetch_related:  用于<strong>多对多和反向外键关系</strong>，Django会在后台执行额外的查询结果缓存到Python中，避免多次查询数据库。</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">  <span class="token comment"># 例子：查询所有作者及其书籍信息</span>
-authors <span class="token operator">=</span> Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>prefetch_related<span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment"># 例子：查询所有作者及其书籍信息</span></span><br><span class="line">authors = Author.objects.prefetch_related(<span class="string">&#x27;books&#x27;</span>).<span class="built_in">all</span>()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="2-只查询必要的字段"><a class="markdownIt-Anchor" href="#2-只查询必要的字段"></a> 2、只查询必要的字段</h1>
 <ul>
 <li>在不需要查询整个对象的情况下，使用 values() 或 values_list() 来只获取特定字段。</li>
 <li>使用 only() 和 defer() 可以减少查询时加载的字段量，only() 只加载指定的字段，defer() 延迟加载指定的字段。</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token comment"># 只获取特定字段</span>
-queryset <span class="token operator">=</span> Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>only<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 延迟加载某个字段</span>
-queryset <span class="token operator">=</span> Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>defer<span class="token punctuation">(</span><span class="token string">'bio'</span><span class="token punctuation">)</span>
-
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 只获取特定字段</span></span><br><span class="line">queryset = Author.objects.only(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;age&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 延迟加载某个字段</span></span><br><span class="line">queryset = Author.objects.defer(<span class="string">&#x27;bio&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="3-批量操作"><a class="markdownIt-Anchor" href="#3-批量操作"></a> 3、批量操作</h1>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 批量插入数据</span>
-authors <span class="token operator">=</span> <span class="token punctuation">[</span>Author<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"John"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Author<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Jane"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>bulk_create<span class="token punctuation">(</span>authors<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 批量插入数据</span></span><br><span class="line">authors = [Author(name=<span class="string">&quot;John&quot;</span>), Author(name=<span class="string">&quot;Jane&quot;</span>)]</span><br><span class="line">Author.objects.bulk_create(authors)</span><br></pre></td></tr></table></figure>
 <h1 id="4-使用数据库索引字段进行查询"><a class="markdownIt-Anchor" href="#4-使用数据库索引字段进行查询"></a> 4、使用数据库索引字段进行查询</h1>
 <p>-对经常用于查询、过滤和排序的字段添加索引，能显著提高查询效率。Django 可以通过模型中的 index_together 或 unique_together 来创建复合索引。</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Author</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span>
-    age <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
-        indexes <span class="token operator">=</span> <span class="token punctuation">[</span>
-            models<span class="token punctuation">.</span>Index<span class="token punctuation">(</span>fields<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">]</span>
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Author</span>(models.Model):</span><br><span class="line">    name = models.CharField(max_length=<span class="number">100</span>)</span><br><span class="line">    age = models.IntegerField()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        indexes = [</span><br><span class="line">            models.Index(fields=[<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;age&#x27;</span>]),</span><br><span class="line">        ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="5-缓存查询结果避免多次查询数据库"><a class="markdownIt-Anchor" href="#5-缓存查询结果避免多次查询数据库"></a> 5、缓存查询结果，避免多次查询数据库</h1>
 <h1 id="6-使用原生sql绕过orm的瓶颈"><a class="markdownIt-Anchor" href="#6-使用原生sql绕过orm的瓶颈"></a> 6、使用原生SQL，绕过ORM的瓶颈</h1>
 <h1 id="7-限制查询的结果集"><a class="markdownIt-Anchor" href="#7-限制查询的结果集"></a> 7、限制查询的结果集</h1>
@@ -138,13 +120,7 @@ Author<span class="token punctuation">.</span>objects<span class="token punctuat
 <h1 id="12-使用-q-对象进行复杂查询"><a class="markdownIt-Anchor" href="#12-使用-q-对象进行复杂查询"></a> 12. 使用 Q 对象进行复杂查询</h1>
 <pre><code>使用 Q 对象构建复杂的 AND、OR 查询条件，在数据库层面进行高效查询。
 </code></pre>
-<pre class="language-python" data-language="python"><code class="language-python">
-<span class="token keyword">from</span> django<span class="token punctuation">.</span>db<span class="token punctuation">.</span>models <span class="token keyword">import</span> Q
-
-<span class="token comment"># 查询符合某些复杂条件的对象</span>
-authors <span class="token operator">=</span> Author<span class="token punctuation">.</span>objects<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>
-    Q<span class="token punctuation">(</span>name__startswith<span class="token operator">=</span><span class="token string">"J"</span><span class="token punctuation">)</span> <span class="token operator">|</span> Q<span class="token punctuation">(</span>age__gte<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Q</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询符合某些复杂条件的对象</span></span><br><span class="line">authors = Author.objects.<span class="built_in">filter</span>(</span><br><span class="line">    Q(name__startswith=<span class="string">&quot;J&quot;</span>) | Q(age__gte=<span class="number">30</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://django-debug-toolbar.readthedocs.io/en/latest/">https://django-debug-toolbar.readthedocs.io/en/latest/</a></li>
 </ul>
@@ -846,6 +822,8 @@ authors <span class="token operator">=</span> Author<span class="token punctuati
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

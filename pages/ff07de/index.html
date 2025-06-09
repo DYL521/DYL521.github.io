@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -101,23 +103,8 @@
 <p>3、with处理文件操作的实例</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'/etc/passwd'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-  <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span>
-
-<span class="token comment"># 这段代码的作用：打开一个文件，如果一切正常，把文件对象赋值给f，然后用迭代器遍历文件中每一行，当完成时，关闭文件；</span>
-<span class="token comment"># 而无论在这段代码的任何地方，如果发生异常，此时文件仍会被关闭。</span></code></pre>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># -*- coding: utf-8 -*-</span>
-<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'a2.py'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span> f<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">try</span><span class="token punctuation">:</span>
-    f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'a2.py'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf8'</span><span class="token punctuation">)</span>
-    f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token keyword">print</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">finally</span><span class="token punctuation">:</span>
-    f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;/etc/passwd&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">  <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">    <span class="built_in">print</span>(line)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这段代码的作用：打开一个文件，如果一切正常，把文件对象赋值给f，然后用迭代器遍历文件中每一行，当完成时，关闭文件；</span></span><br><span class="line"><span class="comment"># 而无论在这段代码的任何地方，如果发生异常，此时文件仍会被关闭。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;a2.py&#x27;</span>,encoding=<span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="built_in">print</span>( f.readlines())</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;a2.py&#x27;</span>,encoding=<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">    f.read()</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">print</span>(e))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -154,11 +141,11 @@
                 
                 <div class="article-prev-next">
                     
-                        <a href="../../pages/a18e2b/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/a18e2b/" title="发布于 2021-02-11 10:59">16.高阶函数</a>
+                        <a href="../../pages/520a3e/" class="prev-prefix">« </a> 上一篇：    <a href="../../pages/520a3e/" title="发布于 2021-02-11 10:59">13.垃圾回收</a>
                         <br>
                     
                     
-                        <a href="../../pages/480866/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/480866/" title="发布于 2021-02-11 10:59">17.次重点</a>
+                        <a href="../../pages/2d9cd4/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/2d9cd4/" title="发布于 2021-02-11 10:59">15.网络七层</a>
                     
                 </div>
             </div>
@@ -807,6 +794,8 @@
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

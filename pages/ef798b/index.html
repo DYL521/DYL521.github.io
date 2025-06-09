@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -124,16 +126,7 @@
 <li>通过设置网络地址和主机地址，在互相连接的整个网络中保证每台主机的IP地址不会互相重叠，即IP地址具有了唯一性。</li>
 </ul>
 <p><img src="./assets/1579862966699.png" style="width: 300px; margin-left: 50px;"> </img></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">'''192.168.1.0/24 (192.168.1.1 255.255.255.0)'''</span>
-<span class="token comment"># 1. 此网段包含地址范围</span>
-<span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.0</span> <span class="token operator">~</span> <span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.255</span>
-
-<span class="token comment"># 2.网段中第一个地址为“网络地址”和最后一个地址为“广播地址”不可用</span>
-网络地址： <span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.0</span>
-广播地址： <span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.255</span>
-
-<span class="token comment"># 3.可用ip范围</span>
-<span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.1</span> <span class="token operator">~</span> <span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.254</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;192.168.1.0/24 (192.168.1.1 255.255.255.0)&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 1. 此网段包含地址范围</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.1</span><span class="number">.0</span> ~ <span class="number">192.168</span><span class="number">.1</span><span class="number">.255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.网段中第一个地址为“网络地址”和最后一个地址为“广播地址”不可用</span></span><br><span class="line">网络地址： <span class="number">192.168</span><span class="number">.1</span><span class="number">.0</span></span><br><span class="line">广播地址： <span class="number">192.168</span><span class="number">.1</span><span class="number">.255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.可用ip范围</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.1</span><span class="number">.1</span> ~ <span class="number">192.168</span><span class="number">.1</span><span class="number">.254</span></span><br></pre></td></tr></table></figure>
 <h2 id="03ip地址分类"><a class="markdownIt-Anchor" href="#03ip地址分类"></a> 03.IP地址分类</h2>
 <blockquote>
 <h4 id="1ip地址分类详解"><a class="markdownIt-Anchor" href="#1ip地址分类详解"></a> 1.IP地址分类详解</h4>
@@ -160,9 +153,7 @@
 <li>创建IP寻址方案的人也创建了私网IP地址</li>
 <li>这些地址可以被用于私有网络，在Internet没有这些IP地址，Internet上的路由器也没有到私有网络的路由表</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">A类： <span class="token number">10.0</span><span class="token number">.0</span><span class="token number">.0</span> <span class="token number">255.0</span><span class="token number">.0</span><span class="token number">.0</span>                              <span class="token comment"># 保留了1个A类网络</span>
-B类： <span class="token number">172.16</span><span class="token number">.0</span><span class="token number">.0</span> <span class="token number">255.255</span><span class="token number">.0</span><span class="token number">.0</span>～<span class="token number">172.31</span><span class="token number">.0</span><span class="token number">.0</span> <span class="token number">255.255</span><span class="token number">.0</span><span class="token number">.0</span>           <span class="token comment"># 保留了16个B类网络</span>
-C类： <span class="token number">192.168</span><span class="token number">.0</span><span class="token number">.0</span> <span class="token number">255.255</span><span class="token number">.255</span><span class="token number">.0</span>～<span class="token number">192.168</span><span class="token number">.255</span><span class="token number">.0</span> <span class="token number">255.255</span><span class="token number">.255</span><span class="token number">.0</span>     <span class="token comment"># 保留了256个C类网络</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A类： <span class="number">10.0</span><span class="number">.0</span><span class="number">.0</span> <span class="number">255.0</span><span class="number">.0</span><span class="number">.0</span>                              <span class="comment"># 保留了1个A类网络</span></span><br><span class="line">B类： <span class="number">172.16</span><span class="number">.0</span><span class="number">.0</span> <span class="number">255.255</span><span class="number">.0</span><span class="number">.0</span>～<span class="number">172.31</span><span class="number">.0</span><span class="number">.0</span> <span class="number">255.255</span><span class="number">.0</span><span class="number">.0</span>           <span class="comment"># 保留了16个B类网络</span></span><br><span class="line">C类： <span class="number">192.168</span><span class="number">.0</span><span class="number">.0</span> <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span>～<span class="number">192.168</span><span class="number">.255</span><span class="number">.0</span> <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span>     <span class="comment"># 保留了256个C类网络</span></span><br></pre></td></tr></table></figure>
 
                 
                 <p class="end">__END__</p>
@@ -852,6 +843,8 @@ C类： <span class="token number">192.168</span><span class="token number">.0</
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

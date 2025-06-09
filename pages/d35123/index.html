@@ -27,9 +27,11 @@
 
     <link type="text/css" rel="stylesheet" href="/css/base.css">
     <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 <body>
     <a id="cover"></a>
     <link type="text/css" rel="stylesheet" href="/css/post.css">
@@ -86,17 +88,17 @@
 </ul>
 </li>
 <li>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> copy
-sourceList = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]]
+<pre class="highlight"><code class="python"><span class="keyword">import</span> copy
+sourceList = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]
 copyList = copy.copy(sourceList)
 deepcopyList = copy.deepcopy(sourceList)
 
-sourceList[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>]=<span class="hljs-number">100</span>
+sourceList[<span class="number">3</span>][<span class="number">0</span>]=<span class="number">100</span>
 
-<span class="hljs-built_in">print</span>(sourceList)           <span class="hljs-comment"># [1, 2, 3, [100, 5, 6]]</span>
-<span class="hljs-built_in">print</span>(copyList)             <span class="hljs-comment"># [1, 2, 3, [100, 5, 6]]</span>
-<span class="hljs-built_in">print</span>(deepcopyList)         <span class="hljs-comment"># [1, 2, 3, [4, 5, 6]]</span>
-&lt;!--code￼<span class="hljs-number">0</span>--&gt;
+<span class="built_in">print</span>(sourceList)           <span class="comment"># [1, 2, 3, [100, 5, 6]]</span>
+<span class="built_in">print</span>(copyList)             <span class="comment"># [1, 2, 3, [100, 5, 6]]</span>
+<span class="built_in">print</span>(deepcopyList)         <span class="comment"># [1, 2, 3, [4, 5, 6]]</span>
+&lt;!--code￼<span class="number">0</span>--&gt;
 
 </code></pre>
 </li>
@@ -117,33 +119,7 @@ sourceList[<span class="hljs-number">3</span>][<span class="hljs-number">0</span
 <p><strong>理解</strong>：两个人公用一张桌子，只要桌子不变，桌子上的菜发生了变化两个人是共同感受的。</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> str1 <span class="token operator">=</span> <span class="token string">'hello'</span>
-<span class="token operator">>></span><span class="token operator">></span> str2 <span class="token operator">=</span> str1
-
-<span class="token comment">#1、让str1和str2变量都存储了‘hello’所在的内存地址</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
-<span class="token number">22748280</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
-<span class="token number">22748280</span>
-<span class="token operator">>></span><span class="token operator">></span>
-
-<span class="token comment">#2、当str1的值变成‘new hello’后str1的值被重新赋值成'new hello'的内存地址，而str2的值依旧是‘hello’的内存地址</span>
-<span class="token operator">>></span><span class="token operator">></span> str1 <span class="token operator">=</span> <span class="token string">'new hello'</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span>
-<span class="token number">22748320</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">id</span><span class="token punctuation">(</span>str2<span class="token punctuation">)</span>
-<span class="token number">22748280</span>
-
-<span class="token comment">#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。</span>
-<span class="token operator">>></span><span class="token operator">></span> sourceList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
-<span class="token operator">>></span><span class="token operator">></span> newList <span class="token operator">=</span> sourceList
-
-<span class="token operator">>></span><span class="token operator">></span> l<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">100</span>
-
-<span class="token operator">>></span><span class="token operator">></span> sourceList
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
-<span class="token operator">>></span><span class="token operator">></span> newList
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str2 = str1</span><br><span class="line"></span><br><span class="line"><span class="comment">#1、让str1和str2变量都存储了‘hello’所在的内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#2、当str1的值变成‘new hello’后str1的值被重新赋值成&#x27;new hello&#x27;的内存地址，而str2的值依旧是‘hello’的内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&#x27;new hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str1)</span><br><span class="line"><span class="number">22748320</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(str2)</span><br><span class="line"><span class="number">22748280</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#3、不管多么复杂的数据结构，浅拷贝都只会copy一层。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sourceList = [<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newList = sourceList</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>][<span class="number">0</span>]=<span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sourceList</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">100</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newList</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">100</span>, <span class="number">4</span>]]</span><br></pre></td></tr></table></figure>
 <h2 id="03is和区别"><a class="markdownIt-Anchor" href="#03is和区别"></a> 03.is和==区别</h2>
 <ul>
 <li>is不仅数据一样内存地址也一样</li>
@@ -839,6 +815,8 @@ sourceList[<span class="hljs-number">3</span>][<span class="hljs-number">0</span
         }  
     };
 </script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

@@ -85,17 +85,102 @@ pre, code {
     border: 0
 }
 
+/* 代码块样式 */
 pre {
-    padding: 10px;
-    overflow: auto
+    position: relative;
+    margin: 1.5em 0;
+    padding: 1em;
+    overflow: auto;
+    font-size: 0.875em;
+    line-height: 1.6;
+    background-color: #282c34;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 pre code {
+    display: block;
     padding: 0;
+    overflow-x: auto;
+    color: #abb2bf;
     background: none;
-    color: #4D4D4C;
-    font-size: 0.875em;
-    text-shadow: none
+    font-family: 'JetBrains Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-shadow: none;
+}
+
+/* 行内代码样式 */
+:not(pre) > code {
+    padding: 3px 5px;
+    margin: 0 2px;
+    color: #e06c75;
+    background: #282c34;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+/* 代码块的滚动条样式 */
+pre::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background: #4b5263;
+    border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-track {
+    background: #282c34;
+    border-radius: 3px;
+}
+
+/* 代码块顶部语言标识 */
+pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0;
+    right: 1em;
+    padding: 2px 8px;
+    font-size: 0.75em;
+    color: #abb2bf;
+    background: #3a404d;
+    border-radius: 0 0 4px 4px;
+    text-transform: uppercase;
+}
+
+/* 代码块选中效果 */
+pre code::selection,
+pre code *::selection {
+    background: #3e4451;
+}
+
+/* 代码块行号样式 */
+.line-numbers .line-numbers-rows {
+    border-right: 1px solid #3a404d;
+    padding: 1em 0;
+}
+
+.line-numbers-rows > span:before {
+    color: #5c6370;
+    padding-right: 0.8em;
+}
+
+/* 代码块边框 */
+pre {
+    border: 1px solid #3a404d;
+}
+
+/* 代码块内部填充调整 */
+pre {
+    padding: 1em 1.2em;
+}
+
+/* 代码块语言标识位置调整 */
+pre[data-lang]::before {
+    font-family: 'JetBrains Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    letter-spacing: 0.05em;
 }
 
 pre .deletion {
