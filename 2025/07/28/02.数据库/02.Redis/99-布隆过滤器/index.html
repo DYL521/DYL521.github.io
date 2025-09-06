@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            布隆过滤器使用.md
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">布隆过滤器使用.md</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2025-07-28
+                        </span>
+                        
+                            
+                                <span id="/2025/07/28/02.数据库/02.Redis/99-布隆过滤器/" class="leancloud_visitors" data-flag-title="布隆过滤器使用.md">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2025/07/28/02.数据库/02.Redis/99-布隆过滤器/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">redis</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">redis</span>
+                        
+                            <span class="tag-color">布隆过滤器</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="redis-布隆过滤器使用说明"><a class="markdownIt-Anchor" href="#redis-布隆过滤器使用说明"></a> Redis 布隆过滤器使用说明</h1>
+<h2 id="概述"><a class="markdownIt-Anchor" href="#概述"></a> 📖 概述</h2>
+<p>本项目实现了一个基于Redis的布隆过滤器，用于高效处理大规模S3 URL缓存和查询。布隆过滤器是一种概率性数据结构，能够以极小的内存占用快速判断元素是否存在于集合中。</p>
+<h2 id="实现原理"><a class="markdownIt-Anchor" href="#实现原理"></a> 🔧 实现原理</h2>
+<h3 id="布隆过滤器核心概念"><a class="markdownIt-Anchor" href="#布隆过滤器核心概念"></a> 布隆过滤器核心概念</h3>
+<p>布隆过滤器由以下组件组成：</p>
+<ul>
+<li><strong>位数组（Bit Array）</strong>: 一个长度为m的二进制数组，初始值全为0</li>
+<li><strong>哈希函数（Hash Functions）</strong>: k个不同的哈希函数，将输入元素映射到位数组的不同位置</li>
+<li><strong>误判率（False Positive Rate）</strong>: 布隆过滤器可能误报元素存在，但绝不会漏报</li>
+</ul>
+<h3 id="算法流程"><a class="markdownIt-Anchor" href="#算法流程"></a> 算法流程</h3>
+<h4 id="1-添加元素"><a class="markdownIt-Anchor" href="#1-添加元素"></a> 1. 添加元素</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_url</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">    <span class="comment"># 1. 使用k个哈希函数计算url的k个位置</span></span><br><span class="line">    positions = <span class="variable language_">self</span>._get_hash_positions(url)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 将位数组中这k个位置设置为1</span></span><br><span class="line">    <span class="keyword">for</span> pos <span class="keyword">in</span> positions:</span><br><span class="line">        <span class="variable language_">self</span>.redis_client.setbit(<span class="variable language_">self</span>.bloom_key, pos, <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 同时将URL添加到精确集合中（用于消除误判）</span></span><br><span class="line">    <span class="variable language_">self</span>.redis_client.sadd(<span class="variable language_">self</span>.exact_key, url)</span><br></pre></td></tr></table></figure>
+<h4 id="2-查询元素"><a class="markdownIt-Anchor" href="#2-查询元素"></a> 2. 查询元素</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">might_contain</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">    <span class="comment"># 1. 使用相同的k个哈希函数计算位置</span></span><br><span class="line">    positions = <span class="variable language_">self</span>._get_hash_positions(url)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 检查位数组中这k个位置是否都为1</span></span><br><span class="line">    <span class="keyword">for</span> pos <span class="keyword">in</span> positions:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.redis_client.getbit(<span class="variable language_">self</span>.bloom_key, pos):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h3 id="性能优化策略"><a class="markdownIt-Anchor" href="#性能优化策略"></a> 性能优化策略</h3>
+<h4 id="1-内存优化"><a class="markdownIt-Anchor" href="#1-内存优化"></a> 1. 内存优化</h4>
+<ul>
+<li><strong>位数组大小</strong>: 根据预期元素数量和误判率计算最优大小</li>
+<li><strong>哈希函数数量</strong>: 平衡内存使用和查询性能</li>
+<li><strong>Redis压缩</strong>: 利用Redis的字符串压缩功能</li>
+</ul>
+<h4 id="2-查询优化"><a class="markdownIt-Anchor" href="#2-查询优化"></a> 2. 查询优化</h4>
+<ul>
+<li><strong>批量操作</strong>: 使用Redis pipeline减少网络往返</li>
+<li><strong>缓存策略</strong>: 结合布隆过滤器和精确集合</li>
+<li><strong>异步处理</strong>: 支持异步操作提高并发性能</li>
+</ul>
+<h2 id="使用方法"><a class="markdownIt-Anchor" href="#使用方法"></a> 🚀 使用方法</h2>
+<h3 id="1-基本使用"><a class="markdownIt-Anchor" href="#1-基本使用"></a> 1. 基本使用</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> celery_task.s3.redis_bloom_filter <span class="keyword">import</span> S3UrlCacheManager</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建缓存管理器</span></span><br><span class="line">cache_manager = S3UrlCacheManager()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加单个URL</span></span><br><span class="line"><span class="keyword">await</span> cache_manager.add_url(<span class="string">&quot;s3://bucket/file1.pdf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 批量添加URL</span></span><br><span class="line">urls = [<span class="string">&quot;s3://bucket/file1.pdf&quot;</span>, <span class="string">&quot;s3://bucket/file2.txt&quot;</span>]</span><br><span class="line"><span class="keyword">await</span> cache_manager.add_urls_batch(urls)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查URL是否存在</span></span><br><span class="line">exists = <span class="keyword">await</span> cache_manager.might_contain(<span class="string">&quot;s3://bucket/file1.pdf&quot;</span>)</span><br><span class="line">exact_exists = <span class="keyword">await</span> cache_manager.contains_exact(<span class="string">&quot;s3://bucket/file1.pdf&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="2-从s3迭代器缓存url"><a class="markdownIt-Anchor" href="#2-从s3迭代器缓存url"></a> 2. 从S3迭代器缓存URL</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取S3文件迭代器</span></span><br><span class="line">s3_iterator = s3_service.get_files_async_iterator(</span><br><span class="line">    batch_size=<span class="number">1000</span>,</span><br><span class="line">    cache_urls_for_cleanup=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义进度回调函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">progress_callback</span>(<span class="params">cached_count</span>):</span><br><span class="line">    <span class="keyword">if</span> cached_count % <span class="number">50000</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;已缓存 <span class="subst">&#123;cached_count&#125;</span> 个URL&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 缓存所有S3 URL</span></span><br><span class="line">total_cached = <span class="keyword">await</span> cache_manager.cache_s3_urls_from_iterator(</span><br><span class="line">    s3_iterator, </span><br><span class="line">    progress_callback</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="3-查找孤立url"><a class="markdownIt-Anchor" href="#3-查找孤立url"></a> 3. 查找孤立URL</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取Weaviate中的所有URL</span></span><br><span class="line">weaviate_urls = [<span class="string">&quot;s3://bucket/file1.pdf&quot;</span>, <span class="string">&quot;s3://bucket/file2.txt&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用布隆过滤器快速识别孤立URL</span></span><br><span class="line">orphaned_urls = <span class="keyword">await</span> cache_manager.find_orphaned_urls(weaviate_urls)</span><br></pre></td></tr></table></figure>
+<h3 id="4-缓存管理"><a class="markdownIt-Anchor" href="#4-缓存管理"></a> 4. 缓存管理</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取缓存统计信息</span></span><br><span class="line">stats = <span class="keyword">await</span> cache_manager.get_stats()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;布隆过滤器存在: <span class="subst">&#123;stats.get(<span class="string">&#x27;bloom_exists&#x27;</span>, <span class="literal">False</span>)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;精确URL数量: <span class="subst">&#123;stats.get(<span class="string">&#x27;exact_urls_count&#x27;</span>, <span class="number">0</span>)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;位数组大小: <span class="subst">&#123;stats.get(<span class="string">&#x27;bit_array_size&#x27;</span>, <span class="number">0</span>)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空缓存</span></span><br><span class="line"><span class="keyword">await</span> cache_manager.clear_cache()</span><br></pre></td></tr></table></figure>
+<h2 id="性能特点"><a class="markdownIt-Anchor" href="#性能特点"></a> 📊 性能特点</h2>
+<h3 id="内存使用"><a class="markdownIt-Anchor" href="#内存使用"></a> 内存使用</h3>
+<ul>
+<li><strong>布隆过滤器</strong>: 每个URL约占用0.1-0.5字节（取决于误判率）</li>
+<li><strong>精确集合</strong>: 每个URL约占用50-100字节</li>
+<li><strong>总内存</strong>: 100万个URL约占用50-100MB</li>
+</ul>
+<h3 id="查询性能"><a class="markdownIt-Anchor" href="#查询性能"></a> 查询性能</h3>
+<ul>
+<li><strong>布隆过滤器查询</strong>: O(k) 时间复杂度，k为哈希函数数量</li>
+<li><strong>精确查询</strong>: O(1) 平均时间复杂度</li>
+<li><strong>批量操作</strong>: 支持pipeline，大幅提升性能</li>
+</ul>
+<h3 id="误判率控制"><a class="markdownIt-Anchor" href="#误判率控制"></a> 误判率控制</h3>
+<ul>
+<li><strong>默认误判率</strong>: 0.01 (1%)</li>
+<li><strong>可调整参数</strong>: 通过修改位数组大小和哈希函数数量</li>
+<li><strong>消除误判</strong>: 结合精确集合进行二次验证</li>
+</ul>
+<h2 id="️-配置参数"><a class="markdownIt-Anchor" href="#️-配置参数"></a> ⚙️ 配置参数</h2>
+<h3 id="redis配置"><a class="markdownIt-Anchor" href="#redis配置"></a> Redis配置</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Redis连接配置</span></span><br><span class="line">REDIS_HOST = <span class="string">&quot;localhost&quot;</span></span><br><span class="line">REDIS_PORT = <span class="number">6379</span></span><br><span class="line">REDIS_DB = <span class="number">0</span></span><br><span class="line">REDIS_PASSWORD = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 布隆过滤器配置</span></span><br><span class="line">BLOOM_FILTER_KEY = <span class="string">&quot;s3_urls_bloom&quot;</span></span><br><span class="line">EXACT_URLS_KEY = <span class="string">&quot;s3_urls_exact&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="布隆过滤器参数"><a class="markdownIt-Anchor" href="#布隆过滤器参数"></a> 布隆过滤器参数</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 预期元素数量（影响内存使用）</span></span><br><span class="line">EXPECTED_ELEMENTS = <span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 误判率（影响内存使用和查询性能）</span></span><br><span class="line">FALSE_POSITIVE_RATE = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 哈希函数数量（影响查询性能）</span></span><br><span class="line">NUM_HASH_FUNCTIONS = <span class="number">7</span></span><br></pre></td></tr></table></figure>
+<h2 id="监控和调试"><a class="markdownIt-Anchor" href="#监控和调试"></a> 🔍 监控和调试</h2>
+<h3 id="缓存统计"><a class="markdownIt-Anchor" href="#缓存统计"></a> 缓存统计</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取详细统计信息</span></span><br><span class="line">stats = <span class="keyword">await</span> cache_manager.get_stats()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">缓存统计:</span></span><br><span class="line"><span class="string">- 布隆过滤器存在: <span class="subst">&#123;stats.get(<span class="string">&#x27;bloom_exists&#x27;</span>, <span class="literal">False</span>)&#125;</span></span></span><br><span class="line"><span class="string">- 精确URL数量: <span class="subst">&#123;stats.get(<span class="string">&#x27;exact_urls_count&#x27;</span>, <span class="number">0</span>)&#125;</span></span></span><br><span class="line"><span class="string">- 位数组大小: <span class="subst">&#123;stats.get(<span class="string">&#x27;bit_array_size&#x27;</span>, <span class="number">0</span>)&#125;</span></span></span><br><span class="line"><span class="string">- 哈希函数数量: <span class="subst">&#123;stats.get(<span class="string">&#x27;num_hash_functions&#x27;</span>, <span class="number">0</span>)&#125;</span></span></span><br><span class="line"><span class="string">- 预期误判率: <span class="subst">&#123;stats.get(<span class="string">&#x27;false_positive_rate&#x27;</span>, <span class="number">0</span>)&#125;</span></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="性能测试"><a class="markdownIt-Anchor" href="#性能测试"></a> 性能测试</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试添加性能</span></span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000</span>):</span><br><span class="line">    <span class="keyword">await</span> cache_manager.add_url(<span class="string">f&quot;s3://bucket/file<span class="subst">&#123;i&#125;</span>.pdf&quot;</span>)</span><br><span class="line">add_time = time.time() - start_time</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;添加10000个URL耗时: <span class="subst">&#123;add_time:<span class="number">.2</span>f&#125;</span>秒&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试查询性能</span></span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000</span>):</span><br><span class="line">    <span class="keyword">await</span> cache_manager.might_contain(<span class="string">f&quot;s3://bucket/file<span class="subst">&#123;i&#125;</span>.pdf&quot;</span>)</span><br><span class="line">query_time = time.time() - start_time</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;查询10000个URL耗时: <span class="subst">&#123;query_time:<span class="number">.2</span>f&#125;</span>秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="️-故障排除"><a class="markdownIt-Anchor" href="#️-故障排除"></a> 🛠️ 故障排除</h2>
+<h3 id="常见问题"><a class="markdownIt-Anchor" href="#常见问题"></a> 常见问题</h3>
+<h4 id="1-redis连接失败"><a class="markdownIt-Anchor" href="#1-redis连接失败"></a> 1. Redis连接失败</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查Redis连接</span></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line">r = redis.Redis(host=<span class="string">&#x27;localhost&#x27;</span>, port=<span class="number">6379</span>, db=<span class="number">0</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r.ping()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Redis连接正常&quot;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Redis连接失败&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="2-内存不足"><a class="markdownIt-Anchor" href="#2-内存不足"></a> 2. 内存不足</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查Redis内存使用</span></span><br><span class="line">info = r.info(<span class="string">&#x27;memory&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Redis内存使用: <span class="subst">&#123;info[<span class="string">&#x27;used_memory_human&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Redis内存峰值: <span class="subst">&#123;info[<span class="string">&#x27;used_memory_peak_human&#x27;</span>]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="3-误判率过高"><a class="markdownIt-Anchor" href="#3-误判率过高"></a> 3. 误判率过高</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 调整布隆过滤器参数</span></span><br><span class="line"><span class="comment"># 增加位数组大小或减少预期元素数量</span></span><br><span class="line">EXPECTED_ELEMENTS = <span class="number">500000</span>  <span class="comment"># 减少预期元素数量</span></span><br><span class="line">FALSE_POSITIVE_RATE = <span class="number">0.005</span>  <span class="comment"># 降低误判率</span></span><br></pre></td></tr></table></figure>
+<h3 id="调试技巧"><a class="markdownIt-Anchor" href="#调试技巧"></a> 调试技巧</h3>
+<h4 id="1-启用详细日志"><a class="markdownIt-Anchor" href="#1-启用详细日志"></a> 1. 启用详细日志</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.basicConfig(level=logging.DEBUG)</span><br></pre></td></tr></table></figure>
+<h4 id="2-监控redis操作"><a class="markdownIt-Anchor" href="#2-监控redis操作"></a> 2. 监控Redis操作</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用Redis MONITOR命令监控操作</span></span><br><span class="line"><span class="comment"># redis-cli monitor</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-性能分析"><a class="markdownIt-Anchor" href="#3-性能分析"></a> 3. 性能分析</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cProfile</span><br><span class="line"><span class="keyword">import</span> pstats</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">profiler = cProfile.Profile()</span><br><span class="line">profiler.enable()</span><br><span class="line"><span class="comment"># 执行操作</span></span><br><span class="line">profiler.disable()</span><br><span class="line">stats = pstats.Stats(profiler)</span><br><span class="line">stats.sort_stats(<span class="string">&#x27;cumulative&#x27;</span>)</span><br><span class="line">stats.print_stats(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="最佳实践"><a class="markdownIt-Anchor" href="#最佳实践"></a> 📚 最佳实践</h2>
+<h3 id="1-内存管理"><a class="markdownIt-Anchor" href="#1-内存管理"></a> 1. 内存管理</h3>
+<ul>
+<li>根据实际数据量调整预期元素数量</li>
+<li>定期清理过期缓存</li>
+<li>监控Redis内存使用情况</li>
+</ul>
+<h3 id="2-性能优化"><a class="markdownIt-Anchor" href="#2-性能优化"></a> 2. 性能优化</h3>
+<ul>
+<li>使用批量操作减少网络往返</li>
+<li>合理设置批处理大小</li>
+<li>利用异步操作提高并发性能</li>
+</ul>
+<h3 id="3-可靠性保证"><a class="markdownIt-Anchor" href="#3-可靠性保证"></a> 3. 可靠性保证</h3>
+<ul>
+<li>定期备份缓存数据</li>
+<li>实现缓存重建机制</li>
+<li>添加错误处理和重试逻辑</li>
+</ul>
+<h3 id="4-监控告警"><a class="markdownIt-Anchor" href="#4-监控告警"></a> 4. 监控告警</h3>
+<ul>
+<li>监控缓存命中率</li>
+<li>监控误判率变化</li>
+<li>监控内存使用趋势</li>
+</ul>
+<h2 id="相关链接"><a class="markdownIt-Anchor" href="#相关链接"></a> 🔗 相关链接</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://redis.io/documentation">Redis官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bloom_filter">布隆过滤器原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://redis-py.readthedocs.io/">Python Redis客户端</a></li>
+</ul>
+<hr />
+<p><em>本文档提供了布隆过滤器的完整使用指南，包括实现原理、使用方法、性能特点和故障排除。如有问题，请参考相关文档或联系开发团队。</em></p>
+<ul>
+<li>redis_bloom_filter.py</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Redis-based Bloom Filter for S3 URL caching and efficient orphaned document detection</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This module implements a scalable solution for handling millions of S3 URLs using:</span></span><br><span class="line"><span class="string">1. Redis-based Bloom Filter for fast membership testing</span></span><br><span class="line"><span class="string">2. Redis Sets for exact URL storage</span></span><br><span class="line"><span class="string">3. Optimized batch processing for large-scale data</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Iterator, <span class="type">List</span>, <span class="type">Optional</span>, <span class="type">Set</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> app.config.config <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> app.utils.logger <span class="keyword">import</span> celery_logger <span class="keyword">as</span> logger</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RedisBloomFilter</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Redis-based Bloom Filter implementation for S3 URL caching</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Features:</span></span><br><span class="line"><span class="string">    - False positive rate configurable</span></span><br><span class="line"><span class="string">    - Memory efficient for millions of URLs</span></span><br><span class="line"><span class="string">    - Automatic bit array sizing</span></span><br><span class="line"><span class="string">    - Batch operations for better performance</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, redis_client: redis.Redis, key_prefix: <span class="built_in">str</span> = <span class="string">&quot;s3_bloom&quot;</span>,</span></span><br><span class="line"><span class="params">                 expected_items: <span class="built_in">int</span> = <span class="number">1000000</span>, false_positive_rate: <span class="built_in">float</span> = <span class="number">0.01</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Initialize Redis Bloom Filter</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            redis_client: Redis client instance</span></span><br><span class="line"><span class="string">            key_prefix: Redis key prefix for bloom filter</span></span><br><span class="line"><span class="string">            expected_items: Expected number of items (for optimal sizing)</span></span><br><span class="line"><span class="string">            false_positive_rate: Desired false positive rate (0.01 = 1%)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.redis = redis_client</span><br><span class="line">        <span class="variable language_">self</span>.key_prefix = key_prefix</span><br><span class="line">        <span class="variable language_">self</span>.expected_items = expected_items</span><br><span class="line">        <span class="variable language_">self</span>.false_positive_rate = false_positive_rate</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Calculate optimal parameters</span></span><br><span class="line">        <span class="variable language_">self</span>.bit_size = <span class="variable language_">self</span>._calculate_bit_size()</span><br><span class="line">        <span class="variable language_">self</span>.hash_count = <span class="variable language_">self</span>._calculate_hash_count()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Redis keys</span></span><br><span class="line">        <span class="variable language_">self</span>.bloom_key = <span class="string">f&quot;<span class="subst">&#123;key_prefix&#125;</span>:bloom&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.urls_set_key = <span class="string">f&quot;<span class="subst">&#123;key_prefix&#125;</span>:urls&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.metadata_key = <span class="string">f&quot;<span class="subst">&#123;key_prefix&#125;</span>:meta&quot;</span></span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">f&quot;🎯 Initialized RedisBloomFilter: &quot;</span></span><br><span class="line">                    <span class="string">f&quot;bit_size=<span class="subst">&#123;self.bit_size&#125;</span>, hash_count=<span class="subst">&#123;self.hash_count&#125;</span>, &quot;</span></span><br><span class="line">                    <span class="string">f&quot;expected_items=<span class="subst">&#123;expected_items&#125;</span>, fpr=<span class="subst">&#123;false_positive_rate&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_calculate_bit_size</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Calculate optimal bit array size&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># m = -n * ln(p) / (ln(2)^2)</span></span><br><span class="line">        n = <span class="variable language_">self</span>.expected_items</span><br><span class="line">        p = <span class="variable language_">self</span>.false_positive_rate</span><br><span class="line">        m = <span class="built_in">int</span>(-n * math.log(p) / (math.log(<span class="number">2</span>) ** <span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> m</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_calculate_hash_count</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Calculate optimal number of hash functions&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># k = (m/n) * ln(2)</span></span><br><span class="line">        k = <span class="built_in">int</span>((<span class="variable language_">self</span>.bit_size / <span class="variable language_">self</span>.expected_items) * math.log(<span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(<span class="number">1</span>, k)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_hash_functions</span>(<span class="params">self, item: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Generate multiple hash values for an item&quot;&quot;&quot;</span></span><br><span class="line">        hashes = []</span><br><span class="line">        <span class="comment"># Use different hash algorithms for diversity</span></span><br><span class="line">        hash1 = <span class="built_in">int</span>(hashlib.md5(item.encode()).hexdigest(), <span class="number">16</span>)</span><br><span class="line">        hash2 = <span class="built_in">int</span>(hashlib.sha1(item.encode()).hexdigest(), <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Generate k hash values using double hashing</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.hash_count):</span><br><span class="line">            hash_val = (hash1 + i * hash2) % <span class="variable language_">self</span>.bit_size</span><br><span class="line">            hashes.append(hash_val)</span><br><span class="line">        <span class="keyword">return</span> hashes</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">add_url</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Add a URL to both bloom filter and exact set</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            url: S3 URL to add</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            True if added successfully</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># Add to bloom filter</span></span><br><span class="line">            hash_positions = <span class="variable language_">self</span>._hash_functions(url)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Use pipeline for atomic operations</span></span><br><span class="line">            pipe = <span class="variable language_">self</span>.redis.pipeline()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Set bits in bloom filter</span></span><br><span class="line">            <span class="keyword">for</span> pos <span class="keyword">in</span> hash_positions:</span><br><span class="line">                pipe.setbit(<span class="variable language_">self</span>.bloom_key, pos, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Add to exact URLs set</span></span><br><span class="line">            pipe.sadd(<span class="variable language_">self</span>.urls_set_key, url)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Execute pipeline</span></span><br><span class="line">            pipe.execute()</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;❌ Failed to add URL to bloom filter: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">add_urls_batch</span>(<span class="params">self, urls: <span class="type">List</span>[<span class="built_in">str</span>], batch_size: <span class="built_in">int</span> = <span class="number">1000</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Add multiple URLs in batches for better performance</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            urls: List of S3 URLs to add</span></span><br><span class="line"><span class="string">            batch_size: Number of URLs to process in each batch</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            Number of URLs successfully added</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        added_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(urls), batch_size):</span><br><span class="line">            batch = urls[i:i + batch_size]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># Use pipeline for batch operations</span></span><br><span class="line">                pipe = <span class="variable language_">self</span>.redis.pipeline()</span><br><span class="line">                <span class="keyword">for</span> url <span class="keyword">in</span> batch:</span><br><span class="line">                    <span class="comment"># Add to bloom filter</span></span><br><span class="line">                    hash_positions = <span class="variable language_">self</span>._hash_functions(url)</span><br><span class="line">                    <span class="keyword">for</span> pos <span class="keyword">in</span> hash_positions:</span><br><span class="line">                        pipe.setbit(<span class="variable language_">self</span>.bloom_key, pos, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                    <span class="comment"># Add to exact URLs set</span></span><br><span class="line">                    pipe.sadd(<span class="variable language_">self</span>.urls_set_key, url)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># Execute batch</span></span><br><span class="line">                pipe.execute()</span><br><span class="line">                added_count += <span class="built_in">len</span>(batch)</span><br><span class="line"></span><br><span class="line">                logger.debug(<span class="string">f&quot;📦 Added batch of <span class="subst">&#123;<span class="built_in">len</span>(batch)&#125;</span> URLs to bloom filter&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                logger.error(<span class="string">f&quot;❌ Failed to add URL batch: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">f&quot;✅ Added <span class="subst">&#123;added_count&#125;</span> URLs to bloom filter&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> added_count</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">might_contain</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Check if URL might be in the set (bloom filter check)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            url: URL to check</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            True if URL might be in set (could be false positive)</span></span><br><span class="line"><span class="string">            False if URL is definitely not in set</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            hash_positions = <span class="variable language_">self</span>._hash_functions(url)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Check all bit positions</span></span><br><span class="line">            pipe = <span class="variable language_">self</span>.redis.pipeline()</span><br><span class="line">            <span class="keyword">for</span> pos <span class="keyword">in</span> hash_positions:</span><br><span class="line">                pipe.getbit(<span class="variable language_">self</span>.bloom_key, pos)</span><br><span class="line"></span><br><span class="line">            results = pipe.execute()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># URL might be in set only if all bits are set</span></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">all</span>(bit == <span class="number">1</span> <span class="keyword">for</span> bit <span class="keyword">in</span> results)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;❌ Bloom filter check failed: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span>  <span class="comment"># Conservative approach</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">contains_exact</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Check if URL exists in exact set (no false positives)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            url: URL to check</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            True if URL exists in exact set</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">bool</span>(<span class="variable language_">self</span>.redis.sismember(<span class="variable language_">self</span>.urls_set_key, url))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;❌ Exact set check failed: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_missing_urls</span>(<span class="params">self, urls_to_check: <span class="type">List</span>[<span class="built_in">str</span>],</span></span><br><span class="line"><span class="params">                               batch_size: <span class="built_in">int</span> = <span class="number">10000</span></span>) -&gt; <span class="type">Set</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Efficiently find URLs that are NOT in S3 (missing URLs)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This is optimized for the orphaned document cleanup use case:</span></span><br><span class="line"><span class="string">        1. First use bloom filter to quickly eliminate definitely present URLs</span></span><br><span class="line"><span class="string">        2. Then check exact set for potential matches</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            urls_to_check: List of URLs to check (from Weaviate)</span></span><br><span class="line"><span class="string">            batch_size: Batch size for processing</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            Set of URLs that are missing from S3</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        missing_urls = <span class="built_in">set</span>()</span><br><span class="line">        total_checked = <span class="number">0</span></span><br><span class="line">        bloom_filtered = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">f&quot;🔍 Checking <span class="subst">&#123;<span class="built_in">len</span>(urls_to_check)&#125;</span> URLs for missing entries&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(urls_to_check), batch_size):</span><br><span class="line">            batch = urls_to_check[i:i + batch_size]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> batch:</span><br><span class="line">                total_checked += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># Step 1: Bloom filter check (fast elimination)</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">await</span> <span class="variable language_">self</span>.might_contain(url):</span><br><span class="line">                    <span class="comment"># Definitely not in S3</span></span><br><span class="line">                    missing_urls.add(url)</span><br><span class="line">                    bloom_filtered += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="comment"># Might be in S3, need exact check</span></span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">await</span> <span class="variable language_">self</span>.contains_exact(url):</span><br><span class="line">                        missing_urls.add(url)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i % (batch_size * <span class="number">10</span>) == <span class="number">0</span>:  <span class="comment"># Log every 10 batches</span></span><br><span class="line">                logger.info(<span class="string">f&quot;📊 Processed <span class="subst">&#123;total_checked&#125;</span>/<span class="subst">&#123;<span class="built_in">len</span>(urls_to_check)&#125;</span> URLs, &quot;</span></span><br><span class="line">                            <span class="string">f&quot;bloom filtered: <span class="subst">&#123;bloom_filtered&#125;</span>, missing: <span class="subst">&#123;<span class="built_in">len</span>(missing_urls)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">f&quot;✅ Found <span class="subst">&#123;<span class="built_in">len</span>(missing_urls)&#125;</span> missing URLs out of <span class="subst">&#123;total_checked&#125;</span> checked &quot;</span></span><br><span class="line">                    <span class="string">f&quot;(bloom filter eliminated <span class="subst">&#123;bloom_filtered&#125;</span> checks)&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> missing_urls</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">clear_cache</span>(<span class="params">self</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Clear all cached data&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            pipe = <span class="variable language_">self</span>.redis.pipeline()</span><br><span class="line">            pipe.delete(<span class="variable language_">self</span>.bloom_key)</span><br><span class="line">            pipe.delete(<span class="variable language_">self</span>.urls_set_key)</span><br><span class="line">            pipe.delete(<span class="variable language_">self</span>.metadata_key)</span><br><span class="line">            pipe.execute()</span><br><span class="line"></span><br><span class="line">            logger.info(<span class="string">&quot;🧹 Cleared bloom filter cache&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;❌ Failed to clear cache: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_cache_stats</span>(<span class="params">self</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Get cache statistics&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            pipe = <span class="variable language_">self</span>.redis.pipeline()</span><br><span class="line">            pipe.memory_usage(<span class="variable language_">self</span>.bloom_key)</span><br><span class="line">            pipe.scard(<span class="variable language_">self</span>.urls_set_key)</span><br><span class="line">            pipe.exists(<span class="variable language_">self</span>.bloom_key)</span><br><span class="line">            results = pipe.execute()</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="string">&quot;bloom_memory_bytes&quot;</span>: results[<span class="number">0</span>] <span class="keyword">or</span> <span class="number">0</span>,</span><br><span class="line">                <span class="string">&quot;exact_urls_count&quot;</span>: results[<span class="number">1</span>] <span class="keyword">or</span> <span class="number">0</span>,</span><br><span class="line">                <span class="string">&quot;bloom_exists&quot;</span>: <span class="built_in">bool</span>(results[<span class="number">2</span>]),</span><br><span class="line">                <span class="string">&quot;estimated_bit_size&quot;</span>: <span class="variable language_">self</span>.bit_size,</span><br><span class="line">                <span class="string">&quot;hash_count&quot;</span>: <span class="variable language_">self</span>.hash_count,</span><br><span class="line">                <span class="string">&quot;expected_false_positive_rate&quot;</span>: <span class="variable language_">self</span>.false_positive_rate</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;❌ Failed to get cache stats: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">S3UrlCacheManager</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    High-level manager for S3 URL caching with bloom filter optimization</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, redis_client: <span class="type">Optional</span>[redis.Redis] = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Initialize cache manager&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> redis_client <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># Use default Redis connection</span></span><br><span class="line">            redis_client = redis.Redis(</span><br><span class="line">                host=<span class="built_in">getattr</span>(settings, <span class="string">&#x27;REDIS_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>),</span><br><span class="line">                port=<span class="built_in">getattr</span>(settings, <span class="string">&#x27;REDIS_PORT&#x27;</span>, <span class="number">6379</span>),</span><br><span class="line">                db=<span class="built_in">getattr</span>(settings, <span class="string">&#x27;REDIS_DB&#x27;</span>, <span class="number">7</span>),</span><br><span class="line">                decode_responses=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.bloom_filter = RedisBloomFilter(</span><br><span class="line">            redis_client=redis_client,</span><br><span class="line">            key_prefix=<span class="string">&quot;s3_orphan_cleanup&quot;</span>,</span><br><span class="line">            expected_items=<span class="number">2000000</span>,  <span class="comment"># 2M URLs</span></span><br><span class="line">            false_positive_rate=<span class="number">0.001</span>  <span class="comment"># 0.1% false positive rate</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">cache_s3_urls_from_iterator</span>(<span class="params">self, s3_iterator,</span></span><br><span class="line"><span class="params">                                          progress_callback=<span class="literal">None</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Cache S3 URLs from async iterator</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            s3_iterator: Async iterator yielding batches of file info</span></span><br><span class="line"><span class="string">            progress_callback: Optional callback for progress updates</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            Total number of URLs cached</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        total_cached = <span class="number">0</span></span><br><span class="line">        batch_urls = []</span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">&quot;🔄 Starting S3 URL caching process&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">for</span> file_batch <span class="keyword">in</span> s3_iterator:</span><br><span class="line">            <span class="comment"># Extract URLs from file batch</span></span><br><span class="line">            urls = [file_info[<span class="string">&#x27;url&#x27;</span>] <span class="keyword">for</span> file_info <span class="keyword">in</span> file_batch]</span><br><span class="line">            batch_urls.extend(urls)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Process in larger batches for efficiency</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(batch_urls) &gt;= <span class="number">5000</span>:</span><br><span class="line">                cached_count = <span class="keyword">await</span> <span class="variable language_">self</span>.bloom_filter.add_urls_batch(batch_urls)</span><br><span class="line">                total_cached += cached_count</span><br><span class="line">                batch_urls = []</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> progress_callback:</span><br><span class="line">                    progress_callback(total_cached)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Process remaining URLs</span></span><br><span class="line">        <span class="keyword">if</span> batch_urls:</span><br><span class="line">            cached_count = <span class="keyword">await</span> <span class="variable language_">self</span>.bloom_filter.add_urls_batch(batch_urls)</span><br><span class="line">            total_cached += cached_count</span><br><span class="line"></span><br><span class="line">        logger.info(<span class="string">f&quot;✅ Cached <span class="subst">&#123;total_cached&#125;</span> S3 URLs in bloom filter&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> total_cached</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">find_orphaned_urls</span>(<span class="params">self, weaviate_urls: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">Set</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Find URLs that exist in Weaviate but not in S3 (orphaned)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            weaviate_urls: List of URLs from Weaviate</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            Set of orphaned URLs</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> <span class="variable language_">self</span>.bloom_filter.get_missing_urls(weaviate_urls)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_stats</span>(<span class="params">self</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Get caching statistics&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> <span class="variable language_">self</span>.bloom_filter.get_cache_stats()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">clear_cache</span>(<span class="params">self</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Clear all cached data&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> <span class="variable language_">self</span>.bloom_filter.clear_cache()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">布隆过滤器使用.md</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../../../../../categories/redis/">redis</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../../../../../tag/redis/">redis</a>
+                        
+                            <a href="../../../../../../tag/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">布隆过滤器</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../../17.%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/01.%E8%AE%BE%E8%AE%A1%E6%8A%96%E9%9F%B3/" class="prev-prefix">« </a> 上一篇：    <a href="../../../17.%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/01.%E8%AE%BE%E8%AE%A1%E6%8A%96%E9%9F%B3/" title="发布于 2025-07-28 07:03">设计抖音.md</a>
+                        <br>
+                    
+                    
+                        <a href="../../../../../../pages/dyl521/" class="next-prefix">» </a> 下一篇：    <a href="../../../../../../pages/dyl521/" title="发布于 2025-04-28 05:43">邓玉林的简历</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
