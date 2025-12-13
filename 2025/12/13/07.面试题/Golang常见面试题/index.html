@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            Golang常见面试题
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">Golang常见面试题</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2025-12-13
+                        </span>
+                        
+                            
+                                <span id="/2025/12/13/07.面试题/Golang常见面试题/" class="leancloud_visitors" data-flag-title="Golang常见面试题">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2025/12/13/07.面试题/Golang常见面试题/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">go</span>
+                        
+                            <span class="category-color">面试题</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">go</span>
+                        
+                            <span class="tag-color">面试题</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <p><a target="_blank" rel="noopener" href="https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1">https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1</a><br />
+-<a target="_blank" rel="noopener" href="https://markdown.lovejade.cn/">https://markdown.lovejade.cn/</a></p>
+<h1 id="golang常见面试题"><a class="markdownIt-Anchor" href="#golang常见面试题"></a> Golang常见面试题</h1>
+<h2 id="1golang中make和new的区别"><a class="markdownIt-Anchor" href="#1golang中make和new的区别"></a> 1.golang中make和new的区别？</h2>
+<ul>
+<li>make用于创建切片、映射和通道，并返回初始化后的（非零）值。</li>
+<li>new用于分配内存，返回指向类型零值的指针。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th>new</th>
+<th>make</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>返回值</strong></td>
+<td>返回指针 *T</td>
+<td>返回类型本身 T</td>
+</tr>
+<tr>
+<td><strong>适用类型</strong></td>
+<td>所有类型</td>
+<td>仅slice、map、channel</td>
+</tr>
+<tr>
+<td><strong>初始化</strong></td>
+<td>零值初始化</td>
+<td>分配并初始化内部数据</td>
+</tr>
+<tr>
+<td><strong>是否可用</strong></td>
+<td>返回的指针指向零值</td>
+<td>返回可直接使用的对象</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11-newt"><a class="markdownIt-Anchor" href="#11-newt"></a> 1.1  new(T)</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 分配0值内存，返回指向类型T的指针 *T</span></span><br><span class="line">p := <span class="built_in">new</span>(<span class="type">int</span>) <span class="comment">// p是一个*int类型的指针，指向一个int类型的零值</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// 输出0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line"><span class="keyword">var</span> i <span class="type">int</span></span><br><span class="line">p := &amp;i</span><br></pre></td></tr></table></figure>
+<h3 id="12-maket-args"><a class="markdownIt-Anchor" href="#12-maket-args"></a> 1.2 make(T, args)</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">s := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>) <span class="comment">// 创建一个长度为5的int切片</span></span><br><span class="line">m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>) <span class="comment">// 创建一个空的map</span></span><br><span class="line">c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">10</span>) <span class="comment">// 创建一个缓冲区大小为10的int通道</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="13-代码对比"><a class="markdownIt-Anchor" href="#13-代码对比"></a> 1.3 代码对比</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// new 示例</span></span><br><span class="line">    p1 := <span class="built_in">new</span>(<span class="type">int</span>)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;new(int): %T, 值: %v, 地址: %p\n&quot;</span>, p1, *p1, p1)</span><br><span class="line">    <span class="comment">// 输出: new(int): *int, 值: 0, 地址: 0xc000014098</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2. new 用于 slice（不推荐）</span></span><br><span class="line">    p2 := <span class="built_in">new</span>([]<span class="type">int</span>)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;new([]int): %T, 值: %v, 是否nil: %v\n&quot;</span>, p2, *p2, *p2 == <span class="literal">nil</span>)</span><br><span class="line">    <span class="comment">// 输出: new([]int): *[]int, 值: [], 是否nil: true</span></span><br><span class="line">    <span class="comment">// *p2 是 nil，不能直接使用！</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ============ make 示例 ============</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3. make 用于 slice</span></span><br><span class="line">    s := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>, <span class="number">10</span>)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;make([]int): %T, len: %d, cap: %d\n&quot;</span>, s, <span class="built_in">len</span>(s), <span class="built_in">cap</span>(s))</span><br><span class="line">    <span class="comment">// 输出: make([]int): []int, len: 5, cap: 10</span></span><br><span class="line">    s[<span class="number">0</span>] = <span class="number">100</span> <span class="comment">// 可以直接使用</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 4. make 用于 map</span></span><br><span class="line">    m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>)</span><br><span class="line">    m[<span class="string">&quot;key&quot;</span>] = <span class="number">42</span> <span class="comment">// 可以直接使用</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;make(map): %T, 值: %v\n&quot;</span>, m, m)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 5. make 用于 channel</span></span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">3</span>)</span><br><span class="line">    ch &lt;- <span class="number">1</span> <span class="comment">// 可以直接使用</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;make(chan): %T\n&quot;</span>, ch)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<ul>
+<li>new: 通用分配器，返回指针，零值初始化</li>
+<li>make: 专用于 slice/map/channel，返回已初始化的可用对象</li>
+</ul>
+<h1 id="2-数组和切片的区别"><a class="markdownIt-Anchor" href="#2-数组和切片的区别"></a> 2、数组和切片的区别？</h1>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>数组（Array）</th>
+<th>切片（Slice）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长度</td>
+<td>固定，编译时确定</td>
+<td>动态、可变</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>值类型</td>
+<td>引用类型</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>直接存储元素</td>
+<td>包含指针、长度、容量</td>
+</tr>
+<tr>
+<td>传递</td>
+<td>拷贝整个数组</td>
+<td>拷贝切片头(24字节)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="21-声明和初始化"><a class="markdownIt-Anchor" href="#21-声明和初始化"></a> 2.1 声明和初始化</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数组： 长度是类型的一部分</span></span><br><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]<span class="type">int</span>  <span class="comment">// [0 0 0 0 0]</span></span><br><span class="line">arr2 :=[<span class="number">3</span>]<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125; <span class="comment">// [1 2 3]</span></span><br><span class="line">arr3 := [...]<span class="type">int</span>&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125; <span class="comment">// 自动计算长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 切片： 长度可变</span></span><br><span class="line"><span class="keyword">var</span> slice1 []<span class="type">int</span>    <span class="comment">// nil 切片</span></span><br><span class="line">slice2 := []<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125; <span class="comment">// [1 2 3]</span></span><br><span class="line">slice3 := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>) <span class="comment">// [0 0 0 0 0]</span></span><br><span class="line">slice4 := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">3</span>, <span class="number">10</span>) <span class="comment">// 长度3，容量10</span></span><br></pre></td></tr></table></figure>
+<h2 id="22-类型特性"><a class="markdownIt-Anchor" href="#22-类型特性"></a> 2.2 类型特性</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 数组是值类型，赋值会拷贝整个数组</span></span><br><span class="line">arr := [<span class="number">3</span>] &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">arr2 := arr    <span class="comment">// 完整拷贝</span></span><br><span class="line">arr2[<span class="number">0</span>] = <span class="number">100</span></span><br><span class="line">fmt.Println(arr)  <span class="comment">// [1 2 3]  不受影响</span></span><br><span class="line">fmt.Println(arr2) <span class="comment">// [100 2 3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 切片是引用类型，赋值会拷贝切片头</span></span><br><span class="line">slice := []<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">slice2 := slice  <span class="comment">// 只拷贝切片头,底层数据共享</span></span><br><span class="line">slice2[<span class="number">0</span>] = <span class="number">100</span></span><br><span class="line">fmt.Println(slice)  <span class="comment">// [100 2 3] 受影响</span></span><br><span class="line">fmt.Println(slice2) <span class="comment">// [100 2 3]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="23-长度和容量"><a class="markdownIt-Anchor" href="#23-长度和容量"></a> 2.3 长度和容量</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 数组: 长度固定</span></span><br><span class="line">arr := [<span class="number">5</span>]<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line">fmt.Println(<span class="built_in">len</span>(arr)) <span class="comment">// 5</span></span><br><span class="line"><span class="comment">// arr = append(arr, 6) // 编译错误，不能改变长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 切片： 长度可变，有容量概念</span></span><br><span class="line">slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">fmt.Println(<span class="built_in">len</span>(slice))   <span class="comment">//2 - 长度</span></span><br><span class="line">fmt.Println(<span class="built_in">cap</span>(slice))   <span class="comment">//3 - 容量</span></span><br><span class="line"></span><br><span class="line">slice = <span class="built_in">append</span>(slice, <span class="number">4</span>) <span class="comment">// 可以追加元素</span></span><br><span class="line">fmt.Println(slice) <span class="comment">// [1 2 3 4]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="24-函数传递"><a class="markdownIt-Anchor" href="#24-函数传递"></a> 2.4 函数传递</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 数组传递：值拷贝，影响性能</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyArray</span><span class="params">(arr [10000] <span class="type">int</span>)</span></span>&#123;</span><br><span class="line">    arr[<span class="number">0</span>] = <span class="number">100</span>   <span class="comment">// 不会影响原数组</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 切片传递：只拷贝切片头(24字节)，高效</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifySlice</span><span class="params">(slice []<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">    slice[<span class="number">0</span>] = <span class="number">100</span>  <span class="comment">// 会影响原切片的底层数组</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="25-切片的底层结构"><a class="markdownIt-Anchor" href="#25-切片的底层结构"></a> 2.5 切片的底层结构</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 切片的内部结构</span></span><br><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</span><br><span class="line">    array unsafe.Pointer   <span class="comment">// 指向底层数组的指针</span></span><br><span class="line">    <span class="built_in">len</span> <span class="type">int</span>   <span class="comment">// 长度</span></span><br><span class="line">    <span class="built_in">len</span> <span class="type">int</span>   <span class="comment">// 容量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="26-使用场景"><a class="markdownIt-Anchor" href="#26-使用场景"></a> 2.6 使用场景</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 数组：长度固定， 明确已知</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ProcessFixedData</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> buffer [<span class="number">1024</span>]<span class="type">byte</span>   <span class="comment">//固定大小的缓冲区</span></span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 切片： 长度不确定，需要动态操作</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">processDynamicData</span><span class="params">()</span></span>&#123;</span><br><span class="line">    data := []<span class="type">string</span>&#123;&#125;</span><br><span class="line">    data = <span class="built_in">append</span>(data, <span class="string">&quot;item1&quot;</span>)</span><br><span class="line">    data = <span class="built_in">append</span>(data, <span class="string">&quot;item2&quot;</span>)</span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="27-数组转切片"><a class="markdownIt-Anchor" href="#27-数组转切片"></a> 2.7 数组转切片</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">arr := [<span class="number">5</span>]<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line"></span><br><span class="line">slice1 := arr[:]   <span class="comment">//完整切片</span></span><br><span class="line">slice2 := arr[<span class="number">1</span>:<span class="number">4</span>] <span class="comment">// [2 3 4]</span></span><br><span class="line">slice3 := arr[:<span class="number">3</span>]     <span class="comment">// [1 2 3]</span></span><br><span class="line">slice4 := arr[<span class="number">2</span>:]     <span class="comment">// [3 4 5]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="28-最佳实践建议"><a class="markdownIt-Anchor" href="#28-最佳实践建议"></a> 2.8 最佳实践建议</h2>
+<ol>
+<li>优先使用切片： 大多数情况下使用切片更灵活</li>
+<li>明确长度时使用数组： 如固定大小的缓冲区，md5哈希值等</li>
+<li>注意切片陷阱： 切片恭喜底层数组，丢修改要小心</li>
+<li>预分配容量：使用 make([]T, len, cap) 可以减少扩容次数</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 好的做法：预分配容量</span></span><br><span class="line">slice := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">0</span>, <span class="number">100</span>)</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">    slice = <span class="built_in">append</span>(slice, i)</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h1 id="3-for-range-的时候它的地址会发生变化么"><a class="markdownIt-Anchor" href="#3-for-range-的时候它的地址会发生变化么"></a> 3、for range 的时候它的地址会发生变化么？</h1>
+<p>迭代变量的地址不会变化！ 这是go非常重要的特性</p>
+<h2 id="31-基本现象"><a class="markdownIt-Anchor" href="#31-基本现象"></a> 3.1 基本现象</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i,v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">     fmt.Printf(<span class="string">&quot;i的地址: %p, v的地址: %p, v的值: %d\n&quot;</span>, &amp;i, &amp;v, v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出：</span></span><br><span class="line"><span class="comment">// i的地址: 0xc000018090, v的地址: 0xc000018098, v的值: 1</span></span><br><span class="line"><span class="comment">// i的地址: 0xc000018090, v的地址: 0xc000018098, v的值: 2</span></span><br><span class="line"><span class="comment">// i的地址: 0xc000018090, v的地址: 0xc000018098, v的值: 3</span></span><br><span class="line"><span class="comment">// i的地址: 0xc000018090, v的地址: 0xc000018098, v的值: 4</span></span><br><span class="line"><span class="comment">// i的地址: 0xc000018090, v的地址: 0xc000018098, v的值: 5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="32-常见陷阱-指针切片"><a class="markdownIt-Anchor" href="#32-常见陷阱-指针切片"></a> 3.2 常见陷阱-指针切片</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错误示例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> result []*<span class="type">int</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        result = <span class="built_in">append</span>(result, &amp;v)  <span class="comment">// 错误！所有指针都指向同一个地址</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> result &#123;</span><br><span class="line">        fmt.Print(*p, <span class="string">&quot; &quot;</span>)  <span class="comment">// 输出: 5 5 5 5 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法1：创建临时变量</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> result []*<span class="type">int</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        temp := v  <span class="comment">// 创建新变量</span></span><br><span class="line">        result = <span class="built_in">append</span>(result, &amp;temp)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> result &#123;</span><br><span class="line">        fmt.Print(*p, <span class="string">&quot; &quot;</span>)  <span class="comment">// 输出: 1 2 3 4 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法2：使用索引</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> result []*<span class="type">int</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        result = <span class="built_in">append</span>(result, &amp;slice[i])  <span class="comment">// 直接取原切片元素的地址</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> result &#123;</span><br><span class="line">        fmt.Print(*p, <span class="string">&quot; &quot;</span>)  <span class="comment">// 输出: 1 2 3 4 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="33-闭包陷阱"><a class="markdownIt-Anchor" href="#33-闭包陷阱"></a> 3.3 闭包陷阱</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错误示例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> funcs []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        funcs = <span class="built_in">append</span>(funcs, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Print(v, <span class="string">&quot; &quot;</span>)  <span class="comment">// 闭包捕获的是变量v的地址</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, f := <span class="keyword">range</span> funcs &#123;</span><br><span class="line">        f()  <span class="comment">// 输出: 5 5 5 5 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法1：传参</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> funcs []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        v := v  <span class="comment">// 创建新变量（Go 1.22之前需要）</span></span><br><span class="line">        funcs = <span class="built_in">append</span>(funcs, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Print(v, <span class="string">&quot; &quot;</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, f := <span class="keyword">range</span> funcs &#123;</span><br><span class="line">        f()  <span class="comment">// 输出: 1 2 3 4 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法2：函数参数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> funcs []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        funcs = <span class="built_in">append</span>(funcs, <span class="function"><span class="keyword">func</span><span class="params">(val <span class="type">int</span>)</span></span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                fmt.Print(val, <span class="string">&quot; &quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;(v))  <span class="comment">// 立即执行，传入v的值</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, f := <span class="keyword">range</span> funcs &#123;</span><br><span class="line">        f()  <span class="comment">// 输出: 1 2 3 4 5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="34-goroutine-陷阱"><a class="markdownIt-Anchor" href="#34-goroutine-陷阱"></a> 3.4. goroutine 陷阱</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错误示例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Print(v, <span class="string">&quot; &quot;</span>)  <span class="comment">// 可能输出: 5 5 5 5 5（不确定）</span></span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法：传参</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    slice := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> slice &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(val <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">            fmt.Print(val, <span class="string">&quot; &quot;</span>)  <span class="comment">// 输出顺序不定，但值正确</span></span><br><span class="line">        &#125;(v)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="35-结构体切片的陷阱"><a class="markdownIt-Anchor" href="#35-结构体切片的陷阱"></a> 3.5. 结构体切片的陷阱</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="type">string</span></span><br><span class="line">    Age  <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错误示例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    persons := []Person&#123;</span><br><span class="line">        &#123;<span class="string">&quot;Alice&quot;</span>, <span class="number">25</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;Bob&quot;</span>, <span class="number">30</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;Charlie&quot;</span>, <span class="number">35</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> result []*Person</span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> persons &#123;</span><br><span class="line">        result = <span class="built_in">append</span>(result, &amp;p)  <span class="comment">// 错误！</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> result &#123;</span><br><span class="line">        fmt.Println(p)  <span class="comment">// 全部输出: &amp;&#123;Charlie 35&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    persons := []Person&#123;</span><br><span class="line">        &#123;<span class="string">&quot;Alice&quot;</span>, <span class="number">25</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;Bob&quot;</span>, <span class="number">30</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;Charlie&quot;</span>, <span class="number">35</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> result []*Person</span><br><span class="line">    <span class="keyword">for</span> i := <span class="keyword">range</span> persons &#123;</span><br><span class="line">        result = <span class="built_in">append</span>(result, &amp;persons[i])  <span class="comment">// 正确</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, p := <span class="keyword">range</span> result &#123;</span><br><span class="line">        fmt.Println(p)  <span class="comment">// 正确输出每个人的信息</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="36-map遍历"><a class="markdownIt-Anchor" href="#36-map遍历"></a> 3.6. map遍历</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    m := <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>&#123;</span><br><span class="line">        <span class="string">&quot;a&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;b&quot;</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">&quot;c&quot;</span>: <span class="number">3</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">        fmt.Printf(<span class="string">&quot;k地址: %p, v地址: %p\n&quot;</span>, &amp;k, &amp;v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// k和v的地址也是固定的</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>场景 陷阱原因 解决方案<br />
+指针切片 所有指针指向同一地址 创建临时变量或使用索引<br />
+闭包 捕获变量地址而非值 传参或创建副本<br />
+goroutine 并发访问同一变量 传参给goroutine<br />
+结构体 取迭代变量地址 使用索引取原切片元素地址</p>
+<p>最佳实践：在 for range 循环中需要使用地址或闭包时，务必创建临时变量或使用索引直接访问原数据。</p>
+<h1 id="4-go-defer多个-defer-的顺序defer-在什么时机会修改返回值for-defer"><a class="markdownIt-Anchor" href="#4-go-defer多个-defer-的顺序defer-在什么时机会修改返回值for-defer"></a> 4、go defer，多个 defer 的顺序，defer 在什么时机会修改返回值？（for defer）</h1>
+<p>defer recover 的问题？(主要是能不能捕获)</p>
+<h2 id="41-defer基本原理"><a class="markdownIt-Anchor" href="#41-defer基本原理"></a> 4.1 defer基本原理</h2>
+<pre><code>defer语句将会函数调用推入到一个栈中，函数返回时按照后进先出（LIFO）顺序执行这些推入的函数。
+</code></pre>
+<h2 id="42-多个defer的执行顺序"><a class="markdownIt-Anchor" href="#42-多个defer的执行顺序"></a> 4.2 多个defer的执行顺序</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">&quot;First defer&quot;</span>)</span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">&quot;Second defer&quot;</span>)</span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">&quot;Third defer&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出顺序： Third defer， Second defer ， First defer</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>for循环中的defer</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> deferInLoop()&#123;</span><br><span class="line">    <span class="keyword">for</span> i :=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++&#123;</span><br><span class="line">        <span class="keyword">defer</span> fmt.Println(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 输出顺序：4 3 2 1 0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意事项</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错误示例：defer在循环中累积</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readFiles</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">        f, _ := os.Open(fmt.Sprintf(<span class="string">&quot;file%d.txt&quot;</span>, i))</span><br><span class="line">        <span class="keyword">defer</span> f.Close() <span class="comment">// 所有Close都会累积，文件不会及时关闭</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="comment">// 函数结束时才执行所有defer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确做法：使用匿名函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readFiles</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">        <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            f, _ := os.Open(fmt.Sprintf(<span class="string">&quot;file%d.txt&quot;</span>, i))</span><br><span class="line">            <span class="keyword">defer</span> f.Close() <span class="comment">// 每次循环结束时执行</span></span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="43-defer修改返回值的时机"><a class="markdownIt-Anchor" href="#43-defer修改返回值的时机"></a> 4.3 defer修改返回值的时机</h2>
+<p>关键点: defer在return语句执行之后，函数真正返回之前执行。因此，如果defer函数修改了命名返回值，则会影响最终返回值。<br />
+函数返回过程：<br />
+1、给返回值赋值<br />
+2、执行defer语句 （可以修改返回值）<br />
+3、函数返回</p>
+<h3 id="431-命名返回值示例"><a class="markdownIt-Anchor" href="#431-命名返回值示例"></a> 4.3.1 命名返回值示例</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f1</span><span class="params">(result <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        result += <span class="number">5</span>  <span class="comment">// 修改命名返回值</span></span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">10</span>  <span class="comment">// 第一步：result = 10</span></span><br><span class="line">&#125; <span class="comment">// 第二步：执行defer，result变为15，第三步：返回15</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="432-匿名返回值示例"><a class="markdownIt-Anchor" href="#432-匿名返回值示例"></a> 4.3.2 匿名返回值示例</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f2</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> result <span class="type">int</span></span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        result += <span class="number">5</span>  <span class="comment">// 修改局部变量，不影响返回值</span></span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">10</span>  <span class="comment">// 返回值 = result (0), defer修改的是局部变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最终返回10</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="433-返回指针引用类型-defer-可以修改"><a class="markdownIt-Anchor" href="#433-返回指针引用类型-defer-可以修改"></a> 4.3.3 返回指针/引用类型 - defer 可以修改</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f3</span><span class="params">()</span></span> *<span class="type">int</span>&#123;</span><br><span class="line"></span><br><span class="line">    result :=<span class="number">0</span></span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">        result +=<span class="number">5</span>  <span class="comment">// 修改局部变量,修改指针指向的值</span></span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">return</span> &amp;result  <span class="comment">// 返回指针，defer修改了指针指向的值</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最终返回指向5的指针, 返回*int 值为5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="4-defer的参数求值时机"><a class="markdownIt-Anchor" href="#4-defer的参数求值时机"></a> 4 defer的参数求值时机</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deferArgs</span><span class="params">()</span></span>&#123;</span><br><span class="line">    x := <span class="number">0</span></span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">&quot;defer x:&quot;</span>, x) <span class="comment">// 参数在defer时求值</span></span><br><span class="line">    x = <span class="number">1</span></span><br><span class="line">    fmt.Println(<span class="string">&quot;x:&quot;</span>, x) </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出：0（不是1）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deferClosure</span><span class="params">()</span></span>&#123;</span><br><span class="line">    i :=<span class="number">0</span></span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;defer i:&quot;</span>,i) <span class="comment">// 闭包捕获变量，延迟执行时使用最新值</span></span><br><span class="line">    &#125;()</span><br><span class="line">    i ++</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出：1</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>避免在 for 循环中直接使用 defer（除非有意为之）<br />
+需要修改返回值时，使用命名返回值<br />
+defer 参数会立即求值，使用闭包捕获变量</p>
+<h1 id="5-uint-类型溢出"><a class="markdownIt-Anchor" href="#5-uint-类型溢出"></a> 5、uint 类型溢出</h1>
+<h2 id="51-基本概念"><a class="markdownIt-Anchor" href="#51-基本概念"></a> 5.1 基本概念</h2>
+<pre><code>在go语言中，uint是一种无符号整数类型，表示非负整数。它的大小依赖于具体的实现，通常是32位或64位。uint类型的取值范围是从0到2^n - 1，其中n是uint的位数（32或64）。
+</code></pre>
+<p>uint类型返回</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uint8:  0 ~ 255 (2^8 - 1)</span><br><span class="line">uint16: 0 ~ 65535 (2^16 - 1)</span><br><span class="line">uint32: 0 ~ 4294967295 (2^32 - 1)</span><br><span class="line">uint64: 0 ~ 18446744073709551615 (2^64 - 1)</span><br><span class="line">uint:   取决于平台（32位或64位）</span><br></pre></td></tr></table></figure>
+<h2 id="52-溢出行为"><a class="markdownIt-Anchor" href="#52-溢出行为"></a> 5.2 溢出行为</h2>
+<pre><code>当对uint类型进行运算时，如果结果超出了其表示范围，就会发生溢出。溢出的结果会“环绕”回到最小值。例如，对于uint8类型，如果执行以下操作：
+</code></pre>
+<ul>
+<li>上溢，超过最大值</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a <span class="type">uint8</span> = <span class="number">255</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;原始值: %d\n&quot;</span>, a)</span><br><span class="line">    </span><br><span class="line">    a = a + <span class="number">1</span>  <span class="comment">// 溢出，变为 0</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;255 + 1 = %d\n&quot;</span>, a)</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">255</span> + <span class="number">2</span>  <span class="comment">// 溢出，变为 1</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;255 + 2 = %d\n&quot;</span>, a)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出:</span></span><br><span class="line">    <span class="comment">// 原始值: 255</span></span><br><span class="line">    <span class="comment">// 255 + 1 = 0</span></span><br><span class="line">    <span class="comment">// 255 + 2 = 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下溢，低于最小值</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> b <span class="type">uint8</span> = <span class="number">0</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;原始值: %d\n&quot;</span>, b)</span><br><span class="line">    </span><br><span class="line">    b = b - <span class="number">1</span>  <span class="comment">// 下溢，变为 255</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;0 - 1 = %d\n&quot;</span>, b)</span><br><span class="line">    </span><br><span class="line">    b = <span class="number">0</span> - <span class="number">5</span>  <span class="comment">// 下溢，变为 251</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;0 - 5 = %d\n&quot;</span>, b)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出:</span></span><br><span class="line">    <span class="comment">// 原始值: 0</span></span><br><span class="line">    <span class="comment">// 0 - 1 = 255</span></span><br><span class="line">    <span class="comment">// 0 - 5 = 251</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="53-实际场景"><a class="markdownIt-Anchor" href="#53-实际场景"></a> 5.3 实际场景</h2>
+<ul>
+<li>计数器：使用uint类型作为计数器时，需注意溢出问题，避免出现负数。</li>
+<li>内存大小：表示内存大小时，使用uint类型可以避免负值，但需防止溢出。</li>
+<li>位运算：在进行位运算时，需确保结果在uint类型范围内。</li>
+<li>数组索引：使用uint类型作为数组索引时，需确保索引值不会溢出。</li>
+<li>循环控制：在循环中使用uint类型作为循环变量时，需注意循环条件，防止溢出导致无限循环。</li>
+<li>时间计算：在进行时间计算时，使用uint类型表示时间戳或持续时间时，需防止溢出。</li>
+<li>网络编程：在处理网络数据包大小时，使用uint类型表示数据包长度时，需防止溢出。</li>
+<li>文件大小：在处理文件大小时，使用uint类型表示文件大小时，需防止溢出。</li>
+<li>图像处理：在处理图像像素值时，使用uint类型表示像素值时，需防止溢出。</li>
+<li>加密算法：在实现加密算法时，使用uint类型表示密钥或数据块时，需防止溢出。</li>
+<li>游戏开发：在游戏开发中，使用uint类型表示分数或生命值时，需防止溢出。</li>
+</ul>
+<h2 id="54-防止溢出的方法"><a class="markdownIt-Anchor" href="#54-防止溢出的方法"></a> 5.4 防止溢出的方法</h2>
+<ul>
+<li>使用更大类型：如果预期值可能超过当前uint类型的范围，可以使用更大位数的uint类型（如uint64）。</li>
+<li>检查边界条件：在进行运算前，检查操作数是否会导致溢出。</li>
+<li>使用第三方库：一些第三方库提供了安全的整数类型，可以自动处理溢出问题。</li>
+</ul>
+<p>使用 math/bits 包</p>
+<p>注意事项<br />
+Go不会抛出溢出异常，需要手动检测<br />
+编译器不会警告溢出（除非使用工具如go vet）<br />
+溢出行为是确定的，遵循二进制补码规则<br />
+不同于其他语言，如Python会自动转换为大整数<br />
+性能考虑：溢出检查会增加开销，按需使用</p>
+<h1 id="6-介绍-rune-类型"><a class="markdownIt-Anchor" href="#6-介绍-rune-类型"></a> 6、介绍 rune 类型</h1>
+<h2 id="61-基本概念"><a class="markdownIt-Anchor" href="#61-基本概念"></a> 6.1 基本概念</h2>
+<pre><code>在Go语言中，rune是一个内置的数据类型，实际上是int32的别名。它用于表示Unicode代码点，即一个字符在Unicode标准中的唯一标识符。rune类型可以表示所有的Unicode字符，包括ASCII字符和非ASCII字符。
+</code></pre>
+<h2 id="62-rune与字符的关系"><a class="markdownIt-Anchor" href="#62-rune与字符的关系"></a> 6.2 rune与字符的关系</h2>
+<pre><code>在Go中，字符是以rune类型表示的。每个rune值对应一个Unicode代码点。例如，字符'a'的rune值是97，因为97是Unicode中'a'的代码点。
+</code></pre>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> r <span class="type">rune</span> = <span class="string">&#x27;a&#x27;</span> <span class="comment">// r的值是97</span></span><br></pre></td></tr></table></figure>
+<h2 id="63-rune与字符串的关系"><a class="markdownIt-Anchor" href="#63-rune与字符串的关系"></a> 6.3 rune与字符串的关系</h2>
+<pre><code>字符串是由一系列rune组成的序列。在Go中，字符串是不可变的字节序列，而rune则表示字符串中的单个字符。可以通过将字符串转换为rune切片来访问字符串中的每个字符。
+</code></pre>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">s := <span class="string">&quot;Hello, 世界&quot;</span></span><br><span class="line">runes := []<span class="type">rune</span>(s) <span class="comment">// 将字符串转换为rune切片</span></span><br><span class="line">fmt.Println(runes) <span class="comment">// 输出: [72 101 108 108 111 44 32 19990 30028]</span></span><br></pre></td></tr></table></figure>
+<h2 id="64-rune的使用场景"><a class="markdownIt-Anchor" href="#64-rune的使用场景"></a> 6.4 rune的使用场景</h2>
+<ul>
+<li>处理Unicode字符：rune类型可以表示所有Unicode字符，适用于需要处理多语言文本的场景。</li>
+<li>字符串遍历：使用rune切片可以方便地遍历字符串中的每个字符，尤其是包含非ASCII字符的字符串。</li>
+<li>字符操作：可以对rune进行各种字符操作，如转换大小写、判断字符类型等。</li>
+<li>字符编码转换：在处理不同字符编码时，rune可以作为中间表示，方便进行转换。</li>
+<li>正则表达式：在使用正则表达式时，rune可以用于匹配Unicode字符。</li>
+<li>文本处理：在文本处理任务中，rune可以用于分词、拼写检查等操作。</li>
+<li>输入法开发：在开发输入法时，rune可以用于表示用户输入的字符。</li>
+<li>编译器设计：在编译器中，rune可以用于表示源代码中的字符。</li>
+</ul>
+<h2 id="7性能考虑"><a class="markdownIt-Anchor" href="#7性能考虑"></a> 7性能考虑</h2>
+<p>1.[] rune转换开销</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := <span class="string">&quot;这是一个很长的中文字符串&quot;</span> + <span class="string">&quot;重复很多次&quot;</span></span><br><span class="line">    longString := <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">        longString += s</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方式1: 多次转换 (慢)</span></span><br><span class="line">    start := time.Now()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">        runes := []<span class="type">rune</span>(longString)  <span class="comment">// 每次都转换</span></span><br><span class="line">        _ = <span class="built_in">len</span>(runes)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;多次转换耗时: %v\n&quot;</span>, time.Since(start))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方式2: 转换一次 (快)</span></span><br><span class="line">    start = time.Now()</span><br><span class="line">    runes := []<span class="type">rune</span>(longString)  <span class="comment">// 只转换一次</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">        _ = <span class="built_in">len</span>(runes)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;转换一次耗时: %v\n&quot;</span>, time.Since(start))</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>2.使用strings.builder</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;strings&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">buildStringWithRunes</span><span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> builder strings.Builder</span><br><span class="line">    runes := []<span class="type">rune</span>&#123;<span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;世&#x27;</span>, <span class="string">&#x27;界&#x27;</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, r := <span class="keyword">range</span> runes &#123;</span><br><span class="line">        builder.WriteRune(r)  <span class="comment">// 高效写入rune</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> builder.String()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    result := buildStringWithRunes()</span><br><span class="line">    fmt.Println(result)  <span class="comment">// Hello世界</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最佳实践<br />
+处理非ASCII字符串时使用rune<br />
+避免频繁的string和[]rune转换<br />
+使用range遍历字符串获取rune<br />
+使用utf8包进行底层操作<br />
+注意string索引操作的是字节而非字符</p>
+<h1 id="7-golang-中解析-tag-是怎么实现的反射原理是什么问的很少但是代码中用的多"><a class="markdownIt-Anchor" href="#7-golang-中解析-tag-是怎么实现的反射原理是什么问的很少但是代码中用的多"></a> 7、 golang 中解析 tag 是怎么实现的？反射原理是什么？(问的很少，但是代码中用的多)</h1>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">Golang常见面试题</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../../../../categories/go/">go</a>
+                        
+                            <a href="../../../../../categories/go/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../../../../tag/go/">go</a>
+                        
+                            <a href="../../../../../tag/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                    
+                        <a href="../../01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="next-prefix">» </a> 下一篇：    <a href="../../01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="发布于 2025-12-13 02:31">01. 内存模型</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
