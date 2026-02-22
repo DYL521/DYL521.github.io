@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            一大波Model操作
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">一大波Model操作</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2022-01-03
+                        </span>
+                        
+                            
+                                <span id="//pages/987539/" class="leancloud_visitors" data-flag-title="一大波Model操作">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/987539/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                            <span class="category-color">django</span>
+                        
+                            <span class="category-color">orm</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">orm</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="01基本操作"><a class="markdownIt-Anchor" href="#01基本操作"></a> 01.基本操作</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">orm</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 1 创建</span></span><br><span class="line">    <span class="comment"># 创建数据方法一</span></span><br><span class="line">    models.UserInfo.objects.create(username=<span class="string">&#x27;root&#x27;</span>, password=<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    <span class="comment"># 创建数据方法二</span></span><br><span class="line">    obj = models.UserInfo(username=<span class="string">&#x27;alex&#x27;</span>, password=<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    obj.save()</span><br><span class="line">    <span class="comment"># 创建数据库方法三(传入字典必须在字典前加两个星号)</span></span><br><span class="line">    dic = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;eric&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;666&#x27;</span>&#125;</span><br><span class="line">    models.UserInfo.objects.create(**dic)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2 查</span></span><br><span class="line">    result = models.UserInfo.objects.<span class="built_in">all</span>()  <span class="comment"># 查找所有条目</span></span><br><span class="line">    result = models.UserInfo.objects.<span class="built_in">filter</span>(username=<span class="string">&#x27;alex&#x27;</span>, password=<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> result:</span><br><span class="line">        <span class="built_in">print</span>(row.<span class="built_in">id</span>, row.username, row.password)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3 删除</span></span><br><span class="line">    models.UserInfo.objects.<span class="built_in">all</span>().delete()  <span class="comment"># 删除所有</span></span><br><span class="line">    models.UserInfo.objects.<span class="built_in">filter</span>(username=<span class="string">&#x27;alex&#x27;</span>).delete()  <span class="comment"># 删除指定</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4 更新</span></span><br><span class="line">    models.UserInfo.objects.<span class="built_in">all</span>().update(password=<span class="string">&#x27;12345&#x27;</span>)</span><br><span class="line">    models.UserInfo.objects.<span class="built_in">filter</span>(<span class="built_in">id</span>=<span class="number">4</span>).update(password=<span class="string">&#x27;15&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5 获取个数</span></span><br><span class="line">    models.UserInfo.objects.<span class="built_in">filter</span>(name=<span class="string">&#x27;seven&#x27;</span>).count()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 6 执行原生SQL</span></span><br><span class="line">    <span class="comment"># 6.1 执行原生SQL</span></span><br><span class="line">    models.UserInfo.objects.raw(<span class="string">&#x27;select * from userinfo&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 6.2 如果SQL是其他表时，必须将名字设置为当前UserInfo对象的主键列名</span></span><br><span class="line">    models.UserInfo.objects.raw(<span class="string">&#x27;select id as nid from 其他表&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 6.3 指定数据库</span></span><br><span class="line">    models.UserInfo.objects.raw(<span class="string">&#x27;select * from userinfo&#x27;</span>, using=<span class="string">&quot;default&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;orm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="02进阶操作"><a class="markdownIt-Anchor" href="#02进阶操作"></a> 02.进阶操作</h2>
+<ul>
+<li><code>进阶操作：牛掰掰的双下划线</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、大于，小于</span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__gt=1)                 # 获取id大于1的值</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__gte=1)                # 获取id大于等于1的值</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__lt=10)                # 获取id小于10的值</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__lte=10)               # 获取id小于10的值</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__lt=10, id__gt=1)      # 获取id大于1 且 小于10的值</span></span><br><span class="line"><span class="number">2</span>、<span class="keyword">in</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__in=[11, 22, 33])      # 获取id等于11、22、33的数据</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.exclude(id__in=[11, 22, 33])     # not in</span></span><br><span class="line"><span class="number">3</span>、isnull</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__isnull=True)         #双下划线isnull，查找pub_date是null的数据</span></span><br><span class="line"><span class="number">4</span>、contains                                                    <span class="comment">#就是原生sql的like操作:模糊匹配</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(name__contains=&quot;ven&quot;)</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(name__icontains=&quot;ven&quot;)    # icontains大小写不敏感</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.exclude(name__icontains=&quot;ven&quot;)</span></span><br><span class="line"><span class="number">5</span>、<span class="built_in">range</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(id__range=[1, 2])          # 范围bettwen and</span></span><br><span class="line"><span class="number">6</span>、order by</span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(name=&#x27;seven&#x27;).order_by(&#x27;id&#x27;)      # asc     没有减号升续排列</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(name=&#x27;seven&#x27;).order_by(&#x27;-id&#x27;)     # desc      有减号升续排列</span></span><br><span class="line"><span class="number">7</span>、group by</span><br><span class="line">        <span class="comment"># from django.db.models import Count, Min, Max, Sum</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.filter(c1=1).values(&#x27;id&#x27;).annotate(c=Count(&#x27;num&#x27;))        #根据id列进行分组</span></span><br><span class="line">        <span class="comment"># SELECT &quot;app01_tb1&quot;.&quot;id&quot;, COUNT(&quot;app01_tb1&quot;.&quot;num&quot;) AS &quot;c&quot; FROM &quot;app01_tb1&quot; </span></span><br><span class="line">        <span class="comment"># WHERE &quot;app01_tb1&quot;.&quot;c1&quot; = 1 GROUP BY &quot;app01_tb1&quot;.&quot;id&quot;</span></span><br><span class="line"><span class="number">8</span>、limit 、offset    <span class="comment">#分页</span></span><br><span class="line">        <span class="comment"># models.Tb1.objects.all()[10:20]</span></span><br><span class="line"><span class="number">9</span>、regex正则匹配，iregex 不区分大小写</span><br><span class="line">        <span class="comment"># Entry.objects.get(title__regex=r&#x27;^(An?|The) +&#x27;)</span></span><br><span class="line">        <span class="comment"># Entry.objects.get(title__iregex=r&#x27;^(an?|the) +&#x27;)</span></span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"><span class="number">10</span>、date</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__date=datetime.date(2005, 1, 1))          #__data表示日期查找，2005-01-01</span></span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__date__gt=datetime.date(2005, 1, 1))</span></span><br><span class="line"><span class="number">11</span>、year</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__year=2005)                               #__year根据年查找</span></span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__year__gte=2005)</span></span><br><span class="line"><span class="number">12</span>、month</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__month=12)</span></span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__month__gte=6)</span></span><br><span class="line"><span class="number">13</span>、day</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__day=3)</span></span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__day__gte=3)</span></span><br><span class="line"><span class="number">14</span>、week_day</span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__week_day=2)</span></span><br><span class="line">        <span class="comment"># Entry.objects.filter(pub_date__week_day__gte=2)</span></span><br><span class="line"><span class="number">15</span>、hour</span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__hour=23)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(time__hour=5)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__hour__gte=12)</span></span><br><span class="line"><span class="number">16</span>、minute</span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__minute=29)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(time__minute=46)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__minute__gte=29)</span></span><br><span class="line"><span class="number">17</span>、second</span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__second=31)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(time__second=2)</span></span><br><span class="line">        <span class="comment"># Event.objects.filter(timestamp__second__gte=31)</span></span><br></pre></td></tr></table></figure>
+<h2 id="03时间过滤"><a class="markdownIt-Anchor" href="#03时间过滤"></a> 03.时间过滤</h2>
+<ul>
+<li>根据天/小时进行过滤</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone</span><br><span class="line"><span class="keyword">from</span> report.models <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">now = timezone.now()</span><br><span class="line"><span class="comment"># start_time = now - timezone.timedelta(days=7)</span></span><br><span class="line">start_time = now - timezone.timedelta(hours=<span class="number">240</span>)  <span class="comment"># 查询10天前的数据</span></span><br><span class="line">end_time = now</span><br><span class="line"></span><br><span class="line">qs = AllClarm.objects.<span class="built_in">filter</span>(start_tm__range=(start_time, end_time))</span><br></pre></td></tr></table></figure>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/987539/" target="_blank">一大波Model操作</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/python/">python</a>
+                        
+                            <a href="../../categories/python/django/">django</a>
+                        
+                            <a href="../../categories/python/django/orm/">orm</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tag/orm/">orm</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../2022/02/09/07.%E9%9D%A2%E8%AF%95%E9%A2%98/10.%E9%9D%A2%E8%AF%95%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98/04.%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83-%E5%BF%85%E8%80%83%E9%A2%98%E7%9B%AE/" class="prev-prefix">« </a> 上一篇：    <a href="../../2022/02/09/07.%E9%9D%A2%E8%AF%95%E9%A2%98/10.%E9%9D%A2%E8%AF%95%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98/04.%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83-%E5%BF%85%E8%80%83%E9%A2%98%E7%9B%AE/" title="发布于 2022-02-09 11:43">04.华为机考-必考题目</a>
+                        <br>
+                    
+                    
+                        <a href="../../pages/41a09c/" class="next-prefix">» </a> 下一篇：    <a href="../../pages/41a09c/" title="发布于 2022-01-02 02:55">列表</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

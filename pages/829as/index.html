@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            单细胞测试.md
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">单细胞测试.md</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2025-07-28
+                        </span>
+                        
+                            
+                                <span id="//pages/829as/" class="leancloud_visitors" data-flag-title="单细胞测试.md">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="//pages/829as/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">文档计量学</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">文档计量学</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="单细胞rna测序scrna-seq分析完整教程"><a class="markdownIt-Anchor" href="#单细胞rna测序scrna-seq分析完整教程"></a> 单细胞RNA测序（scRNA-seq）分析完整教程</h1>
+<h2 id="目录"><a class="markdownIt-Anchor" href="#目录"></a> 目录</h2>
+<ol>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">环境准备</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD">数据加载</a></li>
+<li><a href="#%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6">质量控制</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86%E5%8C%96">数据标准化</a></li>
+<li><a href="#%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9">特征选择</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BC%A9%E6%94%BE">数据缩放</a></li>
+<li><a href="#%E9%99%8D%E7%BB%B4%E5%88%86%E6%9E%90">降维分析</a></li>
+<li><a href="#%E7%BB%86%E8%83%9E%E8%81%9A%E7%B1%BB">细胞聚类</a></li>
+<li><a href="#%E8%81%9A%E7%B1%BB%E5%8F%AF%E8%A7%86%E5%8C%96">聚类可视化</a></li>
+<li><a href="#%E6%A0%87%E8%AE%B0%E5%9F%BA%E5%9B%A0%E9%89%B4%E5%AE%9A">标记基因鉴定</a></li>
+<li><a href="#%E7%BB%86%E8%83%9E%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A">细胞类型注释</a></li>
+</ol>
+<hr />
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>单细胞RNA测序（scRNA-seq）能够在单个细胞水平上测量基因表达，揭示细胞异质性和发现新的细胞类型。本教程使用Seurat包分析PBMC（外周血单核细胞）数据。</p>
+<h3 id="核心概念"><a class="markdownIt-Anchor" href="#核心概念"></a> 核心概念</h3>
+<ul>
+<li><strong>表达矩阵</strong>：行是基因，列是细胞，值是基因在细胞中的表达量</li>
+<li><strong>质量控制</strong>：过滤低质量细胞和低表达基因</li>
+<li><strong>降维</strong>：从数万个基因降到几十个主成分，再到2D可视化</li>
+<li><strong>聚类</strong>：将相似的细胞分组，通常对应不同的细胞类型</li>
+<li><strong>标记基因</strong>：每种细胞类型特异性表达的基因</li>
+</ul>
+<hr />
+<h2 id="环境准备"><a class="markdownIt-Anchor" href="#环境准备"></a> 环境准备</h2>
+<h3 id="安装和加载必要的包"><a class="markdownIt-Anchor" href="#安装和加载必要的包"></a> 安装和加载必要的包</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查并安装multtest包（用于多重检验）</span></span><br><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>require<span class="punctuation">(</span>multtest<span class="punctuation">)</span><span class="punctuation">)</span>install.packages<span class="punctuation">(</span><span class="string">&quot;multtest&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Seurat是单细胞分析的核心包</span></span><br><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>require<span class="punctuation">(</span>Seurat<span class="punctuation">)</span><span class="punctuation">)</span>install.packages<span class="punctuation">(</span><span class="string">&quot;Seurat&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dplyr用于数据操作和管道符%&gt;%</span></span><br><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>require<span class="punctuation">(</span>dplyr<span class="punctuation">)</span><span class="punctuation">)</span>install.packages<span class="punctuation">(</span><span class="string">&quot;dplyr&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># patchwork用于组合多个图形</span></span><br><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>require<span class="punctuation">(</span>patchwork<span class="punctuation">)</span><span class="punctuation">)</span>install.packages<span class="punctuation">(</span><span class="string">&quot;patchwork&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># R.utils提供文件操作工具（如解压缩）</span></span><br><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>require<span class="punctuation">(</span>R.utils<span class="punctuation">)</span><span class="punctuation">)</span>install.packages<span class="punctuation">(</span><span class="string">&quot;R.utils&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>为什么需要这些包？</strong></p>
+<ul>
+<li><code>Seurat</code>：提供完整的单细胞分析流程</li>
+<li><code>dplyr</code>：简化数据操作，使代码更易读</li>
+<li><code>patchwork</code>：方便地组合多个图形进行比较</li>
+<li><code>R.utils</code>：处理压缩文件</li>
+</ul>
+<h3 id="清空工作环境"><a class="markdownIt-Anchor" href="#清空工作环境"></a> 清空工作环境</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm<span class="punctuation">(</span><span class="built_in">list</span> <span class="operator">=</span> ls<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>作用</strong>：清除所有已存在的变量，确保分析环境干净，避免变量冲突。</p>
+<hr />
+<h2 id="数据加载"><a class="markdownIt-Anchor" href="#数据加载"></a> 数据加载</h2>
+<h3 id="下载示例数据"><a class="markdownIt-Anchor" href="#下载示例数据"></a> 下载示例数据</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">download.file<span class="punctuation">(</span><span class="string">&#x27;https://cf.10xgenomics.com/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;my.pbmc.gz&#x27;</span><span class="punctuation">)</span></span><br><span class="line">untar<span class="punctuation">(</span>gunzip<span class="punctuation">(</span><span class="string">&quot;my.pbmc.gz&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>数据说明</strong>：</p>
+<ul>
+<li>10X Genomics的PBMC 3k数据集</li>
+<li>包含约3000个外周血单核细胞</li>
+<li>已经过初步过滤的数据</li>
+</ul>
+<h3 id="读取10x数据"><a class="markdownIt-Anchor" href="#读取10x数据"></a> 读取10X数据</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc.data <span class="operator">&lt;-</span> Read10X<span class="punctuation">(</span>data.dir <span class="operator">=</span> <span class="string">&quot;filtered_gene_bc_matrices/hg19/&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>函数功能</strong>：</p>
+<ul>
+<li>读取10X Genomics格式的数据</li>
+<li>返回稀疏矩阵（节省内存）</li>
+<li>矩阵维度：基因 × 细胞</li>
+</ul>
+<h3 id="创建seurat对象"><a class="markdownIt-Anchor" href="#创建seurat对象"></a> 创建Seurat对象</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> CreateSeuratObject<span class="punctuation">(</span>counts <span class="operator">=</span> pbmc.data<span class="punctuation">,</span> project <span class="operator">=</span> <span class="string">&quot;pbmc3k&quot;</span><span class="punctuation">,</span> min.cells <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span> min.features <span class="operator">=</span> <span class="number">200</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>参数解释</strong>：</p>
+<ul>
+<li><code>counts</code>：原始的基因表达计数矩阵</li>
+<li><code>project</code>：项目名称，用于标识数据来源</li>
+<li><code>min.cells = 3</code>：基因至少在3个细胞中表达才保留</li>
+<li><code>min.features = 200</code>：细胞至少表达200个基因才保留</li>
+</ul>
+<p><strong>生物学意义</strong>：</p>
+<ul>
+<li>过滤掉极低表达的基因（可能是技术噪音）</li>
+<li>过滤掉基因数过少的细胞（可能是空液滴或死细胞）</li>
+</ul>
+<h3 id="查看数据基本信息"><a class="markdownIt-Anchor" href="#查看数据基本信息"></a> 查看数据基本信息</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pbmc</span><br><span class="line"><span class="comment"># 输出：13714 features across 2700 samples within 1 assay</span></span><br><span class="line"></span><br><span class="line">ncol<span class="punctuation">(</span>pbmc<span class="punctuation">)</span>  <span class="comment"># 细胞数</span></span><br><span class="line"><span class="comment"># 输出：2700</span></span><br><span class="line"></span><br><span class="line">ncol<span class="punctuation">(</span>pbmc.data<span class="punctuation">)</span>  <span class="comment"># 原始数据的细胞数</span></span><br><span class="line"><span class="comment"># 输出：2700</span></span><br></pre></td></tr></table></figure>
+<h3 id="导出表达矩阵可选"><a class="markdownIt-Anchor" href="#导出表达矩阵可选"></a> 导出表达矩阵（可选）</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Seurat v5的正确写法（v4使用@counts）</span></span><br><span class="line">lalala <span class="operator">&lt;-</span> as.data.frame<span class="punctuation">(</span>GetAssayData<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> slot <span class="operator">=</span> <span class="string">&quot;counts&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">write.table<span class="punctuation">(</span>lalala<span class="punctuation">,</span><span class="string">&#x27;mycount.txt&#x27;</span><span class="punctuation">,</span>sep <span class="operator">=</span> <span class="string">&#x27;\t&#x27;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：Seurat v5改变了数据访问方式，使用<code>$</code>代替<code>@</code></p>
+<hr />
+<h2 id="质量控制"><a class="markdownIt-Anchor" href="#质量控制"></a> 质量控制</h2>
+<h3 id="计算线粒体基因百分比"><a class="markdownIt-Anchor" href="#计算线粒体基因百分比"></a> 计算线粒体基因百分比</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc<span class="punctuation">[[</span><span class="string">&quot;percent.mt&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span> <span class="operator">&lt;-</span> PercentageFeatureSet<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> pattern <span class="operator">=</span> <span class="string">&quot;^MT-&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>代码解析</strong>：</p>
+<ul>
+<li><code>pbmc[[&quot;percent.mt&quot;]]</code>：在metadata中创建新列</li>
+<li><code>PercentageFeatureSet()</code>：计算特定基因集的表达百分比</li>
+<li><code>pattern = &quot;^MT-&quot;</code>：正则表达式，匹配以&quot;MT-&quot;开头的基因</li>
+</ul>
+<p><strong>生物学原理</strong>：</p>
+<ul>
+<li>健康细胞：线粒体基因表达比例低（&lt;5-10%）</li>
+<li>受损/死亡细胞：线粒体基因表达比例高</li>
+<li>原因：细胞膜破损时，胞质mRNA流失，但线粒体mRNA相对保留</li>
+</ul>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>小鼠数据使用<code>pattern = &quot;^mt-&quot;</code>（小写）</li>
+<li>不同组织的阈值可能不同</li>
+</ul>
+<h3 id="查看细胞元数据"><a class="markdownIt-Anchor" href="#查看细胞元数据"></a> 查看细胞元数据</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head<span class="punctuation">(</span>pbmc<span class="operator">@</span>meta.data<span class="punctuation">,</span> <span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>显示每个细胞的：</p>
+<ul>
+<li><code>orig.ident</code>：样本来源</li>
+<li><code>nCount_RNA</code>：总RNA分子数</li>
+<li><code>nFeature_RNA</code>：检测到的基因数</li>
+<li><code>percent.mt</code>：线粒体基因百分比</li>
+</ul>
+<h3 id="质控指标可视化"><a class="markdownIt-Anchor" href="#质控指标可视化"></a> 质控指标可视化</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VlnPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;nFeature_RNA&quot;</span><span class="punctuation">,</span> <span class="string">&quot;nCount_RNA&quot;</span><span class="punctuation">,</span> <span class="string">&quot;percent.mt&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> ncol <span class="operator">=</span> <span class="number">3</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>小提琴图解读</strong>：</p>
+<ul>
+<li><code>nFeature_RNA</code>：基因数分布，识别双细胞（异常高）或低质量细胞（异常低）</li>
+<li><code>nCount_RNA</code>：总分子数分布，反映测序深度</li>
+<li><code>percent.mt</code>：线粒体百分比，高值提示细胞损伤</li>
+</ul>
+<h3 id="特征相关性分析"><a class="markdownIt-Anchor" href="#特征相关性分析"></a> 特征相关性分析</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plot1 <span class="operator">&lt;-</span> FeatureScatter<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> feature1 <span class="operator">=</span> <span class="string">&quot;nCount_RNA&quot;</span><span class="punctuation">,</span> feature2 <span class="operator">=</span> <span class="string">&quot;percent.mt&quot;</span><span class="punctuation">)</span></span><br><span class="line">plot2 <span class="operator">&lt;-</span> FeatureScatter<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> feature1 <span class="operator">=</span> <span class="string">&quot;nCount_RNA&quot;</span><span class="punctuation">,</span> feature2 <span class="operator">=</span> <span class="string">&quot;nFeature_RNA&quot;</span><span class="punctuation">)</span></span><br><span class="line">CombinePlots<span class="punctuation">(</span>plots <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>plot1<span class="punctuation">,</span> plot2<span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>散点图意义</strong>：</p>
+<ul>
+<li>图1：分子数vs线粒体百分比，识别异常细胞</li>
+<li>图2：分子数vs基因数，应呈正相关，偏离者可能是双细胞</li>
+</ul>
+<h3 id="过滤低质量细胞"><a class="markdownIt-Anchor" href="#过滤低质量细胞"></a> 过滤低质量细胞</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> subset<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> subset <span class="operator">=</span> nFeature_RNA <span class="operator">&gt;</span> <span class="number">200</span> <span class="operator">&amp;</span> nFeature_RNA <span class="operator">&lt;</span> <span class="number">2500</span> <span class="operator">&amp;</span> percent.mt <span class="operator">&lt;</span> <span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>过滤标准</strong>：</p>
+<ul>
+<li><code>nFeature_RNA &gt; 200</code>：去除基因数过少的细胞（空液滴）</li>
+<li><code>nFeature_RNA &lt; 2500</code>：去除基因数过多的细胞（双细胞）</li>
+<li><code>percent.mt &lt; 5</code>：去除线粒体含量高的细胞（死细胞）</li>
+</ul>
+<p><strong>如何确定阈值？</strong></p>
+<ul>
+<li>观察分布图，找到明显的异常值</li>
+<li>参考文献中类似数据的阈值</li>
+<li>根据具体实验调整</li>
+</ul>
+<hr />
+<h2 id="数据标准化"><a class="markdownIt-Anchor" href="#数据标准化"></a> 数据标准化</h2>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> NormalizeData<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> normalization.method <span class="operator">=</span> <span class="string">&quot;LogNormalize&quot;</span><span class="punctuation">,</span> scale.factor <span class="operator">=</span> <span class="number">10000</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="为什么需要标准化"><a class="markdownIt-Anchor" href="#为什么需要标准化"></a> 为什么需要标准化？</h3>
+<p>不同细胞的RNA总量差异原因：</p>
+<ol>
+<li>细胞大小不同</li>
+<li>细胞周期阶段不同</li>
+<li>技术偏差（捕获效率）</li>
+</ol>
+<h3 id="lognormalize方法"><a class="markdownIt-Anchor" href="#lognormalize方法"></a> LogNormalize方法</h3>
+<p><strong>步骤1：CPM标准化</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">标准化值 = (基因计数 / 细胞总计数) × scale.factor</span><br></pre></td></tr></table></figure>
+<p><strong>步骤2：对数转换</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最终值 = log(标准化值 + 1)</span><br></pre></td></tr></table></figure>
+<h3 id="计算示例"><a class="markdownIt-Anchor" href="#计算示例"></a> 计算示例</h3>
+<p>假设两个细胞：</p>
+<table>
+<thead>
+<tr>
+<th>细胞</th>
+<th>基因X原始计数</th>
+<th>细胞总RNA</th>
+<th>标准化计算</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>细胞A（大）</td>
+<td>100</td>
+<td>50,000</td>
+<td>(100/50,000)×10,000=20</td>
+<td>log(21)=3.04</td>
+</tr>
+<tr>
+<td>细胞B（小）</td>
+<td>20</td>
+<td>10,000</td>
+<td>(20/10,000)×10,000=20</td>
+<td>log(21)=3.04</td>
+</tr>
+</tbody>
+</table>
+<p>标准化后表达值相同，消除了细胞大小的影响！</p>
+<p><strong>参数说明</strong>：</p>
+<ul>
+<li><code>scale.factor = 10000</code>：相当于CPM（counts per ten thousand）</li>
+<li><code>log1p</code>转换：稳定方差，使数据更接近正态分布</li>
+</ul>
+<hr />
+<h2 id="特征选择"><a class="markdownIt-Anchor" href="#特征选择"></a> 特征选择</h2>
+<h3 id="寻找高变基因"><a class="markdownIt-Anchor" href="#寻找高变基因"></a> 寻找高变基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> FindVariableFeatures<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> selection.method <span class="operator">=</span> <span class="string">&quot;vst&quot;</span><span class="punctuation">,</span> nfeatures <span class="operator">=</span> <span class="number">2000</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="什么是高变基因"><a class="markdownIt-Anchor" href="#什么是高变基因"></a> 什么是高变基因？</h3>
+<p>高变基因在不同细胞间表达差异大，它们：</p>
+<ul>
+<li>能够区分不同细胞类型</li>
+<li>包含最多的生物学信息</li>
+<li>不是&quot;管家基因&quot;（在所有细胞中稳定表达）</li>
+</ul>
+<h3 id="vst方法原理"><a class="markdownIt-Anchor" href="#vst方法原理"></a> VST方法原理</h3>
+<ol>
+<li>
+<p><strong>计算均值-方差关系</strong></p>
+<ul>
+<li>高表达基因往往有高方差（技术噪音）</li>
+<li>建立模型预测期望方差</li>
+</ul>
+</li>
+<li>
+<p><strong>标准化方差</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">标准化方差 = (观察方差 - 预期方差) / 预期方差</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>选择top 2000基因</strong></p>
+</li>
+</ol>
+<h3 id="查看高变基因"><a class="markdownIt-Anchor" href="#查看高变基因"></a> 查看高变基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 前10个高变基因</span></span><br><span class="line">top10 <span class="operator">&lt;-</span> head<span class="punctuation">(</span>VariableFeatures<span class="punctuation">(</span>pbmc<span class="punctuation">)</span><span class="punctuation">,</span> <span class="number">10</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>典型的高变基因包括：</p>
+<ul>
+<li>免疫球蛋白基因（IGLC2, IGKC）</li>
+<li>HLA基因（抗原呈递）</li>
+<li>细胞类型标记基因</li>
+</ul>
+<h3 id="可视化高变基因"><a class="markdownIt-Anchor" href="#可视化高变基因"></a> 可视化高变基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础散点图</span></span><br><span class="line">plot1 <span class="operator">&lt;-</span> VariableFeaturePlot<span class="punctuation">(</span>pbmc<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加基因标签</span></span><br><span class="line">plot2 <span class="operator">&lt;-</span> LabelPoints<span class="punctuation">(</span>plot <span class="operator">=</span> plot1<span class="punctuation">,</span> points <span class="operator">=</span> top10<span class="punctuation">,</span> repel <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 并排显示</span></span><br><span class="line">plot1 <span class="operator">+</span> plot2</span><br></pre></td></tr></table></figure>
+<p><strong>图形解读</strong>：</p>
+<ul>
+<li>X轴：平均表达量</li>
+<li>Y轴：标准化方差</li>
+<li>红点：被选中的2000个高变基因</li>
+<li>标签：前10个最高变基因</li>
+</ul>
+<hr />
+<h2 id="数据缩放"><a class="markdownIt-Anchor" href="#数据缩放"></a> 数据缩放</h2>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> ScaleData<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> rownames<span class="punctuation">(</span>pbmc<span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="什么是scaledata"><a class="markdownIt-Anchor" href="#什么是scaledata"></a> 什么是ScaleData？</h3>
+<p>对每个基因进行Z-score标准化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">缩放值 = (表达值 - 基因均值) / 基因标准差</span><br></pre></td></tr></table></figure>
+<p>结果：每个基因均值=0，标准差=1</p>
+<h3 id="为什么要缩放"><a class="markdownIt-Anchor" href="#为什么要缩放"></a> 为什么要缩放？</h3>
+<ol>
+<li>
+<p><strong>消除量级差异</strong></p>
+<ul>
+<li>基因A：表达范围1-10</li>
+<li>基因B：表达范围1000-10000</li>
+<li>不缩放，基因B会主导分析</li>
+</ul>
+</li>
+<li>
+<p><strong>PCA的要求</strong></p>
+<ul>
+<li>PCA对方差敏感</li>
+<li>需要所有变量在同一尺度</li>
+</ul>
+</li>
+<li>
+<p><strong>可视化需要</strong></p>
+<ul>
+<li>热图等需要标准化数据</li>
+</ul>
+</li>
+</ol>
+<p><strong>注意</strong>：<code>features = rownames(pbmc)</code>缩放所有基因，耗时较长。通常只缩放高变基因即可。</p>
+<hr />
+<h2 id="降维分析"><a class="markdownIt-Anchor" href="#降维分析"></a> 降维分析</h2>
+<h3 id="主成分分析pca"><a class="markdownIt-Anchor" href="#主成分分析pca"></a> 主成分分析（PCA）</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> RunPCA<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> VariableFeatures<span class="punctuation">(</span>object <span class="operator">=</span> pbmc<span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="pca原理"><a class="markdownIt-Anchor" href="#pca原理"></a> PCA原理</h3>
+<p>将高维数据（2000个基因）投射到低维空间（50个主成分）：</p>
+<ul>
+<li>每个PC是基因的线性组合</li>
+<li>PC1解释最多的变异</li>
+<li>PC之间相互正交</li>
+</ul>
+<h3 id="生物学解释"><a class="markdownIt-Anchor" href="#生物学解释"></a> 生物学解释</h3>
+<p>每个PC通常代表特定生物学过程：</p>
+<ul>
+<li><strong>PC1</strong>：常区分髓系vs淋巴系</li>
+<li><strong>PC2</strong>：常区分T细胞vs B细胞</li>
+<li><strong>PC3-5</strong>：细胞状态、细胞周期等</li>
+</ul>
+<h3 id="查看pca结果"><a class="markdownIt-Anchor" href="#查看pca结果"></a> 查看PCA结果</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 简要信息</span></span><br><span class="line">print<span class="punctuation">(</span>pbmc<span class="punctuation">[[</span><span class="string">&quot;pca&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">5</span><span class="punctuation">,</span> nfeatures <span class="operator">=</span> <span class="number">5</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 基因贡献可视化</span></span><br><span class="line">VizDimLoadings<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">2</span><span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;pca&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 细胞在PC空间的分布</span></span><br><span class="line">DimPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;pca&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 主成分热图</span></span><br><span class="line">DimHeatmap<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">15</span><span class="punctuation">,</span> cells <span class="operator">=</span> <span class="number">500</span><span class="punctuation">,</span> balanced <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="确定使用多少个pc"><a class="markdownIt-Anchor" href="#确定使用多少个pc"></a> 确定使用多少个PC</h3>
+<h4 id="方法1elbowplot推荐"><a class="markdownIt-Anchor" href="#方法1elbowplot推荐"></a> 方法1：ElbowPlot（推荐）</h4>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ElbowPlot<span class="punctuation">(</span>pbmc<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>解读</strong>：</p>
+<ul>
+<li>显示每个PC解释的变异量</li>
+<li>找&quot;肘部&quot;：曲线明显变平的点</li>
+<li>通常选择10-30个PC</li>
+</ul>
+<h4 id="方法2jackstraw分析可选"><a class="markdownIt-Anchor" href="#方法2jackstraw分析可选"></a> 方法2：JackStraw分析（可选）</h4>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> JackStraw<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> num.replicate <span class="operator">=</span> <span class="number">100</span><span class="punctuation">)</span></span><br><span class="line">pbmc <span class="operator">&lt;-</span> ScoreJackStraw<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">20</span><span class="punctuation">)</span></span><br><span class="line">JackStrawPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">20</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>原理</strong>：统计检验每个PC的显著性<br />
+<strong>缺点</strong>：计算耗时</p>
+<hr />
+<h2 id="细胞聚类"><a class="markdownIt-Anchor" href="#细胞聚类"></a> 细胞聚类</h2>
+<h3 id="构建细胞邻近图"><a class="markdownIt-Anchor" href="#构建细胞邻近图"></a> 构建细胞邻近图</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> FindNeighbors<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">10</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>基于前10个PC计算细胞间距离</li>
+<li>构建KNN（K近邻）图</li>
+<li>构建SNN（共享近邻）图</li>
+</ul>
+<h3 id="聚类分析"><a class="markdownIt-Anchor" href="#聚类分析"></a> 聚类分析</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> FindClusters<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> resolution <span class="operator">=</span> <span class="number">0.5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>算法</strong>：Louvain算法（社区检测）<br />
+<strong>参数</strong>：</p>
+<ul>
+<li><code>resolution</code>：控制聚类粒度
+<ul>
+<li>低值（0.1-0.5）：少而大的聚类</li>
+<li>高值（0.5-2）：多而小的聚类</li>
+</ul>
+</li>
+</ul>
+<p><strong>输出信息解读</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Number of communities: 9</span><br></pre></td></tr></table></figure>
+<p>表示识别出9个细胞群</p>
+<hr />
+<h2 id="聚类可视化"><a class="markdownIt-Anchor" href="#聚类可视化"></a> 聚类可视化</h2>
+<h3 id="umap降维"><a class="markdownIt-Anchor" href="#umap降维"></a> UMAP降维</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> RunUMAP<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">10</span><span class="punctuation">)</span></span><br><span class="line">DimPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;umap&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>UMAP特点</strong>：</p>
+<ul>
+<li>非线性降维</li>
+<li>保留局部和全局结构</li>
+<li>更好地分离不同细胞群</li>
+</ul>
+<h3 id="t-sne降维"><a class="markdownIt-Anchor" href="#t-sne降维"></a> t-SNE降维</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> RunTSNE<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> dims <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">10</span><span class="punctuation">)</span></span><br><span class="line">DimPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;tsne&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>t-SNE特点</strong>：</p>
+<ul>
+<li>非线性降维</li>
+<li>强调局部结构</li>
+<li>聚类边界更清晰</li>
+</ul>
+<p><strong>UMAP vs t-SNE</strong>：</p>
+<ul>
+<li>UMAP更快，保留更多全局结构</li>
+<li>t-SNE聚类分离更明显</li>
+<li>两者互补，可同时使用</li>
+</ul>
+<hr />
+<h2 id="标记基因鉴定"><a class="markdownIt-Anchor" href="#标记基因鉴定"></a> 标记基因鉴定</h2>
+<h3 id="特定聚类的标记基因"><a class="markdownIt-Anchor" href="#特定聚类的标记基因"></a> 特定聚类的标记基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster5.markers <span class="operator">&lt;-</span> FindMarkers<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> ident.1 <span class="operator">=</span> <span class="number">5</span><span class="punctuation">,</span> ident.2 <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">)</span><span class="punctuation">,</span> min.pct <span class="operator">=</span> <span class="number">0.25</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>比较聚类5与聚类0、3的差异基因</p>
+<h3 id="所有聚类的标记基因"><a class="markdownIt-Anchor" href="#所有聚类的标记基因"></a> 所有聚类的标记基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbmc.markers <span class="operator">&lt;-</span> FindAllMarkers<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> only.pos <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> min.pct <span class="operator">=</span> <span class="number">0.25</span><span class="punctuation">,</span> logfc.threshold <span class="operator">=</span> <span class="number">0.25</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>参数说明</strong>：</p>
+<ul>
+<li><code>only.pos = TRUE</code>：只找高表达基因</li>
+<li><code>min.pct = 0.25</code>：基因至少在25%的细胞中表达</li>
+<li><code>logfc.threshold = 0.25</code>：log2倍数变化阈值</li>
+</ul>
+<h3 id="查看每个聚类的top标记基因"><a class="markdownIt-Anchor" href="#查看每个聚类的top标记基因"></a> 查看每个聚类的top标记基因</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pbmc.markers <span class="operator">%&gt;%</span> </span><br><span class="line">  group_by<span class="punctuation">(</span>cluster<span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  top_n<span class="punctuation">(</span>n <span class="operator">=</span> <span class="number">2</span><span class="punctuation">,</span> wt <span class="operator">=</span> avg_log2FC<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p><strong>结果解读</strong>：</p>
+<ul>
+<li><code>p_val</code>：原始p值</li>
+<li><code>avg_log2FC</code>：平均log2倍数变化</li>
+<li><code>pct.1</code>：聚类内表达比例</li>
+<li><code>pct.2</code>：其他聚类表达比例</li>
+<li><code>p_val_adj</code>：校正后p值</li>
+</ul>
+<h3 id="标记基因可视化"><a class="markdownIt-Anchor" href="#标记基因可视化"></a> 标记基因可视化</h3>
+<h4 id="小提琴图"><a class="markdownIt-Anchor" href="#小提琴图"></a> 小提琴图</h4>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VlnPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;NKG7&quot;</span><span class="punctuation">,</span> <span class="string">&quot;PF4&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> slot <span class="operator">=</span> <span class="string">&quot;counts&quot;</span><span class="punctuation">,</span> <span class="built_in">log</span> <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>显示基因在各聚类的表达分布</p>
+<h4 id="特征图"><a class="markdownIt-Anchor" href="#特征图"></a> 特征图</h4>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FeaturePlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;MS4A1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;GNLY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;CD3E&quot;</span><span class="punctuation">,</span> <span class="string">&quot;CD14&quot;</span><span class="punctuation">,</span> <span class="string">&quot;FCER1A&quot;</span><span class="punctuation">,</span> <span class="string">&quot;FCGR3A&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LYZ&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>在UMAP上显示基因表达</p>
+<h4 id="热图"><a class="markdownIt-Anchor" href="#热图"></a> 热图</h4>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">top10 <span class="operator">&lt;-</span> pbmc.markers <span class="operator">%&gt;%</span> </span><br><span class="line">  group_by<span class="punctuation">(</span>cluster<span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  top_n<span class="punctuation">(</span>n <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> wt <span class="operator">=</span> avg_log2FC<span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">DoHeatmap<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> features <span class="operator">=</span> top10<span class="operator">$</span>gene<span class="punctuation">)</span> <span class="operator">+</span> NoLegend<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>显示各聚类的标记基因表达模式</p>
+<hr />
+<h2 id="细胞类型注释"><a class="markdownIt-Anchor" href="#细胞类型注释"></a> 细胞类型注释</h2>
+<h3 id="基于标记基因注释"><a class="markdownIt-Anchor" href="#基于标记基因注释"></a> 基于标记基因注释</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new.cluster.ids <span class="operator">&lt;-</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;Naive CD4 T&quot;</span><span class="punctuation">,</span> <span class="string">&quot;CD14+ Mono&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Memory CD4 T&quot;</span><span class="punctuation">,</span> <span class="string">&quot;B&quot;</span><span class="punctuation">,</span> <span class="string">&quot;CD8 T&quot;</span><span class="punctuation">,</span> </span><br><span class="line">                     <span class="string">&quot;FCGR3A+ Mono&quot;</span><span class="punctuation">,</span> <span class="string">&quot;NK&quot;</span><span class="punctuation">,</span> <span class="string">&quot;DC&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Platelet&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="built_in">names</span><span class="punctuation">(</span>new.cluster.ids<span class="punctuation">)</span> <span class="operator">&lt;-</span> levels<span class="punctuation">(</span>pbmc<span class="punctuation">)</span></span><br><span class="line">pbmc <span class="operator">&lt;-</span> RenameIdents<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> new.cluster.ids<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="常见pbmc细胞类型标记"><a class="markdownIt-Anchor" href="#常见pbmc细胞类型标记"></a> 常见PBMC细胞类型标记</h3>
+<table>
+<thead>
+<tr>
+<th>细胞类型</th>
+<th>标记基因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T细胞</td>
+<td>CD3D, CD3E</td>
+</tr>
+<tr>
+<td>CD4+ T</td>
+<td>IL7R, CCR7</td>
+</tr>
+<tr>
+<td>CD8+ T</td>
+<td>CD8A</td>
+</tr>
+<tr>
+<td>B细胞</td>
+<td>CD79A, MS4A1 (CD20)</td>
+</tr>
+<tr>
+<td>NK细胞</td>
+<td>GNLY, NKG7, GZMB</td>
+</tr>
+<tr>
+<td>单核细胞</td>
+<td>CD14, LYZ, FCGR3A</td>
+</tr>
+<tr>
+<td>树突细胞</td>
+<td>FCER1A, CST3</td>
+</tr>
+<tr>
+<td>血小板</td>
+<td>PF4, PPBP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="可视化注释结果"><a class="markdownIt-Anchor" href="#可视化注释结果"></a> 可视化注释结果</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DimPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;umap&quot;</span><span class="punctuation">,</span> label <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> pt.size <span class="operator">=</span> <span class="number">0.5</span><span class="punctuation">)</span> <span class="operator">+</span> NoLegend<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>显示带细胞类型标签的UMAP图</p>
+<h3 id="保存结果"><a class="markdownIt-Anchor" href="#保存结果"></a> 保存结果</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saveRDS<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> <span class="string">&#x27;pbmc.rds&#x27;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>保存完整的Seurat对象，包含所有分析结果</p>
+<h3 id="重新加载"><a class="markdownIt-Anchor" href="#重新加载"></a> 重新加载</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pbmc <span class="operator">&lt;-</span> readRDS<span class="punctuation">(</span><span class="string">&#x27;pbmc.rds&#x27;</span><span class="punctuation">)</span></span><br><span class="line">DimPlot<span class="punctuation">(</span>pbmc<span class="punctuation">,</span> reduction <span class="operator">=</span> <span class="string">&quot;umap&quot;</span><span class="punctuation">,</span> label <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> pt.size <span class="operator">=</span> <span class="number">0.5</span><span class="punctuation">)</span> <span class="operator">+</span> NoLegend<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>单细胞RNA测序分析的标准流程：</p>
+<ol>
+<li><strong>数据准备</strong>：加载数据，创建Seurat对象</li>
+<li><strong>质量控制</strong>：过滤低质量细胞</li>
+<li><strong>数据处理</strong>：标准化、特征选择、缩放</li>
+<li><strong>降维分析</strong>：PCA、UMAP/t-SNE</li>
+<li><strong>细胞聚类</strong>：识别细胞群</li>
+<li><strong>生物学解释</strong>：标记基因、细胞类型注释</li>
+</ol>
+<h3 id="重要提示"><a class="markdownIt-Anchor" href="#重要提示"></a> 重要提示</h3>
+<ol>
+<li><strong>参数选择</strong>：没有通用的最佳参数，需根据数据特点调整</li>
+<li><strong>生物学验证</strong>：结合已知标记基因验证结果</li>
+<li><strong>迭代优化</strong>：可能需要多次调整参数获得最佳结果</li>
+<li><strong>版本兼容</strong>：注意Seurat版本差异（v4 vs v5）</li>
+</ol>
+<h3 id="扩展学习"><a class="markdownIt-Anchor" href="#扩展学习"></a> 扩展学习</h3>
+<ul>
+<li><strong>批次效应校正</strong>：多样本整合分析</li>
+<li><strong>轨迹推断</strong>：细胞发育轨迹分析</li>
+<li><strong>细胞通讯</strong>：配受体相互作用分析</li>
+<li><strong>空间转录组</strong>：结合空间信息的分析</li>
+</ul>
+<h3 id="参考资源"><a class="markdownIt-Anchor" href="#参考资源"></a> 参考资源</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://satijalab.org/seurat/">Seurat官方教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.sc-best-practices.org/">单细胞最佳实践</a></li>
+<li><a target="_blank" rel="noopener" href="http://biocc.hrbmu.edu.cn/CellMarker/">CellMarker数据库</a></li>
+</ul>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="../../pages/829as/" target="_blank">单细胞测试.md</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../categories/%E6%96%87%E6%A1%A3%E8%AE%A1%E9%87%8F%E5%AD%A6/">文档计量学</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../tag/%E6%96%87%E6%A1%A3%E8%AE%A1%E9%87%8F%E5%AD%A6/">文档计量学</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../2025/07/28/10.%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/01.%E8%AE%BE%E8%AE%A1%E6%8A%96%E9%9F%B3/" class="prev-prefix">« </a> 上一篇：    <a href="../../2025/07/28/10.%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/01.%E8%AE%BE%E8%AE%A1%E6%8A%96%E9%9F%B3/" title="发布于 2025-07-28 07:03">设计抖音.md</a>
+                        <br>
+                    
+                    
+                        <a href="../../2025/07/28/03.%E6%95%B0%E6%8D%AE%E5%BA%93/02.Redis/99-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" class="next-prefix">» </a> 下一篇：    <a href="../../2025/07/28/03.%E6%95%B0%E6%8D%AE%E5%BA%93/02.Redis/99-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" title="发布于 2025-07-28 07:03">布隆过滤器使用.md</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

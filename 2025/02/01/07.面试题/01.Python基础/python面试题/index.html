@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            python面试题
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">python面试题</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2025-02-01
+                        </span>
+                        
+                            
+                                <span id="/2025/02/01/07.面试题/01.Python基础/python面试题/" class="leancloud_visitors" data-flag-title="python面试题">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2025/02/01/07.面试题/01.Python基础/python面试题/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">python</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">python面试题</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="一-语言特性与底层机制"><a class="markdownIt-Anchor" href="#一-语言特性与底层机制"></a> 一、语言特性与底层机制</h1>
+<h2 id="1-解释python的gil全局解释器锁机制及其对多线程程序的影响-如何规避gil的性能瓶颈"><a class="markdownIt-Anchor" href="#1-解释python的gil全局解释器锁机制及其对多线程程序的影响-如何规避gil的性能瓶颈"></a> 1、 解释Python的GIL（全局解释器锁）机制及其对多线程程序的影响。如何规避GIL的性能瓶颈？</h2>
+<pre><code>首先，由于python语言的产生是比较早的，那时候计算多以单核CPU为主，所以当时未考虑这个问题。 
+但是随着计算机的发展，多核CPU的出现，为了利用的多线程，设计了GIL，同时只能有一个线程执行
+
+1.当一个线程在执行时，其他线程无法运行python代码，虽然操作系统会把CPU的时间片分配给不同的线程。
+2.但是GIL对IO密集型任务的影响比较小，因为IO操作等等相对来说比较耗时,因为锁可能已经释放了
+
+GIL对多线程程序的影响：
+1. CPU密集的程序: 由于无法利用多核CPU的资源，尽管使用了多线程，但是每次只有一个线程在执行python代码。
+2. IO密集型任务： GIL对IO密集型任务的影响比较小，因为IO操作等等相对来说比较耗时,因为锁可能已经释放了。
+
+
+如何解决：
+    1.使用多进程的方式而非多线程：
+        1.1 multiprocessing模块：启动多进程，每个进程有自己的python解释器和GIL，可以充分利用多核的性能，适合CPU密集任务。
+        1.2 多进程可以避开GIL的限制，但是每个进程有自己独立的内存空间，进程间通讯更新，Queue或者Pipe
+    2.使用C扩展或者第三方库。
+    3.异步编程： 对于IO密级任务，使用asyncio等异步框架。异步编程通过时间循环和协程在单线程中高效处理大量的IO操作，避免多线程GIL问题
+</code></pre>
+<h2 id="2-描述python的垃圾回收机制引用计数分代回收并解释如何解决循环引用问题"><a class="markdownIt-Anchor" href="#2-描述python的垃圾回收机制引用计数分代回收并解释如何解决循环引用问题"></a> 2、描述Python的垃圾回收机制（引用计数+分代回收），并解释如何解决循环引用问题。</h2>
+<h2 id="21-引用计数"><a class="markdownIt-Anchor" href="#21-引用计数"></a> 2.1 引用计数</h2>
+<pre><code>每个python对象都有一个引用计数器，记录有多少个变量引用该对象。当引用计数为0时，表示该对象不再被使用，可以被释放，从而释放内存。
+-  增加引用计数： 当一个新对象创建或者数据结构引用该对象时，引用计数+1
+-  减少引用计数:  当一个引用变量被删除、重新赋值或者超出作用域，引用计数-1
+- 内存回收： 当对象的引用计数为0时，python会自动回收该对象的内存，避免内存泄漏。
+</code></pre>
+<h2 id="22-分代回收"><a class="markdownIt-Anchor" href="#22-分代回收"></a> 2.2 分代回收</h2>
+<pre><code>引用计数虽然很有效，但是在有些情况下不能解决所有垃圾回收问题。 尤其是在处理长时间存在且生命周期较长的对象。
+分代回收机制将对象分为不同“代”来优化垃圾回收的过程。
+
+python的分代回收机制包括三代：
+1.第0代： 创建新的对象，由于大多数对象的生命周期较短，因此大多数对象在0代就被回收的概率较高。
+2.第1代： 经过第一次垃圾回收之后还存在的对象，因此存活时间教长
+3.第2代： 经过多次垃圾回收任然还存活的对象。 他们被认为是长期存在的一些，因此回收率较低。
+</code></pre>
+<h2 id="23-如何解决循环引用的问题"><a class="markdownIt-Anchor" href="#23-如何解决循环引用的问题"></a> 2.3 如何解决循环引用的问题：</h2>
+<ul>
+<li>
+<p>什么是循环引用？</p>
+<pre><code>循环引用问题是指两个对象或者多个对象相互引用对方，导致对象的引用计数无法降低到0，造成内存泄漏。
+
+python的垃圾回收专门对循环引用做了优化，循环引用检测由GC模块的**垃圾回收器**负责，它会定期
+检测对象之间的引用关系，检测是否存在循环引用，并将其清理。
+
+- GC模块： 
+- 自动清理：在分代回收的过程中，Python的垃圾回收器会识别并清理循环引用。它会定期检查第0代和第1代对象，并执行检测以发现任何无法通过引用计数机制清理的对象。
+</code></pre>
+</li>
+<li>
+<p>如何解决？</p>
+<pre><code>弱引用：使用weakref模块创建弱引用，弱引用不会增加对象的引用计数，避免了对象间的强引用循环。对于需要共享和缓存的对象，可以使用weakref来避免循环引用。
+分离数据和行为：避免对象之间的直接引用关系，尽量将数据存储和行为分开，减少不必要的引用。
+优化代码的组织结构： 设计问题
+</code></pre>
+</li>
+</ul>
+<h2 id="3-以下代码的输出是什么解释原因"><a class="markdownIt-Anchor" href="#3-以下代码的输出是什么解释原因"></a> 3、以下代码的输出是什么？解释原因：</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x, lst=[]</span>):</span><br><span class="line">    lst.append(x)</span><br><span class="line">    <span class="keyword">return</span> lst</span><br><span class="line"><span class="built_in">print</span>(func(<span class="number">1</span>))  <span class="comment"># 输出？ [1]</span></span><br><span class="line"><span class="built_in">print</span>(func(<span class="number">2</span>))  <span class="comment"># 输出？ [1,2]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在python中，默认参数是函数定义式计算的，而不是每次调用时重新计算，所以后续调用会一直共享lst</span><br></pre></td></tr></table></figure>
+<h2 id="4-__slots__的作用是什么使用它有什么优缺点"><a class="markdownIt-Anchor" href="#4-__slots__的作用是什么使用它有什么优缺点"></a> 4、__slots__的作用是什么？使用它有什么优缺点？</h2>
+<h3 id="41-__slots__的作用"><a class="markdownIt-Anchor" href="#41-__slots__的作用"></a> 4.1 __slots__的作用</h3>
+<pre><code>- 节省内存
+- 提高性能
+- 限制属性动态添加
+</code></pre>
+<h3 id="42-__slots__的优缺点"><a class="markdownIt-Anchor" href="#42-__slots__的优缺点"></a> 4.2 __slots__的优缺点</h3>
+<ul>
+<li>优点：
+<ul>
+<li>节省内存：不再为乜咯实例维护一个__dict__对象，而使用一个紧凑的结构存储属性数据</li>
+<li>提高性能： 属性查找和访问比动态字典存储更快，时间复杂度更低</li>
+<li>防止意外动态属性： 避免不小心添加不需要的属性，能保证类设计的一致性。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>无法动态添加新属性</li>
+<li>与继承的兼容性差： 如果子类不使用__slots__，将恢复__dict__</li>
+<li>增加了代码的复杂性： 比如试图添加新的属性</li>
+</ul>
+</li>
+</ul>
+<h1 id="二-元编程与设计模式"><a class="markdownIt-Anchor" href="#二-元编程与设计模式"></a> 二、元编程与设计模式</h1>
+<h2 id="21-实现一个单例模式singleton要求线程安全且支持懒加载"><a class="markdownIt-Anchor" href="#21-实现一个单例模式singleton要求线程安全且支持懒加载"></a> 2.1 实现一个单例模式（Singleton），要求线程安全且支持懒加载。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>:</span><br><span class="line">    __instance = <span class="literal">None</span></span><br><span class="line">    _lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">if</span> cls.__instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">with</span> cls._lock:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> cls.__instance:</span><br><span class="line">                    cls.__instance = <span class="built_in">super</span>(Singleton, cls).__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls.__instance</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>, <span class="string">&#x27;_initialized&#x27;</span>):</span><br><span class="line">            <span class="variable language_">self</span>._initialized = <span class="literal">True</span></span><br><span class="line">            <span class="variable language_">self</span>.value = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试单例模式</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_singleton</span>(<span class="params">value</span>):</span><br><span class="line">    singleton = Singleton(value)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Singleton instance with value: <span class="subst">&#123;singleton.get_value()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟多线程环境</span></span><br><span class="line">thread1 = threading.Thread(target=test_singleton, args=(<span class="string">&quot;first&quot;</span>,))</span><br><span class="line">thread2 = threading.Thread(target=test_singleton, args=(<span class="string">&quot;second&quot;</span>,))</span><br><span class="line"></span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line"></span><br><span class="line">thread1.join()</span><br><span class="line">thread2.join()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="22-编写一个装饰器retrymax_attempts3-delay1使被装饰的函数在抛出异常时自动重试最多尝试max_attempts次每次间隔delay秒"><a class="markdownIt-Anchor" href="#22-编写一个装饰器retrymax_attempts3-delay1使被装饰的函数在抛出异常时自动重试最多尝试max_attempts次每次间隔delay秒"></a> 2.2 编写一个装饰器@retry(max_attempts=3, delay=1)，使被装饰的函数在抛出异常时自动重试，最多尝试max_attempts次，每次间隔delay秒。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">retry</span>(<span class="params">max_attempts=<span class="number">3</span>, delay=<span class="number">1</span></span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">        @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            attempt = <span class="number">0</span></span><br><span class="line">            <span class="keyword">while</span> attempt &lt; max_attempts:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    attempt += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> attempt == max_attempts:</span><br><span class="line">                        <span class="keyword">raise</span> e</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;Retrying (<span class="subst">&#123;attempt&#125;</span>/<span class="subst">&#123;max_attempts&#125;</span>) after error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">                    time.sleep(delay)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@retry(<span class="params">max_attempts=<span class="number">3</span>, delay=<span class="number">2</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">unstable_function</span>():</span><br><span class="line">    <span class="keyword">if</span> random.random() &lt; <span class="number">0.7</span>:  <span class="comment"># 70% 概率抛出异常</span></span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Random failure&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Success&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行测试</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">print</span>(unstable_function())</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Function failed after retries: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="23-解释元类metaclass的作用并用元类实现一个类属性自动大写的功能如类中定义的foo-1会被转换为foo-1"><a class="markdownIt-Anchor" href="#23-解释元类metaclass的作用并用元类实现一个类属性自动大写的功能如类中定义的foo-1会被转换为foo-1"></a> 2.3 解释元类（Metaclass）的作用，并用元类实现一个类属性自动大写的功能（如类中定义的foo = 1会被转换为FOO = 1）。</h2>
+<h3 id="231-什么是元类"><a class="markdownIt-Anchor" href="#231-什么是元类"></a> 2.3.1 什么是元类？</h3>
+<pre><code>元类(MetaClass)是python的一个高级特性，他是用来创建类的类。换句话说，元类定义的类的行为。
+默认下，python的类是type创建的，但是可以通过MataClass来控制创建类的创建过程。
+</code></pre>
+<h3 id="231-元类的工作原理"><a class="markdownIt-Anchor" href="#231-元类的工作原理"></a> 2.3.1 元类的工作原理</h3>
+<ul>
+<li>类是由元类创建的： 类本身是元类创建，类的实例是类创建的。</li>
+<li>通过元类控制类的行为：元类可以修改类的属性、方法，甚至改变类的继承结构。</li>
+</ul>
+<h3 id="232-关键的元类方法"><a class="markdownIt-Anchor" href="#232-关键的元类方法"></a> 2.3.2 关键的元类方法</h3>
+<p><strong>new</strong>：这个方法在类的实例化过程中首先被调用，用来创建类对象。<br />
+<strong>init</strong>：在 <strong>new</strong> 方法之后被调用，用来初始化类的属性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 定义一个元类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UppercaseMeta</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, name, bases, dct</span>):</span><br><span class="line">        <span class="comment"># 创建一个新的字典来存储修改后的类属性</span></span><br><span class="line">        new_dct = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> dct.items():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> key.startswith(<span class="string">&#x27;__&#x27;</span>):  <span class="comment"># 排除内置属性和方法</span></span><br><span class="line">                new_dct[key.upper()] = value</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                new_dct[key] = value  <span class="comment"># 保留内置属性</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls, name, bases, new_dct)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用元类创建一个类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span>(metaclass=UppercaseMeta):</span><br><span class="line">    foo = <span class="number">1</span></span><br><span class="line">    bar = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">print</span>(MyClass.FOO)  <span class="comment"># 输出: 1</span></span><br><span class="line"><span class="built_in">print</span>(MyClass.BAR)  <span class="comment"># 输出: 2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="三-并发与异步编程"><a class="markdownIt-Anchor" href="#三-并发与异步编程"></a> 三、并发与异步编程</h1>
+<h2 id="31-对比python中multiprocessing-threading和asyncio的适用场景及性能差异"><a class="markdownIt-Anchor" href="#31-对比python中multiprocessing-threading和asyncio的适用场景及性能差异"></a> 3.1 对比Python中multiprocessing、threading和asyncio的适用场景及性能差异。</h2>
+<h3 id="311-multiprocessing多进程"><a class="markdownIt-Anchor" href="#311-multiprocessing多进程"></a> 3.1.1 multiprocessing多进程</h3>
+<ul>
+<li>使用场景：
+<ul>
+<li>CPU密集型: 当任务需要大量的CPU计算时，multiprocessing适合于分布任务到多个进程，并且可以充分利用多核。</li>
+<li>避免GIL锁： 由于GIL的存在，无法真正实现多核并行计算，multiprocessing创建多个进程，每个进程有独立的内存空间和解释器，充分利用多核。</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>高性能： 通过多进程并行，充分利用多核CPU，适合负载的计算任务。</li>
+<li>内存开销大：每个进程有自己的独立的内存空间，进程之间通讯需要IPC，可能会增加内存开销和延时。</li>
+<li>启动开销：启动进程比启动线程慢，因此在需要拼单创建进程的场景中可能会有性能损耗。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cpu_bound_task</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sum</span>(i * i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">with</span> multiprocessing.Pool(<span class="number">4</span>) <span class="keyword">as</span> pool:</span><br><span class="line">        results = pool.<span class="built_in">map</span>(cpu_bound_task, [<span class="number">10</span>**<span class="number">6</span>] * <span class="number">4</span>)</span><br><span class="line">    <span class="built_in">print</span>(results)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="312-threading"><a class="markdownIt-Anchor" href="#312-threading"></a> 3.1.2 threading</h3>
+<ul>
+<li>适用场景：
+<ul>
+<li>IO密集型任务：当任务主要是等待IO操作（网络请求、磁盘操作、数据库查询）时，threading可以通过线程切换来提高效率。</li>
+<li>GUI应用程序：在GUI应用中，通常需要多线程来避免界面卡顿，力图后台执行任务，同时保持前台响应。</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>受限于GIL： 受限于GIL的限制，同一时刻只有一个线程执行python程序。</li>
+<li>轻量级：线程的创建和切换要轻量，内存开销相对较小。</li>
+<li>适用于IO密集型：由于线程在等待IO操作时能够释放GIL，因此多个线程同时操作IO，提高并发性能。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">io_bound_task</span>():</span><br><span class="line">    <span class="keyword">import</span> time</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;I/O task completed&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">threads = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=io_bound_task)</span><br><span class="line">    threads.append(t)</span><br><span class="line">    t.start()</span><br><span class="line"><span class="keyword">for</span> thread <span class="keyword">in</span> threads:</span><br><span class="line">    thread.join()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="313-asyncio-异步编程"><a class="markdownIt-Anchor" href="#313-asyncio-异步编程"></a> 3.1.3 asyncio (异步编程)</h3>
+<ul>
+<li>适合场景：
+<ul>
+<li>IO密集型任务：与threading类似, asyncio适合于异步IO操作，如网络请求</li>
+<li>高并发应用：适用于需要高并发处理大量I/O，例如爬虫等等</li>
+<li>单线程异步任务：适用于单线程的异步任务，避免上下文的切换等</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>轻量级：比于多线程和多进程，asyncio 更加轻量。通过事件循环机制，单线程可以并发执行多个任务，而不需要多线程或多进程的开销。</li>
+<li>非阻塞：asyncio 任务在执行 I/O 操作时不会阻塞主线程，因此可以更高效地处理大量并发任务。</li>
+<li>适用于IO密级：asyncio 在处理 I/O 密集型任务时，能够通过非阻塞 I/O 提高效率，尤其是在需要大量等待 I/O 响应的情况下。</li>
+</ul>
+</li>
+</ul>
+<h2 id="32-以下代码是否存在问题如何修正"><a class="markdownIt-Anchor" href="#32-以下代码是否存在问题如何修正"></a> 3.2 以下代码是否存在问题？如何修正？</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">increment</span>():</span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line">threads = [threading.Thread(target=increment) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads: t.start()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads: t.join()</span><br><span class="line"><span class="built_in">print</span>(counter)  <span class="comment"># 输出是否总是1000000？</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改之后：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line">lock = threading.Lock()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">increment</span>():</span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">        <span class="keyword">with</span> lock:</span><br><span class="line">            counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">threads = [threading.Thread(target=increment) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads: t.start()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads: t.join()</span><br><span class="line"><span class="built_in">print</span>(counter)  <span class="comment"># 输出是否总是1000000？</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="33-用asyncio编写一个并发http请求函数要求同时请求3个url并在所有请求完成后返回结果列表"><a class="markdownIt-Anchor" href="#33-用asyncio编写一个并发http请求函数要求同时请求3个url并在所有请求完成后返回结果列表"></a> 3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</h2>
+<h1 id="四-性能优化与高级用法"><a class="markdownIt-Anchor" href="#四-性能优化与高级用法"></a> 四、性能优化与高级用法</h1>
+<h2 id="41-如何用生成器generator实现一个内存高效的惰性数据处理管道举例说明"><a class="markdownIt-Anchor" href="#41-如何用生成器generator实现一个内存高效的惰性数据处理管道举例说明"></a> 4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_large_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="keyword">yield</span> line.strip()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用管道，避免一次性加载大文件</span></span><br><span class="line">lines = read_large_file(<span class="string">&#x27;data/test.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="42-使用functoolslru_cache优化递归斐波那契数列函数并解释其原理"><a class="markdownIt-Anchor" href="#42-使用functoolslru_cache优化递归斐波那契数列函数并解释其原理"></a> 4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="43-如何用cython或numba加速python代码请简述步骤"><a class="markdownIt-Anchor" href="#43-如何用cython或numba加速python代码请简述步骤"></a> 4.3 如何用Cython或Numba加速Python代码？请简述步骤。</h2>
+<h1 id="五-数据库与orm"><a class="markdownIt-Anchor" href="#五-数据库与orm"></a> 五、数据库与ORM</h1>
+<h2 id="51-解释sqlalchemy的session和connection的区别以及scoped_session的作用"><a class="markdownIt-Anchor" href="#51-解释sqlalchemy的session和connection的区别以及scoped_session的作用"></a> 5.1 解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。</h2>
+<h2 id="52-如何用python实现数据库连接池写出伪代码逻辑"><a class="markdownIt-Anchor" href="#52-如何用python实现数据库连接池写出伪代码逻辑"></a> 5.2 如何用Python实现数据库连接池？写出伪代码逻辑。</h2>
+<h2 id="53-设计一个支持批量插入10万条数据到mysql的方案避免内存溢出"><a class="markdownIt-Anchor" href="#53-设计一个支持批量插入10万条数据到mysql的方案避免内存溢出"></a> 5.3 设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。</h2>
+<h1 id="六-算法与数据结构"><a class="markdownIt-Anchor" href="#六-算法与数据结构"></a> 六、算法与数据结构</h1>
+<h2 id="61-实现一个lru缓存least-recently-used要求所有操作时间复杂度为o1"><a class="markdownIt-Anchor" href="#61-实现一个lru缓存least-recently-used要求所有操作时间复杂度为o1"></a> 6.1 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">LRU算法： 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRU</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, capacity</span>):</span><br><span class="line">        <span class="variable language_">self</span>.capacity = capacity</span><br><span class="line">        <span class="variable language_">self</span>.cache = OrderedDict()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取数据</span></span><br><span class="line"><span class="string">        :param key:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>.cache:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="variable language_">self</span>.cache.move_to_end(key)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.cache[key]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set</span>(<span class="params">self, key, value</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        设置数据</span></span><br><span class="line"><span class="string">        :param key:</span></span><br><span class="line"><span class="string">        :param value:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.cache:</span><br><span class="line">            <span class="variable language_">self</span>.cache.move_to_end(key)</span><br><span class="line">        <span class="variable language_">self</span>.cache[key] = value</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(<span class="variable language_">self</span>.cache) &gt; <span class="variable language_">self</span>.capacity:</span><br><span class="line">            <span class="variable language_">self</span>.cache.popitem(last=<span class="literal">False</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="62-编写一个快速排序quicksort的生成器版本支持惰性输出排序结果"><a class="markdownIt-Anchor" href="#62-编写一个快速排序quicksort的生成器版本支持惰性输出排序结果"></a> 6.2 编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">quickSort</span>(<span class="params">arr, left, right</span>):</span><br><span class="line">    <span class="keyword">if</span> left &gt;= right:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    p = partition(arr, left, right) <span class="comment"># 对数组进行划分，返回基准元素的最终位置</span></span><br><span class="line">    quickSort(arr, left, p - <span class="number">1</span>)  <span class="comment"># 对左边部分进行</span></span><br><span class="line">    quickSort(arr, p + <span class="number">1</span>, right)  <span class="comment"># 对右边部分进行排序</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">partition</span>(<span class="params">arr, left, right</span>):</span><br><span class="line">    value = arr[right]  <span class="comment"># 最右边的元素作为基准元素</span></span><br><span class="line">    i = left</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(left, right):</span><br><span class="line">        <span class="keyword">if</span> arr[j] &lt;= value:</span><br><span class="line">            arr[j], arr[i] = arr[i], arr[j] <span class="comment">#将小于基准的元素移到左边</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    arr[i], arr[right] = arr[right], arr[i] <span class="comment"># 将基准放在合适的位置</span></span><br><span class="line">    <span class="keyword">return</span> i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    arr = [<span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">100</span>]</span><br><span class="line">    quickSort(arr, <span class="number">0</span>, <span class="built_in">len</span>(arr) - <span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(arr)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式二： 惰性输出</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">quickSortGenerator</span>(<span class="params">arr, left, right</span>):</span><br><span class="line">    <span class="keyword">if</span> left &lt; right:</span><br><span class="line">        p = partition(arr, left, right)</span><br><span class="line">        <span class="comment"># yield 左半部分的排序结果</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> quickSortGenerator(arr, left, p - <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># yield 当前元素（基准元素）已排序的结果</span></span><br><span class="line">        <span class="keyword">yield</span> arr</span><br><span class="line">        <span class="comment"># yield 右半部分的排序结果</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> quickSortGenerator(arr, p + <span class="number">1</span>, right)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">partition</span>(<span class="params">arr, left, right</span>):</span><br><span class="line">    value = arr[right]  <span class="comment"># 最右边的元素作为基准</span></span><br><span class="line">    i = left</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(left, right):</span><br><span class="line">        <span class="keyword">if</span> arr[j] &lt;= value:</span><br><span class="line">            arr[j], arr[i] = arr[i], arr[j]</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    arr[i], arr[right] = arr[right], arr[i]</span><br><span class="line">    <span class="keyword">return</span> i</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    arr = [<span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">100</span>]</span><br><span class="line">    generator = quickSortGenerator(arr, <span class="number">0</span>, <span class="built_in">len</span>(arr) - <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> sorted_arr <span class="keyword">in</span> generator:</span><br><span class="line">        <span class="built_in">print</span>(sorted_arr)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="63-反转链表leetcode-206要求递归和迭代两种解法"><a class="markdownIt-Anchor" href="#63-反转链表leetcode-206要求递归和迭代两种解法"></a> 6.3 反转链表（LeetCode 206），要求递归和迭代两种解法。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">反转链表</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reverse_list</span>(<span class="params">head</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    递归反转链表</span></span><br><span class="line"><span class="string">    :param head:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> head <span class="keyword">or</span> <span class="keyword">not</span> head.<span class="built_in">next</span>:</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    p = reverse_list(head.<span class="built_in">next</span>)</span><br><span class="line">    head.<span class="built_in">next</span>.<span class="built_in">next</span> = head</span><br><span class="line">    head.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">return</span> p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reverse_list</span>(<span class="params">head</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    迭代反转链表</span></span><br><span class="line"><span class="string">    :param head:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    prev, curr = <span class="literal">None</span>, head</span><br><span class="line">    <span class="keyword">while</span> curr:</span><br><span class="line">        next_node = curr.<span class="built_in">next</span></span><br><span class="line">        curr.<span class="built_in">next</span> = prev</span><br><span class="line">        prev = curr</span><br><span class="line">        curr = next_node</span><br><span class="line">    <span class="keyword">return</span> prev</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="七-系统设计"><a class="markdownIt-Anchor" href="#七-系统设计"></a> 七、系统设计</h1>
+<h2 id="71-设计一个支持动态扩缩容的任务队列系统类似celery需考虑任务去重-失败重试和优先级"><a class="markdownIt-Anchor" href="#71-设计一个支持动态扩缩容的任务队列系统类似celery需考虑任务去重-失败重试和优先级"></a> 7.1 设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。</h2>
+<h2 id="72-如何用python构建一个高性能rest-api服务列举关键库如fastapi及优化点如异步-缓存"><a class="markdownIt-Anchor" href="#72-如何用python构建一个高性能rest-api服务列举关键库如fastapi及优化点如异步-缓存"></a> 7.2 如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。</h2>
+<h2 id="73-设计一个实时日志分析系统要求每秒处理10万条日志并统计错误率"><a class="markdownIt-Anchor" href="#73-设计一个实时日志分析系统要求每秒处理10万条日志并统计错误率"></a> 7.3 设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟生成日志数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_log</span>():</span><br><span class="line">    error_types = [<span class="string">&#x27;INFO&#x27;</span>, <span class="string">&#x27;WARN&#x27;</span>, <span class="string">&#x27;ERROR&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;random.choice(error_types)&#125;</span>: This is a sample log.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 统计错误日志</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LogAnalyzer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.error_counter = Counter()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">process_log</span>(<span class="params">self, log</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;处理单条日志&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.00001</span>)  <span class="comment"># 模拟I/O延迟</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;ERROR&quot;</span> <span class="keyword">in</span> log:</span><br><span class="line">            <span class="variable language_">self</span>.error_counter[<span class="string">&quot;ERROR&quot;</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">analyze_logs</span>(<span class="params">self, logs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;分析多条日志&quot;&quot;&quot;</span></span><br><span class="line">        tasks = [<span class="variable language_">self</span>.process_log(log) <span class="keyword">for</span> log <span class="keyword">in</span> logs]</span><br><span class="line">        <span class="keyword">await</span> asyncio.gather(*tasks)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_error_rate</span>(<span class="params">self, total_logs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算错误率&quot;&quot;&quot;</span></span><br><span class="line">        error_count = <span class="variable language_">self</span>.error_counter[<span class="string">&quot;ERROR&quot;</span>]</span><br><span class="line">        <span class="keyword">return</span> error_count / total_logs * <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">log_generator</span>(<span class="params">log_analyzer, num_logs=<span class="number">100000</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成并处理日志&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_logs):</span><br><span class="line">        log = generate_log()</span><br><span class="line">        <span class="keyword">await</span> log_analyzer.process_log(log)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    log_analyzer = LogAnalyzer()</span><br><span class="line"></span><br><span class="line">    start_time = time.time()</span><br><span class="line">    <span class="keyword">await</span> log_generator(log_analyzer)</span><br><span class="line">    end_time = time.time()</span><br><span class="line"></span><br><span class="line">    elapsed_time = end_time - start_time</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Processed 100,000 logs in <span class="subst">&#123;elapsed_time:<span class="number">.2</span>f&#125;</span> seconds.&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Error rate: <span class="subst">&#123;log_analyzer.get_error_rate(<span class="number">100000</span>):<span class="number">.2</span>f&#125;</span>%&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    asyncio.run(main())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">python面试题</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../../../../../categories/python/">python</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../../../../../tag/python%E9%9D%A2%E8%AF%95%E9%A2%98/">python面试题</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../../../12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/04.django/01.01_Django%E5%9F%BA%E7%A1%80/10.django%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="prev-prefix">« </a> 上一篇：    <a href="../../../../12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/04.django/01.01_Django%E5%9F%BA%E7%A1%80/10.django%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="发布于 2025-02-12 08:05">10.django生命周期</a>
+                        <br>
+                    
+                    
+                        <a href="../../../../../../2024/12/17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" class="next-prefix">» </a> 下一篇：    <a href="../../../../../../2024/12/17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" title="发布于 2024-12-17 07:03">01.python的内存管理机制</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
