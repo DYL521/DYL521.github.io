@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>
+        
+            01.rocketMQ
+        
+    </title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/NotoSerifSC.css">
+    <link type="text/css" rel="stylesheet" href="/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="/font/Roboto.css">
+    <link type="text/css" rel="stylesheet" href="/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="/css/base.css">
+    <link type="text/css" rel="stylesheet" href="/css/code.css">
+    <link type="text/css" rel="stylesheet" href="/css/prism-one-dark-pro.css">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <a id="cover"></a>
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
+    <div class="vertical">
+        <div class="inner">
+            
+                <h1 class="header-subtitle">01.rocketMQ</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2024-11-18
+                        </span>
+                        
+                            
+                                <span id="/2024/11/18/02.消息队列/01.rocketmq/01.rocketMQ/" class="leancloud_visitors" data-flag-title="01.rocketMQ">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2024/11/18/02.消息队列/01.rocketmq/01.rocketMQ/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                        
+                            <span class="category-color">mq</span>
+                        
+                            <span class="category-color">rocketMQ</span>
+                        
+                    
+                    
+                        
+                            <span class="tag-color">rocketMQ</span>
+                        
+                    
+                </div>
+            
+        </div>
+    </div>
+    
+</div>
+<div id="container">
+    
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <ul>
+<li><a target="_blank" rel="noopener" href="https://javabetter.cn/sidebar/sanfene/rocketmq.html">https://javabetter.cn/sidebar/sanfene/rocketmq.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/crazymakercircle/p/17895128.html">https://www.cnblogs.com/crazymakercircle/p/17895128.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://rocketmq.apache.org/zh/docs/featureBehavior/01normalmessage">https://rocketmq.apache.org/zh/docs/featureBehavior/01normalmessage</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_24950043/article/details/139741449">https://blog.csdn.net/qq_24950043/article/details/139741449</a></li>
+</ul>
+<h1 id="1-基础"><a class="markdownIt-Anchor" href="#1-基础"></a> 1、基础</h1>
+<h2 id="1为什么要使用消息队列"><a class="markdownIt-Anchor" href="#1为什么要使用消息队列"></a> 1.为什么要使用消息队列？</h2>
+<p>消息队列是一种很重要的中间件技术，广泛存在分布式系统中， 以提高系统的可用性，解耦能力和异步通讯效率。</p>
+<h3 id="11-解耦"><a class="markdownIt-Anchor" href="#11-解耦"></a> 1.1 解耦</h3>
+<p>生产者将消息放入队列，消费中，从队列里消费消息，这样实现了生产者和消费者就实现了解耦，不直接交互；</p>
+<h3 id="12-异步"><a class="markdownIt-Anchor" href="#12-异步"></a> 1.2 异步</h3>
+<p>系统可以将那些耗时的任务放在消息队列中异步处理，从而快手响应用户的请求；</p>
+<h3 id="13-削峰"><a class="markdownIt-Anchor" href="#13-削峰"></a> 1.3 削峰</h3>
+<p>削峰填谷是一种应对系统高并发请求的瞬时流量高峰，通过消息队列，可以将瞬时高峰流量转为持续的低流量，从而保护系统的高可用性。</p>
+<h1 id="2-为什么选择rocketmq"><a class="markdownIt-Anchor" href="#2-为什么选择rocketmq"></a> 2、为什么选择rocketMQ？</h1>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/mq.jpg" alt="" /></p>
+<h1 id="3-rocketmq的优缺点"><a class="markdownIt-Anchor" href="#3-rocketmq的优缺点"></a> 3、rocketMQ的优缺点</h1>
+<ul>
+<li>优点：
+<ul>
+<li>单机吞吐量： 十万级</li>
+<li>可用性： 非常高，分布式架构</li>
+<li>消息可靠性： 经过参数优化配置，消息可以做到0丢失</li>
+<li>功能支持： MQ功能完善，分布式，扩展性好</li>
+<li>RoketMQ在稳定性上可能更值得信赖，这些业务场景在阿里双 11 已经经历了多次考验，如果你的业务有上述并发场景，建议可以选择RocketMQ</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>配置相对比较复杂，学习成本比较高</li>
+<li>没有在 MQ 核心中去实现JMS等接口，有些系统要迁移需要修改大量代码</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-消息队列的模型"><a class="markdownIt-Anchor" href="#4-消息队列的模型"></a> 4、消息队列的模型</h1>
+<h2 id="41-队列模型"><a class="markdownIt-Anchor" href="#41-队列模型"></a> 4.1 队列模型</h2>
+<p>生产者向某个队列发送消息，一个队列存在多个生产者的消息，一个队列也可以有多个消费者； 但是消费者之间是竞争关系，<strong>每条消息只能被一个消费者消费</strong></p>
+<h2 id="42-发布订阅模型"><a class="markdownIt-Anchor" href="#42-发布订阅模型"></a> 4.2 发布/订阅模型</h2>
+<p>在这个模型中，消息的发送方是Publisher，消息的订阅方是Subscribe， 服务端存放消息的地方是Topic。<br />
+生产者发送消息给Topic，订阅了这个Topic的消费者全部都会收到这个消息；<br />
+这个消息，就<strong>可以被多个消费者消费</strong>了~</p>
+<h1 id="5-rocketmq的消息模型"><a class="markdownIt-Anchor" href="#5-rocketmq的消息模型"></a> 5、RocketMq的消息模型</h1>
+<p>RocketMq使用的是标准的发布订阅模型！ RocketMq本身由一下几部分组成</p>
+<ul>
+<li>Message: 传输的消息。 一条Message必须包含Topic，可选的Tag和额外的键值对，用于在Broker查找此消息</li>
+<li>Topic(主题): 可以认为是消息的归类，是一级类型；Topic和生产者、消费者关系松散，一个Topic可以有多个消费者，一个生产者也可以同时向不同的Topic发送消息</li>
+<li>Tag(标签)：可以看做是子主题，二级类型； 同一个业务模块不同目的地可以用相同的Topic，不同的tag来标识；</li>
+<li>Group：每个消费组中都有消费主题中一份完整的消息，不同消费组不受到影响；<strong>同一个消费组内，消费者之间存在竞争关系，只能被消费组的一个消费者消费</strong></li>
+<li>Message queue(消息队列)：一个Topic下可以有多个消息队列，Topic包括多个Message Queue， 如果一个Consumer需要获取Topic下的所有消息，就需要遍历所有的Message Queue</li>
+<li>Offset： 在Topic的消费过程中，由于消息需要被不同的消费者多次消费，所以消费完的消息不会立即删除； 这需要RocketMQ在每个消费组上维护一个消费位置(consumer Offset)，每<br />
+消费一次，下标就+1；<br />
+<img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/mq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B.png" alt="image" /></li>
+</ul>
+<h1 id="6-消息的消费模式"><a class="markdownIt-Anchor" href="#6-消息的消费模式"></a> 6、消息的消费模式</h1>
+<ul>
+<li>集群模式：默认模式，一个消费者组共同消费一个主题的多个队列，一个队列只会被一个消费者消费</li>
+<li>广播模式：会给消费者组的每一个发送进行消费</li>
+</ul>
+<h1 id="7-rocket的基本架构"><a class="markdownIt-Anchor" href="#7-rocket的基本架构"></a> 7、Rocket的基本架构</h1>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/rocketMq%E6%B6%88%E6%81%AF%E6%9E%B6%E6%9E%84.png" alt="image" /></p>
+<h1 id="8-基本架构的四个组成部分"><a class="markdownIt-Anchor" href="#8-基本架构的四个组成部分"></a> 8、基本架构的四个组成部分</h1>
+<h2 id="81-nameserver"><a class="markdownIt-Anchor" href="#81-nameserver"></a> 8.1 NameServer</h2>
+<p>NameServer是一个无状态的服务器</p>
+<ul>
+<li>功能：
+<ul>
+<li>NameServer和Broker节点保持长连接</li>
+<li>维护Topic的路由信息；服务发现功能， Broker 的心跳信息，确保其可用性</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li>每个NameServer节点是相互独立的，彼此之前没有信息交互</li>
+<li>Nameserver 被设计成几乎是无状态的，通过部署多个结点来标识自己是一个伪集群，Producer 在发送消息前从 NameServer 中获取 Topic 的路由信息也就是发往哪个 Broker，Consumer 也会定时从 NameServer 获取 Topic 的路由信息，Broker 在启动时会向 NameServer 注册，并定时进行心跳连接，且定时同步维护的 Topic 到 NameServer</li>
+</ul>
+</li>
+</ul>
+<h2 id="82-broker"><a class="markdownIt-Anchor" href="#82-broker"></a> 8.2 Broker</h2>
+<p>消息存储和中转角色，负责存储和转发消息</p>
+<h2 id="83-producer"><a class="markdownIt-Anchor" href="#83-producer"></a> 8.3 Producer</h2>
+<p>消息生产者，用户端负责发送消息，由用户自行实现和分布式部署<br />
+Producer由用户进行分布式部署，消息由Producer通过多种负载均衡模式发送到Broker集群，发送低延时，支持快速失败。</p>
+<p>RocketMQ 提供了三种方式发送消息：同步、异步和单向<br />
+同步发送：同步发送指消息发送方发出数据后会在收到接收方发回响应之后才发下一个数据包。一般用于重要通知消息，例如重要通知邮件、营销短信。<br />
+异步发送：异步发送指发送方发出数据后，不等接收方发回响应，接着发送下个数据包，一般用于可能链路耗时较长而对响应时间敏感的业务场景，例如用户视频上传后通知启动转码服务。<br />
+单向发送：单向发送是指只负责发送消息而不等待服务器回应且没有回调函数触发，适用于某些耗时非常短但对可靠性要求并不高的场景，例如日志收集</p>
+<h2 id="84-consumer"><a class="markdownIt-Anchor" href="#84-consumer"></a> 8.4 Consumer</h2>
+<p>消息消费者，负责消费消息， 一般是后台系统负责异步消费</p>
+<ul>
+<li>消费模式：集群消费和广播消息</li>
+<li>消息的获取模式： pull和push
+<ul>
+<li>拉取型：主动从服务器拉取消息，只要批量拉取到消息，用户应用就会启动消费过程</li>
+<li>推送型：封装了消息的拉取，消费精度和其他内部维护工作，将消息到达时执行的回调留给用户程序来执行</li>
+</ul>
+</li>
+</ul>
+<p>进阶</p>
+<h1 id="9-如何保证消息的可用性-可靠性-不丢失呢"><a class="markdownIt-Anchor" href="#9-如何保证消息的可用性-可靠性-不丢失呢"></a> 9、如何保证消息的可用性、可靠性、不丢失呢？</h1>
+<p>消息可能会在三个阶段发生丢失： 生产阶段、存储阶段、消费阶段<br />
+<img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/%E6%B6%88%E6%81%AF%E5%8F%AF%E8%83%BD%E4%B8%A2%E5%A4%B1%E7%9A%84%E9%98%B6%E6%AE%B5.png" alt="image" /></p>
+<h2 id="91-生产阶段"><a class="markdownIt-Anchor" href="#91-生产阶段"></a> 9.1 生产阶段</h2>
+<p>在生产阶段，主要通过<strong>请求确认机制，来保证消息的可靠传递</strong></p>
+<ul>
+<li><strong>同步发送的时候，要注意处理响应结果和异常</strong>。 如果返回响应都OK，表示消息成功发送到broker； 如果响应失败或者发生其他异常，都应该重试。</li>
+<li><strong>异步发送的时候，应该在回调方法检查</strong>。如果发生失败或者异常，都应该进行重试。</li>
+<li>如果发生超时异常，也可以通过查询日志的API，来检查是否在Broker存储成功。</li>
+</ul>
+<h2 id="92-存储阶段"><a class="markdownIt-Anchor" href="#92-存储阶段"></a> 9.2 存储阶段</h2>
+<p>在存储阶段，通过<strong>配置可靠性优先的Broker参数，来避免因宕机丢消息</strong>，简单的说可靠性优先的场景都应该使用<strong>同步</strong>；</p>
+<ul>
+<li>消息只要持久化到CommitLog（日志文件），即使Broker宕机，未能消费的消息也能恢复以后再消息。</li>
+<li>Broker的刷盘机制： 同步刷盘和异步刷盘，不管哪种方式，都能保证消息一定存储在pagecache中，但是同步刷盘更可靠， Producer发送消息等数据持久化到磁盘之后再返回响应给productor。</li>
+<li>Broker通过主从模式来保证高可用，Broker支持master和slave同步复制、master和salve异步复制模式。同步复制模式可以保证即使 Master 宕机，消息肯定在 Slave 中有备份，保证了消息不会丢失。</li>
+</ul>
+<h2 id="93-消费阶段"><a class="markdownIt-Anchor" href="#93-消费阶段"></a> 9.3 消费阶段</h2>
+<p>从Consumer角度分析，如何确保消息被成功消费？</p>
+<ul>
+<li><strong>Consumer保证消息成功消费的关键在确认的时机</strong>，<strong>不要在收到消息就立马发送消息确认</strong>， 而是在执行完所有消费的业务逻辑之后再确认。因为消息队列维护了消费的位置，逻辑执行失败了，没有确认，再去消息队列拉取消息，就还是之前的那一条。</li>
+</ul>
+<h1 id="10如何处理消息重复的问题"><a class="markdownIt-Anchor" href="#10如何处理消息重复的问题"></a> 10.如何处理消息重复的问题？</h1>
+<p>RocketMQ可以保证消息一定投递且不丢失，但是无法保证消息不重复消费<br />
+因此，<strong>需要再业务端做好幂等处理，或者消息去重</strong>。</p>
+<h1 id="11-怎么处理消息积压"><a class="markdownIt-Anchor" href="#11-怎么处理消息积压"></a> 11、怎么处理消息积压？</h1>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86%E6%B6%88%E6%81%AF%E7%A7%AF%E5%8E%8B.png" alt="image" /></p>
+<ul>
+<li>
+<p><strong>消费者扩容</strong>：如果当前topic的Message Queue的数量大于消费者数量，直接扩容消费者的数量，提高消费能力，尽快把积压的消息消费完。</p>
+</li>
+<li>
+<p><strong>消息迁移Queue扩容</strong>：如果当前topic的MessageQueue的数量小于消费者， 队列长度过小了。可以先临时的Topic，临时的topic多设置一些MessageQueue，然后<strong>先用一些消费者把消费的数据丢到临时的 Topic，因为不用业务处理，只是转发一下消息，还是很快的</strong>。接下来用扩容的消费者去消费新的 Topic 里的数据，消费完了之后，恢复原状。</p>
+</li>
+<li>
+<p>假设某个topic积压了100w的消息</p>
+</li>
+<li>
+<p>1、短期方案：</p>
+<ul>
+<li>新增5个Consumer实例</li>
+<li>每个实例设置批量拉取参数pullbatchSize =1000</li>
+<li>在消费逻辑中引入异步处理，减少每条消息的处理时间</li>
+</ul>
+</li>
+<li>
+<p>2、长期方案：</p>
+<ul>
+<li>分析积压原因，由于生产速率过快还是消费性能不足，比如慢sql，调用时间等长耗时的操作。</li>
+<li>对系统进行限流或者扩容，根据监控进行动态调整。</li>
+</ul>
+</li>
+</ul>
+<h1 id="12顺序消息如何实现"><a class="markdownIt-Anchor" href="#12顺序消息如何实现"></a> 12.顺序消息如何实现？</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38308374/article/details/111500912">https://blog.csdn.net/weixin_38308374/article/details/111500912</a></li>
+</ul>
+<h1 id="14延时消息"><a class="markdownIt-Anchor" href="#14延时消息"></a> 14.延时消息？</h1>
+<pre><code>电商订单的超时自动取消，就是一个典型的利用延时消息的例子，用户提交了一个订单，就可以发送一个延时消息，1h以后去检查订单状态，若果还未付款就取消订单
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 实例化一个生产者来产生延时消息</span></span><br><span class="line"><span class="type">DefaultMQProducer</span> <span class="variable">producer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultMQProducer</span>(<span class="string">&quot;ExampleProducerGroup&quot;</span>);</span><br><span class="line"><span class="comment">// 启动生产者</span></span><br><span class="line">producer.start();</span><br><span class="line"><span class="type">int</span> <span class="variable">totalMessagesToSend</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</span><br><span class="line">    <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Message</span>(<span class="string">&quot;TestTopic&quot;</span>, (<span class="string">&quot;Hello scheduled message &quot;</span> + i).getBytes());</span><br><span class="line">    <span class="comment">// 设置延时等级3,这个消息将在10s之后发送(现在只支持固定的几个时间,详看delayTimeLevel)</span></span><br><span class="line">    message.setDelayTimeLevel(<span class="number">3</span>);</span><br><span class="line">    <span class="comment">// 发送消息</span></span><br><span class="line">    producer.send(message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，目前RocketMQ支持的延时级别是有限的：private String messageDelayLevel = “1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h”;</p>
+<p>RocketMQ如何实现延时消息的，<strong>临时存储+定时任务!</strong></p>
+<h1 id="15怎么实现分布式消息事务"><a class="markdownIt-Anchor" href="#15怎么实现分布式消息事务"></a> 15.怎么实现分布式消息事务?</h1>
+<p>半消息： 是指暂时还不能被Consumer消费的消息， Produce成功发生到Broker端的消息，但是此消息被标记为“暂不可投递”状态，只有等Producer端执行完本地事务二次确人之后Consumer才能消费此消息。</p>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/rocketMq/%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1.png" alt="image" /></p>
+<p>1.Producer 向 broker 发送半消息<br />
+2.Producer 端收到响应，消息发送成功，此时消息是半消息，标记为 “不可投递” 状态，Consumer 消费不了。<br />
+3.Producer 端执行本地事务。<br />
+4.正常情况本地事务执行完成，Producer 向 Broker 发送 Commit/Rollback，如果是 Commit，Broker 端将半消息标记为正常消息，Consumer 可以消费，如果是 Rollback，Broker 丢弃此消息。<br />
+5.异常情况，Broker 端迟迟等不到二次确认。在一定时间后，会查询所有的半消息，然后到 Producer 端查询半消息的执行情况。<br />
+6.Producer 端查询本地事务的状态<br />
+7.根据事务的状态提交 commit/rollback 到 broker 端。（5，6，7 是消息回查）<br />
+8.消费者段消费到消息之后，执行本地事务。</p>
+<h1 id="16-死信队列是什么"><a class="markdownIt-Anchor" href="#16-死信队列是什么"></a> 16. 死信队列是什么？</h1>
+<pre><code>死信队列用于存储哪些无法被着正常处理的消息，这些消息被称为死信
+产生死信的原因： 消费者在处理时发生异常，且达到了最大重试次数。 当消费失败的原因被找到后，可以重发这些消息，让消费者重新消费！如果暂时无法处理，为避免到期后被删除，可以先将死信消息导出进行保存。
+</code></pre>
+<h1 id="17-rocketmq的整体工作流程"><a class="markdownIt-Anchor" href="#17-rocketmq的整体工作流程"></a> 17. rocketMQ的整体工作流程</h1>
+<p>rocketMQ是一个分布式消息队列，也就是消息队列+分布式系统<br />
+主要有四部分组成： NameServer注册中心集群、 Producer生产者集群、Consumer消费者集群、Broker组成：</p>
+<ul>
+<li>1.Broker启动时向所有的NameServer注册，保存长连接，没30s发生一次心跳。</li>
+<li>2.Producer在发生消息的时候向NameServer获取Broker的服务器地址，根据负载均衡算法选择一台服务器来发生消息</li>
+<li>3.Consumer消费消息同样先从 向NameServer获取Broker的服务器地址，然后主动拉取消息来消费。<br />
+<a target="_blank" rel="noopener" href="https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/nice-article/weixin-mianznxrocketmqessw-ec571bd4-fa24-4ada-87ab-f761a7dfdf3f.jpg">https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/nice-article/weixin-mianznxrocketmqessw-ec571bd4-fa24-4ada-87ab-f761a7dfdf3f.jpg</a></li>
+</ul>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="DYL521">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>DYL521
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="" target="_blank">01.rocketMQ</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                    <div class="category">
+                        分类：
+                        
+                            <a href="../../../../../../categories/mq/">mq</a>
+                        
+                            <a href="../../../../../../categories/mq/rocketMQ/">rocketMQ</a>
+                        
+                    </div>
+                
+                
+                    <div class="tag">
+                        标签：
+                        
+                            <a href="../../../../../../tag/rocketMQ/">rocketMQ</a>
+                        
+                    </div>
+                
+                <div class="article-prev-next">
+                    
+                        <a href="../../../../24/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/02.java/java%E5%9F%BA%E7%A1%80/" class="prev-prefix">« </a> 上一篇：    <a href="../../../../24/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/02.java/java%E5%9F%BA%E7%A1%80/" title="发布于 2024-11-24 04:10">java基础</a>
+                        <br>
+                    
+                    
+                        <a href="../../../../../../2022/02/09/07.%E9%9D%A2%E8%AF%95%E9%A2%98/10.%E9%9D%A2%E8%AF%95%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98/03.%E5%89%91%E6%8C%87offer/" class="next-prefix">» </a> 下一篇：    <a href="../../../../../../2022/02/09/07.%E9%9D%A2%E8%AF%95%E9%A2%98/10.%E9%9D%A2%E8%AF%95%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98/03.%E5%89%91%E6%8C%87offer/" title="发布于 2022-02-09 11:43">03.剑指offer</a>
+                    
+                </div>
+            </div>
+            
+    <div class="article-comments">
+        
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
+    
+</div>
+    <div id="footer">
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+</div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        
+            <div class="menu-notice">
+                <span class="iconfont icon-notice"></span>
+                <div class="notice">
+                    <span>简单地活着，肆意而又精彩！</span>
+                </div>
+            </div>
+        
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar">
+                    <img src="/image/sidebar/avatar.jpg">
+                </div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user">
+                        
+                            <a href="https://github.com/DYL521" target="_blank"><span>DYL521</span></a>
+                        
+                    </div>
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul>
+                    
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                    
+                        <li class=""><a href="/categories" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
+                    
+                        <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
+                    
+                        <li class=""><a href="/archives" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                    
+                        <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
+                    
+                        <li class=""><a href="/about" class="" target="_self"><span class="iconfont icon-about-fill"></span>关于</a></li>
+                    
+                        <li class=""><a href="/atom.xml" class="" target="_blank"><span class="iconfont icon-rss"></span>订阅</a></li>
+                    
+                        <li class=""><a href="javascript:;" class="search" target="_self"><span class="iconfont icon-search-menu"></span>搜索</a></li>
+                    
+                        <li class=""><a href="/comment" class="" target="_self"><span class="iconfont icon-comments-fill"></span>留言板</a></li>
+                    
+                </ul> 
+            </div> 
+            <div class="menu-link">
+                <div class="box">
+                    <div class="image-box"></div>
+                </div>
+                
+                    <a name="QQ" href="javascript:;" class="image" target="_self" data="/image/sidebar/qq.png"><span class="iconfont icon-qq"></span></a>
+                
+                    <a name="微信" href="javascript:;" class="image" target="_self" data="/image/sidebar/wechat.png"><span class="iconfont icon-wechat"></span></a>
+                
+                    <a name="GitHub" href="https://github.com/DYL521" class="" target="_blank" data=""><span class="iconfont icon-github"></span></a>
+                
+            </div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="/js/iscroll.js"></script>
+<script type="text/javascript" src="/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+    
+    <link type="text/css" rel="stylesheet" href="/css/APlayer.css">
+    <script type="text/javascript" src="/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/js/Meting.min.js"></script>
+    <script>
+        var meting_api = 'https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+    </script>
+    <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+
+    <div class="wrap-right">
+    <div class="wrap-right-hide">
+         <div class="wrap-right-button favorites">
+            <div class="iconbox" switch="false">
+                <span class="iconfont icon-favorites"></span>
+            </div>
+            <span class="icontext">关注</span>
+         </div>
+        <div class="wrap-right-button search">
+            <div class="iconbox">
+                <span class="iconfont icon-search-menu"></span>
+            </div>
+            <span class="icontext">搜索</span>
+        </div>
+        <div class="wrap-right-button menu-button">
+            <div class="iconbox">
+                <span class="iconfont icon-menu"></span>
+            </div>
+            <span class="icontext">菜单</span>
+        </div>
+        <div class="wrap-right-button mode">
+            <div class="light">
+                <div class="iconbox">
+                    <span class="iconfont icon-daymode"></span>
+                </div>
+                <span class="icontext">浅色模式</span>
+            </div>
+            <div class="dark">
+                <div class="iconbox">
+                    <span class="iconfont icon-nightmode-fill"></span>
+                </div>
+                <span class="icontext">深色模式</span>
+            </div>
+        </div>
+        <div class="wrap-right-button bottom">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">跳至底部</span>
+        </div>
+    </div>
+    <div class="wrap-right-show">
+        <div class="wrap-right-button set">
+            <div class="iconbox">
+                <span class="iconfont icon-setting"></span>
+            </div>
+            <span class="icontext">设置</span>
+        </div>
+        <div class="wrap-right-button top">
+            <div class="iconbox">
+                <span class="iconfont icon-top"></span>
+            </div>
+            <span class="icontext">返回顶部</span>
+        </div>
+    </div>
+</div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : "first19326",
+        GitHubRepositories : "Hexo-LiveForCode",
+
+        User             : "DYL521",
+        UserAvatar       : "/image/sidebar/avatar.jpg",
+        WebsiteStartDate : "2020-01-01",
+        Home             : "https://github.com/DYL521",
+
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, DYL521",
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : {
+            light : "/image/website/logo/logo.png",
+            dark  : "/image/website/logo/logo-dark.png"
+        },
+
+        ProgressBar : {
+            id       : "topProgressBar",
+            color    : "#77B6FF",
+            height   : "2px",
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound : {
+                tension  : 16,
+                friction : 5
+            },
+            spinner : {
+                id     : "spinner",
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : "#F0F0F0",
+                    stroke     : "#272633",
+                    base       : "",
+                    child      : "#272633"
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : "rgba(255, 255, 255, .2)",
+            clearOffset : 0.3
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : "60%",
+            colorBrightness  : "50%",
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : "random",
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                "/image/header/home.jpg",
+            
+                "/image/header/home2.jpg",
+            
+        ],
+        HomeBannerText  : "",
+
+        ArticleHeaderImage : [
+            
+                "/image/header/article2.jpeg",
+            
+                "/image/header/article3.jpg",
+            
+        ],
+
+        OtherBannerText : "",
+
+        Error : {
+            icon    : "icon-swimming",
+            title   : "PAGE NOT FOUND",
+            content : [
+                
+                    "很抱歉，您访问的页面不存在！",
+                
+                    "可能是输入地址有误或该地址已变更。",
+                
+            ],
+            buttons : [
+                
+                    {
+                        icon  : "icon-home",
+                        text  : "返回首页",
+                        href  : "/",
+                        class : ""
+                    },
+                
+            ]
+        },
+
+        MenuNotice : {
+            enable : true,
+            notice : "简单地活着，肆意而又精彩！",
+            speed  : 20
+        },
+        MenuList : [
+            
+                {
+                    name   : "首页",
+                    icon   : "icon-home-fill",
+                    href   : "/",
+                    type   : "index",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "分类",
+                    icon   : "icon-folder-fill",
+                    href   : "/categories",
+                    type   : "category",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "标签",
+                    icon   : "icon-discount-fill",
+                    href   : "/tag",
+                    type   : "tag",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "归档",
+                    icon   : "icon-calendar-fill",
+                    href   : "/archives",
+                    type   : "archives",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "赞赏",
+                    icon   : "icon-heart-fill",
+                    href   : "/donate",
+                    type   : "donate",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "关于",
+                    icon   : "icon-about-fill",
+                    href   : "/about",
+                    type   : "about",
+                    class  : "",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "订阅",
+                    icon   : "icon-rss",
+                    href   : "/atom.xml",
+                    type   : "",
+                    class  : "",
+                    target : "_blank"
+                },
+            
+                {
+                    name   : "搜索",
+                    icon   : "icon-search-menu",
+                    href   : "javascript:;",
+                    type   : "",
+                    class  : "search",
+                    target : "_self"
+                },
+            
+                {
+                    name   : "留言板",
+                    icon   : "icon-comments-fill",
+                    href   : "/comment",
+                    type   : "comment",
+                    class  : "",
+                    target : "_self"
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        name   : "QQ",
+                        icon   : "icon-qq",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/qq.png"
+                    },
+                
+                    {
+                        name   : "微信",
+                        icon   : "icon-wechat",
+                        href   : "javascript:;",
+                        class  : "image",
+                        target : "_self",
+                        image  : "/image/sidebar/wechat.png"
+                    },
+                
+                    {
+                        name   : "GitHub",
+                        icon   : "icon-github",
+                        href   : "https://github.com/DYL521",
+                        class  : "",
+                        target : "_blank",
+                        image  : ""
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【人生若只如初见<span><i class='iconfont icon-like-fill'></i></span>何事秋风悲画扇】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                "Based on cnblogs theme SimpleMemory.",
+                            
+                                "",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "SimpleMemory Author:",
+                            
+                                "BNDong",
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                "Theme:",
+                            
+                                "LiveForCode",
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : "",
+
+        Donate : {
+            paypal  : "",
+            bitcoin : "",
+            alipay  : "/image/donate/alipay.png",
+            wechat  : "/image/donate/wechat.png"
+        },
+
+        Search : {
+            applicationID : "LL15RDN4FO",
+            apiKey        : "c5a7149ea9f6f1ac6b20c7e1513ff90d",
+            indexName     : "hexo-blog",
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : "搜索",
+                empty       : "未发现与 「${query}」 相关的内容",
+                stats       : "${hits} 条相关条目，使用了 ${time} 毫秒",
+            }
+        }, 
+
+        Comment : {
+            switch : true,
+            type   : "Valine",
+        },
+
+        Waline : {
+            el              : ".comments-content",
+            serverURL       : "",
+            path            : window.location.pathname,
+            meta            : "['nick', 'mail', 'link']",
+            requiredMeta    : "['nick', 'mail']",
+            pageSize        : 10,
+            lang            : "zh-cn",
+            locale: {
+                admin       : "博主",
+                anonymous   : "匿名用户",
+                sofa        : "快来做第一个评论的人吧 ~",
+                placeholder : "你是我一生只会遇见一次的惊喜...",
+            },
+            dark            : "html[color-scheme='dark']",
+            search          : false,
+            pageview        : true,
+            comment         : true,
+            copyright       : false,
+        },
+
+        Valine : {
+            el             : ".comments-content",
+            appId          : "srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz",
+            appKey         : "8uVSP1q6UlALVC5igYfIfv2h",
+            serverURLs     : "",
+            placeholder    : "你是我一生只会遇见一次的惊喜...",
+            avatar         : "mm",
+            meta           : "nick,mail,link",
+            requiredFields : "nick,mail",
+            pageSize       : 5,
+            lang           : "zh-cn",
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : ".toc",
+            contentSelector       : ".article-body",
+            headingSelector       : "h1, h2, h3, h4, h5",
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : ".toc",
+            positionFixedClass    : "toc-fixed",
+            fixedSidebarOffset    : "",
+        },
+
+        Require : {
+            baseUrl     : "/js/",
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : "Meting"
+        },
+        APlayer : {
+            container : ".aplayer",
+            fixed     : true,
+            autoplay  : false,
+            loop      : "all",
+            order     : "random",
+            preload   : "auto",
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : "Endless Tears",
+                        artist : "CLIFF EDGE",
+                        cover  : "/music/cover/Endless Tears.jpg",
+                        url    : "/music/song/Endless Tears.mp3",
+                        lrc    : "/music/lrc/Endless Tears.lrc"
+                    },
+                
+            ]
+        },
+        Meting : {
+            api      : "https://api.i-meto.com/meting/api",
+            id       : "3778678", 
+            lrcshow  : false, 
+            server   : "netease", 
+            type     : "playlist", 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : "all", 
+            order    : "random", 
+            preload  : "auto", 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        Mouse : {
+            enable  : true,
+            options : {
+                size  : 6,
+                sizeF : 24
+            }
+        },
+
+        LazyLoad : {
+            default : "/image/website/lazyload.svg"
+        },
+  
+        Style : {
+            aplayer          : "/css/APlayer.css",
+            archive          : "/css/archive.css",
+            base             : "/css/base.css",
+            clipboard        : "/css/clipboard.css",
+            code             : "/css/code.css",
+            donate           : "/css/donate.css",
+            fancybox         : "/css/jquery.fancybox.css",
+            footer           : "/css/footer.css",
+            iconfont         : "/iconfont/iconfont.css",
+            index            : "/css/index.css",
+            menuBubble       : "/css/menu-bubble.css",
+            mouse            : "/css/mouse.css",
+            page             : "/css/page.css",
+            post             : "/css/post.css",
+            search           : "/css/search.css",
+            tocbot           : "/css/tocbot.css",
+            valine           : "/css/valine.css",
+            waline           : "/css/waline.css",
+            walineCustom     : "/css/waline-custom.css"
+        },
+
+        Script: {
+            aplayer          : "/js/APlayer.min.js",
+            config           : "/js/require.config.js",
+            index            : "/js/index.js",
+            instantSearch    : "/js/instantsearch.min.js",
+            iscroll          : "/js/iscroll.js",
+            jQuery           : "/js/jquery-3.4.1.min.js",
+            loading          : "/js/loading.js",
+            meting           : "/js/Meting.min.js",
+            require          : "/js/require.min.js",
+            waline           : "/js/waline.mjs",
+            pageview         : "/js/pageview.mjs",
+            comment          : "/js/comment.mjs",
+        },
+
+        Font: {
+            LongCang    : "/font/LongCang.css",
+            Monda       : "/font/Monda.css",
+            NotoSansSC  : "/font/NotoSansSC.css",
+            NotoSerifSC : "/font/NotoSerifSC.css",
+            Playball    : "/font/Playball.css",
+            PTMono      : "/font/PTMono.css",
+            Roboto      : "/font/Roboto.css",
+            RobotoSlab  : "/font/RobotoSlab.css",
+            Rosario     : "/font/Rosario.css",
+            UbuntuMono  : "/font/UbuntuMono.css"
+        },
+
+        Suffix : {
+            about : "简单地活着, 肆意又精彩."
+        },
+            
+        Theme : {
+            url  : "https://github.com/first19326/Hexo-LiveForCode",
+            name : "Hexo - Live For Code"
+        }  
+    };
+</script>
+    <script type="text/javascript" src="/js/prism.js"></script>
+    <script type="text/javascript" src="/js/code-highlight.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>
