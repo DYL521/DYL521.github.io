@@ -834,21 +834,59 @@
     var starsEl = document.getElementById('github-stars');
     if (!container) return;
 
-    var REPOS_API = 'https://api.github.com/users/DYL521/repos?sort=updated&direction=desc&per_page=6';
+    // GitHub API: fetch the user's public repos plus a curated list of other
+    // notable repos, then sort all of them by stars together.
+    var REPOS_API = 'https://api.github.com/users/DYL521/repos?sort=updated&direction=desc&per_page=100';
     var USER_API = 'https://api.github.com/users/DYL521';
+    var FEATURED_REPOS = [
+      'https://api.github.com/repos/ascending-llc/jarvis-registry'
+    ];
 
     function animateCount(el, target, duration) {
       if (!el) return;
       var start = 0;
       var startTime = null;
-      function step(timestamp) {
-        if (!startTime) startTime = timestamp;
-        var progress = Math.min((timestamp - startTime) / duration, 1);
-        var value = Math.floor(progress * (target - start) + start);
+      var rafId = null;
+      var intervalId = null;
+      var fallbackTimer = null;
+      function setValue(value) {
         el.textContent = value >= 1000 ? (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(value);
-        if (progress < 1) requestAnimationFrame(step);
       }
-      requestAnimationFrame(step);
+      function finish() {
+        if (rafId) cancelAnimationFrame(rafId);
+        if (intervalId) clearInterval(intervalId);
+        if (fallbackTimer) clearTimeout(fallbackTimer);
+        setValue(target);
+      }
+      function tick(now) {
+        if (!startTime) startTime = now;
+        var progress = Math.min((now - startTime) / duration, 1);
+        var value = Math.floor(progress * (target - start) + start);
+        setValue(value);
+        if (progress >= 1) {
+          finish();
+          return false;
+        }
+        return true;
+      }
+      function frame() {
+        if (!tick(Date.now())) return;
+        rafId = requestAnimationFrame(frame);
+      }
+      function startFallback() {
+        intervalId = setInterval(function () {
+          if (!tick(Date.now())) finish();
+        }, 16);
+      }
+      if (typeof requestAnimationFrame === 'function') {
+        rafId = requestAnimationFrame(frame);
+        fallbackTimer = setTimeout(function () {
+          if (rafId) cancelAnimationFrame(rafId);
+          startFallback();
+        }, 100);
+      } else {
+        startFallback();
+      }
     }
 
     var userPromise = fetch(USER_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
@@ -861,20 +899,35 @@
       return res.json();
     });
 
-    Promise.all([userPromise, reposPromise])
+    var featuredPromises = FEATURED_REPOS.map(function (url) {
+      return fetch(url, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+        if (!res.ok) throw new Error('GitHub featured repo API ' + res.status);
+        return res.json();
+      });
+    });
+
+    Promise.all([userPromise, reposPromise].concat(featuredPromises))
       .then(function (values) {
         var profile = values[0];
         var repos = values[1];
         if (!Array.isArray(repos)) throw new Error('Unexpected response');
+
+        // Merge user's repos with any curated featured repos, then sort by stars
+        // descending and keep the top 6.
+        var allRepos = repos.concat(values.slice(2));
+        var popularRepos = allRepos
+          .slice()
+          .sort(function (a, b) { return (b.stargazers_count || 0) - (a.stargazers_count || 0); })
+          .slice(0, 6);
 
         var reposCountEl = document.getElementById('github-repos-count');
         var followersCountEl = document.getElementById('github-followers-count');
         animateCount(reposCountEl, profile.public_repos || 0, 800);
         animateCount(followersCountEl, profile.followers || 0, 800);
 
-        renderGitHubRepos(repos);
+        renderGitHubRepos(popularRepos);
         if (starsEl) {
-          var total = repos.reduce(function (sum, r) { return sum + (r.stargazers_count || 0); }, 0);
+          var total = popularRepos.reduce(function (sum, r) { return sum + (r.stargazers_count || 0); }, 0);
           animateCount(starsEl, total, 800);
         }
       })
@@ -883,6 +936,19 @@
         renderGitHubError(getI18nKey('about_repos_error', 'Projects are temporarily unavailable. Visit GitHub instead.'));
       });
   }
+  function scheduleInitGitHubRepos() {
+    function run() {
+      try { initGitHubRepos(); } catch (e) {
+        if (window.console && console.warn) console.warn('GitHub repos init failed:', e);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
+  }
+
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     syncThemeUI(theme);
@@ -900,7 +966,6 @@
     initPostsFilter();
     initTocSpy();
     initSearch();
-    initGitHubRepos();
 
     /* ---------- mermaid diagrams ---------- */
     initMermaidBlocks();
@@ -932,4 +997,6 @@
       pre.appendChild(btn);
     });
   });
+
+  scheduleInitGitHubRepos();
 })();
