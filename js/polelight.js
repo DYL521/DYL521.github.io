@@ -249,6 +249,43 @@
     });
   }
 
+  function updateRecentItems() {
+    document.querySelectorAll('.recent-cat').forEach(function (el) {
+      var zh = el.getAttribute('data-zh-cat');
+      var en = el.getAttribute('data-en-cat');
+      if (!zh) return;
+      el.textContent = (currentLang === 'en' && en) ? en : zh;
+    });
+    document.querySelectorAll('.recent-title').forEach(function (el) {
+      var zh = el.getAttribute('data-zh-title');
+      var en = el.getAttribute('data-en-title');
+      if (!zh) return;
+      el.textContent = (currentLang === 'en' && en) ? en : zh;
+    });
+  }
+
+  function updateTagChips() {
+    document.querySelectorAll('.tag-chip').forEach(function (el) {
+      var zh = el.getAttribute('data-zh-name');
+      var en = el.getAttribute('data-en-name');
+      if (!zh) return;
+      var name = (currentLang === 'en' && en) ? en : zh;
+      var count = el.querySelector('.tag-count');
+      var countText = count ? count.textContent : '';
+      el.textContent = '';
+      el.appendChild(document.createTextNode('#' + name + ' '));
+      if (count) {
+        count.textContent = countText;
+        el.appendChild(count);
+      } else {
+        var newCount = document.createElement('span');
+        newCount.className = 'tag-count';
+        newCount.textContent = countText;
+        el.appendChild(newCount);
+      }
+    });
+  }
+
   function applyLang(target) {
     var d = DICT[target];
     if (!d) return;
@@ -269,6 +306,8 @@
     updateThemeLabel();
     updateHeroKicker();
     updateFeaturedCards();
+    updateRecentItems();
+    updateTagChips();
     if (typeof applySlide === 'function') {
       applySlide(currentSlide || 0);
     }
@@ -372,6 +411,7 @@
     var results = document.getElementById('dyl-search-results');
     var trigger = document.getElementById('dyl-search-trigger');
     var lastTrigger = null;
+    var closeBtn = document.getElementById('dyl-search-close');
     if (!overlay || !input || !results) return;
 
     var cfg = window.DYL_SEARCH || {};
@@ -387,7 +427,8 @@
       overlay.classList.add('active');
       overlay.setAttribute('aria-hidden', 'false');
       input.value = '';
-      results.innerHTML = '<div class="search-empty" data-i18n="search_placeholder">' + escapeHtml(getI18n('search_placeholder')) + '</div>';
+      results.innerHTML = '<div class="search-empty" data-i18n="search_shortcut">' + escapeHtml(getI18n('search_shortcut')) + '</div>';
+      resetFocus();
       setTimeout(function () { input.focus(); }, 50);
     }
 
@@ -397,9 +438,20 @@
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }
 
+    var focusedIndex = -1;
+    function updateFocus() {
+      var items = Array.from(results.querySelectorAll('.search-result'));
+      items.forEach(function (item, i) {
+        item.classList.toggle('focused', i === focusedIndex);
+        if (i === focusedIndex) item.scrollIntoView({ block: 'nearest' });
+      });
+    }
+    function resetFocus() { focusedIndex = -1; }
+
     function renderHits(hits) {
       if (!hits.length) {
         results.innerHTML = '<div class="search-no-results" data-i18n="search_no_results">' + escapeHtml(getI18n('search_no_results')) + '</div>';
+        resetFocus();
         return;
       }
       results.innerHTML = hits.map(function (hit) {
@@ -412,6 +464,7 @@
           '<div class="search-result-excerpt">' + excerpt + '</div>' +
           '</a>';
       }).join('');
+      resetFocus();
     }
 
     var debounce = 0;
@@ -419,7 +472,8 @@
       clearTimeout(debounce);
       var q = input.value.trim();
       if (!q) {
-        results.innerHTML = '<div class="search-empty" data-i18n="search_placeholder">' + escapeHtml(getI18n('search_placeholder')) + '</div>';
+        results.innerHTML = '<div class="search-empty" data-i18n="search_shortcut">' + escapeHtml(getI18n('search_shortcut')) + '</div>';
+        resetFocus();
         return;
       }
       results.innerHTML = '<div class="search-empty">Searching...</div>';
@@ -441,12 +495,51 @@
       if (e.target === overlay) close();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('active')) {
-        close();
-      } else if (e.key === '/' && !overlay.classList.contains('active') && document.activeElement && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        open();
+      if (!overlay.classList.contains('active')) {
+        if (e.key === '/' && document.activeElement && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          open();
+        }
+        return;
       }
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      var items = Array.from(results.querySelectorAll('.search-result'));
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusedIndex = Math.min(focusedIndex + 1, items.length - 1);
+        updateFocus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusedIndex = Math.max(focusedIndex - 1, -1);
+        updateFocus();
+      } else if (e.key === 'Enter' && focusedIndex >= 0 && items[focusedIndex]) {
+        e.preventDefault();
+        window.location.href = items[focusedIndex].getAttribute('href');
+      }
+    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+  }
+
+  function bindMobileNav() {
+    var toggle = document.getElementById('dyl-mobile-menu-toggle');
+    var menu = document.getElementById('dyl-mobile-nav');
+    if (!toggle || !menu) return;
+    toggle.addEventListener('click', function () {
+      var open = menu.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    menu.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.remove('active');
+        toggle.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
     });
   }
 
@@ -463,6 +556,7 @@
     bindLang();
     applyLang(lang);
     bindThemeToggle();
+    bindMobileNav();
     initTocSpy();
     initSearch();
 

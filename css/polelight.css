@@ -174,6 +174,64 @@ button:focus-visible {
     align-items: center;
 }
 
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.mobile-menu-toggle span {
+    display: block;
+    height: 2px;
+    background: var(--text-2);
+    border-radius: 2px;
+    transition: transform .25s, opacity .25s;
+}
+.mobile-menu-toggle span:nth-child(1) { width: 100%; }
+.mobile-menu-toggle span:nth-child(2) { width: 75%; }
+.mobile-menu-toggle span:nth-child(3) { width: 100%; }
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-nav {
+    position: fixed;
+    top: 66px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(from var(--bg-2) r g b / .98);
+    backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    padding: 30px 24px;
+    gap: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+    z-index: 99;
+}
+.mobile-nav.active {
+    opacity: 1;
+    visibility: visible;
+}
+.mobile-nav-link {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--heading);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+.mobile-nav-link.active {
+    color: var(--accent);
+}
+
 #dyl-lang-toggle {
     cursor: pointer;
     font-family: var(--font-mono);
@@ -260,24 +318,24 @@ button:focus-visible {
 }
 
 [data-theme="light"] .hero-layer:nth-child(1) {
-    background: radial-gradient(60% 80% at 22% 16%, rgba(124, 58, 237, .25), transparent 56%),
-                radial-gradient(55% 75% at 86% 22%, rgba(139, 92, 246, .18), transparent 52%),
-                radial-gradient(80% 90% at 60% 104%, rgba(109, 40, 217, .2), transparent 60%),
-                linear-gradient(150deg, #EDE9FA 0%, #F7F5FF 60%);
+    background: radial-gradient(60% 80% at 22% 16%, rgba(124, 58, 237, .32), transparent 56%),
+                radial-gradient(55% 75% at 86% 22%, rgba(139, 92, 246, .24), transparent 52%),
+                radial-gradient(80% 90% at 60% 104%, rgba(109, 40, 217, .28), transparent 60%),
+                linear-gradient(150deg, #E2D9F5 0%, #F0EDFA 60%);
 }
 
 [data-theme="light"] .hero-layer:nth-child(2) {
-    background: radial-gradient(60% 80% at 78% 18%, rgba(124, 58, 237, .25), transparent 56%),
-                radial-gradient(60% 80% at 16% 30%, rgba(139, 92, 246, .18), transparent 52%),
-                radial-gradient(80% 90% at 50% 104%, rgba(109, 40, 217, .2), transparent 60%),
-                linear-gradient(150deg, #E8E3F7 0%, #F7F5FF 60%);
+    background: radial-gradient(60% 80% at 78% 18%, rgba(124, 58, 237, .32), transparent 56%),
+                radial-gradient(60% 80% at 16% 30%, rgba(139, 92, 246, .24), transparent 52%),
+                radial-gradient(80% 90% at 50% 104%, rgba(109, 40, 217, .28), transparent 60%),
+                linear-gradient(150deg, #DDD6F2 0%, #F7F5FF 60%);
 }
 
 [data-theme="light"] .hero-layer:nth-child(3) {
-    background: radial-gradient(60% 80% at 30% 20%, rgba(124, 58, 237, .25), transparent 56%),
-                radial-gradient(55% 75% at 84% 26%, rgba(139, 92, 246, .18), transparent 52%),
-                radial-gradient(80% 90% at 55% 104%, rgba(109, 40, 217, .2), transparent 60%),
-                linear-gradient(150deg, #DDD6F2 0%, #F7F5FF 60%);
+    background: radial-gradient(60% 80% at 30% 20%, rgba(124, 58, 237, .32), transparent 56%),
+                radial-gradient(55% 75% at 84% 26%, rgba(139, 92, 246, .24), transparent 52%),
+                radial-gradient(80% 90% at 55% 104%, rgba(109, 40, 217, .28), transparent 60%),
+                linear-gradient(150deg, #D9D1EE 0%, #F7F5FF 60%);
 }
 
 .hero-particles {
@@ -311,6 +369,14 @@ button:focus-visible {
     pointer-events: none;
 }
 
+.hero-content-scrim {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(80% 70% at 20% 80%, rgba(from var(--bg) r g b / .55), transparent 60%);
+    pointer-events: none;
+    z-index: 2;
+}
+
 .hero-content {
     position: absolute;
     left: 46px;
@@ -326,6 +392,7 @@ button:focus-visible {
     color: var(--accent);
     margin-bottom: 20px;
     text-transform: uppercase;
+    text-shadow: 0 1px 16px rgba(from var(--bg) r g b / .35);
 }
 
 .hero-title {
@@ -341,13 +408,15 @@ button:focus-visible {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    filter: drop-shadow(0 1px 14px rgba(from var(--bg) r g b / .4));
 }
 
 .hero-sub {
     font-size: 18px;
-    color: rgba(from var(--heading) r g b / .82);
+    color: rgba(from var(--heading) r g b / .92);
     max-width: 620px;
     margin-bottom: 34px;
+    text-shadow: 0 1px 12px rgba(from var(--bg) r g b / .45);
 }
 
 .hero-cta {
@@ -397,7 +466,8 @@ button:focus-visible {
 .hero-meta {
     font-family: var(--font-mono);
     font-size: 12px;
-    color: rgba(from var(--accent) r g b / .7);
+    color: rgba(from var(--accent) r g b / .9);
+    text-shadow: 0 1px 10px rgba(from var(--bg) r g b / .35);
 }
 
 .hero-dots {
@@ -1557,6 +1627,9 @@ button:focus-visible {
     #dyl-nav {
         padding: 0 20px;
     }
+    .mobile-menu-toggle {
+        display: flex;
+    }
     .nav-links {
         display: none;
     }
@@ -1758,6 +1831,42 @@ button:focus-visible {
     color: var(--teal);
     border-radius: 3px;
     padding: 0 2px;
+}
+
+.search-close {
+    background: transparent;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    line-height: 1;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 0 0 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    transition: color .2s, background .2s;
+}
+.search-close:hover,
+.search-close:focus-visible {
+    color: var(--heading);
+    background: var(--surface-hover);
+}
+.search-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+}
+.search-footer-hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+}
+.search-result.focused {
+    background: var(--surface-hover);
+    outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
