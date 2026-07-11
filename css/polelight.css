@@ -124,6 +124,7 @@ button:focus-visible {
 }
 
 #dyl-nav.scrolled {
+    background: var(--bg-2);
     background: rgba(from var(--bg-2) r g b / .86);
     border-color: var(--border);
 }
@@ -202,15 +203,19 @@ button:focus-visible {
 
 .mobile-nav {
     position: fixed;
-    top: 66px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    /* Solid fallback first: the relative-color syntax below is dropped
+       entirely by browsers that don't support it, leaving the menu
+       transparent over page content. */
+    background: var(--bg-2);
     background: rgba(from var(--bg-2) r g b / .98);
     backdrop-filter: blur(14px);
     display: flex;
     flex-direction: column;
-    padding: 30px 24px;
+    padding: 96px 24px 30px;
     gap: 6px;
     opacity: 0;
     visibility: hidden;
@@ -1143,13 +1148,72 @@ button:focus-visible {
 }
 
 .mermaid {
+    position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
     margin: 28px 0;
     padding: 20px;
     border-radius: 14px;
     border: 1px solid var(--border);
     background: var(--bg-2);
+}
+
+.mermaid-view {
+    display: flex;
+    justify-content: center;
+}
+
+.mermaid-view[hidden],
+.mermaid-source[hidden] {
+    display: none;
+}
+
+.mermaid-source {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.mermaid-toolbar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity .2s;
+    z-index: 2;
+}
+
+.mermaid:hover .mermaid-toolbar,
+.mermaid-toolbar:focus-within {
+    opacity: 1;
+}
+
+.mermaid-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mermaid-toolbar {
+        transition: none;
+    }
 }
 
 .article-body table {
@@ -1330,6 +1394,11 @@ button:focus-visible {
     flex-shrink: 0;
 }
 
+.posts-list .archive-date {
+    width: 92px;
+    white-space: nowrap;
+}
+
 .archive-cat {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -1469,6 +1538,93 @@ button:focus-visible {
     line-height: 1.95;
     color: var(--text-2);
     margin: 0 0 22px;
+}
+
+.posts-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 0 6px;
+    padding: 12px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-2);
+    transition: border-color .25s;
+}
+
+.posts-filter:focus-within {
+    border-color: var(--border-hover);
+}
+
+.posts-filter-icon {
+    font-size: 18px;
+    color: var(--text-3);
+}
+
+.posts-filter-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--heading);
+}
+
+.posts-filter-input::placeholder {
+    color: var(--text-3);
+}
+
+.posts-filter-empty {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-3);
+    padding: 28px 0;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 40px;
+}
+
+.pagination .page-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--heading-2);
+    border: 1px solid var(--border);
+    padding: 9px 18px;
+    border-radius: 9px;
+    transition: border-color .25s, background .25s;
+}
+
+.pagination a.page-btn:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+}
+
+.pagination .page-btn.is-disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.pagination .page-info {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-2);
+}
+
+.about-resume-cta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: -6px 0 30px;
 }
 
 .about-section-title {
@@ -1668,6 +1824,9 @@ button:focus-visible {
 @media (max-width: 760px) {
     #dyl-nav {
         padding: 0 20px;
+    }
+    .tagline {
+        display: none;
     }
     .mobile-menu-toggle {
         display: flex;

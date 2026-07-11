@@ -39,8 +39,38 @@
         lineColor: '#7C3AED',
         secondaryColor: '#F7F5FF',
         tertiaryColor: '#EDE9FA'
-      }
+      },
+      securityLevel: 'loose'
     });
+  }
+
+  function renderMermaidBlock(code) {
+    var pre = code.parentElement;
+    var graph = code.textContent;
+    var id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+    var container = document.createElement('div');
+    container.className = 'mermaid';
+    container.id = id;
+    container.dataset.graph = graph;
+    container.textContent = graph;
+    pre.parentElement.replaceChild(container, pre);
+  }
+
+  function initMermaidBlocks() {
+    if (!window.mermaid) return;
+    var selectors = [
+      'pre code.language-mermaid',
+      'pre.language-mermaid code',
+      'pre[class*="language-mermaid"] code',
+      'code.language-mermaid'
+    ];
+    var blocks = [];
+    selectors.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (code) {
+        if (blocks.indexOf(code) === -1) blocks.push(code);
+      });
+    });
+    blocks.forEach(renderMermaidBlock);
   }
 
   function updateThemeLabel() {
@@ -52,14 +82,129 @@
     if (btn) btn.setAttribute('aria-label', txt);
   }
 
+  var mermaidRenderSeq = 0;
+
+  function mermaidShowSource(container, showSrc) {
+    var view = container.querySelector('.mermaid-view');
+    var src = container.querySelector('.mermaid-source');
+    var toggle = container.querySelector('.mermaid-toggle-btn');
+    if (!view || !src || !toggle) return;
+    src.hidden = !showSrc;
+    view.hidden = showSrc;
+    toggle.textContent = showSrc ? 'Diagram' : 'Source';
+  }
+
+  function ensureMermaidScaffold(container) {
+    var view = container.querySelector('.mermaid-view');
+    if (view) return view;
+
+    view = document.createElement('div');
+    view.className = 'mermaid-view';
+
+    var src = document.createElement('pre');
+    src.className = 'mermaid-source';
+    src.textContent = container.dataset.graph || '';
+    src.hidden = true;
+
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'mermaid-btn mermaid-toggle-btn';
+    toggle.setAttribute('aria-label', 'Toggle diagram source');
+    toggle.textContent = 'Source';
+    toggle.addEventListener('click', function () {
+      mermaidShowSource(container, !view.hidden);
+    });
+
+    var copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'mermaid-btn mermaid-copy-btn';
+    copy.setAttribute('aria-label', 'Copy diagram source');
+    copy.textContent = 'Copy';
+    copy.addEventListener('click', function () {
+      copyText(container.dataset.graph || '').then(function () {
+        copy.textContent = 'Copied';
+        setTimeout(function () { copy.textContent = 'Copy'; }, 1500);
+      }).catch(function () {
+        copy.textContent = 'Failed';
+        setTimeout(function () { copy.textContent = 'Copy'; }, 1500);
+      });
+    });
+
+    var bar = document.createElement('div');
+    bar.className = 'mermaid-toolbar';
+    bar.appendChild(toggle);
+    bar.appendChild(copy);
+
+    container.textContent = '';
+    container.appendChild(bar);
+    container.appendChild(view);
+    container.appendChild(src);
+    return view;
+  }
+
   function rerenderMermaid() {
     if (!window.mermaid || typeof window.mermaid.render !== 'function') return;
     document.querySelectorAll('.mermaid').forEach(function (container) {
       var graph = container.dataset.graph;
       if (!graph || !container.id) return;
-      window.mermaid.render(container.id, graph).then(function (result) {
-        container.innerHTML = result.svg;
-      }).catch(function () {});
+      // The render id must differ from container.id and be unique per call:
+      // mermaid.render() deletes any existing DOM element matching the id it
+      // is given, so a reused id lets concurrent renders destroy each other.
+      var renderId = container.id + '-svg-' + (++mermaidRenderSeq);
+      window.mermaid.render(renderId, graph).then(function (result) {
+        ensureMermaidScaffold(container).innerHTML = result.svg;
+      }).catch(function (err) {
+        ['', 'd'].forEach(function (prefix) {
+          var leftover = document.getElementById(prefix + renderId);
+          if (leftover && !container.contains(leftover)) leftover.remove();
+        });
+        ensureMermaidScaffold(container);
+        mermaidShowSource(container, true);
+        if (window.console && console.warn) console.warn('Mermaid render failed:', err);
+      });
+    });
+  }
+
+  function normalizeMermaidText(el) {
+    return el.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&').trim();
+  }
+
+  function collectBareMermaid(startParagraph) {
+    var lines = [normalizeMermaidText(startParagraph)];
+    var node = startParagraph.nextElementSibling;
+    var continuationPattern = /^(participant|note|loop|alt|opt|rect|par|and|end|activate|deactivate|class|%%|-->|-?->>|:|graph|flowchart|subgraph|end$)/i;
+    while (node && node.tagName === 'P') {
+      var text = normalizeMermaidText(node);
+      if (!text) { node = node.nextElementSibling; continue; }
+      if (continuationPattern.test(text) || text.includes('->>') || text.includes('-->>') || text.includes('->') || text.includes('--')) {
+        lines.push(text);
+        var current = node;
+        node = node.nextElementSibling;
+        current.remove();
+      } else {
+        break;
+      }
+    }
+    return lines.join('\n');
+  }
+
+  function renderBareMermaidBlocks() {
+    if (!window.mermaid || typeof window.mermaid.render !== 'function') return;
+    var article = document.querySelector('.article-body');
+    if (!article || article.querySelector('.mermaid, pre code.language-mermaid')) return;
+    var startKeywords = ['sequenceDiagram', 'graph TD', 'graph LR', 'graph RL', 'graph BT', 'flowchart TD', 'flowchart LR', 'flowchart RL', 'flowchart BT', 'classDiagram', 'stateDiagram', 'stateDiagram-v2', 'journey', 'gantt', 'pie', 'erDiagram'];
+    var paragraphs = Array.from(article.querySelectorAll('p'));
+    paragraphs.forEach(function (p) {
+      var text = normalizeMermaidText(p);
+      var keyword = startKeywords.find(function (k) { return text.indexOf(k) === 0; });
+      if (!keyword) return;
+      var graph = collectBareMermaid(p);
+      var id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+      var container = document.createElement('div');
+      container.className = 'mermaid';
+      container.id = id;
+      container.dataset.graph = graph;
+      p.parentElement.replaceChild(container, p);
     });
   }
 
@@ -301,6 +446,10 @@
       var txt = raw.replace(/{posts}/g, posts).replace(/{tags}/g, tags).replace(/{year}/g, year);
       el.textContent = txt;
     });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-placeholder");
+      if (d[key] !== undefined) el.setAttribute("placeholder", d[key]);
+    });
     document.documentElement.lang = target === "en" ? "en" : "zh-CN";
     currentLang = target;
     updateThemeLabel();
@@ -325,8 +474,14 @@
 
   function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
+      return navigator.clipboard.writeText(text).catch(function () {
+        return legacyCopyText(text);
+      });
     }
+    return legacyCopyText(text);
+  }
+
+  function legacyCopyText(text) {
     return new Promise(function (resolve, reject) {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -523,6 +678,76 @@
     if (closeBtn) closeBtn.addEventListener('click', close);
   }
 
+  function getI18nKey(key, fallback) {
+    var d = DICT[currentLang];
+    return (d && d[key] !== undefined) ? d[key] : fallback;
+  }
+
+  function initPostsFilter() {
+    var input = document.getElementById('dyl-posts-filter');
+    var results = document.getElementById('dyl-posts-results');
+    var indexEl = document.getElementById('dyl-posts-index');
+    if (!input || !results || !indexEl) return;
+    var posts;
+    try { posts = JSON.parse(indexEl.textContent); } catch (e) { return; }
+    var list = document.querySelector('.posts-list:not(.posts-filter-results)');
+    var pagination = document.querySelector('.pagination');
+    var MAX_RESULTS = 100;
+
+    function buildItem(post) {
+      var a = document.createElement('a');
+      a.href = post.u;
+      a.className = 'archive-item';
+      var dateSpan = document.createElement('span');
+      dateSpan.className = 'archive-date';
+      dateSpan.textContent = post.d;
+      var catSpan = document.createElement('span');
+      catSpan.className = 'archive-cat';
+      catSpan.textContent = post.c;
+      var titleSpan = document.createElement('span');
+      titleSpan.className = 'archive-item-title';
+      titleSpan.textContent = post.t;
+      var arrow = document.createElement('span');
+      arrow.className = 'archive-arrow';
+      arrow.textContent = '→';
+      a.appendChild(dateSpan);
+      a.appendChild(catSpan);
+      a.appendChild(titleSpan);
+      a.appendChild(arrow);
+      return a;
+    }
+
+    input.addEventListener('input', function () {
+      var query = input.value.trim().toLowerCase();
+      if (!query) {
+        results.hidden = true;
+        results.textContent = '';
+        if (list) list.hidden = false;
+        if (pagination) pagination.hidden = false;
+        return;
+      }
+      var terms = query.split(/\s+/);
+      var matched = posts.filter(function (post) {
+        var title = post.t.toLowerCase();
+        return terms.every(function (term) { return title.indexOf(term) !== -1; });
+      });
+      results.textContent = '';
+      if (!matched.length) {
+        var empty = document.createElement('div');
+        empty.className = 'posts-filter-empty';
+        empty.textContent = getI18nKey('posts_filter_empty', '没有匹配的文章');
+        results.appendChild(empty);
+      } else {
+        matched.slice(0, MAX_RESULTS).forEach(function (post) {
+          results.appendChild(buildItem(post));
+        });
+      }
+      results.hidden = false;
+      if (list) list.hidden = true;
+      if (pagination) pagination.hidden = true;
+    });
+  }
+
   function bindMobileNav() {
     var toggle = document.getElementById('dyl-mobile-menu-toggle');
     var menu = document.getElementById('dyl-mobile-nav');
@@ -557,25 +782,15 @@
     applyLang(lang);
     bindThemeToggle();
     bindMobileNav();
+    initPostsFilter();
     initTocSpy();
     initSearch();
 
     /* ---------- mermaid diagrams ---------- */
-    var mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
-    if (mermaidBlocks.length && window.mermaid) {
-      mermaidBlocks.forEach(function (code) {
-        var pre = code.parentElement;
-        var graph = code.textContent;
-        var id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
-        var container = document.createElement('div');
-        container.className = 'mermaid';
-        container.id = id;
-        container.dataset.graph = graph;
-        container.textContent = graph;
-        pre.parentElement.replaceChild(container, pre);
-      });
-      rerenderMermaid();
-    }
+    initMermaidBlocks();
+    rerenderMermaid();
+    renderBareMermaidBlocks();
+    rerenderMermaid();
 
     /* ---------- copy code buttons ---------- */
     document.querySelectorAll('.article-body pre').forEach(function (pre) {
