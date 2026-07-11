@@ -889,6 +889,10 @@
       }
     }
 
+    var EXCLUDED_REPOS = [
+      'DYL521/DYL521'
+    ];
+
     var userPromise = fetch(USER_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
       if (!res.ok) throw new Error('GitHub user API ' + res.status);
       return res.json();
@@ -912,11 +916,11 @@
         var repos = values[1];
         if (!Array.isArray(repos)) throw new Error('Unexpected response');
 
-        // Merge user's repos with any curated featured repos, then sort by stars
-        // descending and keep the top 6.
+        // Merge user's repos with any curated featured repos, filter out
+        // uninteresting ones, then sort by stars descending and keep the top 6.
         var allRepos = repos.concat(values.slice(2));
         var popularRepos = allRepos
-          .slice()
+          .filter(function (r) { return EXCLUDED_REPOS.indexOf(r.full_name) === -1; })
           .sort(function (a, b) { return (b.stargazers_count || 0) - (a.stargazers_count || 0); })
           .slice(0, 6);
 
