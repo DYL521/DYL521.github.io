@@ -768,6 +768,121 @@
     });
   }
 
+
+  /* ---------- github repos ---------- */
+  function renderGitHubRepos(repos) {
+    var container = document.getElementById('github-repos');
+    if (!container) return;
+
+    var langColors = {
+      'JavaScript': '#E8B339',
+      'TypeScript': '#3B82F6',
+      'Python': '#30A46C',
+      'Go': '#00ADD8',
+      'Rust': '#DEA584',
+      'Java': '#B07219',
+      'Vue': '#41B883',
+      'HTML': '#E44D26',
+      'CSS': '#563D7C',
+      'Shell': '#89E051',
+      'C': '#555555',
+      'C++': '#F34B7D'
+    };
+
+    function langDot(language) {
+      var color = langColors[language] || 'var(--accent)';
+      return '<span class="repo-lang-dot" style="background:' + color + ';"></span>';
+    }
+
+    function starSvg() {
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+    }
+
+    function fmtCount(n) {
+      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return String(n);
+    }
+
+    var html = repos.map(function (repo) {
+      var desc = escapeHtml(repo.description || '');
+      var lang = repo.language || '';
+      var updated = repo.updated_at ? new Date(repo.updated_at).toLocaleDateString() : '';
+      return '<a href="' + escapeHtml(repo.html_url) + '" target="_blank" rel="noopener" class="repo-card">' +
+        '<div class="repo-header">' +
+          '<span class="repo-name">' + escapeHtml(repo.name) + '</span>' +
+          '<span class="repo-stars">' + starSvg() + fmtCount(repo.stargazers_count || 0) + '</span>' +
+        '</div>' +
+        '<div class="repo-desc">' + (desc || getI18nKey('about_repos_no_desc', 'No description provided.')) + '</div>' +
+        '<div class="repo-meta">' +
+          (lang ? '<span class="repo-lang">' + langDot(lang) + escapeHtml(lang) + '</span>' : '') +
+          '<span>' + updated + '</span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+
+    container.innerHTML = html;
+  }
+
+  function renderGitHubError(message) {
+    var container = document.getElementById('github-repos');
+    if (!container) return;
+    container.innerHTML = '<div class="repo-card repo-card--error">' + escapeHtml(message) + '</div>';
+  }
+
+  function initGitHubRepos() {
+    var container = document.getElementById('github-repos');
+    var starsEl = document.getElementById('github-stars');
+    if (!container) return;
+
+    var REPOS_API = 'https://api.github.com/users/DYL521/repos?sort=updated&direction=desc&per_page=6';
+    var USER_API = 'https://api.github.com/users/DYL521';
+
+    function animateCount(el, target, duration) {
+      if (!el) return;
+      var start = 0;
+      var startTime = null;
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var value = Math.floor(progress * (target - start) + start);
+        el.textContent = value >= 1000 ? (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(value);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    var userPromise = fetch(USER_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+      if (!res.ok) throw new Error('GitHub user API ' + res.status);
+      return res.json();
+    });
+
+    var reposPromise = fetch(REPOS_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+      if (!res.ok) throw new Error('GitHub repos API ' + res.status);
+      return res.json();
+    });
+
+    Promise.all([userPromise, reposPromise])
+      .then(function (values) {
+        var profile = values[0];
+        var repos = values[1];
+        if (!Array.isArray(repos)) throw new Error('Unexpected response');
+
+        var reposCountEl = document.getElementById('github-repos-count');
+        var followersCountEl = document.getElementById('github-followers-count');
+        animateCount(reposCountEl, profile.public_repos || 0, 800);
+        animateCount(followersCountEl, profile.followers || 0, 800);
+
+        renderGitHubRepos(repos);
+        if (starsEl) {
+          var total = repos.reduce(function (sum, r) { return sum + (r.stargazers_count || 0); }, 0);
+          animateCount(starsEl, total, 800);
+        }
+      })
+      .catch(function (err) {
+        if (window.console && console.warn) console.warn('GitHub repos load failed:', err);
+        renderGitHubError(getI18nKey('about_repos_error', 'Projects are temporarily unavailable. Visit GitHub instead.'));
+      });
+  }
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     syncThemeUI(theme);
@@ -785,6 +900,7 @@
     initPostsFilter();
     initTocSpy();
     initSearch();
+    initGitHubRepos();
 
     /* ---------- mermaid diagrams ---------- */
     initMermaidBlocks();
