@@ -282,6 +282,8 @@
     set('[data-hero="title"]', heroTitle);
     set('[data-hero="sub"]', heroSub);
     set('[data-hero="meta"]', heroTag + " · " + s.date);
+    var link = document.querySelector('[data-hero="link"]');
+    if (link && s.url) link.setAttribute('href', s.url);
   }
 
   function nextSlide() {
