@@ -698,6 +698,11 @@
       var a = document.createElement('a');
       a.href = post.u;
       a.className = 'archive-item';
+      var coverImg = document.createElement('img');
+      coverImg.className = 'archive-item-cover';
+      coverImg.src = post.v || '';
+      coverImg.alt = '';
+      coverImg.loading = 'lazy';
       var dateSpan = document.createElement('span');
       dateSpan.className = 'archive-date';
       dateSpan.textContent = post.d;
@@ -710,6 +715,7 @@
       var arrow = document.createElement('span');
       arrow.className = 'archive-arrow';
       arrow.textContent = '→';
+      a.appendChild(coverImg);
       a.appendChild(dateSpan);
       a.appendChild(catSpan);
       a.appendChild(titleSpan);
