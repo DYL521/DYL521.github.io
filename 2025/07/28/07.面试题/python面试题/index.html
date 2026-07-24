@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            python面试题.md - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../../../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts/2025/07/28/07.面试题/python面试题/</div>
+            <h1 class="article-title" data-reveal>python面试题.md</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">面试题</span>
+                <span>2025-07-28</span>
+                <span>· 62 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 18391 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h1 id="1-python-语言的基础特性"><a class="markdownIt-Anchor" href="#1-python-语言的基础特性"></a> 1、python 语言的基础特性</h1>
+<ul>
+<li><strong>python中一切皆对象</strong>:
+<ul>
+<li>在python中，无论函数、类、模块等等都是对象，他们都继承自object</li>
+<li>所有变量的本质都是对象的引用（指针）</li>
+</ul>
+</li>
+<li><strong>动态解释性语言</strong>:
+<ul>
+<li>python是解释性语言，运行时需要一行一行解释执行，不会编译成二进制文件执行。</li>
+<li>python类型是动态的：变量无需声明类型，运行时动态决定。</li>
+</ul>
+</li>
+<li><strong>python的数据类型</strong>
+<ul>
+<li>内置数据类型: int float  dict set  list str bool tuple
+<ul>
+<li>可变数据类型: list dict set</li>
+<li>不可变数据类型：int float tuple</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>函数式编程的支持</strong>:
+<ul>
+<li>python支持高阶函数、lambda、map/filter/reduce、生成器和迭代器</li>
+<li>主要功能节省内存</li>
+<li><strong>迭代器</strong>
+<ul>
+<li>定义：实现了__iter__和__next__方法的对象</li>
+<li>特点：
+<ul>
+<li>按顺序逐个访问元素</li>
+<li>只能向前遍历icing</li>
+<li>节省内存，不会一次性加上所有元素<br />
+常见的迭代器： iter(list) 、 iter(dict)、open() 返回的文件对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>生成器</strong>
+<ul>
+<li>定义： 一种特殊的迭代器，用yield返回数据</li>
+<li>特点：
+<ul>
+<li>惰性计算： 只在需要生成时生成值</li>
+<li>语法简洁，比写完整的迭代器类跟更方便</li>
+<li>自动实现__iter__() 和 <strong>next</strong>() 方法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>什么时候用迭代器，什么使用用生成器</strong>
+<ul>
+<li>迭代器：
+<ul>
+<li>需要对自定义对象支持for…in … 遍历</li>
+<li>比如设计一个树结果，希望for node in tree 能迭代所有节点</li>
+</ul>
+</li>
+<li>生成器：
+<ul>
+<li>数据量大，不相一次性加载数据到内存</li>
+<li>流式处理（语音帧、日志流、网络数据流）</li>
+<li>典型的场景：</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">  <span class="token comment" spellcheck="true"># 文件逐行读取</span>
+  <span class="token keyword">def</span> <span class="token function">read_file</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword">with</span> open<span class="token punctuation">(</span>path<span class="token punctuation">)</span> <span class="token keyword">as</span>  f<span class="token punctuation">:</span>
+          <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+              <span class="token keyword">yield</span> line
+
+  无限序列（斐波那契、自然数流）
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-python的执行过程"><a class="markdownIt-Anchor" href="#2-python的执行过程"></a> 2、python的执行过程</h1>
+<p>python是一种解释性语言，这意味着python代码在执行时先转换成子字节码，然后由python虚拟机PVM执行</p>
+<ol>
+<li>源代码：：编写的Python文件</li>
+<li>编译：：Python解释器首先将源代码编译成字节码。这一过程涉及到语法分析和语义分析，确保代码符合Python的语法规则。字节码是一种低级、与平台无关的代码，保存在.pyc中</li>
+<li>字节码：：编译得到的字节码是一种中间表示形式，存储在内存中。字节码的执行比直接解释源代码要快。</li>
+<li>python虚拟机：：Python虚拟机（PVM）是Python运行时环境的一部分，负责读取字节码，将其转换成机器码，然后执行。PVM是解释器的核心，它执行存储在pyc中</li>
+<li>执行：：PVM逐条执行字节码指令，进行函数调用、内存管理等</li>
+</ol>
+<h1 id="3-常见算法-散列表-红黑树-二叉树能否对应适合的应用场景通用"><a class="markdownIt-Anchor" href="#3-常见算法-散列表-红黑树-二叉树能否对应适合的应用场景通用"></a> 3、常见算法： 散列表、红黑树、二叉树，能否对应适合的应用场景（通用）</h1>
+<pre class="line-numbers language-python"><code class="language-python">
+                  ┌───────────────┐
+                  │    数据结构     │
+                  └──────┬────────┘
+                         │
+          ┌──────────────┴───────────────┐
+          │                              │
+    ┌─────────────┐                ┌─────────────┐
+    │   散列表     │                │   树类       │
+    │ <span class="token punctuation">(</span>Hash Table<span class="token punctuation">)</span> │               └─────┬───────┘
+    └─────┬───────┘                      │
+          │                              │
+  ┌───────┴─────────┐             ┌────────┴─────────┐
+  │                  │            │                  │
+Key<span class="token operator">-</span>Value <span class="token operator">/</span> Set    特点：查找快       二叉树           堆
+典型应用：          O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> 平均        │                 │
+<span class="token operator">-</span> 去重             优点：快速        ├─────┬─────────┤
+<span class="token operator">-</span> 缓存             缺点：无序       BST   红黑树   完全二叉树
+<span class="token operator">-</span> 频率统计                         │       │         │
+<span class="token operator">-</span> 映射表                           │       │         │
+                                  范围查找 平衡树 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>   TopK<span class="token operator">/</span>优先队列
+                                  排序维护  系统调度 <span class="token operator">/</span>排行榜
+
+<span class="token operator">|</span> 数据结构                                 <span class="token operator">|</span> 特性                         <span class="token operator">|</span> 时间复杂度（查<span class="token operator">/</span>增<span class="token operator">/</span>删）                      <span class="token operator">|</span> 典型应用场景                                                                    <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>      <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>       <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>         <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">**</span>散列表（Hash Table <span class="token operator">/</span> dict<span class="token punctuation">,</span> set）<span class="token operator">**</span>     <span class="token operator">|</span> 无序，基于哈希，O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> 平均查找     <span class="token operator">|</span> 查 O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>，增 O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>，删 O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>                 <span class="token operator">|</span> <span class="token operator">-</span> 唯一性检查（去重）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 频率统计（词频、日志统计）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 缓存（LRU<span class="token operator">/</span>Redis）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 快速查找（用户 ID → 信息映射） <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">**</span>二叉树（Binary Tree）<span class="token operator">**</span>                <span class="token operator">|</span> 每个节点最多两个子节点            <span class="token operator">|</span> 查 O<span class="token punctuation">(</span>n<span class="token punctuation">)</span>，增 O<span class="token punctuation">(</span>n<span class="token punctuation">)</span>，删 O<span class="token punctuation">(</span>n<span class="token punctuation">)</span>（普通二叉树）     <span class="token operator">|</span> <span class="token operator">-</span> 表示分层结构（组织结构、文件目录）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 基础遍历算法练习（前序、中序、后序）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 递归问题（DFS、回溯）             <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">**</span>二叉搜索树（BST<span class="token punctuation">,</span> Binary Search Tree）<span class="token operator">**</span> <span class="token operator">|</span> 左 <span class="token operator">&lt;</span> 根 <span class="token operator">&lt;</span> 右                    <span class="token operator">|</span> 平均查 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>，最坏 O<span class="token punctuation">(</span>n<span class="token punctuation">)</span>               <span class="token operator">|</span> <span class="token operator">-</span> 排序存储数据<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 快速查找 <span class="token operator">/</span> 范围查询（如查找 <span class="token operator">></span> x 且 <span class="token operator">&lt;</span> y 的值）                               <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">**</span>平衡二叉树（AVL <span class="token operator">/</span> 红黑树）<span class="token operator">**</span>               <span class="token operator">|</span> 保持高度平衡 → O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span> 查增删 <span class="token operator">|</span> 查 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>，增 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>，删 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>     <span class="token operator">|</span> <span class="token operator">-</span> 高速查找 <span class="token operator">+</span> 动态更新<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> Java TreeMap、C<span class="token operator">+</span><span class="token operator">+</span> map<span class="token operator">/</span>set 底层<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 操作系统任务调度（红黑树管理定时器）    <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">**</span>堆（Heap <span class="token operator">/</span> 优先队列）<span class="token operator">**</span>                 <span class="token operator">|</span> 完全二叉树，父节点 ≥ <span class="token operator">/</span> ≤ 子节点   <span class="token operator">|</span> 查最大<span class="token operator">/</span>最小 O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>，增 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span>，删 O<span class="token punctuation">(</span>log n<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token operator">-</span> Top K 问题（高频元素、排行榜）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> 实时任务调度（优先队列）<span class="token operator">&lt;</span>br<span class="token operator">></span><span class="token operator">-</span> Dijkstra <span class="token operator">/</span> A\<span class="token operator">*</span> 算法中的最短路径       <span class="token operator">|</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="31-散列表hash-table-dict-set"><a class="markdownIt-Anchor" href="#31-散列表hash-table-dict-set"></a> 3.1 散列表（Hash Table /dict ,set）</h2>
+<p><strong>定义</strong></p>
+<ul>
+<li>基于哈希函数，将key映射到内存地址存储值</li>
+<li>python的dict和set就是典型的实现</li>
+</ul>
+<p><strong>特性</strong></p>
+<ul>
+<li>无序存储（python3.7+ dict保存，但逻辑上还是哈希表）</li>
+<li>支持快速查询、插入、删除</li>
+<li>通过哈希碰撞处理（开发寻址或者链表）</li>
+</ul>
+<p><strong>时间复杂度</strong></p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token operator">|</span> 操作 <span class="token operator">|</span> 平均   <span class="token operator">|</span> 最坏 <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span>   <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token operator">|</span>
+<span class="token operator">|</span> 查找 <span class="token operator">|</span> O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">|</span> O<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">|</span>
+<span class="token operator">|</span> 插入 <span class="token operator">|</span> O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">|</span> O<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">|</span>
+<span class="token operator">|</span> 删除 <span class="token operator">|</span> O<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">|</span> O<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">|</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>典型引用场景</strong></p>
+<ul>
+<li>去重：set存储已访问元素</li>
+<li>频率统计：词频统计、日志统计</li>
+<li>缓存/映射表：用户ID–&gt; 用户信息</li>
+<li>面试高频题目：</li>
+</ul>
+<h3 id="1-两数之和"><a class="markdownIt-Anchor" href="#1-两数之和"></a> 1、两数之和</h3>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token comment" spellcheck="true"># https://leetcode.cn/problems/two-sum/</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">twoSum</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> nums<span class="token punctuation">:</span> List<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">,</span> target<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> List<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true"># [2,7,11,15]  9 </span>
+        <span class="token keyword">for</span> i<span class="token punctuation">,</span> num <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> target <span class="token operator">-</span> num <span class="token keyword">in</span> d<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token punctuation">[</span>d<span class="token punctuation">[</span>target<span class="token operator">-</span>num<span class="token punctuation">]</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># [1,0]</span>
+            d<span class="token punctuation">[</span>num<span class="token punctuation">]</span> <span class="token operator">=</span> i <span class="token comment" spellcheck="true"># d[2]</span>
+    <span class="token comment" spellcheck="true">#  标记数字跟索引之间的关系</span>
+    d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">3</span> <span class="token punctuation">}</span>
+       
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-统计词频-topk"><a class="markdownIt-Anchor" href="#2-统计词频-topk"></a> 2、统计词频 TopK</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># https://leetcode.cn/problems/word-frequency/</span>
+
+words <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+the day is sunny the the
+the sunny is is
+"""</span>
+
+res <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">def</span> <span class="token function">count</span><span class="token punctuation">(</span>words<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    lines <span class="token operator">=</span> words<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> line <span class="token keyword">in</span> lines<span class="token punctuation">:</span>
+        ls <span class="token operator">=</span> str<span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> ls<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> j <span class="token keyword">in</span> res<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                res<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> res<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                res<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> res
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>count<span class="token punctuation">(</span>words<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> Counter
+
+<span class="token comment" spellcheck="true"># 或者counter = Counter([data])</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="32-二叉树-二叉搜索树"><a class="markdownIt-Anchor" href="#32-二叉树-二叉搜索树"></a> 3.2 二叉树 &amp; 二叉搜索树</h2>
+<p><strong>定义</strong></p>
+<ul>
+<li>每个节点最多有两个子节点（左右）</li>
+<li>BST 左边 &lt; 根 &lt; 右</li>
+</ul>
+<p><strong>特性</strong></p>
+<ul>
+<li>树形结构 --&gt;  支持分层、递归处理</li>
+<li>中序遍历BST --&gt; 得到有序列表</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>普通二叉树</th>
+<th>BST（平均）</th>
+<th>BST（最坏退化成链）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查找</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>典型的应用场景</strong></p>
+<ul>
+<li>分层结构表示： 组织结构、文件目录</li>
+<li>排序存储+ 范围查询</li>
+<li>遍历恩替（DFS、BFS、回溯）</li>
+</ul>
+<p><strong>常见题</strong></p>
+<ul>
+<li>二叉树最大深度</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"> 
+ <span class="token comment" spellcheck="true"># https://leetcode.cn/problems/er-cha-shu-de-shen-du-lcof/description/</span>
+<span class="token keyword">def</span> <span class="token function">maxDepth</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token operator">not</span> root<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">0</span> 
+    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">+</span> max<span class="token punctuation">(</span>maxDepth<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">,</span>maxDepth<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 递归DFS</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>验证BST</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token comment" spellcheck="true"># Definition for a binary tree node.</span>
+<span class="token comment" spellcheck="true"># class TreeNode(object):</span>
+<span class="token comment" spellcheck="true">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="token comment" spellcheck="true">#         self.val = val</span>
+<span class="token comment" spellcheck="true">#         self.left = left</span>
+<span class="token comment" spellcheck="true">#         self.right = right</span>
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">isValidBST</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">,</span>low<span class="token operator">=</span>float<span class="token punctuation">(</span><span class="token string">'-inf'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> high<span class="token operator">=</span>float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> root<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">True</span> 
+        <span class="token keyword">if</span> <span class="token operator">not</span> rlow <span class="token operator">&lt;</span> root<span class="token punctuation">.</span>val <span class="token operator">&lt;</span> high<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>isValidBST<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">,</span> low<span class="token punctuation">,</span> root<span class="token punctuation">.</span>val<span class="token punctuation">)</span> <span class="token operator">and</span> self<span class="token punctuation">.</span>isValidBST<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">,</span> root<span class="token punctuation">.</span>val<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 核心点：递归 + 边界判断</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="33-红黑树自平衡二叉搜索树"><a class="markdownIt-Anchor" href="#33-红黑树自平衡二叉搜索树"></a> 3.3 红黑树（自平衡二叉搜索树）</h2>
+<p><strong>定义</strong></p>
+<ul>
+<li>自平衡二叉搜索树</li>
+</ul>
+<p><strong>特性</strong>：</p>
+<ul>
+<li>
+<p>根节点黑色</p>
+</li>
+<li>
+<p>红节点不能连续</p>
+</li>
+<li>
+<p>任意路径黑节点数量相同</p>
+</li>
+<li>
+<p>保证 O(log n) 查找/增删</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查找</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>典型应用场景</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>需要动态维护有序数据的场景</p>
+<p>系统底层实现：</p>
+<p>Java TreeMap / TreeSet</p>
+<p>C++ map / set</p>
+<p>高频题：动态排行榜、区间查询、调度系统</p>
+<h2 id="34-堆heap优先队列"><a class="markdownIt-Anchor" href="#34-堆heap优先队列"></a> 3.4 堆（Heap/优先队列）</h2>
+<p>定义</p>
+<p>完全二叉树</p>
+<p>父节点 ≥ 子节点（最大堆）或 ≤ 子节点（最小堆）</p>
+<p>特性</p>
+<p>查找最大/最小元素 O(1)</p>
+<p>插入、删除 O(log n)</p>
+<p>典型应用场景</p>
+<p>Top K 问题（高频词、排行榜）</p>
+<p>优先级任务调度（调度器、操作系统）</p>
+<p>图算法（Dijkstra, Prim）</p>
+<h1 id="4-pytorch框架的搭建"><a class="markdownIt-Anchor" href="#4-pytorch框架的搭建"></a> 4、Pytorch框架的搭建</h1>
+<h1 id="5-python闭包-装饰器-异常捕获-多线程用法"><a class="markdownIt-Anchor" href="#5-python闭包-装饰器-异常捕获-多线程用法"></a> 5、python闭包、装饰器、异常捕获、多线程用法？</h1>
+<h2 id="51-python闭包"><a class="markdownIt-Anchor" href="#51-python闭包"></a> 5.1、python闭包</h2>
+<p><strong>定义</strong><br />
+函数内部定一函数，并且内部函数引用了外部函数的局部变量，就形成了闭包。<br />
+闭包能保存函数运行时的环境。</p>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">def</span> <span class="token function">make_multiplier</span><span class="token punctuation">(</span>factor<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">multiply</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> x<span class="token operator">*</span> factor <span class="token comment" spellcheck="true">#引用外部变量</span>
+    <span class="token keyword">return</span> multiply
+
+times2 <span class="token operator">=</span> make_multiplier<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>times2<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 10</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>✅ 面试考点：</p>
+<p>闭包常用于延迟计算、函数工厂、隐藏实现细节。</p>
+<p>注意 Python 中闭包变量是 引用 而非拷贝。</p>
+<h2 id="52-装饰器decorator"><a class="markdownIt-Anchor" href="#52-装饰器decorator"></a> 5.2、装饰器（Decorator）</h2>
+<p><strong>定义</strong><br />
+本质是一个函数，接收一个函数作为参数，返回一个增强后的函数<br />
+常用语日志、权限检验、性能统计、缓存等等<br />
+装饰器本质上是一个函数，它接受一个函数作为参数并返回一个新的函数。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">time</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{func.__name__} 耗时: {time.time() - start:.4f}s"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> result
+    <span class="token keyword">return</span> wrapper
+    
+<span class="token keyword">def</span> <span class="token function">slow_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+slow_function<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="53-异常捕获"><a class="markdownIt-Anchor" href="#53-异常捕获"></a> 5.3、异常捕获</h2>
+<p>Python 用 try-except-finally 来处理异常，保证程序健壮性。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">/</span> <span class="token number">0</span>
+<span class="token keyword">except</span> ZeroDivisionError <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"除零错误:"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span>
+<span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"其他错误:"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"没有异常时执行"</span><span class="token punctuation">)</span>
+<span class="token keyword">finally</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"无论如何都会执行"</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="54-多线程threading"><a class="markdownIt-Anchor" href="#54-多线程threading"></a> 5.4、多线程（Threading）</h2>
+<p>Python 提供 threading 模块，但要注意 GIL<br />
+限制：CPU 密集型任务不能真正并行，但 I/O 密集型任务（网络、磁盘）有明显加速。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> Threading
+<span class="token keyword">import</span> time 
+
+<span class="token keyword">def</span> <span class="token function">worker</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{name} 开始工作"</span><span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{name} 完成"</span><span class="token punctuation">)</span>
+
+threads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i range<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>worker<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>f<span class="token string">"线程{i}"</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
+    t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+I<span class="token operator">/</span>O 密集型 → threading <span class="token operator">/</span> concurrent<span class="token punctuation">.</span>futures<span class="token punctuation">.</span>ThreadPoolExecutor。
+CPU 密集型 → multiprocessing（绕开 GIL）。
+
+threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> RLock<span class="token punctuation">(</span><span class="token punctuation">)</span> 用于线程同步。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="6-python中with语句的了解"><a class="markdownIt-Anchor" href="#6-python中with语句的了解"></a> 6、python中with语句的了解？</h1>
+<h2 id="61-with语句是什么"><a class="markdownIt-Anchor" href="#61-with语句是什么"></a> 6.1、with语句是什么？</h2>
+<pre><code>with是上下文管理器的语法糖，用来简化资源的获取和释放
+核心的两个方法是:
+- __enter__(self):  进入上下文时执行
+- __exit__(self, exc_type, exc_val, exc_tb)): 退出上下文执行，无论是否发生异常
+</code></pre>
+<h2 id="62-语法"><a class="markdownIt-Anchor" href="#62-语法"></a> 6.2、语法</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token comment" spellcheck="true"># 文件操作</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span><span class="token string">"w"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">"Hello world!!"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 自动关闭文件</span>
+
+<span class="token comment" spellcheck="true"># 等价于</span>
+f <span class="token operator">=</span> open<span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span>w<span class="token punctuation">)</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">"Hello world!!"</span><span class="token punctuation">)</span>
+<span class="token keyword">finally</span><span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="63-自定义上下文管理器"><a class="markdownIt-Anchor" href="#63-自定义上下文管理器"></a> 6.3、自定义上下文管理器</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">class</span> <span class="token class-name">MyResource</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__enter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"资源初始化"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self
+    <span class="token keyword">def</span> <span class="token function">__exit__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> exc_type<span class="token punctuation">,</span> exc_val<span class="token punctuation">,</span> exc_tb<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"资源释放"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span>  <span class="token comment" spellcheck="true"># 返回 True 可以屏蔽异常</span>
+
+<span class="token keyword">with</span> MyResource<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"使用资源"</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="7-python多线程的用法"><a class="markdownIt-Anchor" href="#7-python多线程的用法"></a> 7、python多线程的用法</h1>
+<p>Python 提供threading模块</p>
+<h2 id="71-启动方式"><a class="markdownIt-Anchor" href="#71-启动方式"></a> 7.1、启动方式</h2>
+<ul>
+<li>方式1： 直接创建Thread</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> threading
+<span class="token keyword">import</span> time
+
+<span class="token keyword">def</span> <span class="token function">worker</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{name} 开始工作"</span><span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{name} 完成"</span><span class="token punctuation">)</span>
+    
+<span class="token comment" spellcheck="true"># 创建并启动线程</span>
+t1 <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>worker<span class="token punctuation">,</span>args <span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"线程1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+t2 <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>worker<span class="token punctuation">,</span>args <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">"线程2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+t1<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+t2<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 等等所有线程结束</span>
+t1<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+t2<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>方式2：继承Thread</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span>thread<span class="token punctuation">.</span>Thread<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__int__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+    
+    <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{self.name} 开始工作"</span><span class="token punctuation">)</span>
+
+t <span class="token operator">=</span> Thread<span class="token punctuation">(</span><span class="token string">"线程A"</span><span class="token punctuation">)</span>
+t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="72-现成同步锁"><a class="markdownIt-Anchor" href="#72-现成同步锁"></a> 7.2、现成同步（锁）</h2>
+<p>多线程同时访问共享数据时，容易出现竞态条件，需要用 锁 Lock。</p>
+<pre class="line-numbers language-python"><code class="language-python">
+lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+counter <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token keyword">def</span> <span class="token function">safe_worker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">global</span> counter
+    <span class="token keyword">with</span> lock<span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 自动上锁解锁</span>
+        <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            counter <span class="token operator">+=</span> <span class="token number">1</span>
+
+threads <span class="token operator">=</span> <span class="token punctuation">[</span>threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>safe_worker<span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">]</span>
+<span class="token punctuation">[</span>t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">]</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"最终计数："</span><span class="token punctuation">,</span> counter<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 👉 没有锁时，结果可能小于 5 * 100000。</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="73-线程池推荐threadpoolexecutor"><a class="markdownIt-Anchor" href="#73-线程池推荐threadpoolexecutor"></a> 7.3、线程池（推荐）ThreadPoolExecutor</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
+<span class="token keyword">import</span> time
+
+<span class="token keyword">def</span> <span class="token function">task</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> n <span class="token operator">*</span> n
+
+<span class="token keyword">with</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
+    results <span class="token operator">=</span> executor<span class="token punctuation">.</span>map<span class="token punctuation">(</span>task<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>results<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="8-python的深拷贝-浅拷贝"><a class="markdownIt-Anchor" href="#8-python的深拷贝-浅拷贝"></a> 8、python的深拷贝、浅拷贝</h1>
+<h2 id="81-浅拷贝"><a class="markdownIt-Anchor" href="#81-浅拷贝"></a> 8.1 浅拷贝</h2>
+<pre><code>浅拷贝会创建一个新的对象，但是它包含是对原对象地址的引用，而不是其副本。因此如果原始对象的项是可变的，修改
+这些项会影响到拷贝后的对象。
+</code></pre>
+<ul>
+<li>创建浅拷贝的方法：
+<ol>
+<li>使用列表的list.copy()方法</li>
+<li>切片操作，例如 new_list =  old_list[:]</li>
+<li>使用copy模块的copy函数： from copy import copy; new_list=copy(old_list);</li>
+</ol>
+</li>
+</ul>
+<pre class="line-numbers language-pyhton"><code class="language-pyhton">import copy
+
+original = [1, 2, [3, 4]]
+shallow = copy.copy(original)
+
+# 修改原始列表中的嵌套列表也会影响浅拷贝
+original[2][0] = "changed"
+print(shallow)  # 输出：[1, 2, ['changed', 4]]
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="82-深拷贝"><a class="markdownIt-Anchor" href="#82-深拷贝"></a> 8.2 深拷贝</h2>
+<pre><code>深拷贝创建一个新的对象，并且递归拷贝原始对象中的所有项。这意味着它将创建所有项的副本，包括嵌套对象。
+修改原始对象不会影响到新创建的副本。
+</code></pre>
+<ul>
+<li>创建深拷贝</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> copy <span class="token keyword">import</span> deepcopy
+deep <span class="token operator">=</span> deepcopy<span class="token punctuation">(</span>original<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="9-gil-限制"><a class="markdownIt-Anchor" href="#9-gil-限制"></a> 9. GIL 限制</h2>
+<p>Python 有 GIL（全局解释器锁），同一时刻只有一个线程能执行 Python 字节码。</p>
+<p>因此：<br />
+CPU 密集型任务（计算） → 适合用 multiprocessing（多进程）。<br />
+I/O 密集型任务（网络请求、文件读写） → 多线程能显著提升性能。</p>
+<h1 id="10-python-lambda匿名函数"><a class="markdownIt-Anchor" href="#10-python-lambda匿名函数"></a> 10、Python lambda匿名函数</h1>
+<p>在python中,<strong>lambda</strong>函数是一种轻量级的匿名函数，它通常用以编写简单的，一行的函数，无须定义正式的函数名</p>
+<ul>
+<li>基本语法：</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">lambda</span> arguments<span class="token punctuation">:</span> expression
+
+<span class="token operator">-</span> arguments<span class="token punctuation">:</span> 参数，可以是多个，用逗号隔开
+<span class="token operator">-</span> expression<span class="token punctuation">:</span> 一个表达式，描述函数的行为，返回值是个表达式的结果
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>特点：
+<ol>
+<li>匿名：  lambda函数通常是匿名的，没有函数名</li>
+<li>一行表达式： 只能有一个表达式，不能包含其他的语句或者多个表达式</li>
+<li>可随时使用： 可以在任何地方使用</li>
+<li>灵活性： 常用简化代码，特别是在函数编程或者需要传递小函数作为参数的场合。</li>
+</ol>
+</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用map将每个元素加倍</span>
+list<span class="token punctuation">(</span>map<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># [2,4,6,8]</span>
+
+<span class="token comment" spellcheck="true"># 使用filter()过滤大于2的元素</span>
+list<span class="token punctuation">(</span>filter<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">></span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># [3,4]</span>
+
+<span class="token comment" spellcheck="true"># 使用sorted()根据列表的元祖的第二个元素进行排序</span>
+sorted<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'one'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'three'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="11-如何提高python执行效率的方法用过哪些"><a class="markdownIt-Anchor" href="#11-如何提高python执行效率的方法用过哪些"></a> 11、如何提高python执行效率的方法用过哪些？</h1>
+<h2 id="111-算法与数据结构优化最重要"><a class="markdownIt-Anchor" href="#111-算法与数据结构优化最重要"></a> 11.1. 算法与数据结构优化（最重要）</h2>
+<p>时间复杂度 &gt; 语言性能<br />
+例：搜索用 set/dict（O(1)）替代 list（O(n)）。<br />
+例：用堆 (heapq) 实现 TopK，比排序快。<br />
+应用场景：语音识别时，查询词典用 dict 而不是 list。</p>
+<h2 id="112-内置函数和库替代手写循环"><a class="markdownIt-Anchor" href="#112-内置函数和库替代手写循环"></a> 11.2. 内置函数和库替代手写循环</h2>
+<p>Python 内置函数（sum, map, any, all）和 列表推导式 通常比手动 for 循环快。</p>
+<p>NumPy/Pandas：矩阵、数据处理用 C 实现，比 Python 循环高效几个数量级。</p>
+<p>import numpy as np<br />
+a = np.arange(1e6)<br />
+print(np.sum(a))  # 比 for 循环快很多</p>
+<h2 id="113-并行与并发"><a class="markdownIt-Anchor" href="#113-并行与并发"></a> 11.3. 并行与并发</h2>
+<p>多线程 (threading)：适合 I/O 密集型（语音流读取、网络请求）。<br />
+多进程 (multiprocessing)：适合 CPU 密集型（语音特征提取、模型推理）。<br />
+异步 (asyncio)：高并发网络任务。</p>
+<p>应用场景：车载语音系统中，多线程负责多个音频流并发录音；多进程负责特征提取。</p>
+<h2 id="12-jit-编译-c-扩展"><a class="markdownIt-Anchor" href="#12-jit-编译-c-扩展"></a> 12. JIT 编译 &amp; C 扩展</h2>
+<p>PyPy：带 JIT 编译，比 CPython 快。</p>
+<p>Cython：将 Python 代码编译为 C，提高数倍性能。</p>
+<p>Numba：用 @jit 装饰器，加速数值计算。</p>
+<p>from numba import jit</p>
+<p>@jit(nopython=True)<br />
+def add(a, b):<br />
+return a + b</p>
+<h2 id="13-内存管理优化"><a class="markdownIt-Anchor" href="#13-内存管理优化"></a> 13. 内存管理优化</h2>
+<p>生成器 (yield) 替代一次性加载（节省内存）。</p>
+<p>迭代器 代替列表，避免存储全部数据。</p>
+<p>应用场景：逐帧读取语音文件，而不是一次性加载整个音频。</p>
+<h2 id="14-减少不必要的开销"><a class="markdownIt-Anchor" href="#14-减少不必要的开销"></a> 14. 减少不必要的开销</h2>
+<p>避免重复计算（缓存结果，用 functools.lru_cache）。</p>
+<p>局部变量比全局变量访问快。</p>
+<p>避免频繁的字符串拼接，用 str.join()。</p>
+<p>from functools import lru_cache</p>
+<p>@lru_cache(maxsize=128)<br />
+def fib(n):<br />
+if n &lt; 2: return n<br />
+return fib(n-1) + fib(n-2)</p>
+<h2 id="15-使用合适的解释器-框架"><a class="markdownIt-Anchor" href="#15-使用合适的解释器-框架"></a> 15. 使用合适的解释器 &amp; 框架</h2>
+<p>CPython：默认实现。</p>
+<p>PyPy：JIT 加速。</p>
+<p>C/C++ 扩展：关键部分用 C 实现（如 torch, numpy）。</p>
+<p>应用场景：深度学习框架 PyTorch 底层就是 C++/CUDA。</p>
+<h2 id="16-分布式与缓存"><a class="markdownIt-Anchor" href="#16-分布式与缓存"></a> 16. 分布式与缓存</h2>
+<p>多机并行（Ray, Dask, Spark）。</p>
+<p>缓存：热点数据放 Redis，减少重复计算。</p>
+<h1 id="17-args和kwargs的区别是什么"><a class="markdownIt-Anchor" href="#17-args和kwargs的区别是什么"></a> 17、*args和**kwargs的区别是什么？</h1>
+<h2 id="171-args"><a class="markdownIt-Anchor" href="#171-args"></a> 17.1. *args</h2>
+<p>作用：接收 任意数量的位置参数，会打包成一个 元组。</p>
+<p>适合参数个数不确定的函数。</p>
+<p>def foo(*args):<br />
+print(args)</p>
+<p>foo(1, 2, 3)</p>
+<h1 id="输出-1-2-3"><a class="markdownIt-Anchor" href="#输出-1-2-3"></a> 输出: (1, 2, 3)</h1>
+<h2 id="172-kwargs"><a class="markdownIt-Anchor" href="#172-kwargs"></a> 17.2. **kwargs</h2>
+<p>作用：接收 任意数量的关键字参数，会打包成一个 字典。</p>
+<p>适合需要灵活传递键值对参数的场景。</p>
+<p>def bar(**kwargs):<br />
+print(kwargs)</p>
+<p>bar(a=1, b=2, c=3)</p>
+<h1 id="输出-a-1-b-2-c-3"><a class="markdownIt-Anchor" href="#输出-a-1-b-2-c-3"></a> 输出: {‘a’: 1, ‘b’: 2, ‘c’: 3}</h1>
+<h2 id="173-args-和-kwargs-一起用"><a class="markdownIt-Anchor" href="#173-args-和-kwargs-一起用"></a> 17.3. *args 和 **kwargs 一起用</h2>
+<p>一般写法：def func(*args, **kwargs)</p>
+<p>*args 处理位置参数</p>
+<p>**kwargs 处理关键字参数</p>
+<p>def func(*args, **kwargs):<br />
+print(“args:”, args)<br />
+print(“kwargs:”, kwargs)</p>
+<p>func(1, 2, x=10, y=20)</p>
+<h1 id="args-1-2"><a class="markdownIt-Anchor" href="#args-1-2"></a> args: (1, 2)</h1>
+<h1 id="kwargs-x-10-y-20"><a class="markdownIt-Anchor" href="#kwargs-x-10-y-20"></a> kwargs: {‘x’: 10, ‘y’: 20}</h1>
+<ol start="4">
+<li>区别总结<br />
+特性	*args	**kwargs<br />
+参数形式	位置参数	关键字参数<br />
+数据类型	元组 (tuple)	字典 (dict)<br />
+应用场景	参数数量不定（如加法函数）	配置灵活（如传递参数给API）</li>
+<li>面试延伸问题（华为 OD 常问）</li>
+</ol>
+<p>❓ 为什么要用 *args 和 **kwargs？<br />
+👉 提高函数的通用性和可扩展性，适用于接口设计、装饰器开发。</p>
+<p>❓ 如果调用函数时用 * 或 ** 会怎样？<br />
+👉 会进行 参数解包：</p>
+<p>def add(x, y): return x + y<br />
+nums = (1, 2)<br />
+print(add(*nums))  # 3</p>
+<p>params = {“x”: 3, “y”: 4}<br />
+print(add(**params))  # 7</p>
+<p>❓ 在装饰器里为什么常见 *args, **kwargs？<br />
+👉 因为装饰器要支持 任意函数签名，保证通用性。</p>
+<p>⚡ 记忆口诀：</p>
+<p>*args → tuple → 位置参数</p>
+<p>**kwargs → dict → 关键字参数</p>
+<h1 id="18-django-flask-tornado三大框架各种应用的场景"><a class="markdownIt-Anchor" href="#18-django-flask-tornado三大框架各种应用的场景"></a> 18、Django、Flask、Tornado三大框架各种应用的场景？</h1>
+<h2 id="181-django-重量级-全家桶"><a class="markdownIt-Anchor" href="#181-django-重量级-全家桶"></a> 18.1 Django —— 重量级、全家桶</h2>
+<p>特点：</p>
+<p>自带 ORM、模板系统、Admin 后台、用户认证等一整套“全家桶”。</p>
+<p>遵循 MTV 模式，强调快速开发、约定大于配置。</p>
+<p>有较多内置组件，适合开发复杂的大型 Web 应用。</p>
+<p>适用场景：</p>
+<p>大型企业应用、内容管理系统（CMS）、电商平台、新闻门户网站。</p>
+<p>对数据一致性、权限管理要求高的系统。</p>
+<p>典型案例： Instagram、知乎早期。</p>
+<h2 id="182-flask-轻量级-自由度高"><a class="markdownIt-Anchor" href="#182-flask-轻量级-自由度高"></a> 18.2. Flask —— 轻量级、自由度高</h2>
+<p>特点：</p>
+<p>只有最核心的功能（路由 + WSGI 支持），其余功能通过扩展实现。</p>
+<p>灵活度高，开发者可以自由选择 ORM（SQLAlchemy、Peewee 等）、模板引擎等。</p>
+<p>学习曲线较低，适合快速搭建原型。</p>
+<p>适用场景：</p>
+<p>中小型 Web 应用、原型验证、API 服务、微服务。</p>
+<p>对框架约束少，希望灵活度高的项目。</p>
+<p>典型案例： Pinterest、国内很多中小型 SaaS。</p>
+<h2 id="183-tornado-高性能异步框架"><a class="markdownIt-Anchor" href="#183-tornado-高性能异步框架"></a> 18.3. Tornado —— 高性能异步框架</h2>
+<p>特点：</p>
+<p>内置高性能异步非阻塞 I/O，适合处理长连接和高并发请求。</p>
+<p>自带 Web Server，不依赖 Gunicorn/uWSGI。</p>
+<p>学习成本稍高，生态不如 Django/Flask 丰富。</p>
+<p>适用场景：</p>
+<p>即时通讯（IM）、WebSocket、长轮询、实时推送系统。</p>
+<p>对高并发、低延迟有要求的后台服务。</p>
+<p>典型案例： FriendFeed（Facebook 收购的实时社交网站）。</p>
+<p>✅ 一句话总结：</p>
+<p>Django：全家桶，适合 大型复杂系统。</p>
+<p>Flask：轻量自由，适合 中小项目、微服务、原型。</p>
+<p>Tornado：异步高并发，适合 实时系统。</p>
+<h1 id="19-什么是元编程python中如何实现元编程"><a class="markdownIt-Anchor" href="#19-什么是元编程python中如何实现元编程"></a> 19、什么是元编程？python中如何实现元编程？</h1>
+<h2 id="1-什么是元编程"><a class="markdownIt-Anchor" href="#1-什么是元编程"></a> 1、什么是元编程？</h2>
+<p>元编程（Metaprogramming）是指编写能够操作、生成或修改其他程序代码的程序。换句话说，元编程允许程序在运行时动态地创建或改变代码结构，从而实现更高层次的抽象和灵活性。<br />
+简单的说，当你的程序存在大量的重复代码时候，你就需要考虑是否有更好的解决方案</p>
+<h2 id="2-python中如何实现元编程"><a class="markdownIt-Anchor" href="#2-python中如何实现元编程"></a> 2、python中如何实现元编程？</h2>
+<p>Python 提供了多种实现元编程的方式，主要包括以下几种：</p>
+<h3 id="21-使用装饰器decorators"><a class="markdownIt-Anchor" href="#21-使用装饰器decorators"></a> 2.1 使用装饰器（Decorators）</h3>
+<p>装饰器是一种特殊的函数，可以在不修改原函数代码的情况下，动态地增强或修改函数的行为。装饰器本质上是一个高阶函数，接受一个函数作为参数，并返回一个新的函数。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">log_decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Calling function {func.__name__} with args {args} and kwargs {kwargs}"</span><span class="token punctuation">)</span>
+        result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Function {func.__name__} returned {result}"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> result
+    <span class="token keyword">return</span> wrapper
+   
+@log_decorator
+<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> b
+    
+add<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="22-使用元类metaclasses"><a class="markdownIt-Anchor" href="#22-使用元类metaclasses"></a> 2.2 使用元类（Metaclasses）</h3>
+<p>元类是用于创建类的类。通过定义元类，可以在类创建时动态地修改类的属性和方法。元类通常继承自 type 类。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">MyMeta</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> attrs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        attrs<span class="token punctuation">[</span><span class="token string">'greet'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">lambda</span> self<span class="token punctuation">:</span> f<span class="token string">"Hello from {name}!"</span>
+        <span class="token keyword">return</span> super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> attrs<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">MyClass</span><span class="token punctuation">(</span>metaclass<span class="token operator">=</span>MyMeta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">pass</span>
+    
+obj <span class="token operator">=</span> MyClass<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>greet<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: Hello from MyClass!</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="23-使用反射reflection"><a class="markdownIt-Anchor" href="#23-使用反射reflection"></a> 2.3 使用反射（Reflection）</h3>
+<p>反射允许程序在运行时动态地检查和修改对象的属性和方法。Python 提供了内置函数如 getattr、setattr、hasattr 和 dir 来实现反射。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name  
+p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">)</span> 
+<span class="token comment" spellcheck="true"># 使用反射获取属性</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>getattr<span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: Alice</span>
+<span class="token comment" spellcheck="true"># 使用反射设置属性</span>
+setattr<span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>age<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 30</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="24-动态代码生成"><a class="markdownIt-Anchor" href="#24-动态代码生成"></a> 2.4 动态代码生成</h3>
+<p>Python 允许在运行时动态地生成和执行代码。可以使用 exec 和 eval 函数来实现动态代码生成。</p>
+<pre class="line-numbers language-python"><code class="language-python">code <span class="token operator">=</span> <span class="token string">""</span>"
+<span class="token keyword">def</span> <span class="token function">dynamic_function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> x <span class="token operator">*</span> x
+<span class="token keyword">exec</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dynamic_function<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 25</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="25-使用描述符descriptors"><a class="markdownIt-Anchor" href="#25-使用描述符descriptors"></a> 2.5 使用描述符（Descriptors）</h3>
+<p>描述符是一种特殊的对象属性，可以通过定义 <strong>get</strong>、<strong>set</strong> 和 <strong>delete</strong> 方法来控制属性的访问和修改。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Descriptor</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__get__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> owner<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Getting value"</span>
+    <span class="token keyword">def</span> <span class="token function">__set__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Setting value to {value}"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">MyClass</span><span class="token punctuation">:</span>
+    attr <span class="token operator">=</span> Descriptor<span class="token punctuation">(</span><span class="token punctuation">)</span>
+obj <span class="token operator">=</span> MyClass<span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>attr<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: Getting value</span>
+obj<span class="token punctuation">.</span>attr <span class="token operator">=</span> <span class="token number">42</span>  <span class="token comment" spellcheck="true"># 输出: Setting value to 42</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="16-python中的反射机制是什么如何使用反射机制"><a class="markdownIt-Anchor" href="#16-python中的反射机制是什么如何使用反射机制"></a> 16、python中的反射机制是什么？如何使用反射机制？</h1>
+<h2 id="1-什么是反射机制"><a class="markdownIt-Anchor" href="#1-什么是反射机制"></a> 1、什么是反射机制？</h2>
+<p>反射机制（Reflection）是指程序在运行时能够动态地检查和修改自身结构和行为的能力。通过反射，程序可以在运行时获取对象的类型信息、属性、方法等，并且可以动态地调用方法或修改属性值。反射机制使得程序具有更高的灵活性和动态性，能够适应不同的运行环境和需求。</p>
+<h2 id="2-python中的反射机制"><a class="markdownIt-Anchor" href="#2-python中的反射机制"></a> 2、python中的反射机制</h2>
+<p>Python 提供了丰富的内置函数和方法来实现反射机制，主要包括以下几个方面：</p>
+<h3 id="21-获取对象的属性和方法"><a class="markdownIt-Anchor" href="#21-获取对象的属性和方法"></a> 2.1 获取对象的属性和方法</h3>
+<p>Python 提供了内置函数 getattr、setattr、hasattr 和 dir 来获取对象的属性和方法。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> age<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>age <span class="token operator">=</span> age
+p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 获取属性</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>getattr<span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: Alice</span>
+<span class="token comment" spellcheck="true"># 检查属性是否存在</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>hasattr<span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: True</span>
+<span class="token comment" spellcheck="true"># 获取所有属性和方法</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dir<span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 设置属性</span>
+setattr<span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">,</span> <span class="token number">31</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>age<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 31</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="22-动态调用方法"><a class="markdownIt-Anchor" href="#22-动态调用方法"></a> 2.2 动态调用方法</h3>
+<p>可以使用 getattr 函数动态地获取并调用对象的方法。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Calculator</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a <span class="token operator">+</span> b
+    <span class="token keyword">def</span> <span class="token function">subtract</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a <span class="token operator">-</span> b
+calc <span class="token operator">=</span> Calculator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+method_name <span class="token operator">=</span> <span class="token string">'add'</span>
+method <span class="token operator">=</span> getattr<span class="token punctuation">(</span>calc<span class="token punctuation">,</span> method_name<span class="token punctuation">)</span>
+result <span class="token operator">=</span> method<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 8</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="23-动态创建类和对象"><a class="markdownIt-Anchor" href="#23-动态创建类和对象"></a> 2.3 动态创建类和对象</h3>
+<p>可以使用 type 函数动态地创建类，并使用反射机制创建对象。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 动态创建类</span>
+MyClass <span class="token operator">=</span> type<span class="token punctuation">(</span><span class="token string">'MyClass'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>object<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">'greet'</span><span class="token punctuation">:</span> <span class="token keyword">lambda</span> self<span class="token punctuation">:</span> <span class="token string">"Hello!"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+obj <span class="token operator">=</span> MyClass<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>greet<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: Hello!</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="24-使用反射加载模块"><a class="markdownIt-Anchor" href="#24-使用反射加载模块"></a> 2.4 使用反射加载模块</h3>
+<p>可以使用 importlib 模块动态地加载模块。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> importlib
+module_name <span class="token operator">=</span> <span class="token string">'math'</span>
+math_module <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span>module_name<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>math_module<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 4.0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="25-使用反射实现插件机制"><a class="markdownIt-Anchor" href="#25-使用反射实现插件机制"></a> 2.5 使用反射实现插件机制</h3>
+<p>可以通过反射机制动态地加载和使用插件。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">PluginBase</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> NotImplementedError<span class="token punctuation">(</span><span class="token string">"Subclasses must implement this method."</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">PluginA</span><span class="token punctuation">(</span>PluginBase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Plugin A running"</span>
+<span class="token keyword">class</span> <span class="token class-name">PluginB</span><span class="token punctuation">(</span>PluginBase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Plugin B running"</span>
+plugins <span class="token operator">=</span> <span class="token punctuation">[</span>PluginA<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PluginB<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> plugin <span class="token keyword">in</span> plugins<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>plugin<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 输出:</span>
+<span class="token comment" spellcheck="true"># Plugin A running</span>
+<span class="token comment" spellcheck="true"># Plugin B running</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="17-python中的反射机制在实际开发中有哪些应用场景"><a class="markdownIt-Anchor" href="#17-python中的反射机制在实际开发中有哪些应用场景"></a> 17、python中的反射机制在实际开发中有哪些应用场景？</h1>
+<h2 id="1-动态加载模块和类"><a class="markdownIt-Anchor" href="#1-动态加载模块和类"></a> 1、动态加载模块和类</h2>
+<p>在大型应用中，可能需要根据配置或用户输入动态加载不同的模块或类。反射机制允许程序在运行时根据字符串名称加载模块或类，从而实现插件化设计。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> importlib
+module_name <span class="token operator">=</span> <span class="token string">'my_plugin'</span>
+plugin_module <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span>module_name<span class="token punctuation">)</span>
+PluginClass <span class="token operator">=</span> getattr<span class="token punctuation">(</span>plugin_module<span class="token punctuation">,</span> <span class="token string">'PluginClass'</span><span class="token punctuation">)</span>
+plugin_instance <span class="token operator">=</span> PluginClass<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plugin_instance<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-动态调用方法"><a class="markdownIt-Anchor" href="#2-动态调用方法"></a> 2、动态调用方法</h2>
+<p>在某些情况下，程序需要根据用户输入或配置动态调用不同的方法。反射机制允许程序在运行时根据方法名称字符串获取并调用方法。</p>
+<pre class="line-numbers language-python"><code class="language-python">  
+<span class="token keyword">class</span> <span class="token class-name">Calculator</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a <span class="token operator">+</span> b
+    <span class="token keyword">def</span> <span class="token function">subtract</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a <span class="token operator">-</span> b
+
+calc <span class="token operator">=</span> Calculator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+method_name <span class="token operator">=</span> input<span class="token punctuation">(</span><span class="token string">"Enter method (add/subtract): "</span><span class="token punctuation">)</span>
+method <span class="token operator">=</span> getattr<span class="token punctuation">(</span>calc<span class="token punctuation">,</span> method_name<span class="token punctuation">)</span>
+result <span class="token operator">=</span> method<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-对象序列化与反序列化"><a class="markdownIt-Anchor" href="#3-对象序列化与反序列化"></a> 3、对象序列化与反序列化</h2>
+<p>在对象序列化与反序列化过程中，反射机制可以用来动态地获取对象的属性和值，从而实现通用的序列化逻辑。</p>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">import</span> json
+<span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> age<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>age <span class="token operator">=</span> age
+<span class="token keyword">def</span> <span class="token function">serialize</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span><span class="token punctuation">{</span>key<span class="token punctuation">:</span> getattr<span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">)</span> <span class="token keyword">for</span> key <span class="token keyword">in</span> dir<span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token operator">not</span> key<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">'__'</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    
+p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>serialize<span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: {"age": 30, "name": "Alice"}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-orm对象关系映射"><a class="markdownIt-Anchor" href="#4-orm对象关系映射"></a> 4、ORM（对象关系映射）</h2>
+<p>ORM 框架通常使用反射机制动态地将数据库表映射为类，并将表字段映射为类属性。</p>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">:</span>
+    id <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    name <span class="token operator">=</span> StringField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    age <span class="token operator">=</span> IntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+user <span class="token operator">=</span> User<span class="token punctuation">(</span><span class="token punctuation">)</span>
+user<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"Alice"</span>
+user<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">30</span>
+db<span class="token punctuation">.</span>save<span class="token punctuation">(</span>user<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># ORM 使用反射将属性映射为数据库字段</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../../../10/15/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/enterprise_ai_agent/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">企业级 AI Agent 完整架构方案</div>
+                </a>
+                
+                
+                <a href="../../../../../pages/829as/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">单细胞测试.md</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#31-散列表hash-table-dict-set" class="toc-item"> 3.1 散列表（Hash Table /dict ,set）</a>
+                
+                    
+                    
+                    
+                    <a href="#1-两数之和" class="toc-item"> 1、两数之和</a>
+                
+                    
+                    
+                    
+                    <a href="#2-统计词频-topk" class="toc-item"> 2、统计词频 TopK</a>
+                
+                    
+                    
+                    
+                    <a href="#32-二叉树-二叉搜索树" class="toc-item"> 3.2 二叉树 &amp; 二叉搜索树</a>
+                
+                    
+                    
+                    
+                    <a href="#33-红黑树自平衡二叉搜索树" class="toc-item"> 3.3 红黑树（自平衡二叉搜索树）</a>
+                
+                    
+                    
+                    
+                    <a href="#34-堆heap优先队列" class="toc-item"> 3.4 堆（Heap/优先队列）</a>
+                
+                    
+                    
+                    
+                    <a href="#51-python闭包" class="toc-item"> 5.1、python闭包</a>
+                
+                    
+                    
+                    
+                    <a href="#52-装饰器decorator" class="toc-item"> 5.2、装饰器（Decorator）</a>
+                
+                    
+                    
+                    
+                    <a href="#53-异常捕获" class="toc-item"> 5.3、异常捕获</a>
+                
+                    
+                    
+                    
+                    <a href="#54-多线程threading" class="toc-item"> 5.4、多线程（Threading）</a>
+                
+                    
+                    
+                    
+                    <a href="#61-with语句是什么" class="toc-item"> 6.1、with语句是什么？</a>
+                
+                    
+                    
+                    
+                    <a href="#62-语法" class="toc-item"> 6.2、语法</a>
+                
+                    
+                    
+                    
+                    <a href="#63-自定义上下文管理器" class="toc-item"> 6.3、自定义上下文管理器</a>
+                
+                    
+                    
+                    
+                    <a href="#71-启动方式" class="toc-item"> 7.1、启动方式</a>
+                
+                    
+                    
+                    
+                    <a href="#72-现成同步锁" class="toc-item"> 7.2、现成同步（锁）</a>
+                
+                    
+                    
+                    
+                    <a href="#73-线程池推荐threadpoolexecutor" class="toc-item"> 7.3、线程池（推荐）ThreadPoolExecutor</a>
+                
+                    
+                    
+                    
+                    <a href="#81-浅拷贝" class="toc-item"> 8.1 浅拷贝</a>
+                
+                    
+                    
+                    
+                    <a href="#82-深拷贝" class="toc-item"> 8.2 深拷贝</a>
+                
+                    
+                    
+                    
+                    <a href="#9-gil-限制" class="toc-item"> 9. GIL 限制</a>
+                
+                    
+                    
+                    
+                    <a href="#111-算法与数据结构优化最重要" class="toc-item"> 11.1. 算法与数据结构优化（最重要）</a>
+                
+                    
+                    
+                    
+                    <a href="#112-内置函数和库替代手写循环" class="toc-item"> 11.2. 内置函数和库替代手写循环</a>
+                
+                    
+                    
+                    
+                    <a href="#113-并行与并发" class="toc-item"> 11.3. 并行与并发</a>
+                
+                    
+                    
+                    
+                    <a href="#12-jit-编译-c-扩展" class="toc-item"> 12. JIT 编译 &amp; C 扩展</a>
+                
+                    
+                    
+                    
+                    <a href="#13-内存管理优化" class="toc-item"> 13. 内存管理优化</a>
+                
+                    
+                    
+                    
+                    <a href="#14-减少不必要的开销" class="toc-item"> 14. 减少不必要的开销</a>
+                
+                    
+                    
+                    
+                    <a href="#15-使用合适的解释器-框架" class="toc-item"> 15. 使用合适的解释器 &amp; 框架</a>
+                
+                    
+                    
+                    
+                    <a href="#16-分布式与缓存" class="toc-item"> 16. 分布式与缓存</a>
+                
+                    
+                    
+                    
+                    <a href="#171-args" class="toc-item"> 17.1. *args</a>
+                
+                    
+                    
+                    
+                    <a href="#172-kwargs" class="toc-item"> 17.2. **kwargs</a>
+                
+                    
+                    
+                    
+                    <a href="#173-args-和-kwargs-一起用" class="toc-item"> 17.3. *args 和 **kwargs 一起用</a>
+                
+                    
+                    
+                    
+                    <a href="#181-django-重量级-全家桶" class="toc-item"> 18.1 Django —— 重量级、全家桶</a>
+                
+                    
+                    
+                    
+                    <a href="#182-flask-轻量级-自由度高" class="toc-item"> 18.2. Flask —— 轻量级、自由度高</a>
+                
+                    
+                    
+                    
+                    <a href="#183-tornado-高性能异步框架" class="toc-item"> 18.3. Tornado —— 高性能异步框架</a>
+                
+                    
+                    
+                    
+                    <a href="#1-什么是元编程" class="toc-item"> 1、什么是元编程？</a>
+                
+                    
+                    
+                    
+                    <a href="#2-python中如何实现元编程" class="toc-item"> 2、python中如何实现元编程？</a>
+                
+                    
+                    
+                    
+                    <a href="#21-使用装饰器decorators" class="toc-item"> 2.1 使用装饰器（Decorators）</a>
+                
+                    
+                    
+                    
+                    <a href="#22-使用元类metaclasses" class="toc-item"> 2.2 使用元类（Metaclasses）</a>
+                
+                    
+                    
+                    
+                    <a href="#23-使用反射reflection" class="toc-item"> 2.3 使用反射（Reflection）</a>
+                
+                    
+                    
+                    
+                    <a href="#24-动态代码生成" class="toc-item"> 2.4 动态代码生成</a>
+                
+                    
+                    
+                    
+                    <a href="#25-使用描述符descriptors" class="toc-item"> 2.5 使用描述符（Descriptors）</a>
+                
+                    
+                    
+                    
+                    <a href="#1-什么是反射机制" class="toc-item"> 1、什么是反射机制？</a>
+                
+                    
+                    
+                    
+                    <a href="#2-python中的反射机制" class="toc-item"> 2、python中的反射机制</a>
+                
+                    
+                    
+                    
+                    <a href="#21-获取对象的属性和方法" class="toc-item"> 2.1 获取对象的属性和方法</a>
+                
+                    
+                    
+                    
+                    <a href="#22-动态调用方法" class="toc-item"> 2.2 动态调用方法</a>
+                
+                    
+                    
+                    
+                    <a href="#23-动态创建类和对象" class="toc-item"> 2.3 动态创建类和对象</a>
+                
+                    
+                    
+                    
+                    <a href="#24-使用反射加载模块" class="toc-item"> 2.4 使用反射加载模块</a>
+                
+                    
+                    
+                    
+                    <a href="#25-使用反射实现插件机制" class="toc-item"> 2.5 使用反射实现插件机制</a>
+                
+                    
+                    
+                    
+                    <a href="#1-动态加载模块和类" class="toc-item"> 1、动态加载模块和类</a>
+                
+                    
+                    
+                    
+                    <a href="#2-动态调用方法" class="toc-item"> 2、动态调用方法</a>
+                
+                    
+                    
+                    
+                    <a href="#3-对象序列化与反序列化" class="toc-item"> 3、对象序列化与反序列化</a>
+                
+                    
+                    
+                    
+                    <a href="#4-orm对象关系映射" class="toc-item"> 4、ORM（对象关系映射）</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../../../../js/polelight.js" defer></script>
+</body>
+</html>

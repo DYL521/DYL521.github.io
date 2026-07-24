@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            02.定义模型 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/10a0b8/</div>
+            <h1 class="article-title" data-reveal>02.定义模型</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">python</span>
+                <span>2021-02-16</span>
+                <span>· 18 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 5347 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h2 id="01定义模型举例"><a class="markdownIt-Anchor" href="#01定义模型举例"></a> 01.定义模型举例</h2>
+<ul>
+<li>模型类被定义在&quot;应用/models.py&quot;文件中。</li>
+<li>模型类必须继承自Model类，位于包django.db.models中。</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+
+<span class="token comment" spellcheck="true">#定义图书模型类BookInfo</span>
+<span class="token keyword">class</span> <span class="token class-name">BookInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    btitle <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'名称'</span><span class="token punctuation">)</span>
+    bpub_date <span class="token operator">=</span> models<span class="token punctuation">.</span>DateField<span class="token punctuation">(</span>verbose_name<span class="token operator">=</span><span class="token string">'发布日期'</span><span class="token punctuation">)</span>
+    bread <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'阅读量'</span><span class="token punctuation">)</span>
+    bcomment <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'评论量'</span><span class="token punctuation">)</span>
+    is_delete <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'逻辑删除'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        db_table <span class="token operator">=</span> <span class="token string">'tb_books'</span>  <span class="token comment" spellcheck="true"># 指明数据库表名</span>
+        verbose_name <span class="token operator">=</span> <span class="token string">'图书'</span>  <span class="token comment" spellcheck="true"># 在admin站点中显示的名称</span>
+        verbose_name_plural <span class="token operator">=</span> verbose_name  <span class="token comment" spellcheck="true"># 显示的复数名称</span>
+
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""定义每个数据对象的显示信息"""</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>btitle
+
+<span class="token comment" spellcheck="true">#定义英雄模型类HeroInfo</span>
+<span class="token keyword">class</span> <span class="token class-name">HeroInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    GENDER_CHOICES <span class="token operator">=</span> <span class="token punctuation">(</span>
+        <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'female'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+    hname <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'名称'</span><span class="token punctuation">)</span> 
+    hgender <span class="token operator">=</span> models<span class="token punctuation">.</span>SmallIntegerField<span class="token punctuation">(</span>choices<span class="token operator">=</span>GENDER_CHOICES<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'性别'</span><span class="token punctuation">)</span>  
+    hcomment <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">,</span> null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'描述信息'</span><span class="token punctuation">)</span> 
+    hbook <span class="token operator">=</span> models<span class="token punctuation">.</span>ForeignKey<span class="token punctuation">(</span>BookInfo<span class="token punctuation">,</span> on_delete<span class="token operator">=</span>models<span class="token punctuation">.</span>CASCADE<span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'图书'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 外键</span>
+    is_delete <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> verbose_name<span class="token operator">=</span><span class="token string">'逻辑删除'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+        db_table <span class="token operator">=</span> <span class="token string">'tb_heros'</span>
+        verbose_name <span class="token operator">=</span> <span class="token string">'英雄'</span>
+        verbose_name_plural <span class="token operator">=</span> verbose_name
+
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>hname
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="02源信息meta"><a class="markdownIt-Anchor" href="#02源信息meta"></a> 02.源信息Meta</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+
+<span class="token keyword">class</span> <span class="token class-name">UserInfo</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        username <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+        password <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+        <span class="token keyword">class</span> <span class="token class-name">Meta</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true">#1 数据库中生成的表名称 默认 app名称 + 下划线 + 类名</span>
+            db_table <span class="token operator">=</span> <span class="token string">"table_name"</span>     <span class="token comment" spellcheck="true">#自己指定创建的表名</span>
+
+            <span class="token comment" spellcheck="true">#2 Django Admin 中显示的表名称</span>
+            verbose_name<span class="token operator">=</span><span class="token string">'user'</span>          <span class="token comment" spellcheck="true">#在Django admin后台显示时表名是users</span>
+
+            <span class="token comment" spellcheck="true">#3 verbose_name加s</span>
+            verbose_name_plural<span class="token operator">=</span><span class="token string">'user'</span>  <span class="token comment" spellcheck="true">#若果这个字段也是user那么4中表名才显示user</span>
+
+            <span class="token comment" spellcheck="true">#4 联合唯一索引</span>
+            unique_together <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+
+            <span class="token comment" spellcheck="true">#5 联合索引   (缺点是最左前缀，写SQL语句基于password时不能命中索引，查找慢)</span>
+            <span class="token comment" spellcheck="true">#  如：select * from tb where password = ‘xx’    就无法命中索引</span>
+            index_together <span class="token operator">=</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># 更多：https://docs.djangoproject.com/en/1.10/ref/models/options/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="03字段"><a class="markdownIt-Anchor" href="#03字段"></a> 03.字段</h2>
+<h3 id="31-常用字段"><a class="markdownIt-Anchor" href="#31-常用字段"></a> 3.1 常用字段</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>db <span class="token keyword">import</span> models
+
+<span class="token keyword">class</span> <span class="token class-name">UserGroup</span><span class="token punctuation">(</span>models<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    uid <span class="token operator">=</span> models<span class="token punctuation">.</span>AutoField<span class="token punctuation">(</span>primary_key<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+    name <span class="token operator">=</span> models<span class="token punctuation">.</span>CharField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span>null<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> blank<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    email <span class="token operator">=</span> models<span class="token punctuation">.</span>EmailField<span class="token punctuation">(</span>max_length<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
+    text <span class="token operator">=</span> models<span class="token punctuation">.</span>TextField<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    ctime <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span>auto_now_add<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>      <span class="token comment" spellcheck="true"># 只有添加时才会更新时间</span>
+    uptime <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span>auto_now<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>         <span class="token comment" spellcheck="true"># 只要修改就会更新时间</span>
+
+    ip1 <span class="token operator">=</span> models<span class="token punctuation">.</span>IPAddressField<span class="token punctuation">(</span><span class="token punctuation">)</span>               <span class="token comment" spellcheck="true"># 字符串类型，Django Admin以及ModelForm中提供验证 IPV4 机制</span>
+    ip2 <span class="token operator">=</span> models<span class="token punctuation">.</span>GenericIPAddressField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment" spellcheck="true"># 字符串类型，Django Admin以及ModelForm中提供验证 Ipv4和Ipv6</span>
+
+    active <span class="token operator">=</span> models<span class="token punctuation">.</span>BooleanField<span class="token punctuation">(</span>default<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+    data01 <span class="token operator">=</span> models<span class="token punctuation">.</span>DateTimeField<span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment" spellcheck="true"># 日期+时间格式 YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ</span>
+    data02 <span class="token operator">=</span> models<span class="token punctuation">.</span>DateField<span class="token punctuation">(</span><span class="token punctuation">)</span>                 <span class="token comment" spellcheck="true"># 日期格式      YYYY-MM-DD</span>
+    data03 <span class="token operator">=</span> models<span class="token punctuation">.</span>TimeField<span class="token punctuation">(</span><span class="token punctuation">)</span>                 <span class="token comment" spellcheck="true"># 时间格式      HH:MM[:ss[.uuuuuu]]</span>
+
+    age <span class="token operator">=</span> models<span class="token punctuation">.</span>PositiveIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment" spellcheck="true"># 正小整数 0 ～ 32767</span>
+    balance <span class="token operator">=</span> models<span class="token punctuation">.</span>SmallIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 小整数 -32768 ～ 32767</span>
+    money <span class="token operator">=</span> models<span class="token punctuation">.</span>PositiveIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>         <span class="token comment" spellcheck="true"># 正整数 0 ～ 2147483647</span>
+    bignum <span class="token operator">=</span> models<span class="token punctuation">.</span>BigIntegerField<span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment" spellcheck="true"># 长整型(有符号的) -9223372036854775808 ～ 9223372036854775807</span>
+  
+    user_type_choices <span class="token operator">=</span> <span class="token punctuation">(</span>
+        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"超级用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"普通用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"普普通用户"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+    user_type_id <span class="token operator">=</span> models<span class="token punctuation">.</span>IntegerField<span class="token punctuation">(</span>choices<span class="token operator">=</span>user_type_choices<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="32-不常用字段"><a class="markdownIt-Anchor" href="#32-不常用字段"></a> 3.2 不常用字段</h3>
+<pre class="line-numbers language-python"><code class="language-python">URLField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供验证 URL
+
+SlugField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供验证支持 字母、数字、下划线、连接符（减号）
+
+CommaSeparatedIntegerField<span class="token punctuation">(</span>CharField<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串类型，格式必须为逗号分割的数字
+
+UUIDField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串类型，Django Admin以及ModelForm中提供对UUID格式的验证
+
+FilePathField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串，Django Admin以及ModelForm中提供读取文件夹下文件的功能
+    <span class="token operator">-</span> 参数：
+            path<span class="token punctuation">,</span>                      文件夹路径
+            match<span class="token operator">=</span>None<span class="token punctuation">,</span>                正则匹配
+            recursive<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>           递归下面的文件夹
+            allow_files<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>          允许文件
+            allow_folders<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>       允许文件夹
+
+FileField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串，路径保存在数据库，文件上传到指定目录
+    <span class="token operator">-</span> 参数：
+        upload_to <span class="token operator">=</span> <span class="token string">""</span>      上传文件的保存路径
+        storage <span class="token operator">=</span> None      存储组件，默认django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>files<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>FileSystemStorage
+
+ImageField<span class="token punctuation">(</span>FileField<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 字符串，路径保存在数据库，文件上传到指定目录
+    <span class="token operator">-</span> 参数：
+        upload_to <span class="token operator">=</span> <span class="token string">""</span>      上传文件的保存路径
+        storage <span class="token operator">=</span> None      存储组件，默认django<span class="token punctuation">.</span>core<span class="token punctuation">.</span>files<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>FileSystemStorage
+        width_field<span class="token operator">=</span>None<span class="token punctuation">,</span>   上传图片的高度保存的数据库字段名（字符串）
+        height_field<span class="token operator">=</span>None   上传图片的宽度保存的数据库字段名（字符串）
+
+
+DurationField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 长整数，时间间隔，数据库中按照bigint存储，ORM中获取的值为datetime<span class="token punctuation">.</span>timedelta类型
+
+FloatField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 浮点型
+
+DecimalField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> <span class="token number">10</span>进制小数
+    <span class="token operator">-</span> 参数：
+        max_digits，小数总长度
+        decimal_places，小数位长度
+
+BinaryField<span class="token punctuation">(</span>Field<span class="token punctuation">)</span>
+    <span class="token operator">-</span> 二进制类型
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="04参数"><a class="markdownIt-Anchor" href="#04参数"></a> 04.参数</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">null</td>
+<td>如果为True，表示允许为空，默认值是False</td>
+</tr>
+<tr>
+<td style="text-align:left">blank</td>
+<td>如果为True，则该字段允许为空白，默认值是False</td>
+</tr>
+<tr>
+<td style="text-align:left">db_column</td>
+<td>字段的名称，如果未指定，则使用属性的名称</td>
+</tr>
+<tr>
+<td style="text-align:left">db_index</td>
+<td>若值为True, 则在表中会为此字段创建索引，默认值是False</td>
+</tr>
+<tr>
+<td style="text-align:left">default</td>
+<td>默认</td>
+</tr>
+<tr>
+<td style="text-align:left">primary_key</td>
+<td>若为True，则该字段会成为模型的主键字段，默认值是False，一般作为AutoField的选项使用</td>
+</tr>
+<tr>
+<td style="text-align:left">unique</td>
+<td>如果为True, 这个字段在表中必须有唯一值，默认值是False</td>
+</tr>
+<tr>
+<td style="text-align:left">related_name</td>
+<td>在关联查询中,代替单一对象查找多对象 对象名小写_set(book.heroinfo_set.all() 的写法</td>
+</tr>
+<tr>
+<td style="text-align:left">auto_now_add</td>
+<td>只在数据添加的时候,记录时间</td>
+</tr>
+<tr>
+<td style="text-align:left">auto_now</td>
+<td>数据添加和更新的时候,记录时间</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/df1ddc/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">03.一对多</div>
+                </a>
+                
+                
+                <a href="../../pages/f0b5eb/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">99.FAQ</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01定义模型举例" class="toc-item"> 01.定义模型举例</a>
+                
+                    
+                    
+                    
+                    <a href="#02源信息meta" class="toc-item"> 02.源信息Meta</a>
+                
+                    
+                    
+                    
+                    <a href="#03字段" class="toc-item"> 03.字段</a>
+                
+                    
+                    
+                    
+                    <a href="#31-常用字段" class="toc-item"> 3.1 常用字段</a>
+                
+                    
+                    
+                    
+                    <a href="#32-不常用字段" class="toc-item"> 3.2 不常用字段</a>
+                
+                    
+                    
+                    
+                    <a href="#04参数" class="toc-item"> 04.参数</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

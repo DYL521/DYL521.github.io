@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    
+
+<section class="hero" aria-label="Hero">
+    <div class="hero-parallax" data-parallax="0.05">
+        
+            <div class="hero-layer" data-hero-layer="0" style="opacity: 1; background-image: url('/post-images/04.操作系统/01.Linux/01.Linux入门/assets/1579789440638.png'); background-size: cover; background-position: center;"></div>
+        
+            <div class="hero-layer" data-hero-layer="1" style="opacity: 0; background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233A1E7A%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%237C42C8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231A0F3A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22670%22%20cy%3D%22230%22%20r%3D%2290%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Ccircle%20cx%3D%22127%22%20cy%3D%22121%22%20r%3D%22183%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.09%22%2F%3E%3Ccircle%20cx%3D%22264%22%20cy%3D%22332%22%20r%3D%22116%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.08%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20%E9%9D%A2%E8%AF%95%E9%A2%98%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E07.%E6%A0%91%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3E%E9%9D%A2%E8%AF%95%E9%A2%98%20%C2%B7%202021-02-12%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center;"></div>
+        
+            <div class="hero-layer" data-hero-layer="2" style="opacity: 0; background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231E3A7A%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%234287C8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230F1F3A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22488%22%20cy%3D%22208%22%20r%3D%22228%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.12%22%2F%3E%3Ccircle%20cx%3D%22625%22%20cy%3D%2299%22%20r%3D%22161%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.11%22%2F%3E%3Ccircle%20cx%3D%2282%22%20cy%3D%22310%22%20r%3D%2294%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20redis%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BD%BF%E7%94%A8.md%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3Eredis%20%C2%B7%202025-07-28%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center;"></div>
+        
+    </div>
+    <div class="hero-particles" data-parallax="0.12">
+        <img src="../../image/header/particles.png" alt="">
+    </div>
+    <div class="hero-vignette"></div>
+    <div class="hero-top-fade"></div>
+    <div class="hero-content-scrim"></div>
+
+    <div class="hero-content">
+        <div class="kicker" data-reveal><span class="kicker-label" data-zh="置顶精选" data-en="FEATURED">置顶精选</span> · <span data-hero="eng">LINUX</span></div>
+        <h1 class="hero-title" data-hero="title" data-reveal>07.磁盘管理</h1>
+        <div class="hero-sub" data-reveal>
+            <span data-hero="sub"></span>
+        </div>
+        <div class="hero-cta" data-reveal>
+            <a href="/pages/80bb25/" data-hero="link" class="btn-primary" data-i18n="read_more">Read more →</a>
+            <span class="hero-meta" data-hero="meta">Linux · 2021-02-12</span>
+            <span class="hero-dots">
+                
+                    <button type="button" class="hero-dot active" data-hero-dot="0" aria-label="Slide 1"></button>
+                
+                    <button type="button" class="hero-dot " data-hero-dot="1" aria-label="Slide 2"></button>
+                
+                    <button type="button" class="hero-dot " data-hero-dot="2" aria-label="Slide 3"></button>
+                
+            </span>
+        </div>
+    </div>
+
+    <div class="scroll-cue">
+        <span class="scroll-label" data-i18n="scroll_label">SCROLL</span>
+        <span class="scroll-arrow">↓</span>
+    </div>
+</section>
+
+<script type="application/json" id="hero-slides">
+[{"eng":"LINUX","tag":"Linux","title":"07.磁盘管理","sub":"","date":"2021-02-12","url":"/pages/80bb25/","cover":"/post-images/04.操作系统/01.Linux/01.Linux入门/assets/1579789440638.png"},{"eng":"面试题","tag":"面试题","title":"07.树","sub":"","date":"2021-02-12","url":"/pages/4cd13b/","cover":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233A1E7A%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%237C42C8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231A0F3A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22670%22%20cy%3D%22230%22%20r%3D%2290%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Ccircle%20cx%3D%22127%22%20cy%3D%22121%22%20r%3D%22183%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.09%22%2F%3E%3Ccircle%20cx%3D%22264%22%20cy%3D%22332%22%20r%3D%22116%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.08%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20%E9%9D%A2%E8%AF%95%E9%A2%98%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E07.%E6%A0%91%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3E%E9%9D%A2%E8%AF%95%E9%A2%98%20%C2%B7%202021-02-12%3C%2Ftext%3E%3C%2Fsvg%3E"},{"eng":"REDIS","tag":"redis","title":"布隆过滤器使用.md","sub":"","date":"2025-07-28","url":"/2025/07/28/03.数据库/02.Redis/99-布隆过滤器/","cover":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231E3A7A%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%234287C8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230F1F3A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22488%22%20cy%3D%22208%22%20r%3D%22228%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.12%22%2F%3E%3Ccircle%20cx%3D%22625%22%20cy%3D%2299%22%20r%3D%22161%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.11%22%2F%3E%3Ccircle%20cx%3D%2282%22%20cy%3D%22310%22%20r%3D%2294%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20redis%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BD%BF%E7%94%A8.md%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3Eredis%20%C2%B7%202025-07-28%3C%2Ftext%3E%3C%2Fsvg%3E"}]
+</script>
+
+
+<section class="section featured" data-fx-pad>
+    <div class="section-kicker" data-reveal>FEATURED · <span data-i18n="featured">Selected writing</span></div>
+    <h2 class="section-title" data-reveal data-i18n="featuredHead">Think it through, then write it down — slowly.</h2>
+
+    
+        <div class="featured-row ">
+            <div class="featured-cover" data-fx-cover data-reveal
+                style="background-image: url('/post-images/03.数据库/02.Redis/assets/image-20210223215708483.png'); background-size: cover; background-position: center;"
+            >
+                <div class="featured-cover-overlay"></div>
+                <div class="featured-cover-note">// generated</div>
+            </div>
+            <div class="featured-text">
+                <div class="featured-ghost" data-fx-ghost>13.REDIS的CLUSTER配置</div>
+                <div data-reveal>
+                    
+                    <div class="featured-meta" data-zh-tag="数据库" data-en-tag="数据库">数据库 · 2021-02-22</div>
+                    <h3 class="featured-heading" data-zh-title="13.redis的cluster配置" data-en-title="13.redis的cluster配置">13.redis的cluster配置</h3>
+                    <p class="featured-desc" data-zh-sub="" data-en-sub=""></p>
+                    <a href="/pages/2b505d/" class="featured-link" data-i18n="read_more">Read more →</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="featured-row reverse">
+            <div class="featured-cover" data-fx-cover data-reveal
+                style="background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233A1E7A%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%237C42C8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231A0F3A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22575%22%20cy%3D%22175%22%20r%3D%22195%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.11%22%2F%3E%3Ccircle%20cx%3D%22712%22%20cy%3D%2266%22%20r%3D%22128%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Ccircle%20cx%3D%22169%22%20cy%3D%22277%22%20r%3D%22221%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.09%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20python%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E04.%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3Epython%20%C2%B7%202021-02-15%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center;"
+            >
+                <div class="featured-cover-overlay"></div>
+                <div class="featured-cover-note">// generated</div>
+            </div>
+            <div class="featured-text">
+                <div class="featured-ghost" data-fx-ghost>04.路由配置</div>
+                <div data-reveal>
+                    
+                    <div class="featured-meta" data-zh-tag="python" data-en-tag="python">python · 2021-02-15</div>
+                    <h3 class="featured-heading" data-zh-title="04.路由配置" data-en-title="04.路由配置">04.路由配置</h3>
+                    <p class="featured-desc" data-zh-sub="" data-en-sub=""></p>
+                    <a href="/pages/b0fcac/" class="featured-link" data-i18n="read_more">Read more →</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="featured-row ">
+            <div class="featured-cover" data-fx-cover data-reveal
+                style="background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22440%22%20viewBox%3D%220%200%20800%20440%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233A1E5C%22%2F%3E%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%23A855F7%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231A0F2E%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22440%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%22184%22%20cy%3D%22184%22%20r%3D%22204%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.12%22%2F%3E%3Ccircle%20cx%3D%22321%22%20cy%3D%2275%22%20r%3D%22137%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.11%22%2F%3E%3Ccircle%20cx%3D%22458%22%20cy%3D%22286%22%20r%3D%22230%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.10%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%220%22%20x2%3D%2280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%220%22%20x2%3D%22120%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22200%22%20y1%3D%220%22%20x2%3D%22200%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22240%22%20y1%3D%220%22%20x2%3D%22240%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22280%22%20y1%3D%220%22%20x2%3D%22280%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22320%22%20y1%3D%220%22%20x2%3D%22320%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22360%22%20y1%3D%220%22%20x2%3D%22360%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22400%22%20y1%3D%220%22%20x2%3D%22400%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22440%22%20y1%3D%220%22%20x2%3D%22440%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22520%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22560%22%20y1%3D%220%22%20x2%3D%22560%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22600%22%20y1%3D%220%22%20x2%3D%22600%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22640%22%20y1%3D%220%22%20x2%3D%22640%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22680%22%20y1%3D%220%22%20x2%3D%22680%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22720%22%20y1%3D%220%22%20x2%3D%22720%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22760%22%20y1%3D%220%22%20x2%3D%22760%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%22800%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22800%22%20y2%3D%220%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2240%22%20x2%3D%22800%22%20y2%3D%2240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%2280%22%20x2%3D%22800%22%20y2%3D%2280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22120%22%20x2%3D%22800%22%20y2%3D%22120%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22160%22%20x2%3D%22800%22%20y2%3D%22160%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22200%22%20x2%3D%22800%22%20y2%3D%22200%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22240%22%20x2%3D%22800%22%20y2%3D%22240%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22280%22%20x2%3D%22800%22%20y2%3D%22280%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22320%22%20x2%3D%22800%22%20y2%3D%22320%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22360%22%20x2%3D%22800%22%20y2%3D%22360%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Cline%20x1%3D%220%22%20y1%3D%22440%22%20x2%3D%22800%22%20y2%3D%22440%22%20stroke%3D%22%2346E6D0%22%20stroke-width%3D%221%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2280%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20font-weight%3D%22500%22%20fill%3D%22%2346E6D0%22%20letter-spacing%3D%220.12em%22%3E%23%20Git%3C%2Ftext%3E%3Crect%20x%3D%2248%22%20y%3D%22102%22%20width%3D%2240%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%2346E6D0%22%20opacity%3D%220.7%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%22236%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3EGit%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86-%E6%9F%A5%E7%9C%8B%E5%88%86%E6%94%AF%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22280%22%20font-family%3D%22Noto%20Sans%20SC%2C%20IBM%20Plex%20Sans%2C%20sans-serif%22%20font-size%3D%2232%22%20font-weight%3D%22700%22%20fill%3D%22%23F1ECFF%22%3E%3C%2Ftext%3E%3Ctext%20x%3D%2248%22%20y%3D%22392%22%20font-family%3D%22JetBrains%20Mono%2C%20ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22rgba(241%2C236%2C255%2C0.62)%22%20letter-spacing%3D%220.08em%22%3EGit%20%C2%B7%202020-11-18%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center;"
+            >
+                <div class="featured-cover-overlay"></div>
+                <div class="featured-cover-note">// generated</div>
+            </div>
+            <div class="featured-text">
+                <div class="featured-ghost" data-fx-ghost>GIT分支管理-查看分支</div>
+                <div data-reveal>
+                    
+                    <div class="featured-meta" data-zh-tag="01.git" data-en-tag="01.git">01.git · 2020-11-18</div>
+                    <h3 class="featured-heading" data-zh-title="Git分支管理-查看分支" data-en-title="Git分支管理-查看分支">Git分支管理-查看分支</h3>
+                    <p class="featured-desc" data-zh-sub="" data-en-sub=""></p>
+                    <a href="/pages/a399b3/" class="featured-link" data-i18n="read_more">Read more →</a>
+                </div>
+            </div>
+        </div>
+    
+</section>
+
+<section class="section about-short" data-fx-pad id="about">
+    <div class="about-ghost" data-fx-ghost data-parallax="0.06">BUILT FOR BUILDING</div>
+    <div class="about-inner">
+        <div class="section-kicker" data-reveal>$ whoami</div>
+        <h2 class="about-head" data-reveal data-i18n="aboutHead">Built for building.</h2>
+        <p class="about-body" data-reveal data-i18n="aboutBody">
+            Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.
+        </p>
+        <div class="skill-list" data-reveal>
+            
+                <span class="skill-chip">LangGraph</span>
+            
+                <span class="skill-chip">RAG</span>
+            
+                <span class="skill-chip">Claude Code · MCP</span>
+            
+                <span class="skill-chip">多 Agent · tmux</span>
+            
+        </div>
+    </div>
+</section>
+
+
+<section class="section recent" data-fx-pad id="recent">
+    <div class="recent-header">
+        <div>
+            <div class="section-kicker" data-reveal>RECENT · <span data-i18n="latest">Latest posts</span></div>
+            <h2 class="section-title" data-reveal data-i18n="latest">Latest posts</h2>
+        </div>
+        <a href="../../archives" class="view-all" data-reveal data-i18n="all">View all</a>
+    </div>
+
+    <div class="recent-list">
+        
+            
+            <a href="../../2026/07/24/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" class="recent-item" data-reveal style="transition-delay: 0ms">
+                <span class="recent-date">2026-07-24</span>
+                <span class="recent-cat"
+                      data-zh-cat="go"
+                      data-en-cat="Go">go</span>
+                <span class="recent-title"
+                      data-zh-title="Golang常见面试题"
+                      data-en-title="Golang常见面试题">Golang常见面试题</span>
+                <span class="recent-arrow">→</span>
+            </a>
+        
+            
+            <a href="../../2026/07/24/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="recent-item" data-reveal style="transition-delay: 45ms">
+                <span class="recent-date">2026-07-24</span>
+                <span class="recent-cat"
+                      data-zh-cat="go"
+                      data-en-cat="Go">go</span>
+                <span class="recent-title"
+                      data-zh-title="01. 内存模型"
+                      data-en-title="01. 内存模型">01. 内存模型</span>
+                <span class="recent-arrow">→</span>
+            </a>
+        
+            
+            <a href="../../2026/07/24/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/02.%E4%B8%8A%E4%B8%8B%E6%96%87%20-%20context/" class="recent-item" data-reveal style="transition-delay: 90ms">
+                <span class="recent-date">2026-07-24</span>
+                <span class="recent-cat"
+                      data-zh-cat="go"
+                      data-en-cat="Go">go</span>
+                <span class="recent-title"
+                      data-zh-title="02. 上下文-context"
+                      data-en-title="02. 上下文-context">02. 上下文-context</span>
+                <span class="recent-arrow">→</span>
+            </a>
+        
+            
+            <a href="../../2026/07/24/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/03.%E9%80%9A%E9%81%93-%20channel/" class="recent-item" data-reveal style="transition-delay: 135ms">
+                <span class="recent-date">2026-07-24</span>
+                <span class="recent-cat"
+                      data-zh-cat="go"
+                      data-en-cat="Go">go</span>
+                <span class="recent-title"
+                      data-zh-title="03. 通道- channel"
+                      data-en-title="03. 通道- channel">03. 通道- channel</span>
+                <span class="recent-arrow">→</span>
+            </a>
+        
+            
+            <a href="../../2026/07/12/github-actions-auto-deploy-test/" class="recent-item" data-reveal style="transition-delay: 180ms">
+                <span class="recent-date">2026-07-12</span>
+                <span class="recent-cat"
+                      data-zh-cat="自动化"
+                      data-en-cat="自动化">自动化</span>
+                <span class="recent-title"
+                      data-zh-title="GitHub Actions 自动部署测试"
+                      data-en-title="GitHub Actions 自动部署测试">GitHub Actions 自动部署测试</span>
+                <span class="recent-arrow">→</span>
+            </a>
+        
+    </div>
+</section>
+
+
+<section class="section tag-marquee" aria-label="Tags">
+    <div class="section-kicker" data-fx-mx data-reveal><span data-i18n="tag_cloud">Tag cloud</span></div>
+    
+    <div class="marquee" data-reveal>
+        <div class="marquee-track">
+            
+                <a href="../../tag/Pandas/" class="tag-chip"
+                   data-zh-name="-Pandas"
+                   data-en-name="-Pandas">
+                    #-Pandas <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/01-Django%E5%9F%BA%E7%A1%80/" class="tag-chip"
+                   data-zh-name="01_Django基础"
+                   data-en-name="01_Django基础">
+                    #01_Django基础 <span class="tag-count">3</span>
+                </a>
+            
+                <a href="../../tag/02-Model%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C/" class="tag-chip"
+                   data-zh-name="02_Model数据库操作"
+                   data-en-name="02_Model数据库操作">
+                    #02_Model数据库操作 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/DRF/" class="tag-chip"
+                   data-zh-name="DRF"
+                   data-en-name="DRF">
+                    #DRF <span class="tag-count">11</span>
+                </a>
+            
+                <a href="../../tag/GIL%E9%94%81/" class="tag-chip"
+                   data-zh-name="GIL锁"
+                   data-en-name="GIL锁">
+                    #GIL锁 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Git/" class="tag-chip"
+                   data-zh-name="Git"
+                   data-en-name="Git">
+                    #Git <span class="tag-count">14</span>
+                </a>
+            
+                <a href="../../tag/GitHub-Actions/" class="tag-chip"
+                   data-zh-name="GitHub Actions"
+                   data-en-name="GitHub Actions">
+                    #GitHub Actions <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Hexo/" class="tag-chip"
+                   data-zh-name="Hexo"
+                   data-en-name="Hexo">
+                    #Hexo <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/LFU%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="LFU算法"
+                   data-en-name="LFU算法">
+                    #LFU算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/LRU%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="LRU算法"
+                   data-en-name="LRU算法">
+                    #LRU算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Linux/" class="tag-chip"
+                   data-zh-name="Linux"
+                   data-en-name="Linux">
+                    #Linux <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/MySQL%E7%B4%A2%E5%BC%95/" class="tag-chip"
+                   data-zh-name="MySQL索引"
+                   data-en-name="MySQL索引">
+                    #MySQL索引 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/MySql/" class="tag-chip"
+                   data-zh-name="MySql"
+                   data-en-name="MySql">
+                    #MySql <span class="tag-count">6</span>
+                </a>
+            
+                <a href="../../tag/Python/" class="tag-chip"
+                   data-zh-name="Python"
+                   data-en-name="Python">
+                    #Python <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/channel/" class="tag-chip"
+                   data-zh-name="channel"
+                   data-en-name="channel">
+                    #channel <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/context/" class="tag-chip"
+                   data-zh-name="context"
+                   data-en-name="context">
+                    #context <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/django%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/" class="tag-chip"
+                   data-zh-name="django实现读写分离"
+                   data-en-name="django实现读写分离">
+                    #django实现读写分离 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/django%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="tag-chip"
+                   data-zh-name="django生命周期"
+                   data-en-name="django生命周期">
+                    #django生命周期 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/fastAPI/" class="tag-chip"
+                   data-zh-name="fastAPI"
+                   data-en-name="fastAPI">
+                    #fastAPI <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/go/" class="tag-chip"
+                   data-zh-name="go"
+                   data-en-name="Go">
+                    #go <span class="tag-count">4</span>
+                </a>
+            
+                <a href="../../tag/java/" class="tag-chip"
+                   data-zh-name="java"
+                   data-en-name="Java">
+                    #java <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/logging/" class="tag-chip"
+                   data-zh-name="logging"
+                   data-en-name="logging">
+                    #logging <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/mysql/" class="tag-chip"
+                   data-zh-name="mysql"
+                   data-en-name="mysql">
+                    #mysql <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/orm/" class="tag-chip"
+                   data-zh-name="orm"
+                   data-en-name="orm">
+                    #orm <span class="tag-count">9</span>
+                </a>
+            
+                <a href="../../tag/python/" class="tag-chip"
+                   data-zh-name="python"
+                   data-en-name="Python">
+                    #python <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/python%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="tag-chip"
+                   data-zh-name="python内存管理"
+                   data-en-name="python内存管理">
+                    #python内存管理 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/python%E9%9D%A2%E8%AF%95%E9%A2%98/" class="tag-chip"
+                   data-zh-name="python面试题"
+                   data-en-name="python面试题">
+                    #python面试题 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/re/" class="tag-chip"
+                   data-zh-name="re"
+                   data-en-name="re">
+                    #re <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/redis/" class="tag-chip"
+                   data-zh-name="redis"
+                   data-en-name="redis">
+                    #redis <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/rocketMQ/" class="tag-chip"
+                   data-zh-name="rocketMQ"
+                   data-en-name="rocketMQ">
+                    #rocketMQ <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/springBoot/" class="tag-chip"
+                   data-zh-name="springBoot"
+                   data-en-name="Spring Boot">
+                    #springBoot <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/subprocess/" class="tag-chip"
+                   data-zh-name="subprocess"
+                   data-en-name="subprocess">
+                    #subprocess <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/sys/" class="tag-chip"
+                   data-zh-name="sys"
+                   data-en-name="sys">
+                    #sys <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%B8%AD%E6%96%87%E7%AE%80%E5%8E%86/" class="tag-chip"
+                   data-zh-name="中文简历"
+                   data-en-name="中文简历">
+                    #中文简历 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="tag-chip"
+                   data-zh-name="二叉树"
+                   data-en-name="二叉树">
+                    #二叉树 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" class="tag-chip"
+                   data-zh-name="二叉树的扩展延伸"
+                   data-en-name="二叉树的扩展延伸">
+                    #二叉树的扩展延伸 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="tag-chip"
+                   data-zh-name="内存模型"
+                   data-en-name="内存模型">
+                    #内存模型 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%88%97%E8%A1%A8/" class="tag-chip"
+                   data-zh-name="列表"
+                   data-en-name="列表">
+                    #列表 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%89%91%E6%8C%87offer/" class="tag-chip"
+                   data-zh-name="剑指offer"
+                   data-en-name="剑指offer">
+                    #剑指offer <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="tag-chip"
+                   data-zh-name="动态规划"
+                   data-en-name="动态规划">
+                    #动态规划 <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/" class="tag-chip"
+                   data-zh-name="华为机考"
+                   data-en-name="华为机考">
+                    #华为机考 <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/" class="tag-chip"
+                   data-zh-name="向量数据库"
+                   data-en-name="向量数据库">
+                    #向量数据库 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="tag-chip"
+                   data-zh-name="大模型"
+                   data-en-name="大模型">
+                    #大模型 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" class="tag-chip"
+                   data-zh-name="套模板解决100道二叉树练习"
+                   data-en-name="套模板解决100道二叉树练习">
+                    #套模板解决100道二叉树练习 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E5%85%B8/" class="tag-chip"
+                   data-zh-name="字典"
+                   data-en-name="字典">
+                    #字典 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="tag-chip"
+                   data-zh-name="字符串"
+                   data-en-name="字符串">
+                    #字符串 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%86%E5%89%B2/" class="tag-chip"
+                   data-zh-name="字符串分割"
+                   data-en-name="字符串分割">
+                    #字符串分割 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" class="tag-chip"
+                   data-zh-name="布隆过滤器"
+                   data-en-name="布隆过滤器">
+                    #布隆过滤器 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="tag-chip"
+                   data-zh-name="并发编程"
+                   data-en-name="并发编程">
+                    #并发编程 <span class="tag-count">3</span>
+                </a>
+            
+                <a href="../../tag/%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E5%9B%BE%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="手把手刷图算法"
+                   data-en-name="手把手刷图算法">
+                    #手把手刷图算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="tag-chip"
+                   data-zh-name="数据结构"
+                   data-en-name="数据结构">
+                    #数据结构 <span class="tag-count">15</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="tag-chip"
+                   data-zh-name="数据结构数据结构"
+                   data-en-name="数据结构数据结构">
+                    #数据结构数据结构 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E7%BB%84/" class="tag-chip"
+                   data-zh-name="数组"
+                   data-en-name="数组">
+                    #数组 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%96%87%E6%A1%A3%E8%AE%A1%E9%87%8F%E5%AD%A6/" class="tag-chip"
+                   data-zh-name="文档计量学"
+                   data-en-name="Bibliometrics">
+                    #文档计量学 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="滑动窗口算法"
+                   data-en-name="滑动窗口算法">
+                    #滑动窗口算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="算法"
+                   data-en-name="Algorithms">
+                    #算法 <span class="tag-count">10</span>
+                </a>
+            
+                <a href="../../tag/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="tag-chip"
+                   data-zh-name="系统设计"
+                   data-en-name="System Design">
+                    #系统设计 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E8%8B%B1%E6%96%87%E7%AE%80%E5%8E%86/" class="tag-chip"
+                   data-zh-name="英文简历"
+                   data-en-name="英文简历">
+                    #英文简历 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E8%BF%9B%E7%A8%8B/" class="tag-chip"
+                   data-zh-name="进程"
+                   data-en-name="进程">
+                    #进程 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%93%BE%E8%A1%A8/" class="tag-chip"
+                   data-zh-name="链表"
+                   data-en-name="链表">
+                    #链表 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%9B%86%E5%90%88/" class="tag-chip"
+                   data-zh-name="集合"
+                   data-en-name="集合">
+                    #集合 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="tag-chip"
+                   data-zh-name="面试题"
+                   data-en-name="Interview">
+                    #面试题 <span class="tag-count">4</span>
+                </a>
+            
+        </div>
+        <div class="marquee-track" aria-hidden="true">
+            
+                <a href="../../tag/Pandas/" class="tag-chip"
+                   data-zh-name="-Pandas"
+                   data-en-name="-Pandas">
+                    #-Pandas <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/01-Django%E5%9F%BA%E7%A1%80/" class="tag-chip"
+                   data-zh-name="01_Django基础"
+                   data-en-name="01_Django基础">
+                    #01_Django基础 <span class="tag-count">3</span>
+                </a>
+            
+                <a href="../../tag/02-Model%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C/" class="tag-chip"
+                   data-zh-name="02_Model数据库操作"
+                   data-en-name="02_Model数据库操作">
+                    #02_Model数据库操作 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/DRF/" class="tag-chip"
+                   data-zh-name="DRF"
+                   data-en-name="DRF">
+                    #DRF <span class="tag-count">11</span>
+                </a>
+            
+                <a href="../../tag/GIL%E9%94%81/" class="tag-chip"
+                   data-zh-name="GIL锁"
+                   data-en-name="GIL锁">
+                    #GIL锁 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Git/" class="tag-chip"
+                   data-zh-name="Git"
+                   data-en-name="Git">
+                    #Git <span class="tag-count">14</span>
+                </a>
+            
+                <a href="../../tag/GitHub-Actions/" class="tag-chip"
+                   data-zh-name="GitHub Actions"
+                   data-en-name="GitHub Actions">
+                    #GitHub Actions <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Hexo/" class="tag-chip"
+                   data-zh-name="Hexo"
+                   data-en-name="Hexo">
+                    #Hexo <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/LFU%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="LFU算法"
+                   data-en-name="LFU算法">
+                    #LFU算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/LRU%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="LRU算法"
+                   data-en-name="LRU算法">
+                    #LRU算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/Linux/" class="tag-chip"
+                   data-zh-name="Linux"
+                   data-en-name="Linux">
+                    #Linux <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/MySQL%E7%B4%A2%E5%BC%95/" class="tag-chip"
+                   data-zh-name="MySQL索引"
+                   data-en-name="MySQL索引">
+                    #MySQL索引 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/MySql/" class="tag-chip"
+                   data-zh-name="MySql"
+                   data-en-name="MySql">
+                    #MySql <span class="tag-count">6</span>
+                </a>
+            
+                <a href="../../tag/Python/" class="tag-chip"
+                   data-zh-name="Python"
+                   data-en-name="Python">
+                    #Python <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/channel/" class="tag-chip"
+                   data-zh-name="channel"
+                   data-en-name="channel">
+                    #channel <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/context/" class="tag-chip"
+                   data-zh-name="context"
+                   data-en-name="context">
+                    #context <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/django%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/" class="tag-chip"
+                   data-zh-name="django实现读写分离"
+                   data-en-name="django实现读写分离">
+                    #django实现读写分离 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/django%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="tag-chip"
+                   data-zh-name="django生命周期"
+                   data-en-name="django生命周期">
+                    #django生命周期 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/fastAPI/" class="tag-chip"
+                   data-zh-name="fastAPI"
+                   data-en-name="fastAPI">
+                    #fastAPI <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/go/" class="tag-chip"
+                   data-zh-name="go"
+                   data-en-name="Go">
+                    #go <span class="tag-count">4</span>
+                </a>
+            
+                <a href="../../tag/java/" class="tag-chip"
+                   data-zh-name="java"
+                   data-en-name="Java">
+                    #java <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/logging/" class="tag-chip"
+                   data-zh-name="logging"
+                   data-en-name="logging">
+                    #logging <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/mysql/" class="tag-chip"
+                   data-zh-name="mysql"
+                   data-en-name="mysql">
+                    #mysql <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/orm/" class="tag-chip"
+                   data-zh-name="orm"
+                   data-en-name="orm">
+                    #orm <span class="tag-count">9</span>
+                </a>
+            
+                <a href="../../tag/python/" class="tag-chip"
+                   data-zh-name="python"
+                   data-en-name="Python">
+                    #python <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/python%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="tag-chip"
+                   data-zh-name="python内存管理"
+                   data-en-name="python内存管理">
+                    #python内存管理 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/python%E9%9D%A2%E8%AF%95%E9%A2%98/" class="tag-chip"
+                   data-zh-name="python面试题"
+                   data-en-name="python面试题">
+                    #python面试题 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/re/" class="tag-chip"
+                   data-zh-name="re"
+                   data-en-name="re">
+                    #re <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/redis/" class="tag-chip"
+                   data-zh-name="redis"
+                   data-en-name="redis">
+                    #redis <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/rocketMQ/" class="tag-chip"
+                   data-zh-name="rocketMQ"
+                   data-en-name="rocketMQ">
+                    #rocketMQ <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/springBoot/" class="tag-chip"
+                   data-zh-name="springBoot"
+                   data-en-name="Spring Boot">
+                    #springBoot <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/subprocess/" class="tag-chip"
+                   data-zh-name="subprocess"
+                   data-en-name="subprocess">
+                    #subprocess <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/sys/" class="tag-chip"
+                   data-zh-name="sys"
+                   data-en-name="sys">
+                    #sys <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%B8%AD%E6%96%87%E7%AE%80%E5%8E%86/" class="tag-chip"
+                   data-zh-name="中文简历"
+                   data-en-name="中文简历">
+                    #中文简历 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="tag-chip"
+                   data-zh-name="二叉树"
+                   data-en-name="二叉树">
+                    #二叉树 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/" class="tag-chip"
+                   data-zh-name="二叉树的扩展延伸"
+                   data-en-name="二叉树的扩展延伸">
+                    #二叉树的扩展延伸 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="tag-chip"
+                   data-zh-name="内存模型"
+                   data-en-name="内存模型">
+                    #内存模型 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%88%97%E8%A1%A8/" class="tag-chip"
+                   data-zh-name="列表"
+                   data-en-name="列表">
+                    #列表 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%89%91%E6%8C%87offer/" class="tag-chip"
+                   data-zh-name="剑指offer"
+                   data-en-name="剑指offer">
+                    #剑指offer <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="tag-chip"
+                   data-zh-name="动态规划"
+                   data-en-name="动态规划">
+                    #动态规划 <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/" class="tag-chip"
+                   data-zh-name="华为机考"
+                   data-en-name="华为机考">
+                    #华为机考 <span class="tag-count">2</span>
+                </a>
+            
+                <a href="../../tag/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/" class="tag-chip"
+                   data-zh-name="向量数据库"
+                   data-en-name="向量数据库">
+                    #向量数据库 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="tag-chip"
+                   data-zh-name="大模型"
+                   data-en-name="大模型">
+                    #大模型 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" class="tag-chip"
+                   data-zh-name="套模板解决100道二叉树练习"
+                   data-en-name="套模板解决100道二叉树练习">
+                    #套模板解决100道二叉树练习 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E5%85%B8/" class="tag-chip"
+                   data-zh-name="字典"
+                   data-en-name="字典">
+                    #字典 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="tag-chip"
+                   data-zh-name="字符串"
+                   data-en-name="字符串">
+                    #字符串 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%86%E5%89%B2/" class="tag-chip"
+                   data-zh-name="字符串分割"
+                   data-en-name="字符串分割">
+                    #字符串分割 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" class="tag-chip"
+                   data-zh-name="布隆过滤器"
+                   data-en-name="布隆过滤器">
+                    #布隆过滤器 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="tag-chip"
+                   data-zh-name="并发编程"
+                   data-en-name="并发编程">
+                    #并发编程 <span class="tag-count">3</span>
+                </a>
+            
+                <a href="../../tag/%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E5%9B%BE%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="手把手刷图算法"
+                   data-en-name="手把手刷图算法">
+                    #手把手刷图算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="tag-chip"
+                   data-zh-name="数据结构"
+                   data-en-name="数据结构">
+                    #数据结构 <span class="tag-count">15</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="tag-chip"
+                   data-zh-name="数据结构数据结构"
+                   data-en-name="数据结构数据结构">
+                    #数据结构数据结构 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%95%B0%E7%BB%84/" class="tag-chip"
+                   data-zh-name="数组"
+                   data-en-name="数组">
+                    #数组 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%96%87%E6%A1%A3%E8%AE%A1%E9%87%8F%E5%AD%A6/" class="tag-chip"
+                   data-zh-name="文档计量学"
+                   data-en-name="Bibliometrics">
+                    #文档计量学 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="滑动窗口算法"
+                   data-en-name="滑动窗口算法">
+                    #滑动窗口算法 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E7%AE%97%E6%B3%95/" class="tag-chip"
+                   data-zh-name="算法"
+                   data-en-name="Algorithms">
+                    #算法 <span class="tag-count">10</span>
+                </a>
+            
+                <a href="../../tag/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="tag-chip"
+                   data-zh-name="系统设计"
+                   data-en-name="System Design">
+                    #系统设计 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E8%8B%B1%E6%96%87%E7%AE%80%E5%8E%86/" class="tag-chip"
+                   data-zh-name="英文简历"
+                   data-en-name="英文简历">
+                    #英文简历 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E8%BF%9B%E7%A8%8B/" class="tag-chip"
+                   data-zh-name="进程"
+                   data-en-name="进程">
+                    #进程 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%93%BE%E8%A1%A8/" class="tag-chip"
+                   data-zh-name="链表"
+                   data-en-name="链表">
+                    #链表 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%9B%86%E5%90%88/" class="tag-chip"
+                   data-zh-name="集合"
+                   data-en-name="集合">
+                    #集合 <span class="tag-count">1</span>
+                </a>
+            
+                <a href="../../tag/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="tag-chip"
+                   data-zh-name="面试题"
+                   data-en-name="Interview">
+                    #面试题 <span class="tag-count">4</span>
+                </a>
+            
+        </div>
+    </div>
+    
+</section>
+
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

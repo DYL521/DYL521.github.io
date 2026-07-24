@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            01.MongoDB基础 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/c49dd1/</div>
+            <h1 class="article-title" data-reveal>01.MongoDB基础</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">数据库</span>
+                <span>2021-02-09</span>
+                <span>· 11 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 3027 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h2 id="01mongodb介绍"><a class="markdownIt-Anchor" href="#01mongodb介绍"></a> 01.MongoDB介绍</h2>
+<h3 id="11-什么是mongodb"><a class="markdownIt-Anchor" href="#11-什么是mongodb"></a> 1.1 什么是MongoDB ?</h3>
+<ul>
+<li>
+<p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。</p>
+</li>
+<li>
+<p>MongoDB是一个文档型的NoSQL数据库，文档型—&gt; BSON文档（json的二进制）</p>
+</li>
+<li>
+<p>保存数据：key-value</p>
+</li>
+<li>
+<p>一般不支持事务</p>
+</li>
+</ul>
+<p><img src="/post-images/03.数据库/04.MongoDB/assets/image-20210226092405733.png" style="width: 400px; margin-left: 40px;"> </img></p>
+<h3 id="12-mongodb使用场景"><a class="markdownIt-Anchor" href="#12-mongodb使用场景"></a> 1.2 MongoDB使用场景</h3>
+<ul>
+<li>
+<p><code>1）更高的写入负载</code></p>
+<ul>
+<li>默认情况下，MongoDB更侧重高数据写入性能，而非事务安全，MongoDB很适合业务系统中有大量“低价值”数据的场景。</li>
+<li>但是应当避免在高事务安全性的系统中使用MongoDB，除非能从架构设计上保证事务安全。</li>
+</ul>
+</li>
+<li>
+<p><code>2）高可用性</code></p>
+<ul>
+<li>MongoDB的复副集(Master-Slave)配置非常简洁方便，此外，MongoDB可以快速响应的处理单节点故障，自动、安全的完成故障转移。</li>
+<li>这些特性使得MongoDB能在一个相对不稳定（如云主机）的环境中，保持高可用性。</li>
+</ul>
+</li>
+<li>
+<p><code>3）表结构不明确，且数据在不断变大</code></p>
+</li>
+</ul>
+<h3 id="13-mongodb应用举例"><a class="markdownIt-Anchor" href="#13-mongodb应用举例"></a> 1.3 MongoDB应用举例</h3>
+<ul>
+<li>
+<p>1.比如豆瓣影评中有1000部电影，每部电影有1000个影评，每个影评有1000个评论，那么查询笛卡尔积是1000<em>1000</em>1000</p>
+</li>
+<li>
+<p>2.而使用MongoDB只需要存储1000条数据即可完成上述数据查询</p>
+</li>
+</ul>
+<p><img src="/post-images/03.数据库/04.MongoDB/assets/image-20210226093830447.png" style="width: 700px; margin-left: 20px;"> </img></p>
+<h3 id="14-主要特点"><a class="markdownIt-Anchor" href="#14-主要特点"></a> 1.4 主要特点</h3>
+<ul>
+<li>MongoDB 是一个面向文档存储的数据库，操作起来比较简单和容易。</li>
+<li>你可以在MongoDB记录中设置任何属性的索引 (如：FirstName=“Sameer”,Address=“8 Gandhi Road”)来实现更快的排序。</li>
+<li>你可以通过本地或者网络创建数据镜像，这使得MongoDB有更强的扩展性。</li>
+<li>如果负载的增加（需要更多的存储空间和更强的处理能力） ，它可以分布在计算机网络中的其他节点上这就是所谓的<code>分片</code>。</li>
+<li>Mongo支持丰富的查询表达式。查询指令使用JSON形式的标记，可轻易查询文档中内嵌的对象及数组。</li>
+<li>MongoDb 使用update()命令可以实现替换完成的文档（数据）或者一些指定的数据字段 。</li>
+<li>Mongodb中的Map/reduce主要是用来对数据进行批量处理和聚合操作。</li>
+<li>Map和Reduce。Map函数调用emit(key,value)遍历集合中所有的记录，将key与value传给Reduce函数进行处理。</li>
+<li>Map函数和Reduce函数是使用shell编写的，并可以通过db.runCommand或mapreduce命令来执行MapReduce操作。</li>
+<li>GridFS是MongoDB中的一个内置功能，可以用于存放大量小文件。</li>
+<li>MongoDB允许在服务端执行脚本，可以用shell编写某个函数，直接在服务端执行，也可以把函数的定义存储在服务端，下次直接调用即可。</li>
+<li>MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。</li>
+<li>MongoDB安装简单。</li>
+</ul>
+<h3 id="15-mongodb为什么快"><a class="markdownIt-Anchor" href="#15-mongodb为什么快"></a> 1.5 MongoDB为什么快</h3>
+<ul>
+<li>
+<p>写操作快原因</p>
+<ul>
+<li>写操作MongoDB比传统数据库快的根本原因是<code>Mongo使用的内存映射技术</code></li>
+<li>写入数据时候只要<code>在内存里完成就可以返回给应用程序</code>，这样并发量自然就很高</li>
+<li><code>而保存到硬体的操作则在后台异步完成</code></li>
+<li>注意MongoDB在2.4就已经是默认安全写了（具体实现在驱动程序里）</li>
+</ul>
+</li>
+<li>
+<p>读操作MongoDB快的原因是：</p>
+<ul>
+<li>1）MongoDB的设计要求你<code>常用的数据可以在内存里装下</code>（这样大部分操作只需要读内存，自然很快）</li>
+<li>2）文档性模式设计一般会是的你所需要的数据都相对集中在一起（内存或硬盘）
+<ul>
+<li>大家知道硬盘读写耗时最多是随机读写所产生的磁头定位时间</li>
+<li>数据集中在一起则减少了关系性数据库需要从各个地方去把数据找过来（然后Join）所耗费的随机读时间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="02nosql与关系型数据库"><a class="markdownIt-Anchor" href="#02nosql与关系型数据库"></a> 02.NoSQL与关系型数据库</h2>
+<h3 id="21-关系型数据库的优点"><a class="markdownIt-Anchor" href="#21-关系型数据库的优点"></a> 2.1 关系型数据库的优点</h3>
+<ul>
+<li>
+<p><strong>易理解</strong></p>
+<ul>
+<li>因为行 + 列的二维表逻辑是非常贴近逻辑世界的一个概念</li>
+<li>关系模型相对网状、层次等其他模型更加容易被理解</li>
+</ul>
+</li>
+<li>
+<p><strong>操作方便</strong></p>
+<ul>
+<li>通用的SQL语言使得操作关系型数据库非常方便，支持join等复杂查询</li>
+<li>Sql + 二维关系是关系型数据库最无可比拟的优点，这种易用性非常贴近开发者</li>
+</ul>
+</li>
+<li>
+<p><strong>数据一致性</strong></p>
+<ul>
+<li>支持ACID特性，可以维护数据之间的一致性，这是使用数据库非常重要的一个理由之一</li>
+<li>例如同银行转账，张三转给李四100元钱，张三扣100元，李四加100元</li>
+<li>而且必须同时成功或者同时失败，否则就会造成用户的资损</li>
+</ul>
+</li>
+<li>
+<p><strong>数据稳定</strong></p>
+<ul>
+<li>数据持久化到磁盘，没有丢失数据风险，支持海量数据存储</li>
+</ul>
+</li>
+<li>
+<p><strong>服务稳定</strong></p>
+<ul>
+<li>最常用的关系型数据库产品MySql、Oracle服务器性能卓越，服务稳定，通常很少出现宕机异常</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-关系型数据库的缺点"><a class="markdownIt-Anchor" href="#22-关系型数据库的缺点"></a> 2.2 关系型数据库的缺点</h3>
+<ul>
+<li>高并发下IO压力大
+<ul>
+<li>数据按行存储，即使只针对其中某一列进行运算，也会将整行数据从存储设备中读入内存，导致IO较高</li>
+</ul>
+</li>
+<li>为维护索引付出的代价大
+<ul>
+<li>为了提供丰富的查询能力，通常热点表都会有多个二级索引</li>
+<li>一旦有了二级索引，数据的新增必然伴随着所有二级索引的新增</li>
+<li>数据的更新也必然伴随着所有二级索引的更新</li>
+<li>这不可避免地降低了关系型数据库的读写能力，且索引越多读写能力越差。</li>
+<li>有机会的话可以看一下自己公司的数据库，除了数据文件不可避免地占空间外，索引占的空间其实也并不少</li>
+</ul>
+</li>
+<li>为维护数据一致性付出的代价大
+<ul>
+<li>那么为了保证事务一致性，数据库就需要提供并发控制与故障恢复两种技术</li>
+<li>对于并发控制，其核心思想就是加锁，无论是乐观锁还是悲观锁，只要提供的隔离级别越高，那么读写性能必然越差</li>
+<li>故障恢复可以在系统异常的时候保证事务与数据库状态不会被破坏。</li>
+</ul>
+</li>
+<li>水平扩展后带来的种种问题难处理
+<ul>
+<li>分布式事务处理都是需要考虑的问题，尤其是分布式事务处理，业界当前都没有特别好的解决方案</li>
+</ul>
+</li>
+<li>表结构扩展不方便
+<ul>
+<li>由于数据库存储的是结构化数据，因此表结构schema是固定的，扩展不方便
+<ul>
+<li>如果需要修改表结构，需要执行DDL语句修改，修改期间会导致锁表，部分服务不可用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>全文搜索功能弱</li>
+</ul>
+<h3 id="23-什么是nosql"><a class="markdownIt-Anchor" href="#23-什么是nosql"></a> 2.3 什么是nosql</h3>
+<ul>
+<li>
+<p>NoSQL，指的是非关系型的数据库，NoSQL有时也称作Not Only SQL的缩写</p>
+</li>
+<li>
+<p>是对不同于传统的关系型数据库的数据库管理系统的统称。</p>
+</li>
+<li>
+<p>NoSQL用于超大规模数据的存储。（例如谷歌或Facebook每天为他们的用户收集万亿比特的数据）。</p>
+</li>
+<li>
+<p>这些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。</p>
+</li>
+</ul>
+<h3 id="24-cap定理"><a class="markdownIt-Anchor" href="#24-cap定理"></a> 2.4 CAP定理</h3>
+<ul>
+<li>
+<p>对于一个分布式计算系统来说，不可能同时满足以下三点</p>
+<ul>
+<li><strong>一致性(Consistency)</strong> (所有节点在同一时间具有相同的数据)</li>
+<li><strong>可用性(Availability)</strong> (保证每个请求不管成功或者失败都有响应)</li>
+<li><strong>分隔容忍(Partition tolerance)</strong> (系统中任意信息的丢失或失败不会影响系统的继续运作)</li>
+</ul>
+</li>
+<li>
+<p>因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP 原则和满足 AP 原则三 大类：</p>
+<ul>
+<li>CA - 单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。</li>
+<li>CP - 满足一致性，分区容忍性的系统，通常性能不是特别高。</li>
+<li>AP - 满足可用性，分区容忍性的系统，通常可能对一致性要求低一些。</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/776ad4/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">01.Linux基础</div>
+                </a>
+                
+                
+                <a href="../../pages/4d3a23/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">01.Redis安装</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01mongodb介绍" class="toc-item"> 01.MongoDB介绍</a>
+                
+                    
+                    
+                    
+                    <a href="#11-什么是mongodb" class="toc-item"> 1.1 什么是MongoDB ?</a>
+                
+                    
+                    
+                    
+                    <a href="#12-mongodb使用场景" class="toc-item"> 1.2 MongoDB使用场景</a>
+                
+                    
+                    
+                    
+                    <a href="#13-mongodb应用举例" class="toc-item"> 1.3 MongoDB应用举例</a>
+                
+                    
+                    
+                    
+                    <a href="#14-主要特点" class="toc-item"> 1.4 主要特点</a>
+                
+                    
+                    
+                    
+                    <a href="#15-mongodb为什么快" class="toc-item"> 1.5 MongoDB为什么快</a>
+                
+                    
+                    
+                    
+                    <a href="#02nosql与关系型数据库" class="toc-item"> 02.NoSQL与关系型数据库</a>
+                
+                    
+                    
+                    
+                    <a href="#21-关系型数据库的优点" class="toc-item"> 2.1 关系型数据库的优点</a>
+                
+                    
+                    
+                    
+                    <a href="#22-关系型数据库的缺点" class="toc-item"> 2.2 关系型数据库的缺点</a>
+                
+                    
+                    
+                    
+                    <a href="#23-什么是nosql" class="toc-item"> 2.3 什么是nosql</a>
+                
+                    
+                    
+                    
+                    <a href="#24-cap定理" class="toc-item"> 2.4 CAP定理</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

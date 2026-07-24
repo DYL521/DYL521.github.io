@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            Git工具-交互式暂存 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/76d859/</div>
+            <h1 class="article-title" data-reveal>Git工具-交互式暂存</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">01.git</span>
+                <span>2020-11-18</span>
+                <span>· 17 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 4907 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h1 id="git工具-交互式暂存"><a class="markdownIt-Anchor" href="#git工具-交互式暂存"></a> Git工具-交互式暂存</h1>
+<p>本节中的几个交互式 Git 命令可以帮助你将文件的特定部分组合成提交。 当你在修改了大量文件后，希望这些改动能拆分为若干提交而不是混杂在一起成为一个提交时，这几个工具会非常有用。 通过这种方式，可以确保提交是逻辑上独立的变更集，同时也会使其他开发者在与你工作时很容易地审核。 如果运行 <code>git add</code> 时使用 <code>-i</code> 或者 <code>--interactive</code> 选项，Git 将会进入一个交互式终端模式，显示类似下面的东西：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">$ git add -i
+           staged     unstaged path
+  1:    unchanged        +0/-1 TODO
+  2:    unchanged        +1/-1 index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+
+*** Commands ***
+  1: [s]tatus     2: [u]pdate      3: [r]evert     4: [a]dd untracked
+  5: [p]atch      6: [d]iff        7: [q]uit       8: [h]elp
+What now>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到这个命令以和平时非常不同的视图显示了暂存区——基本上与 <code>git status</code> 是相同的信息，但是更简明扼要一些。 它将暂存的修改列在左侧，未暂存的修改列在右侧。</p>
+<p>在这块区域后是“Commands”命令区域。 在这里你可以做一些工作，包括暂存文件、取消暂存文件、暂存文件的一部分、添加未被追踪的文件、显示暂存内容的区别。</p>
+<h2 id="暂存与取消暂存文件"><a class="markdownIt-Anchor" href="#暂存与取消暂存文件"></a> 暂存与取消暂存文件</h2>
+<p>如果在 <code>What now&gt;</code> 提示符后键入 <code>u</code> 或 <code>2</code>（更新），它会问你想要暂存哪个文件：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">What now> u
+           staged     unstaged path
+  1:    unchanged        +0/-1 TODO
+  2:    unchanged        +1/-1 index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+Update>>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>要暂存 <code>TODO</code> 和 <code>index.html</code> 文件，可以输入数字：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">Update>> 1,2
+           staged     unstaged path
+* 1:    unchanged        +0/-1 TODO
+* 2:    unchanged        +1/-1 index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+Update>>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>每个文件前面的 <code>*</code> 意味着选中的文件将会被暂存。 如果在 <code>Update&gt;&gt;</code> 提示符后不输入任何东西并直接按回车，Git 将会暂存之前选择的文件：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">Update>>
+updated 2 paths
+
+*** Commands ***
+  1: [s]tatus     2: [u]pdate      3: [r]evert     4: [a]dd untracked
+  5: [p]atch      6: [d]iff        7: [q]uit       8: [h]elp
+What now> s
+           staged     unstaged path
+  1:        +0/-1      nothing TODO
+  2:        +1/-1      nothing index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在可以看到 <code>TODO</code> 与 <code>index.html</code> 文件已经被暂存而 <code>simplegit.rb</code> 文件还未被暂存。 如果这时想要取消暂存 TODO 文件，使用 <code>r</code> 或 <code>3</code>（撤消）选项：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">*** Commands ***
+  1: [s]tatus     2: [u]pdate      3: [r]evert     4: [a]dd untracked
+  5: [p]atch      6: [d]iff        7: [q]uit       8: [h]elp
+What now> r
+           staged     unstaged path
+  1:        +0/-1      nothing TODO
+  2:        +1/-1      nothing index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+Revert>> 1
+           staged     unstaged path
+* 1:        +0/-1      nothing TODO
+  2:        +1/-1      nothing index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+Revert>> [enter]
+reverted one path
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>再次查看 Git 状态，可以看到已经取消暂存 <code>TODO</code> 文件：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">*** Commands ***
+  1: [s]tatus     2: [u]pdate      3: [r]evert     4: [a]dd untracked
+  5: [p]atch      6: [d]iff        7: [q]uit       8: [h]elp
+What now> s
+           staged     unstaged path
+  1:    unchanged        +0/-1 TODO
+  2:        +1/-1      nothing index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果想要查看已暂存内容的区别，可以使用 <code>d</code> 或 <code>6</code>（区别）命令。 它会显示暂存文件的一个列表，可以从中选择想要查看的暂存区别。 这跟你在命令行指定 <code>git diff --cached</code> 非常相似：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">*** Commands ***
+  1: [s]tatus     2: [u]pdate      3: [r]evert     4: [a]dd untracked
+  5: [p]atch      6: [d]iff        7: [q]uit       8: [h]elp
+What now> d
+           staged     unstaged path
+  1:        +1/-1      nothing index.html
+Review diff>> 1
+diff --git a/index.html b/index.html
+index 4d07108..4335f49 100644
+--- a/index.html
++++ b/index.html
+@@ -16,7 +16,7 @@ Date Finder
+
+ <p id="out">...</p>
+
+-<div id="footer">contact : support@github.com</div>
++<div id="footer">contact : email.support@github.com</div>
+
+ <script type="text/shell">
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过这些基本命令，可以使用交互式添加模式来轻松地处理暂存区。</p>
+<h2 id="暂存补丁"><a class="markdownIt-Anchor" href="#暂存补丁"></a> 暂存补丁</h2>
+<p>Git 也可以暂存文件的特定部分。 例如，如果在 simplegit.rb 文件中做了两处修改，但只想要暂存其中的一个而不是另一个，Git 会帮你轻松地完成。 在和上一节一样的交互式提示符中，输入 <code>p</code> 或 <code>5</code>（补丁）。 Git 会询问你想要部分暂存哪些文件；然后，对已选择文件的每一个部分，它都会一个个地显示文件区别并询问你是否想要暂存它们：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">diff --git a/lib/simplegit.rb b/lib/simplegit.rb
+index dd5ecc4..57399e0 100644
+--- a/lib/simplegit.rb
++++ b/lib/simplegit.rb
+@@ -22,7 +22,7 @@ class SimpleGit
+   end
+
+   def log(treeish = 'master')
+-    command("git log -n 25 #{treeish}")
++    command("git log -n 30 #{treeish}")
+   end
+
+   def blame(path)
+Stage this hunk [y,n,a,d,/,j,J,g,e,?]?
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这时有很多选项。 输入 <code>?</code> 显示所有可以使用的命令列表：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">Stage this hunk [y,n,a,d,/,j,J,g,e,?]? ?
+y - stage this hunk
+n - do not stage this hunk
+a - stage this and all the remaining hunks in the file
+d - do not stage this hunk nor any of the remaining hunks in the file
+g - select a hunk to go to
+/ - search for a hunk matching the given regex
+j - leave this hunk undecided, see next undecided hunk
+J - leave this hunk undecided, see next hunk
+k - leave this hunk undecided, see previous undecided hunk
+K - leave this hunk undecided, see previous hunk
+s - split the current hunk into smaller hunks
+e - manually edit the current hunk
+? - print help
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通常情况下可以输入 <code>y</code> 或 <code>n</code> 来选择是否要暂存每一个区块， 当然，暂存特定文件中的所有部分或为之后的选择跳过一个区块也是非常有用的。 如果你只暂存文件的一部分，状态输出可能会像下面这样：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">What now> 1
+           staged     unstaged path
+  1:    unchanged        +0/-1 TODO
+  2:        +1/-1      nothing index.html
+  3:        +1/-1        +4/-0 lib/simplegit.rb
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>simplegit.rb</code> 文件的状态很有趣。 它显示出若干行被暂存与若干行未被暂存。 已经部分地暂存了这个文件。 在这时，可以退出交互式添加脚本并且运行 <code>git commit</code> 来提交部分暂存的文件。</p>
+<p>也可以不必在交互式添加模式中做部分文件暂存——可以在命令行中使用 <code>git add -p</code> 或 <code>git add --patch</code> 来启动同样的脚本。</p>
+<p>更进一步地，可以使用 <code>git reset --patch</code> 命令的补丁模式来部分重置文件， 通过 <code>git checkout --patch</code> 命令来部分检出文件与 <code>git stash save --patch</code> 命令来部分暂存文件。 我们将会在接触这些命令的高级使用方法时了解更多详细信息。</p>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/c984d1/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">Git工具-查看修订版本</div>
+                </a>
+                
+                
+                <a href="../../note/git/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">01.git</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#暂存与取消暂存文件" class="toc-item"> 暂存与取消暂存文件</a>
+                
+                    
+                    
+                    
+                    <a href="#暂存补丁" class="toc-item"> 暂存补丁</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

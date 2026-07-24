@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            06.playbook语法 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/13937b/</div>
+            <h1 class="article-title" data-reveal>06.playbook语法</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">Linux</span>
+                <span>2021-02-13</span>
+                <span>· 22 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 6486 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h1 id="playbook基本使用"><a class="markdownIt-Anchor" href="#playbook基本使用"></a> Playbook基本使用</h1>
+<h2 id="01使用playbook的好处"><a class="markdownIt-Anchor" href="#01使用playbook的好处"></a> 01.使用Playbook的好处</h2>
+<h3 id="11-playbook好处"><a class="markdownIt-Anchor" href="#11-playbook好处"></a> 1.1 Playbook好处</h3>
+<ul>
+<li>
+<p>根本上说playbook和shell脚本没有任何的区别，playbook就像shell一样，也是把一堆的命令组合起来，然后加入对应条件判断等等</p>
+</li>
+<li>
+<p>在shell脚本中是一条一条的命令，而在playbook中是一个一个的task任务构成，每个task任务可以看做shell中的一条命令；</p>
+</li>
+<li>
+<p>shell脚本一般只是在当前服务器上执行，而playbook则是在不止一个服务器上执行，因此playbook需要在其中指定运行该playbook的服务器名。</p>
+</li>
+</ul>
+<h3 id="12-yaml格式"><a class="markdownIt-Anchor" href="#12-yaml格式"></a> 1.2 yaml格式</h3>
+<ul>
+<li><code>缩进表示层级关系</code></li>
+<li><code>不支持制表符“tab”缩进</code>，使用空格缩进</li>
+<li><code>通常开头缩进 2 个空格</code></li>
+<li><code>字符后缩进 1 个空格，如冒号、逗号等</code></li>
+<li><code>“---” </code>表示YAML格式，一个文件的开始</li>
+<li><code>“#”注释</code></li>
+</ul>
+<h2 id="02先来认识一下playbook自动部署nginx"><a class="markdownIt-Anchor" href="#02先来认识一下playbook自动部署nginx"></a> 02.先来认识一下Playbook（自动部署Nginx）</h2>
+<h3 id="21-nginx-playbookyml"><a class="markdownIt-Anchor" href="#21-nginx-playbookyml"></a> 2.1 nginx-playbook.yml</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# vim nginx-playbook.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers  <span class="token comment" spellcheck="true"># 对 webservers组中所有机器执行</span>
+  <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no   <span class="token comment" spellcheck="true"># 禁用 facts，可以加快执行速度</span>
+  <span class="token key atrule">vars</span><span class="token punctuation">:</span>          <span class="token comment" spellcheck="true"># 添加变量</span>
+    <span class="token key atrule">hello</span><span class="token punctuation">:</span> Ansible
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root  <span class="token comment" spellcheck="true"># 以什么用户来执行</span>
+    
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 多个task通过 name名字区分</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Add repo  <span class="token comment" spellcheck="true">#### 第一：拉取代码</span>
+      <span class="token key atrule">yum_repository</span><span class="token punctuation">:</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">description</span><span class="token punctuation">:</span> nginx repo
+        <span class="token key atrule">baseurl</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//nginx.org/packages/centos/7/$basearch/
+        <span class="token key atrule">gpgcheck</span><span class="token punctuation">:</span> no
+        <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install nginx  <span class="token comment" spellcheck="true">#### 第二：安装nginx</span>
+      <span class="token key atrule">yum</span><span class="token punctuation">:</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">state</span><span class="token punctuation">:</span> latest
+    
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy nginx configuration file  <span class="token comment" spellcheck="true">#### 第三：配置nginx</span>
+      <span class="token key atrule">copy</span><span class="token punctuation">:</span>
+        <span class="token key atrule">src</span><span class="token punctuation">:</span> ./site.conf
+        <span class="token key atrule">dest</span><span class="token punctuation">:</span> /etc/nginx/conf.d/site.conf
+        
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Start nginx  <span class="token comment" spellcheck="true">#### 第四：启动nginx</span>
+      <span class="token key atrule">service</span><span class="token punctuation">:</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">state</span><span class="token punctuation">:</span> started
+        
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Create wwwroot directory  <span class="token comment" spellcheck="true">#### 第五：创建网站根目录</span>
+      <span class="token key atrule">file</span><span class="token punctuation">:</span>
+        <span class="token key atrule">dest</span><span class="token punctuation">:</span> /var/www/html
+        <span class="token key atrule">state</span><span class="token punctuation">:</span> directory
+    
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Create test page index.html  <span class="token comment" spellcheck="true">#### 第六：创建“主页”</span>
+      <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo "hello <span class="token punctuation">{</span><span class="token punctuation">{</span>hello<span class="token punctuation">}</span><span class="token punctuation">}</span>" <span class="token punctuation">></span> /var/www/html/index.html   <span class="token comment" spellcheck="true"># 在这里可以引用变量</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="22-siteconf"><a class="markdownIt-Anchor" href="#22-siteconf"></a> 2.2 site.conf</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# vim site.conf
+server {
+  listen 80;
+  server_name www.example.com;
+  location / {
+    root /var/www/html;
+    index index.html;
+  }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="23-执行playbook"><a class="markdownIt-Anchor" href="#23-执行playbook"></a> 2.3 执行playbook</h3>
+<pre class="line-numbers language-shell"><code class="language-shell"># 检查语法
+[root@k8s-node2 ~]# ansible-playbook nginx-playbook.yml --syntax-check
+# 执行playbook
+[root@k8s-node2 ~]# ansible-playbook nginx-playbook.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>查看配置文件是否成功</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node1 tmp]# cat /etc/nginx/conf.d/site.conf 
+server {
+  listen 80;
+  server_name www.example.com;
+  location / {
+    root /var/www/html;
+    index index.html;
+  }
+}
+[root@k8s-node1 tmp]# systemctl status nginx   # 查看当前nginx服务状态
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="03-playbook文件结构"><a class="markdownIt-Anchor" href="#03-playbook文件结构"></a> 03. Playbook文件结构</h2>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token punctuation">---</span>      <span class="token comment" spellcheck="true"># 标记文件的开始</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers    <span class="token comment" spellcheck="true"># 指定该playbook在哪个服务器上执行</span>
+  <span class="token key atrule">vars</span><span class="token punctuation">:</span>             <span class="token comment" spellcheck="true"># 表示下面是定义的变量，</span>
+    <span class="token key atrule">http_port</span><span class="token punctuation">:</span> <span class="token number">80      </span><span class="token comment" spellcheck="true"># 变量的形式，key: value，这里http_port是变量名，80是值</span>
+    <span class="token key atrule">max_clients</span><span class="token punctuation">:</span> <span class="token number">200</span>
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root     <span class="token comment" spellcheck="true"># 指定远程的用户名，这里缩进和vars保持了一致，说明变量的代码块已经结束。</span>
+    <span class="token key atrule">tasks</span><span class="token punctuation">:</span>             <span class="token comment" spellcheck="true"># 下面构成playbook的tasks，每个task都有 - name: 开始，name指定该任务的名称。</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> ensure apache is at the latest version    <span class="token comment" spellcheck="true"># 指定该任务的名称。</span>
+      <span class="token key atrule">yum</span><span class="token punctuation">:</span> pkg=httpd state=latest               <span class="token comment" spellcheck="true"># yum说明要是用的模板名称，后面指定对应的参数，这两行结合起来就相当于一个shell命令。</span>
+  
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> write the apache config file          <span class="token comment" spellcheck="true"># 每个task之间可以使用空行来做区分。</span>
+      <span class="token key atrule">template</span><span class="token punctuation">:</span> src=/srv/httpd.j2 dest=/etc/httpd.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="04在变更时执行操作handlers"><a class="markdownIt-Anchor" href="#04在变更时执行操作handlers"></a> 04.在变更时执行操作（handlers）</h2>
+<h3 id="41-修改配置文件"><a class="markdownIt-Anchor" href="#41-修改配置文件"></a> 4.1 修改配置文件</h3>
+<ul>
+<li>修改nginx配置文件，从新加载</li>
+</ul>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># vim verify-nginx-conf.yaml</span>
+<span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+  <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root
+  
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy nginx configuration file
+    <span class="token key atrule">copy</span><span class="token punctuation">:</span>
+      <span class="token key atrule">src</span><span class="token punctuation">:</span> ./site.conf
+      <span class="token key atrule">dest</span><span class="token punctuation">:</span> /etc/nginx/conf.d/site.conf
+
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> reload nginx
+    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>执行playbook修改配置文件</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# ansible-playbook verify-nginx-conf.yaml --syntax-check
+[root@k8s-node2 ~]# ansible-playbook verify-nginx-conf.yaml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="42-handlers只有修改才会重启"><a class="markdownIt-Anchor" href="#42-handlers只有修改才会重启"></a> 4.2 handlers只有修改才会重启</h3>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token punctuation">[</span>root@k8s<span class="token punctuation">-</span>node1 tmp<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># vim verify-nginx-conf.yaml</span>
+<span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+  <span class="token key atrule">gather_facts</span><span class="token punctuation">:</span> no
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root
+  
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy nginx configuration file
+    <span class="token key atrule">copy</span><span class="token punctuation">:</span>
+      <span class="token key atrule">src</span><span class="token punctuation">:</span> ./site.conf
+      <span class="token key atrule">dest</span><span class="token punctuation">:</span> /etc/nginx/conf.d/site.conf
+
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> reload nginx
+    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=nginx state=reloaded
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>由于 site.conf配置没有修改，所以 changed=0 （没有执行 reload）</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# ansible-playbook verify-nginx-conf.yaml 
+PLAY RECAP **************************************************************************************************************************************************
+192.168.56.65              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.56.66              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="05任务控制tags"><a class="markdownIt-Anchor" href="#05任务控制tags"></a> 05.任务控制（tags）</h2>
+<ul>
+<li>在一个大的 playbook配置文件中，指定执行某一个任务</li>
+<li>比如下面这个案子nginx部署的项目，可以在每个模块中添加一个tags</li>
+<li>这样就可以单独管理</li>
+</ul>
+<h3 id="51-添加tags"><a class="markdownIt-Anchor" href="#51-添加tags"></a> 5.1 添加tags</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# vim nginx-playbook.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">---
+- hosts: webservers  # 对 webservers组中所有机器执行
+  vars:          # 添加变量
+    hello: Ansible
+  remote_user: root  # 以什么用户来执行
+    
+  tasks:  # 多个task通过 name名字区分
+    - name: Add repo  #### 第一：拉取代码
+      yum_repository:
+        name: nginx
+        description: nginx repo
+        baseurl: http://nginx.org/packages/centos/7/$basearch/
+        gpgcheck: no
+        enabled: 1
+      tags: addrepo
+  
+    - name: Install nginx  #### 第二：安装nginx
+      yum:
+        name: nginx
+        state: latest
+      tags: install
+    
+    - name: Copy nginx configuration file  #### 第三：配置nginx
+      copy:
+        src: ./site.conf
+        dest: /etc/nginx/conf.d/site.conf
+        
+    - name: Start nginx  #### 第四：启动nginx
+      service:
+        name: nginx
+        state: started
+      tags: startngx
+        
+    - name: Create wwwroot directory  #### 第五：创建网站根目录
+      file:
+        dest: /var/www/html
+        state: directory
+    
+    - name: Create test page index.html  #### 第六：创建“主页”
+      shell: echo "hello {{hello}}" > /var/www/html/index.html   # 在这里可以引用变量
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="52-指定只执行指定tag"><a class="markdownIt-Anchor" href="#52-指定只执行指定tag"></a> 5.2 指定只执行指定tag</h3>
+<pre class="line-numbers language-shell"><code class="language-shell"># 指定，只执行启动nginx这个步骤
+[root@k8s-node2 ~]# ansible-playbook nginx-playbook.yml --tags "startngx"
+# 跳过，除了不启动nginx，其他都执行
+[root@k8s-node2 ~]# ansible-playbook nginx-playbook.yml --skip-tags "startngx"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="06-playbook文件调试"><a class="markdownIt-Anchor" href="#06-playbook文件调试"></a> 06. Playbook文件调试</h2>
+<h3 id="61-调试文件"><a class="markdownIt-Anchor" href="#61-调试文件"></a> 6.1 调试文件</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# vim debug.yaml
+---
+- hosts: webservers  # 对 webservers组中所有机器执行
+  vars:          # 添加变量
+    hello: Ansible
+  remote_user: root  # 以什么用户来执行
+    
+  tasks:  # 多个task通过 name名字区分        
+    - name: Create wwwroot directory  #### 第五：创建网站根目录
+      file:
+        dest: /var/www/html
+        state: directory
+    
+    - name: Create test page index.html  #### 第六：创建“主页”
+      shell: echo "hello {{hello}}" > /var/www/html/index.html   # 在这里可以引用变量
+      
+    - name: debug playbook file
+      debug: msg="输出：{{hello}}"
+      tags: debugtag
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="62-语法检查"><a class="markdownIt-Anchor" href="#62-语法检查"></a> 6.2 语法检查</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# ansible-playbook debug.yaml --syntax-check
+playbook: debug.yaml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="63-debug调试"><a class="markdownIt-Anchor" href="#63-debug调试"></a> 6.3 debug调试</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# ansible-playbook debug.yaml --tags debugtag
+TASK [debug playbook file] **********************************************************************************************************************************
+ok: [192.168.56.65] => {
+    "msg": "输出：Ansible"
+}
+ok: [192.168.56.66] => {
+    "msg": "输出：Ansible"
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/bb3c78/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">07.自动部署Tomcat</div>
+                </a>
+                
+                
+                <a href="../../pages/d3c510/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">05.ansible常用模块</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01使用playbook的好处" class="toc-item"> 01.使用Playbook的好处</a>
+                
+                    
+                    
+                    
+                    <a href="#11-playbook好处" class="toc-item"> 1.1 Playbook好处</a>
+                
+                    
+                    
+                    
+                    <a href="#12-yaml格式" class="toc-item"> 1.2 yaml格式</a>
+                
+                    
+                    
+                    
+                    <a href="#02先来认识一下playbook自动部署nginx" class="toc-item"> 02.先来认识一下Playbook（自动部署Nginx）</a>
+                
+                    
+                    
+                    
+                    <a href="#21-nginx-playbookyml" class="toc-item"> 2.1 nginx-playbook.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#22-siteconf" class="toc-item"> 2.2 site.conf</a>
+                
+                    
+                    
+                    
+                    <a href="#23-执行playbook" class="toc-item"> 2.3 执行playbook</a>
+                
+                    
+                    
+                    
+                    <a href="#03-playbook文件结构" class="toc-item"> 03. Playbook文件结构</a>
+                
+                    
+                    
+                    
+                    <a href="#04在变更时执行操作handlers" class="toc-item"> 04.在变更时执行操作（handlers）</a>
+                
+                    
+                    
+                    
+                    <a href="#41-修改配置文件" class="toc-item"> 4.1 修改配置文件</a>
+                
+                    
+                    
+                    
+                    <a href="#42-handlers只有修改才会重启" class="toc-item"> 4.2 handlers只有修改才会重启</a>
+                
+                    
+                    
+                    
+                    <a href="#05任务控制tags" class="toc-item"> 05.任务控制（tags）</a>
+                
+                    
+                    
+                    
+                    <a href="#51-添加tags" class="toc-item"> 5.1 添加tags</a>
+                
+                    
+                    
+                    
+                    <a href="#52-指定只执行指定tag" class="toc-item"> 5.2 指定只执行指定tag</a>
+                
+                    
+                    
+                    
+                    <a href="#06-playbook文件调试" class="toc-item"> 06. Playbook文件调试</a>
+                
+                    
+                    
+                    
+                    <a href="#61-调试文件" class="toc-item"> 6.1 调试文件</a>
+                
+                    
+                    
+                    
+                    <a href="#62-语法检查" class="toc-item"> 6.2 语法检查</a>
+                
+                    
+                    
+                    
+                    <a href="#63-debug调试" class="toc-item"> 6.3 debug调试</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

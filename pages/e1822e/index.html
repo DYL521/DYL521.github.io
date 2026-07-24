@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            11.ansible部署lnmp - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/e1822e/</div>
+            <h1 class="article-title" data-reveal>11.ansible部署lnmp</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">Linux</span>
+                <span>2021-02-13</span>
+                <span>· 32 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 9453 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h1 id="01部署lnmp"><a class="markdownIt-Anchor" href="#01部署lnmp"></a> 01.部署lnmp</h1>
+<h2 id="11-lnmp说明"><a class="markdownIt-Anchor" href="#11-lnmp说明"></a> 1.1 lnmp说明</h2>
+<ul>
+<li>这里主要是一键部署PHP和nginx</li>
+<li>MySQL在架构中已经有了，就不部署了</li>
+</ul>
+<p><img src="/post-images/04.操作系统/01.Linux/05.ansible/assets/image-20210207151422364.png" style="width: 900px; margin-left: 50px;"> </img></p>
+<h2 id="12-了解部署架构"><a class="markdownIt-Anchor" href="#12-了解部署架构"></a> 1.2 了解部署架构</h2>
+<h2 id="02目录结构"><a class="markdownIt-Anchor" href="#02目录结构"></a> 02.目录结构</h2>
+<h3 id="1211-创建目录结构"><a class="markdownIt-Anchor" href="#1211-创建目录结构"></a> 12.1.1 创建目录结构</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# tree nginx_php
+nginx_php
+├── group_vars
+├── hosts
+├── roles
+│   ├── common
+│   │   └── tasks
+│   ├── nginx
+│   │   ├── files
+│   │   ├── handlers
+│   │   ├── tasks
+│   │   └── templates
+│   ├── php
+│   │   ├── files
+│   │   ├── handlers
+│   │   └── tasks
+│   └── wordpress
+│       ├── tasks
+│       └── templates
+├── site.retry
+└── site.yml
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1212-最终文件如下"><a class="markdownIt-Anchor" href="#1212-最终文件如下"></a> 12.1.2 最终文件如下</h3>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# tree nginx_php
+nginx_php
+├── group_vars
+│   └── all
+├── hosts
+├── roles
+│   ├── common
+│   │   └── tasks
+│   │       └── main.yml
+│   ├── nginx
+│   │   ├── files
+│   │   │   ├── nginx-1.15.3.tar.gz
+│   │   │   ├── nginx.conf
+│   │   │   └── nginx.service
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   └── templates
+│   │       └── wordpress.conf
+│   ├── php
+│   │   ├── files
+│   │   │   ├── php-5.6.38.tar.gz
+│   │   │   ├── php-fpm.conf
+│   │   │   ├── php-fpm.service
+│   │   │   └── php.ini
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   └── tasks
+│   │       └── main.yml
+│   └── wordpress
+│       ├── tasks
+│       │   └── main.yml
+│       └── templates
+│           └── wp-config.php
+├── site.retry
+└── site.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="03nginx_php下配置文件"><a class="markdownIt-Anchor" href="#03nginx_php下配置文件"></a> 03.nginx_php下配置文件</h1>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# tree nginx_php
+nginx_php
+├── group_vars
+│   └── all
+├── hosts
+├── site.retry
+└── site.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="31-hosts"><a class="markdownIt-Anchor" href="#31-hosts"></a> 3.1 hosts</h2>
+<ul>
+<li>被控制主机列表</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx_php]# cat hosts 
+[webservers]
+192.168.56.65
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="32-siteyml"><a class="markdownIt-Anchor" href="#32-siteyml"></a> 3.2 site.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx_php]# cat site.yml 
+---
+- name: Install Nginx, PHP-FPM and Wordpress
+  hosts: webservers
+  remote_user: root
+
+  roles:
+    - role: common
+    - role: nginx
+      tags: ["nginx"]
+    - role: php
+      tags: ["php"]
+    - role: wordpress
+      tags: ["wp"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="33-siteretry"><a class="markdownIt-Anchor" href="#33-siteretry"></a> 3.3 site.retry</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx_php]# cat site.retry 
+192.168.56.65
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="34-group_varsall"><a class="markdownIt-Anchor" href="#34-group_varsall"></a> 3.4 group_vars/all</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 group_vars]# cat all 
+---
+# Nginx
+nginx_version: 1.15.3 
+http_port: 80
+server_name: wp.ctnrs.com
+
+# PHP
+php_version: 5.6.38
+
+# Wordpress 
+wp_version: 4.9.4
+db_host: 192.168.56.65
+db_port: 3306
+wp_db_name: wp
+wp_db_user: wp
+wp_db_password: MyNewPass4!
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="04rolescommon"><a class="markdownIt-Anchor" href="#04rolescommon"></a> 04.roles/common</h1>
+<pre class="line-numbers language-undefined"><code class="language-undefined">[root@k8s-node2 ~]# tree nginx_php
+├── roles
+│   ├── common
+│   │   └── tasks
+│   │       └── main.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="41-rolescommontasksmainyml"><a class="markdownIt-Anchor" href="#41-rolescommontasksmainyml"></a> 4.1 roles/common/tasks/main.yml</h2>
+<ul>
+<li><code>提前安装好编译需要的依赖包：gcc、make 等</code></li>
+<li>使用for循环安装</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 tasks]# cat main.yml    # 提前安装好编译需要的依赖包：gcc、make 等
+---
+- name: Install deps
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - make
+    - zlib-devel
+    - openssl-devel
+    - pcre-devel
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="05rolesnginx"><a class="markdownIt-Anchor" href="#05rolesnginx"></a> 05.roles/nginx</h1>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 roles]# tree nginx/
+nginx/
+├── files
+│   ├── nginx-1.15.3.tar.gz
+│   ├── nginx.conf
+│   └── nginx.service
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    └── wordpress.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="51-tasksmainyml"><a class="markdownIt-Anchor" href="#51-tasksmainyml"></a> 5.1 tasks/main.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx]# cat tasks/main.yml 
+---
+- name: Copy nginx source pkg
+  #get_url: url=http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz dest=/tmp/nginx-{{ nginx_version }}.tar.gz
+  copy: src=nginx-{{ nginx_version }}.tar.gz dest=/tmp
+
+- name: Install nginx
+  shell: cd /tmp &&
+         tar zxf nginx-{{ nginx_version }}.tar.gz &&
+         cd nginx-{{ nginx_version }} &&
+         ./configure --prefix=/usr/local/nginx --user=nobody --group=nobody 
+         --with-http_ssl_module --with-http_stub_status_module --with-stream=dynamic && 
+         make && make install
+
+- name: Mkdir /usr/local/nginx/conf/vhost
+  file: dest=/usr/local/nginx/conf/vhost state=directory
+
+- name: Copy nginx master configuration file
+  copy: src=nginx.conf dest=/usr/local/nginx/conf
+  notify: 
+    - reload systemd
+    - reload nginx
+
+- name: Copy nginx configuration for wordpress
+  template: src=wordpress.conf dest=/usr/local/nginx/conf/vhost/
+  notify:
+    - reload systemd
+    - reload nginx
+
+- name: Copy nginx systemctl service 
+  copy: src=nginx.service dest=/usr/lib/systemd/system/
+
+- name: Start service
+  service: name=nginx state=started enabled=yes
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="52-handlersmainyml"><a class="markdownIt-Anchor" href="#52-handlersmainyml"></a> 5.2 handlers/main.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx]# cat handlers/main.yml 
+---
+- name: reload systemd
+  command: systemctl daemon-reload
+- name: reload nginx
+  service: name=nginx state=reloaded
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="53-filesnginxconf"><a class="markdownIt-Anchor" href="#53-filesnginxconf"></a> 5.3 files/nginx.conf</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 roles]# cat nginx/files/nginx.conf 
+user  nobody;
+worker_processes  8;
+
+error_log  logs/error.log  info;
+
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  2048;
+}
+
+http {
+    include       mime.types;
+    include       vhost/*.conf;
+
+    default_type  application/octet-stream;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    sendfile        on;
+    tcp_nopush     on;
+    keepalive_timeout  65;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="54-filesnginxservice"><a class="markdownIt-Anchor" href="#54-filesnginxservice"></a> 5.4 files/nginx.service</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 files]# cat nginx.service 
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/local/nginx/sbin/nginx -t
+ExecStart=/usr/local/nginx/sbin/nginx
+ExecReload=/usr/local/nginx/sbin/nginx -s reload
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="55-templateswordpressconf"><a class="markdownIt-Anchor" href="#55-templateswordpressconf"></a> 5.5 templates/wordpress.conf</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx]# cat templates/wordpress.conf 
+server {
+    listen       {{ http_port }};
+    server_name  {{ server_name }};
+    root   html/wordpress;
+    index index.php index.html;
+
+    location ~* \.(gif|jpg|jpeg|png|css|js)$ {
+       expires 30;
+    }
+
+    location ~ \.php$ {
+        root           html/wordpress;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="06rolesphp"><a class="markdownIt-Anchor" href="#06rolesphp"></a> 06.roles/php</h1>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 roles]# tree php
+php
+├── files
+│   ├── php-5.6.38.tar.gz
+│   ├── php-fpm.conf
+│   ├── php-fpm.service
+│   └── php.ini
+├── handlers
+│   └── main.yml
+└── tasks
+    └── main.yml
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="61-tasksmainyml"><a class="markdownIt-Anchor" href="#61-tasksmainyml"></a> 6.1 tasks/main.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 php]# cat tasks/main.yml 
+---
+- name: Install php deps
+  yum: name={{ item }} state=present
+  with_items:
+    - gd-devel 
+    - libxml2-devel 
+    - libcurl-devel 
+    - libjpeg-devel 
+    - libpng-devel 
+
+- name: Copy php source pkg 
+  #get_url: url=http://docs.php.net/distributions/php-{{ php_version }}.tar.gz dest=/tmp/nginx-{{ php_version }}.tar.gz
+  copy: src=php-{{ php_version }}.tar.gz dest=/tmp
+
+- name: Install php
+  shell: cd /tmp && 
+         tar zxf php-{{ php_version }}.tar.gz && 
+         cd php-{{ php_version }} &&
+         ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc 
+         --with-mysql --with-mysqli --with-openssl --with-zlib --with-curl --with-gd \
+         --with-jpeg-dir --with-png-dir --with-iconv --enable-fpm --enable-zip --enable-mbstring && 
+         make -j 4 && make install
+
+- name: Copy php configuration file
+  copy: src=php.ini dest=/usr/local/php/etc/
+  notify: 
+    - reload systemd
+    - reload restart php-fpm 
+
+- name: Copy php-fpm configuration file
+  copy: src=php-fpm.conf dest=/usr/local/php/etc/ 
+  notify: 
+    - reload systemd
+    - reload restart php-fpm 
+
+- name: Copy php-fpm.service
+  copy: src=php-fpm.service dest=/usr/lib/systemd/system/
+
+- name: Start php-fpm
+  service: name=php-fpm state=started enabled=yes
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="62-handlersmainyml"><a class="markdownIt-Anchor" href="#62-handlersmainyml"></a> 6.2 handlers/main.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 php]# cat handlers/main.yml 
+---
+- name: reload systemd
+  command: systemctl daemon-reload
+- name: reload restart php-fpm
+  service: name=php-fpm state=restarted
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="63-filesphp-fpmconf"><a class="markdownIt-Anchor" href="#63-filesphp-fpmconf"></a> 6.3 files/php-fpm.conf</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 roles]# egrep -v ';' php/files/php-fpm.conf 
+[global]
+pid = /var/run/php-fpm.pid
+error_log = /var/log/php-fpm.log
+log_level = warning
+emergency_restart_threshold = 1
+emergency_restart_interval = 1
+process_control_timeout = 5s
+daemonize = yes
+rlimit_files = 10240
+[www]
+user = nobody
+group = nobody
+listen = 127.0.0.1:9000
+listen.owner = nobody
+listen.group = nobody
+pm = static 
+pm.max_children = 200
+pm.start_servers = 2
+pm.min_spare_servers = 20
+pm.max_spare_servers = 100
+pm.max_requests = 500
+slowlog = /var/log/$pool.log.slow
+request_slowlog_timeout = 10
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="64-filesphp-fpmservice"><a class="markdownIt-Anchor" href="#64-filesphp-fpmservice"></a> 6.4  files/php-fpm.service</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 php]# cat files/php-fpm.service
+[Unit]
+Description=The PHP FastCGI Process Manager
+After=syslog.target network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/php-fpm.pid
+ExecStart=/usr/local/php/sbin/php-fpm --nodaemonize --fpm-config /usr/local/php/etc/php-fpm.conf
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="65-filesphpini"><a class="markdownIt-Anchor" href="#65-filesphpini"></a> 6.5 files/php.ini</h2>
+<h1 id="07roleswordpress"><a class="markdownIt-Anchor" href="#07roleswordpress"></a> 07.roles/wordpress</h1>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 roles]# tree wordpress/
+wordpress/
+├── tasks
+│   └── main.yml
+└── templates
+    └── wp-config.php
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="71-tasksmainyml"><a class="markdownIt-Anchor" href="#71-tasksmainyml"></a> 7.1 tasks/main.yml</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 wordpress]# cat tasks/main.yml
+---
+- name: Download WordPress
+  get_url: url=https://cn.wordpress.org/wordpress-{{ wp_version }}-zh_CN.tar.gz dest=/tmp/wordpress-{{ wp_version }}-zh_CN.tar.gz
+  #copy: src=wordpress-{{ wp_version }}.tar.gz dest=/tmp
+
+- name: Extract archive
+  unarchive: src=/tmp/wordpress-{{ wp_version }}-zh_CN.tar.gz dest=/usr/local/nginx/html copy=no 
+
+- name: Copy WordPress config file
+  template: src=wp-config.php dest=/usr/local/nginx/html/wordpress
+
+- name: Change ownership of WordPress installation
+  file: path=/usr/local/nginx/html/wordpress owner=nobody group=nobody state=directory recurse=yes
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="72-templateswp-configphp"><a class="markdownIt-Anchor" href="#72-templateswp-configphp"></a> 7.2 templates/wp-config.php</h2>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 wordpress]# cat templates/wp-config.php
+<?php
+/**
+ * WordPress基础配置文件。
+ *
+ * 这个文件被安装程序用于自动生成wp-config.php配置文件，
+ * 您可以不使用网站，您需要手动复制这个文件，
+ * 并重命名为“wp-config.php”，然后填入相关信息。
+ *
+ * 本文件包含以下配置选项：
+ *
+ * * MySQL设置
+ * * 密钥
+ * * 数据库表名前缀
+ * * ABSPATH
+ *
+ * @link https://codex.wordpress.org/zh-cn:%E7%BC%96%E8%BE%91_wp-config.php
+ *
+ * @package WordPress
+ */
+
+// ** MySQL 设置 - 具体信息来自您正在使用的主机 ** //
+/** WordPress数据库的名称 */
+define('DB_NAME', '{{ wp_db_name }}');
+
+/** MySQL数据库用户名 */
+define('DB_USER', '{{ wp_db_user }}');
+
+/** MySQL数据库密码 */
+define('DB_PASSWORD', '{{ wp_db_password }}');
+
+/** MySQL主机 */
+define('DB_HOST', '{{ db_host }}');
+
+/** 创建数据表时默认的文字编码 */
+define('DB_CHARSET', 'utf8');
+
+/** 数据库整理类型。如不确定请勿更改 */
+define('DB_COLLATE', '');
+
+/**#@+
+ * 身份认证密钥与盐。
+ *
+ * 修改为任意独一无二的字串！
+ * 或者直接访问{@link https://api.wordpress.org/secret-key/1.1/salt/
+ * WordPress.org密钥生成服务}
+ * 任何修改都会导致所有cookies失效，所有用户将必须重新登录。
+ *
+ * @since 2.6.0
+ */
+define('AUTH_KEY',         'put your unique phrase here');
+define('SECURE_AUTH_KEY',  'put your unique phrase here');
+define('LOGGED_IN_KEY',    'put your unique phrase here');
+define('NONCE_KEY',        'put your unique phrase here');
+define('AUTH_SALT',        'put your unique phrase here');
+define('SECURE_AUTH_SALT', 'put your unique phrase here');
+define('LOGGED_IN_SALT',   'put your unique phrase here');
+define('NONCE_SALT',       'put your unique phrase here');
+
+/**#@-*/
+
+/**
+ * WordPress数据表前缀。
+ *
+ * 如果您有在同一数据库内安装多个WordPress的需求，请为每个WordPress设置
+ * 不同的数据表前缀。前缀名只能为数字、字母加下划线。
+ */
+$table_prefix  = 'wp_';
+
+/**
+ * 开发者专用：WordPress调试模式。
+ *
+ * 将这个值改为true，WordPress将显示所有用于开发的提示。
+ * 强烈建议插件开发者在开发环境中启用WP_DEBUG。
+ *
+ * 要获取其他能用于调试的信息，请访问Codex。
+ *
+ * @link https://codex.wordpress.org/Debugging_in_WordPress
+ */
+define('WP_DEBUG', false);
+
+/**
+ * zh_CN本地化设置：启用ICP备案号显示
+ *
+ * 可在设置→常规中修改。
+ * 如需禁用，请移除或注释掉本行。
+ */
+define('WP_ZH_CN_ICP_NUM', true);
+
+/* 好了！请不要再继续编辑。请保存本文件。使用愉快！ */
+
+/** WordPress目录的绝对路径。 */
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(__FILE__) . '/');
+
+/** 设置WordPress变量和包含文件。 */
+require_once(ABSPATH . 'wp-settings.php');
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="08部署"><a class="markdownIt-Anchor" href="#08部署"></a> 08.部署</h1>
+<ul>
+<li>添加目的主机的免密登录，在ansibe机器上执行</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 ~]# ssh-keygen -t dsa
+[root@k8s-node2 ~]# ssh-copy-id 192.168.56.65
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>部署</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@k8s-node2 nginx_php]# ansible-playbook -i hosts site.yml --syntax-check    # 先查看是否有语法错误
+[root@k8s-node2 nginx_php]# ansible-playbook -i hosts site.yml              # 执行部署
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/91505f/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">02.ansible安装配置</div>
+                </a>
+                
+                
+                <a href="../../pages/ace84a/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">02.find</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#11-lnmp说明" class="toc-item"> 1.1 lnmp说明</a>
+                
+                    
+                    
+                    
+                    <a href="#12-了解部署架构" class="toc-item"> 1.2 了解部署架构</a>
+                
+                    
+                    
+                    
+                    <a href="#02目录结构" class="toc-item"> 02.目录结构</a>
+                
+                    
+                    
+                    
+                    <a href="#1211-创建目录结构" class="toc-item"> 12.1.1 创建目录结构</a>
+                
+                    
+                    
+                    
+                    <a href="#1212-最终文件如下" class="toc-item"> 12.1.2 最终文件如下</a>
+                
+                    
+                    
+                    
+                    <a href="#31-hosts" class="toc-item"> 3.1 hosts</a>
+                
+                    
+                    
+                    
+                    <a href="#32-siteyml" class="toc-item"> 3.2 site.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#33-siteretry" class="toc-item"> 3.3 site.retry</a>
+                
+                    
+                    
+                    
+                    <a href="#34-group_varsall" class="toc-item"> 3.4 group_vars/all</a>
+                
+                    
+                    
+                    
+                    <a href="#41-rolescommontasksmainyml" class="toc-item"> 4.1 roles/common/tasks/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#51-tasksmainyml" class="toc-item"> 5.1 tasks/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#52-handlersmainyml" class="toc-item"> 5.2 handlers/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#53-filesnginxconf" class="toc-item"> 5.3 files/nginx.conf</a>
+                
+                    
+                    
+                    
+                    <a href="#54-filesnginxservice" class="toc-item"> 5.4 files/nginx.service</a>
+                
+                    
+                    
+                    
+                    <a href="#55-templateswordpressconf" class="toc-item"> 5.5 templates/wordpress.conf</a>
+                
+                    
+                    
+                    
+                    <a href="#61-tasksmainyml" class="toc-item"> 6.1 tasks/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#62-handlersmainyml" class="toc-item"> 6.2 handlers/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#63-filesphp-fpmconf" class="toc-item"> 6.3 files/php-fpm.conf</a>
+                
+                    
+                    
+                    
+                    <a href="#64-filesphp-fpmservice" class="toc-item"> 6.4  files/php-fpm.service</a>
+                
+                    
+                    
+                    
+                    <a href="#65-filesphpini" class="toc-item"> 6.5 files/php.ini</a>
+                
+                    
+                    
+                    
+                    <a href="#71-tasksmainyml" class="toc-item"> 7.1 tasks/main.yml</a>
+                
+                    
+                    
+                    
+                    <a href="#72-templateswp-configphp" class="toc-item"> 7.2 templates/wp-config.php</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>

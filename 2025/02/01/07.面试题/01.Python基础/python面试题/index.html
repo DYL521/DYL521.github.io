@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            python面试题 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../../../../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts/2025/02/01/07.面试题/01.Python基础/python面试题/</div>
+            <h1 class="article-title" data-reveal>python面试题</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">python</span>
+                <span>2025-02-01</span>
+                <span>· 41 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 12040 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h1 id="一-语言特性与底层机制"><a class="markdownIt-Anchor" href="#一-语言特性与底层机制"></a> 一、语言特性与底层机制</h1>
+<h2 id="1-解释python的gil全局解释器锁机制及其对多线程程序的影响-如何规避gil的性能瓶颈"><a class="markdownIt-Anchor" href="#1-解释python的gil全局解释器锁机制及其对多线程程序的影响-如何规避gil的性能瓶颈"></a> 1、 解释Python的GIL（全局解释器锁）机制及其对多线程程序的影响。如何规避GIL的性能瓶颈？</h2>
+<pre><code>首先，由于python语言的产生是比较早的，那时候计算多以单核CPU为主，所以当时未考虑这个问题。 
+但是随着计算机的发展，多核CPU的出现，为了利用的多线程，设计了GIL，同时只能有一个线程执行
+
+1.当一个线程在执行时，其他线程无法运行python代码，虽然操作系统会把CPU的时间片分配给不同的线程。
+2.但是GIL对IO密集型任务的影响比较小，因为IO操作等等相对来说比较耗时,因为锁可能已经释放了
+
+GIL对多线程程序的影响：
+1. CPU密集的程序: 由于无法利用多核CPU的资源，尽管使用了多线程，但是每次只有一个线程在执行python代码。
+2. IO密集型任务： GIL对IO密集型任务的影响比较小，因为IO操作等等相对来说比较耗时,因为锁可能已经释放了。
+
+
+如何解决：
+    1.使用多进程的方式而非多线程：
+        1.1 multiprocessing模块：启动多进程，每个进程有自己的python解释器和GIL，可以充分利用多核的性能，适合CPU密集任务。
+        1.2 多进程可以避开GIL的限制，但是每个进程有自己独立的内存空间，进程间通讯更新，Queue或者Pipe
+    2.使用C扩展或者第三方库。
+    3.异步编程： 对于IO密级任务，使用asyncio等异步框架。异步编程通过时间循环和协程在单线程中高效处理大量的IO操作，避免多线程GIL问题
+</code></pre>
+<h2 id="2-描述python的垃圾回收机制引用计数分代回收并解释如何解决循环引用问题"><a class="markdownIt-Anchor" href="#2-描述python的垃圾回收机制引用计数分代回收并解释如何解决循环引用问题"></a> 2、描述Python的垃圾回收机制（引用计数+分代回收），并解释如何解决循环引用问题。</h2>
+<h2 id="21-引用计数"><a class="markdownIt-Anchor" href="#21-引用计数"></a> 2.1 引用计数</h2>
+<pre><code>每个python对象都有一个引用计数器，记录有多少个变量引用该对象。当引用计数为0时，表示该对象不再被使用，可以被释放，从而释放内存。
+-  增加引用计数： 当一个新对象创建或者数据结构引用该对象时，引用计数+1
+-  减少引用计数:  当一个引用变量被删除、重新赋值或者超出作用域，引用计数-1
+- 内存回收： 当对象的引用计数为0时，python会自动回收该对象的内存，避免内存泄漏。
+</code></pre>
+<h2 id="22-分代回收"><a class="markdownIt-Anchor" href="#22-分代回收"></a> 2.2 分代回收</h2>
+<pre><code>引用计数虽然很有效，但是在有些情况下不能解决所有垃圾回收问题。 尤其是在处理长时间存在且生命周期较长的对象。
+分代回收机制将对象分为不同“代”来优化垃圾回收的过程。
+
+python的分代回收机制包括三代：
+1.第0代： 创建新的对象，由于大多数对象的生命周期较短，因此大多数对象在0代就被回收的概率较高。
+2.第1代： 经过第一次垃圾回收之后还存在的对象，因此存活时间教长
+3.第2代： 经过多次垃圾回收任然还存活的对象。 他们被认为是长期存在的一些，因此回收率较低。
+</code></pre>
+<h2 id="23-如何解决循环引用的问题"><a class="markdownIt-Anchor" href="#23-如何解决循环引用的问题"></a> 2.3 如何解决循环引用的问题：</h2>
+<ul>
+<li>
+<p>什么是循环引用？</p>
+<pre><code>循环引用问题是指两个对象或者多个对象相互引用对方，导致对象的引用计数无法降低到0，造成内存泄漏。
+
+python的垃圾回收专门对循环引用做了优化，循环引用检测由GC模块的**垃圾回收器**负责，它会定期
+检测对象之间的引用关系，检测是否存在循环引用，并将其清理。
+
+- GC模块： 
+- 自动清理：在分代回收的过程中，Python的垃圾回收器会识别并清理循环引用。它会定期检查第0代和第1代对象，并执行检测以发现任何无法通过引用计数机制清理的对象。
+</code></pre>
+</li>
+<li>
+<p>如何解决？</p>
+<pre><code>弱引用：使用weakref模块创建弱引用，弱引用不会增加对象的引用计数，避免了对象间的强引用循环。对于需要共享和缓存的对象，可以使用weakref来避免循环引用。
+分离数据和行为：避免对象之间的直接引用关系，尽量将数据存储和行为分开，减少不必要的引用。
+优化代码的组织结构： 设计问题
+</code></pre>
+</li>
+</ul>
+<h2 id="3-以下代码的输出是什么解释原因"><a class="markdownIt-Anchor" href="#3-以下代码的输出是什么解释原因"></a> 3、以下代码的输出是什么？解释原因：</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> lst<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> lst
+<span class="token keyword">print</span><span class="token punctuation">(</span>func<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出？ [1]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>func<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出？ [1,2]</span>
+
+
+在python中，默认参数是函数定义式计算的，而不是每次调用时重新计算，所以后续调用会一直共享lst
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-__slots__的作用是什么使用它有什么优缺点"><a class="markdownIt-Anchor" href="#4-__slots__的作用是什么使用它有什么优缺点"></a> 4、__slots__的作用是什么？使用它有什么优缺点？</h2>
+<h3 id="41-__slots__的作用"><a class="markdownIt-Anchor" href="#41-__slots__的作用"></a> 4.1 __slots__的作用</h3>
+<pre><code>- 节省内存
+- 提高性能
+- 限制属性动态添加
+</code></pre>
+<h3 id="42-__slots__的优缺点"><a class="markdownIt-Anchor" href="#42-__slots__的优缺点"></a> 4.2 __slots__的优缺点</h3>
+<ul>
+<li>优点：
+<ul>
+<li>节省内存：不再为乜咯实例维护一个__dict__对象，而使用一个紧凑的结构存储属性数据</li>
+<li>提高性能： 属性查找和访问比动态字典存储更快，时间复杂度更低</li>
+<li>防止意外动态属性： 避免不小心添加不需要的属性，能保证类设计的一致性。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>无法动态添加新属性</li>
+<li>与继承的兼容性差： 如果子类不使用__slots__，将恢复__dict__</li>
+<li>增加了代码的复杂性： 比如试图添加新的属性</li>
+</ul>
+</li>
+</ul>
+<h1 id="二-元编程与设计模式"><a class="markdownIt-Anchor" href="#二-元编程与设计模式"></a> 二、元编程与设计模式</h1>
+<h2 id="21-实现一个单例模式singleton要求线程安全且支持懒加载"><a class="markdownIt-Anchor" href="#21-实现一个单例模式singleton要求线程安全且支持懒加载"></a> 2.1 实现一个单例模式（Singleton），要求线程安全且支持懒加载。</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">import</span> threading
+
+<span class="token keyword">class</span> <span class="token class-name">Singleton</span><span class="token punctuation">:</span>
+    __instance <span class="token operator">=</span> None
+    _lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> cls<span class="token punctuation">.</span>__instance <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+            <span class="token keyword">with</span> cls<span class="token punctuation">.</span>_lock<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token operator">not</span> cls<span class="token punctuation">.</span>__instance<span class="token punctuation">:</span>
+                    cls<span class="token punctuation">.</span>__instance <span class="token operator">=</span> super<span class="token punctuation">(</span>Singleton<span class="token punctuation">,</span> cls<span class="token punctuation">)</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> cls<span class="token punctuation">.</span>__instance
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> hasattr<span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token string">'_initialized'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>_initialized <span class="token operator">=</span> <span class="token boolean">True</span>
+            self<span class="token punctuation">.</span>value <span class="token operator">=</span> value
+
+    <span class="token keyword">def</span> <span class="token function">get_value</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>value
+
+
+<span class="token comment" spellcheck="true"># 测试单例模式</span>
+<span class="token keyword">def</span> <span class="token function">test_singleton</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    singleton <span class="token operator">=</span> Singleton<span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Singleton instance with value: {singleton.get_value()}"</span><span class="token punctuation">)</span>
+
+
+<span class="token comment" spellcheck="true"># 模拟多线程环境</span>
+thread1 <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>test_singleton<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"first"</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+thread2 <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>test_singleton<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"second"</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+thread1<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+thread2<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+thread1<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+thread2<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="22-编写一个装饰器retrymax_attempts3-delay1使被装饰的函数在抛出异常时自动重试最多尝试max_attempts次每次间隔delay秒"><a class="markdownIt-Anchor" href="#22-编写一个装饰器retrymax_attempts3-delay1使被装饰的函数在抛出异常时自动重试最多尝试max_attempts次每次间隔delay秒"></a> 2.2 编写一个装饰器@retry(max_attempts=3, delay=1)，使被装饰的函数在抛出异常时自动重试，最多尝试max_attempts次，每次间隔delay秒。</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> functools
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> random
+
+
+<span class="token keyword">def</span> <span class="token function">retry</span><span class="token punctuation">(</span>max_attempts<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> delay<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        @functools<span class="token punctuation">.</span>wraps<span class="token punctuation">(</span>func<span class="token punctuation">)</span>
+        <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            attempt <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">while</span> attempt <span class="token operator">&lt;</span> max_attempts<span class="token punctuation">:</span>
+                <span class="token keyword">try</span><span class="token punctuation">:</span>
+                    <span class="token keyword">return</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+                <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+                    attempt <span class="token operator">+=</span> <span class="token number">1</span>
+                    <span class="token keyword">if</span> attempt <span class="token operator">==</span> max_attempts<span class="token punctuation">:</span>
+                        <span class="token keyword">raise</span> e
+                    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Retrying ({attempt}/{max_attempts}) after error: {e}"</span><span class="token punctuation">)</span>
+                    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span>delay<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> wrapper
+    <span class="token keyword">return</span> decorator
+
+
+@retry<span class="token punctuation">(</span>max_attempts<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> delay<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">unstable_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> random<span class="token punctuation">.</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.7</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 70% 概率抛出异常</span>
+        <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"Random failure"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token string">"Success"</span>
+
+
+<span class="token comment" spellcheck="true"># 运行测试</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>unstable_function<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Function failed after retries: {e}"</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="23-解释元类metaclass的作用并用元类实现一个类属性自动大写的功能如类中定义的foo-1会被转换为foo-1"><a class="markdownIt-Anchor" href="#23-解释元类metaclass的作用并用元类实现一个类属性自动大写的功能如类中定义的foo-1会被转换为foo-1"></a> 2.3 解释元类（Metaclass）的作用，并用元类实现一个类属性自动大写的功能（如类中定义的foo = 1会被转换为FOO = 1）。</h2>
+<h3 id="231-什么是元类"><a class="markdownIt-Anchor" href="#231-什么是元类"></a> 2.3.1 什么是元类？</h3>
+<pre><code>元类(MetaClass)是python的一个高级特性，他是用来创建类的类。换句话说，元类定义的类的行为。
+默认下，python的类是type创建的，但是可以通过MataClass来控制创建类的创建过程。
+</code></pre>
+<h3 id="231-元类的工作原理"><a class="markdownIt-Anchor" href="#231-元类的工作原理"></a> 2.3.1 元类的工作原理</h3>
+<ul>
+<li>类是由元类创建的： 类本身是元类创建，类的实例是类创建的。</li>
+<li>通过元类控制类的行为：元类可以修改类的属性、方法，甚至改变类的继承结构。</li>
+</ul>
+<h3 id="232-关键的元类方法"><a class="markdownIt-Anchor" href="#232-关键的元类方法"></a> 2.3.2 关键的元类方法</h3>
+<p><strong>new</strong>：这个方法在类的实例化过程中首先被调用，用来创建类对象。<br />
+<strong>init</strong>：在 <strong>new</strong> 方法之后被调用，用来初始化类的属性。</p>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token comment" spellcheck="true"># 定义一个元类</span>
+<span class="token keyword">class</span> <span class="token class-name">UppercaseMeta</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> dct<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># 创建一个新的字典来存储修改后的类属性</span>
+        new_dct <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">for</span> key<span class="token punctuation">,</span> value <span class="token keyword">in</span> dct<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token operator">not</span> key<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">'__'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 排除内置属性和方法</span>
+                new_dct<span class="token punctuation">[</span>key<span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> value
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                new_dct<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value  <span class="token comment" spellcheck="true"># 保留内置属性</span>
+        <span class="token keyword">return</span> super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> new_dct<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 使用元类创建一个类</span>
+<span class="token keyword">class</span> <span class="token class-name">MyClass</span><span class="token punctuation">(</span>metaclass<span class="token operator">=</span>UppercaseMeta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    foo <span class="token operator">=</span> <span class="token number">1</span>
+    bar <span class="token operator">=</span> <span class="token number">2</span>
+
+<span class="token comment" spellcheck="true"># 测试</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>MyClass<span class="token punctuation">.</span>FOO<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 1</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>MyClass<span class="token punctuation">.</span>BAR<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出: 2</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="三-并发与异步编程"><a class="markdownIt-Anchor" href="#三-并发与异步编程"></a> 三、并发与异步编程</h1>
+<h2 id="31-对比python中multiprocessing-threading和asyncio的适用场景及性能差异"><a class="markdownIt-Anchor" href="#31-对比python中multiprocessing-threading和asyncio的适用场景及性能差异"></a> 3.1 对比Python中multiprocessing、threading和asyncio的适用场景及性能差异。</h2>
+<h3 id="311-multiprocessing多进程"><a class="markdownIt-Anchor" href="#311-multiprocessing多进程"></a> 3.1.1 multiprocessing多进程</h3>
+<ul>
+<li>使用场景：
+<ul>
+<li>CPU密集型: 当任务需要大量的CPU计算时，multiprocessing适合于分布任务到多个进程，并且可以充分利用多核。</li>
+<li>避免GIL锁： 由于GIL的存在，无法真正实现多核并行计算，multiprocessing创建多个进程，每个进程有独立的内存空间和解释器，充分利用多核。</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>高性能： 通过多进程并行，充分利用多核CPU，适合负载的计算任务。</li>
+<li>内存开销大：每个进程有自己的独立的内存空间，进程之间通讯需要IPC，可能会增加内存开销和延时。</li>
+<li>启动开销：启动进程比启动线程慢，因此在需要拼单创建进程的场景中可能会有性能损耗。</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">import</span> multiprocessing
+
+<span class="token keyword">def</span> <span class="token function">cpu_bound_task</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">(</span>i <span class="token operator">*</span> i <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> multiprocessing<span class="token punctuation">.</span>Pool<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pool<span class="token punctuation">:</span>
+        results <span class="token operator">=</span> pool<span class="token punctuation">.</span>map<span class="token punctuation">(</span>cpu_bound_task<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token operator">**</span><span class="token number">6</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>results<span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="312-threading"><a class="markdownIt-Anchor" href="#312-threading"></a> 3.1.2 threading</h3>
+<ul>
+<li>适用场景：
+<ul>
+<li>IO密集型任务：当任务主要是等待IO操作（网络请求、磁盘操作、数据库查询）时，threading可以通过线程切换来提高效率。</li>
+<li>GUI应用程序：在GUI应用中，通常需要多线程来避免界面卡顿，力图后台执行任务，同时保持前台响应。</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>受限于GIL： 受限于GIL的限制，同一时刻只有一个线程执行python程序。</li>
+<li>轻量级：线程的创建和切换要轻量，内存开销相对较小。</li>
+<li>适用于IO密集型：由于线程在等待IO操作时能够释放GIL，因此多个线程同时操作IO，提高并发性能。</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> threading
+
+<span class="token keyword">def</span> <span class="token function">io_bound_task</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">import</span> time
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"I/O task completed"</span><span class="token punctuation">)</span>
+
+
+threads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>io_bound_task<span class="token punctuation">)</span>
+    threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
+    thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="313-asyncio-异步编程"><a class="markdownIt-Anchor" href="#313-asyncio-异步编程"></a> 3.1.3 asyncio (异步编程)</h3>
+<ul>
+<li>适合场景：
+<ul>
+<li>IO密集型任务：与threading类似, asyncio适合于异步IO操作，如网络请求</li>
+<li>高并发应用：适用于需要高并发处理大量I/O，例如爬虫等等</li>
+<li>单线程异步任务：适用于单线程的异步任务，避免上下文的切换等</li>
+</ul>
+</li>
+<li>性能特点：
+<ul>
+<li>轻量级：比于多线程和多进程，asyncio 更加轻量。通过事件循环机制，单线程可以并发执行多个任务，而不需要多线程或多进程的开销。</li>
+<li>非阻塞：asyncio 任务在执行 I/O 操作时不会阻塞主线程，因此可以更高效地处理大量并发任务。</li>
+<li>适用于IO密级：asyncio 在处理 I/O 密集型任务时，能够通过非阻塞 I/O 提高效率，尤其是在需要大量等待 I/O 响应的情况下。</li>
+</ul>
+</li>
+</ul>
+<h2 id="32-以下代码是否存在问题如何修正"><a class="markdownIt-Anchor" href="#32-以下代码是否存在问题如何修正"></a> 3.2 以下代码是否存在问题？如何修正？</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">import</span> threading
+counter <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">def</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">global</span> counter
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        counter <span class="token operator">+=</span> <span class="token number">1</span>
+threads <span class="token operator">=</span> <span class="token punctuation">[</span>threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>increment<span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出是否总是1000000？</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>修改之后：</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> threading
+
+counter <span class="token operator">=</span> <span class="token number">0</span>
+lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">global</span> counter
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> lock<span class="token punctuation">:</span>
+            counter <span class="token operator">+=</span> <span class="token number">1</span>
+
+
+threads <span class="token operator">=</span> <span class="token punctuation">[</span>threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>increment<span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> threads<span class="token punctuation">:</span> t<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 输出是否总是1000000？</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="33-用asyncio编写一个并发http请求函数要求同时请求3个url并在所有请求完成后返回结果列表"><a class="markdownIt-Anchor" href="#33-用asyncio编写一个并发http请求函数要求同时请求3个url并在所有请求完成后返回结果列表"></a> 3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</h2>
+<h1 id="四-性能优化与高级用法"><a class="markdownIt-Anchor" href="#四-性能优化与高级用法"></a> 四、性能优化与高级用法</h1>
+<h2 id="41-如何用生成器generator实现一个内存高效的惰性数据处理管道举例说明"><a class="markdownIt-Anchor" href="#41-如何用生成器generator实现一个内存高效的惰性数据处理管道举例说明"></a> 4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token keyword">def</span> <span class="token function">read_large_file</span><span class="token punctuation">(</span>file_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 使用管道，避免一次性加载大文件</span>
+lines <span class="token operator">=</span> read_large_file<span class="token punctuation">(</span><span class="token string">'data/test.txt'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="42-使用functoolslru_cache优化递归斐波那契数列函数并解释其原理"><a class="markdownIt-Anchor" href="#42-使用functoolslru_cache优化递归斐波那契数列函数并解释其原理"></a> 4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> lru_cache
+
+@lru_cache<span class="token punctuation">(</span>maxsize<span class="token operator">=</span>None<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> n
+    <span class="token keyword">return</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="43-如何用cython或numba加速python代码请简述步骤"><a class="markdownIt-Anchor" href="#43-如何用cython或numba加速python代码请简述步骤"></a> 4.3 如何用Cython或Numba加速Python代码？请简述步骤。</h2>
+<h1 id="五-数据库与orm"><a class="markdownIt-Anchor" href="#五-数据库与orm"></a> 五、数据库与ORM</h1>
+<h2 id="51-解释sqlalchemy的session和connection的区别以及scoped_session的作用"><a class="markdownIt-Anchor" href="#51-解释sqlalchemy的session和connection的区别以及scoped_session的作用"></a> 5.1 解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。</h2>
+<h2 id="52-如何用python实现数据库连接池写出伪代码逻辑"><a class="markdownIt-Anchor" href="#52-如何用python实现数据库连接池写出伪代码逻辑"></a> 5.2 如何用Python实现数据库连接池？写出伪代码逻辑。</h2>
+<h2 id="53-设计一个支持批量插入10万条数据到mysql的方案避免内存溢出"><a class="markdownIt-Anchor" href="#53-设计一个支持批量插入10万条数据到mysql的方案避免内存溢出"></a> 5.3 设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。</h2>
+<h1 id="六-算法与数据结构"><a class="markdownIt-Anchor" href="#六-算法与数据结构"></a> 六、算法与数据结构</h1>
+<h2 id="61-实现一个lru缓存least-recently-used要求所有操作时间复杂度为o1"><a class="markdownIt-Anchor" href="#61-实现一个lru缓存least-recently-used要求所有操作时间复杂度为o1"></a> 6.1 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token triple-quoted-string string">"""
+LRU算法： 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。
+"""</span>
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> OrderedDict
+
+
+<span class="token keyword">class</span> <span class="token class-name">LRU</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> capacity<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>capacity <span class="token operator">=</span> capacity
+        self<span class="token punctuation">.</span>cache <span class="token operator">=</span> OrderedDict<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        获取数据
+        :param key:
+        :return:
+        """</span>
+        <span class="token keyword">if</span> key <span class="token operator">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>move_to_end<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+
+    <span class="token keyword">def</span> <span class="token function">set</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        设置数据
+        :param key:
+        :param value:
+        :return:
+        """</span>
+        <span class="token keyword">if</span> key <span class="token keyword">in</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>move_to_end<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
+        <span class="token keyword">if</span> len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>cache<span class="token punctuation">)</span> <span class="token operator">></span> self<span class="token punctuation">.</span>capacity<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>popitem<span class="token punctuation">(</span>last<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="62-编写一个快速排序quicksort的生成器版本支持惰性输出排序结果"><a class="markdownIt-Anchor" href="#62-编写一个快速排序quicksort的生成器版本支持惰性输出排序结果"></a> 6.2 编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token triple-quoted-string string">"""
+编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。
+"""</span>
+
+
+<span class="token keyword">def</span> <span class="token function">quickSort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> left <span class="token operator">>=</span> right<span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    p <span class="token operator">=</span> partition<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 对数组进行划分，返回基准元素的最终位置</span>
+    quickSort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> p <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 对左边部分进行</span>
+    quickSort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 对右边部分进行排序</span>
+
+
+<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    value <span class="token operator">=</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span>  <span class="token comment" spellcheck="true"># 最右边的元素作为基准元素</span>
+    i <span class="token operator">=</span> left
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> value<span class="token punctuation">:</span>
+            arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">#将小于基准的元素移到左边</span>
+            i <span class="token operator">+=</span> <span class="token number">1</span>
+    arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 将基准放在合适的位置</span>
+    <span class="token keyword">return</span> i
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span>
+    quickSort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 方式二： 惰性输出</span>
+<span class="token keyword">def</span> <span class="token function">quickSortGenerator</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>
+        p <span class="token operator">=</span> partition<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># yield 左半部分的排序结果</span>
+        <span class="token keyword">yield</span> <span class="token keyword">from</span> quickSortGenerator<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> p <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># yield 当前元素（基准元素）已排序的结果</span>
+        <span class="token keyword">yield</span> arr
+        <span class="token comment" spellcheck="true"># yield 右半部分的排序结果</span>
+        <span class="token keyword">yield</span> <span class="token keyword">from</span> quickSortGenerator<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    value <span class="token operator">=</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span>  <span class="token comment" spellcheck="true"># 最右边的元素作为基准</span>
+    i <span class="token operator">=</span> left
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> value<span class="token punctuation">:</span>
+            arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+            i <span class="token operator">+=</span> <span class="token number">1</span>
+    arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">return</span> i
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span>
+    generator <span class="token operator">=</span> quickSortGenerator<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">for</span> sorted_arr <span class="token keyword">in</span> generator<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>sorted_arr<span class="token punctuation">)</span>
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="63-反转链表leetcode-206要求递归和迭代两种解法"><a class="markdownIt-Anchor" href="#63-反转链表leetcode-206要求递归和迭代两种解法"></a> 6.3 反转链表（LeetCode 206），要求递归和迭代两种解法。</h2>
+<pre class="line-numbers language-python"><code class="language-python">
+<span class="token triple-quoted-string string">"""
+
+反转链表
+"""</span>
+
+<span class="token keyword">def</span> <span class="token function">reverse_list</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    递归反转链表
+    :param head:
+    :return:
+    """</span>
+    <span class="token keyword">if</span> <span class="token operator">not</span> head <span class="token operator">or</span> <span class="token operator">not</span> head<span class="token punctuation">.</span>next<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> head
+    p <span class="token operator">=</span> reverse_list<span class="token punctuation">(</span>head<span class="token punctuation">.</span>next<span class="token punctuation">)</span>
+    head<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next <span class="token operator">=</span> head
+    head<span class="token punctuation">.</span>next <span class="token operator">=</span> None
+    <span class="token keyword">return</span> p
+
+
+<span class="token keyword">def</span> <span class="token function">reverse_list</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    迭代反转链表
+    :param head:
+    :return:
+    """</span>
+    prev<span class="token punctuation">,</span> curr <span class="token operator">=</span> None<span class="token punctuation">,</span> head
+    <span class="token keyword">while</span> curr<span class="token punctuation">:</span>
+        next_node <span class="token operator">=</span> curr<span class="token punctuation">.</span>next
+        curr<span class="token punctuation">.</span>next <span class="token operator">=</span> prev
+        prev <span class="token operator">=</span> curr
+        curr <span class="token operator">=</span> next_node
+    <span class="token keyword">return</span> prev
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="七-系统设计"><a class="markdownIt-Anchor" href="#七-系统设计"></a> 七、系统设计</h1>
+<h2 id="71-设计一个支持动态扩缩容的任务队列系统类似celery需考虑任务去重-失败重试和优先级"><a class="markdownIt-Anchor" href="#71-设计一个支持动态扩缩容的任务队列系统类似celery需考虑任务去重-失败重试和优先级"></a> 7.1 设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。</h2>
+<h2 id="72-如何用python构建一个高性能rest-api服务列举关键库如fastapi及优化点如异步-缓存"><a class="markdownIt-Anchor" href="#72-如何用python构建一个高性能rest-api服务列举关键库如fastapi及优化点如异步-缓存"></a> 7.2 如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。</h2>
+<h2 id="73-设计一个实时日志分析系统要求每秒处理10万条日志并统计错误率"><a class="markdownIt-Anchor" href="#73-设计一个实时日志分析系统要求每秒处理10万条日志并统计错误率"></a> 7.3 设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> asyncio
+<span class="token keyword">import</span> random
+<span class="token keyword">import</span> time
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> Counter
+
+<span class="token comment" spellcheck="true"># 模拟生成日志数据</span>
+<span class="token keyword">def</span> <span class="token function">generate_log</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    error_types <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'INFO'</span><span class="token punctuation">,</span> <span class="token string">'WARN'</span><span class="token punctuation">,</span> <span class="token string">'ERROR'</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> f<span class="token string">"{random.choice(error_types)}: This is a sample log."</span>
+
+<span class="token comment" spellcheck="true"># 统计错误日志</span>
+<span class="token keyword">class</span> <span class="token class-name">LogAnalyzer</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>error_counter <span class="token operator">=</span> Counter<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">process_log</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> log<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""处理单条日志"""</span>
+        <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.00001</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 模拟I/O延迟</span>
+        <span class="token keyword">if</span> <span class="token string">"ERROR"</span> <span class="token keyword">in</span> log<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>error_counter<span class="token punctuation">[</span><span class="token string">"ERROR"</span><span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">analyze_logs</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> logs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""分析多条日志"""</span>
+        tasks <span class="token operator">=</span> <span class="token punctuation">[</span>self<span class="token punctuation">.</span>process_log<span class="token punctuation">(</span>log<span class="token punctuation">)</span> <span class="token keyword">for</span> log <span class="token keyword">in</span> logs<span class="token punctuation">]</span>
+        <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>gather<span class="token punctuation">(</span><span class="token operator">*</span>tasks<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">get_error_rate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> total_logs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""计算错误率"""</span>
+        error_count <span class="token operator">=</span> self<span class="token punctuation">.</span>error_counter<span class="token punctuation">[</span><span class="token string">"ERROR"</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> error_count <span class="token operator">/</span> total_logs <span class="token operator">*</span> <span class="token number">100</span>
+
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">log_generator</span><span class="token punctuation">(</span>log_analyzer<span class="token punctuation">,</span> num_logs<span class="token operator">=</span><span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""生成并处理日志"""</span>
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_logs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        log <span class="token operator">=</span> generate_log<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">await</span> log_analyzer<span class="token punctuation">.</span>process_log<span class="token punctuation">(</span>log<span class="token punctuation">)</span>
+
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    log_analyzer <span class="token operator">=</span> LogAnalyzer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    start_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">await</span> log_generator<span class="token punctuation">(</span>log_analyzer<span class="token punctuation">)</span>
+    end_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    elapsed_time <span class="token operator">=</span> end_time <span class="token operator">-</span> start_time
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Processed 100,000 logs in {elapsed_time:.2f} seconds."</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Error rate: {log_analyzer.get_error_rate(100000):.2f}%"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    asyncio<span class="token punctuation">.</span>run<span class="token punctuation">(</span>main<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../../../12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/04.django/01.01_Django%E5%9F%BA%E7%A1%80/10.django%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">10.django生命周期</div>
+                </a>
+                
+                
+                <a href="../../../../../../2024/12/17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">01.python的内存管理机制</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#1-解释python的gil全局解释器锁机制及其对多线程程序的影响-如何规避gil的性能瓶颈" class="toc-item"> 1、 解释Python的GIL（全局解释器锁）机制及其对多线程程序的影响。如何规避GIL的性能瓶颈？</a>
+                
+                    
+                    
+                    
+                    <a href="#2-描述python的垃圾回收机制引用计数分代回收并解释如何解决循环引用问题" class="toc-item"> 2、描述Python的垃圾回收机制（引用计数+分代回收），并解释如何解决循环引用问题。</a>
+                
+                    
+                    
+                    
+                    <a href="#21-引用计数" class="toc-item"> 2.1 引用计数</a>
+                
+                    
+                    
+                    
+                    <a href="#22-分代回收" class="toc-item"> 2.2 分代回收</a>
+                
+                    
+                    
+                    
+                    <a href="#23-如何解决循环引用的问题" class="toc-item"> 2.3 如何解决循环引用的问题：</a>
+                
+                    
+                    
+                    
+                    <a href="#3-以下代码的输出是什么解释原因" class="toc-item"> 3、以下代码的输出是什么？解释原因：</a>
+                
+                    
+                    
+                    
+                    <a href="#4-__slots__的作用是什么使用它有什么优缺点" class="toc-item"> 4、__slots__的作用是什么？使用它有什么优缺点？</a>
+                
+                    
+                    
+                    
+                    <a href="#41-__slots__的作用" class="toc-item"> 4.1 __slots__的作用</a>
+                
+                    
+                    
+                    
+                    <a href="#42-__slots__的优缺点" class="toc-item"> 4.2 __slots__的优缺点</a>
+                
+                    
+                    
+                    
+                    <a href="#21-实现一个单例模式singleton要求线程安全且支持懒加载" class="toc-item"> 2.1 实现一个单例模式（Singleton），要求线程安全且支持懒加载。</a>
+                
+                    
+                    
+                    
+                    <a href="#22-编写一个装饰器retrymax_attempts3-delay1使被装饰的函数在抛出异常时自动重试最多尝试max_attempts次每次间隔delay秒" class="toc-item"> 2.2 编写一个装饰器@retry(max_attempts=3, delay=1)，使被装饰的函数在抛出异常时自动重试，最多尝试max_attempts次，每次间隔delay秒。</a>
+                
+                    
+                    
+                    
+                    <a href="#23-解释元类metaclass的作用并用元类实现一个类属性自动大写的功能如类中定义的foo-1会被转换为foo-1" class="toc-item"> 2.3 解释元类（Metaclass）的作用，并用元类实现一个类属性自动大写的功能（如类中定义的foo = 1会被转换为FOO = 1）。</a>
+                
+                    
+                    
+                    
+                    <a href="#231-什么是元类" class="toc-item"> 2.3.1 什么是元类？</a>
+                
+                    
+                    
+                    
+                    <a href="#231-元类的工作原理" class="toc-item"> 2.3.1 元类的工作原理</a>
+                
+                    
+                    
+                    
+                    <a href="#232-关键的元类方法" class="toc-item"> 2.3.2 关键的元类方法</a>
+                
+                    
+                    
+                    
+                    <a href="#31-对比python中multiprocessing-threading和asyncio的适用场景及性能差异" class="toc-item"> 3.1 对比Python中multiprocessing、threading和asyncio的适用场景及性能差异。</a>
+                
+                    
+                    
+                    
+                    <a href="#311-multiprocessing多进程" class="toc-item"> 3.1.1 multiprocessing多进程</a>
+                
+                    
+                    
+                    
+                    <a href="#312-threading" class="toc-item"> 3.1.2 threading</a>
+                
+                    
+                    
+                    
+                    <a href="#313-asyncio-异步编程" class="toc-item"> 3.1.3 asyncio (异步编程)</a>
+                
+                    
+                    
+                    
+                    <a href="#32-以下代码是否存在问题如何修正" class="toc-item"> 3.2 以下代码是否存在问题？如何修正？</a>
+                
+                    
+                    
+                    
+                    <a href="#33-用asyncio编写一个并发http请求函数要求同时请求3个url并在所有请求完成后返回结果列表" class="toc-item"> 3.3 用asyncio编写一个并发HTTP请求函数，要求同时请求3个URL，并在所有请求完成后返回结果列表。</a>
+                
+                    
+                    
+                    
+                    <a href="#41-如何用生成器generator实现一个内存高效的惰性数据处理管道举例说明" class="toc-item"> 4.1 如何用生成器（Generator）实现一个内存高效的惰性数据处理管道？举例说明。</a>
+                
+                    
+                    
+                    
+                    <a href="#42-使用functoolslru_cache优化递归斐波那契数列函数并解释其原理" class="toc-item"> 4.2 使用functools.lru_cache优化递归斐波那契数列函数，并解释其原理。</a>
+                
+                    
+                    
+                    
+                    <a href="#43-如何用cython或numba加速python代码请简述步骤" class="toc-item"> 4.3 如何用Cython或Numba加速Python代码？请简述步骤。</a>
+                
+                    
+                    
+                    
+                    <a href="#51-解释sqlalchemy的session和connection的区别以及scoped_session的作用" class="toc-item"> 5.1 解释SQLAlchemy的Session和Connection的区别，以及scoped_session的作用。</a>
+                
+                    
+                    
+                    
+                    <a href="#52-如何用python实现数据库连接池写出伪代码逻辑" class="toc-item"> 5.2 如何用Python实现数据库连接池？写出伪代码逻辑。</a>
+                
+                    
+                    
+                    
+                    <a href="#53-设计一个支持批量插入10万条数据到mysql的方案避免内存溢出" class="toc-item"> 5.3 设计一个支持批量插入10万条数据到MySQL的方案，避免内存溢出。</a>
+                
+                    
+                    
+                    
+                    <a href="#61-实现一个lru缓存least-recently-used要求所有操作时间复杂度为o1" class="toc-item"> 6.1 实现一个LRU缓存（Least Recently Used），要求所有操作时间复杂度为O(1)。</a>
+                
+                    
+                    
+                    
+                    <a href="#62-编写一个快速排序quicksort的生成器版本支持惰性输出排序结果" class="toc-item"> 6.2 编写一个快速排序（QuickSort）的生成器版本，支持惰性输出排序结果。</a>
+                
+                    
+                    
+                    
+                    <a href="#63-反转链表leetcode-206要求递归和迭代两种解法" class="toc-item"> 6.3 反转链表（LeetCode 206），要求递归和迭代两种解法。</a>
+                
+                    
+                    
+                    
+                    <a href="#71-设计一个支持动态扩缩容的任务队列系统类似celery需考虑任务去重-失败重试和优先级" class="toc-item"> 7.1 设计一个支持动态扩缩容的任务队列系统（类似Celery），需考虑任务去重、失败重试和优先级。</a>
+                
+                    
+                    
+                    
+                    <a href="#72-如何用python构建一个高性能rest-api服务列举关键库如fastapi及优化点如异步-缓存" class="toc-item"> 7.2 如何用Python构建一个高性能REST API服务？列举关键库（如FastAPI）及优化点（如异步、缓存）。</a>
+                
+                    
+                    
+                    
+                    <a href="#73-设计一个实时日志分析系统要求每秒处理10万条日志并统计错误率" class="toc-item"> 7.3 设计一个实时日志分析系统，要求每秒处理10万条日志并统计错误率。</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../../../../../js/polelight.js" defer></script>
+</body>
+</html>

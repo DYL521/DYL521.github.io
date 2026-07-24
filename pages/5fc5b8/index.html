@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            07.中间件 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/website/logo/logo.png">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- one-dark is a community theme hosted in prism-themes, not in prismjs core. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.min.css" data-prism-theme="dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" data-prism-theme="light" disabled>
+    <link rel="stylesheet" href="../../css/polelight.css">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章...","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search posts...","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-one-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo">DYL521</a>
+        <span class="tagline" data-i18n="tagline">Engineer · Doc-driven · Tinkerer</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search">⌕</button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            <div class="breadcrumb" data-reveal>~/posts//pages/5fc5b8/</div>
+            <h1 class="article-title" data-reveal>07.中间件</h1>
+            
+            
+            
+            
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">python</span>
+                <span>2021-02-15</span>
+                <span>· 10 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 2824 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+
+            <div class="article-body" data-reveal>
+                <h2 id="01初识中间件"><a class="markdownIt-Anchor" href="#01初识中间件"></a> 01.初识中间件</h2>
+<h3 id="11-什么是中间件"><a class="markdownIt-Anchor" href="#11-什么是中间件"></a> 1.1 什么是中间件</h3>
+<ul>
+<li>
+<p>Django中间件是修改 Django request 或者 response 对象的钩子</p>
+</li>
+<li>
+<p>可以理解为是介于 HttpRequest 与 HttpResponse 处理之间的一道处理过程。</p>
+</li>
+<li>
+<p>Django中间件作用：</p>
+<ul>
+<li>修改请求，即传送到 view 中的 HttpRequest 对象。</li>
+<li>修改响应，即 view 返回的 HttpResponse 对象。</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-中间件处理过程"><a class="markdownIt-Anchor" href="#12-中间件处理过程"></a> 1.2 中间件处理过程</h3>
+<ul>
+<li>
+<p>1、首先客户端发起请求，会将请求交给settings.py中排在最前面的中间件</p>
+</li>
+<li>
+<p>2、前面中间件收到请求会调用类中的process_request方法处理，然后交给下一个中间件的process_request函数</p>
+</li>
+<li>
+<p>3、到达最后一个中间件的process_request函数处理后会到达url路由系统</p>
+</li>
+<li>
+<p>4、然后从路由系统直接跳转到第一个中间件的process_view函数，依次向后面中间的process_view传递</p>
+<ul>
+<li>最后到达views.py处理函数，获取网页中的数据</li>
+</ul>
+</li>
+<li>
+<p>5、获取的数据会交给最后一个中间件的process_response方法处理，然后依次向前面的中间件process_response</p>
+<ul>
+<li>方法提交请求的内容，最后由最前面的中间件将请求数据返回到客户端</li>
+</ul>
+</li>
+<li>
+<p>6、在任一中间件的process_request和process_view方法中有返回值就会直接返回给process_response</p>
+</li>
+</ul>
+<h3 id="13-生命周期图解"><a class="markdownIt-Anchor" href="#13-生命周期图解"></a> 1.3 生命周期图解</h3>
+<ul>
+<li>
+<p>1、首先会交给中间件，中间件处理后交给路由系统</p>
+</li>
+<li>
+<p>2、路由系统</p>
+<ul>
+<li>1：Django程序会到urls.py文件中找到对应请求的处理函数（视图函数）</li>
+</ul>
+</li>
+<li>
+<p>3、视图函数</p>
+<ul>
+<li>1：视图函数会找到对应的html模板文件</li>
+<li>2：然后到数据库中取得数据替换html模板中的内容</li>
+<li>3：使用static中的js和css文件结合对html渲染</li>
+<li>4：最后Django将最终渲染后的html文件返回给中间件</li>
+</ul>
+</li>
+<li>
+<p>4、中间件再调用process_response方法处理，最后交给用户</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/DYL521/DYL521.github.io/image-save/doc_image/01_Django基础/image-20210215211340365.png" style="width: 800px; margin-left: 20px;"> </img></p>
+<h2 id="02中间件使用"><a class="markdownIt-Anchor" href="#02中间件使用"></a> 02.中间件使用</h2>
+<h3 id="21-创建存放中间件的文件夹"><a class="markdownIt-Anchor" href="#21-创建存放中间件的文件夹"></a> 2.1 创建存放中间件的文件夹</h3>
+<ul>
+<li>
+<ol>
+<li>在工程目录下创建任意目录，这里创建路径为： <code>/project/middle/m1.py</code></li>
+</ol>
+</li>
+</ul>
+<h3 id="22-settingspy中注册中间件"><a class="markdownIt-Anchor" href="#22-settingspy中注册中间件"></a> 2.2 settings.py中注册中间件</h3>
+<pre class="line-numbers language-undefined"><code class="language-undefined">MIDDLEWARE = [
+    'middle.m1.Row1',
+    'middle.m1.Row2',
+    'middle.m1.Row3',
+]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="23-写处理函数test"><a class="markdownIt-Anchor" href="#23-写处理函数test"></a> 2.3 写处理函数test</h3>
+<ul>
+<li>在views.py文件中写处理函数test</li>
+</ul>
+<pre class="line-numbers language-undefined"><code class="language-undefined">def test(request):
+    # int('fds')    #当views函数出现异常，中间件中的process_exception执行
+    print('没带钱|')
+    return HttpResponse('ok')
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="24-定义中间件"><a class="markdownIt-Anchor" href="#24-定义中间件"></a> 2.4 定义中间件</h3>
+<ul>
+<li>在/project/middle/m1.py文件中定义中间件</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> django<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>deprecation <span class="token keyword">import</span> MiddlewareMixin
+
+<span class="token keyword">class</span> <span class="token class-name">Row1</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_1'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true">#view_func_args:   url中传递的非字典的值会用这个变量接收</span>
+        <span class="token comment" spellcheck="true">#view_func_kwargs: url中传递的字典会传递到这个变量接收（如：nid=1）</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_1'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true">#response就是拿到的返回信息</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_1'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
+
+    <span class="token keyword">def</span> <span class="token function">process_exception</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> exception<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">'''只有当views函数中异常这个函数才会执行'''</span>
+        <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>exception<span class="token punctuation">,</span> ValueError<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> HttpResponse<span class="token punctuation">(</span><span class="token string">'>>出现异常了'</span><span class="token punctuation">)</span>
+
+        
+<span class="token keyword">class</span> <span class="token class-name">Row2</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_2'</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">#1 如果在Row2中的process_request中有返回值，那么就不会到达Row3</span>
+        <span class="token comment" spellcheck="true">#2 Row2直接将返回值交给自己的process_response再交给Row1的process_response</span>
+        <span class="token comment" spellcheck="true">#3 最后客户端页面显示的就是‘走’请求没机会到达views函数，不会打印‘没带钱’</span>
+        <span class="token comment" spellcheck="true"># return HttpResponse('走')</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_2'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_2'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
+
+    
+<span class="token keyword">class</span> <span class="token class-name">Row3</span><span class="token punctuation">(</span>MiddlewareMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_request_3'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_view</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> view_func<span class="token punctuation">,</span> view_func_args<span class="token punctuation">,</span> view_func_kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'process_view_3'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">process_response</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'response_3'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/8c6006/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">08.cookie</div>
+                </a>
+                
+                
+                <a href="../../pages/4e186e/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">06.类视图</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+            <div class="toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01初识中间件" class="toc-item"> 01.初识中间件</a>
+                
+                    
+                    
+                    
+                    <a href="#11-什么是中间件" class="toc-item"> 1.1 什么是中间件</a>
+                
+                    
+                    
+                    
+                    <a href="#12-中间件处理过程" class="toc-item"> 1.2 中间件处理过程</a>
+                
+                    
+                    
+                    
+                    <a href="#13-生命周期图解" class="toc-item"> 1.3 生命周期图解</a>
+                
+                    
+                    
+                    
+                    <a href="#02中间件使用" class="toc-item"> 02.中间件使用</a>
+                
+                    
+                    
+                    
+                    <a href="#21-创建存放中间件的文件夹" class="toc-item"> 2.1 创建存放中间件的文件夹</a>
+                
+                    
+                    
+                    
+                    <a href="#22-settingspy中注册中间件" class="toc-item"> 2.2 settings.py中注册中间件</a>
+                
+                    
+                    
+                    
+                    <a href="#23-写处理函数test" class="toc-item"> 2.3 写处理函数test</a>
+                
+                    
+                    
+                    
+                    <a href="#24-定义中间件" class="toc-item"> 2.4 定义中间件</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search posts..." autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            <a href="mailto:me@dyl521">mail</a>
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="240" data-site-tags="62" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>
+    window.DYL_SEARCH = {
+        appId: '9ZBOLGM20W',
+        apiKey: '5c6e73f3aabb1697bd309ca5c7bf89d9',
+        indexName: 'hexo-blog'
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js" defer></script>
+    <script>window.Prism = { manual: true };</script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="../../js/polelight.js" defer></script>
+</body>
+</html>
