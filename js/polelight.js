@@ -13,12 +13,6 @@
     return (saved === 'dark' || saved === 'light') ? saved : getSystemTheme();
   }
 
-  function updatePrismTheme(t) {
-    document.querySelectorAll('link[data-prism-theme]').forEach(function (link) {
-      link.disabled = link.getAttribute('data-prism-theme') !== t;
-    });
-  }
-
   function updateMermaidTheme(t) {
     if (!window.mermaid || typeof window.mermaid.initialize !== 'function') return;
     var isDark = t !== 'light';
@@ -215,7 +209,6 @@
       btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
       btn.textContent = t === 'dark' ? '☀' : '🌙';
     }
-    updatePrismTheme(t);
     updateMermaidTheme(t);
     updateThemeLabel();
   }
@@ -239,6 +232,7 @@
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var isMobile = window.innerWidth < 760;
 
   /* ---------- reveal ---------- */
   var revealEls = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
@@ -343,7 +337,7 @@
         nav.classList.toggle("scrolled", top > 40);
       }
 
-      if (!reduceMotion) {
+      if (!reduceMotion && !isMobile) {
         Array.from(document.querySelectorAll("[data-parallax]")).forEach(function (el) {
           var r = el.getBoundingClientRect();
           var off = r.top + r.height / 2 - vh / 2;
@@ -560,6 +554,25 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function initTocToggle() {
+    var header = document.getElementById('dyl-toc-header');
+    var toggle = document.getElementById('dyl-toc-toggle');
+    var list = document.getElementById('dyl-toc-list');
+    var grid = document.querySelector('.article-grid');
+    if (!header || !toggle || !list) return;
+
+    function setExpanded(expanded) {
+      toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      list.classList.toggle('collapsed', !expanded);
+      if (grid) grid.classList.toggle('toc-collapsed', !expanded);
+    }
+
+    header.addEventListener('click', function () {
+      var isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      setExpanded(!isExpanded);
+    });
   }
 
   function initSearch() {
@@ -977,6 +990,7 @@
     bindMobileNav();
     initPostsFilter();
     initTocSpy();
+    initTocToggle();
     initSearch();
 
     /* ---------- mermaid diagrams ---------- */
@@ -984,6 +998,21 @@
     rerenderMermaid();
     renderBareMermaidBlocks();
     rerenderMermaid();
+
+    /* ---------- code block terminal headers ---------- */
+    document.querySelectorAll('.article-body pre[class*="language-"]').forEach(function (pre) {
+      if (pre.previousElementSibling && pre.previousElementSibling.classList.contains('code-header')) return;
+      if (pre.querySelector('code.language-mermaid')) return;
+      var code = pre.querySelector('code[class*="language-"]');
+      if (!code) return;
+      var langMatch = code.className.match(/language-(\w+)/);
+      var lang = langMatch ? langMatch[1] : '';
+      if (!lang || lang === 'mermaid') return;
+      var header = document.createElement('div');
+      header.className = 'code-header';
+      header.innerHTML = '<span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><span class="code-filename">' + lang + '</span>';
+      pre.parentNode.insertBefore(header, pre);
+    });
 
     /* ---------- copy code buttons ---------- */
     document.querySelectorAll('.article-body pre').forEach(function (pre) {
