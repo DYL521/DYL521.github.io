@@ -4,7 +4,7 @@
   var THEME_KEY = 'dyl_site_theme';
 
   function getSystemTheme() {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    return 'dark';
   }
 
   function resolveTheme() {
@@ -20,17 +20,17 @@
       startOnLoad: false,
       theme: isDark ? 'dark' : 'default',
       themeVariables: isDark ? {
-        primaryColor: '#7C5CFF',
+        primaryColor: '#674397',
         primaryTextColor: '#F1ECFF',
         primaryBorderColor: '#9B7BFF',
         lineColor: '#C795FF',
         secondaryColor: '#140A2E',
         tertiaryColor: '#0C0820'
       } : {
-        primaryColor: '#E0D4FF',
+        primaryColor: '#e8def7',
         primaryTextColor: '#1A1433',
-        primaryBorderColor: '#7C3AED',
-        lineColor: '#7C3AED',
+        primaryBorderColor: '#8255ba',
+        lineColor: '#8255ba',
         secondaryColor: '#F7F5FF',
         tertiaryColor: '#EDE9FA'
       },
@@ -207,7 +207,7 @@
     var btn = document.getElementById('dyl-theme-toggle');
     if (btn) {
       btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
-      btn.textContent = t === 'dark' ? '☀' : '🌙';
+      btn.textContent = t === 'dark' ? '☀' : '◐';
     }
     updateMermaidTheme(t);
     updateThemeLabel();
@@ -230,83 +230,6 @@
 
   var theme = resolveTheme();
 
-  var reduceMotion = window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var isMobile = window.innerWidth < 760;
-
-  /* ---------- reveal ---------- */
-  var revealEls = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
-  if (!reduceMotion) {
-    revealEls.forEach(function (el, i) {
-      el.style.transitionDelay = Math.min(i % 8, 6) * 45 + "ms";
-    });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add("in"); });
-  }
-
-  /* ---------- hero carousel ---------- */
-  var slideData = [];
-  var slideScript = document.getElementById("hero-slides");
-  if (slideScript) {
-    try { slideData = JSON.parse(slideScript.textContent); } catch (e) {}
-  }
-  var currentSlide = 0;
-  var slideInterval = null;
-
-  function applySlide(i) {
-    currentSlide = i;
-    var layers = document.querySelectorAll("[data-hero-layer]");
-    layers.forEach(function (el) {
-      el.style.opacity = (+el.getAttribute("data-hero-layer") === i) ? "1" : "0";
-    });
-    var dots = document.querySelectorAll("[data-hero-dot]");
-    dots.forEach(function (el) {
-      el.classList.toggle("active", +el.getAttribute("data-hero-dot") === i);
-    });
-    var s = slideData[i];
-    if (!s) return;
-    var set = function (sel, txt) {
-        var el = document.querySelector(sel);
-        if (el) el.textContent = txt;
-    };
-    var heroSub = (currentLang === 'en' && s.en_sub) ? s.en_sub : s.sub;
-    var heroTitle = (currentLang === 'en' && s.en_title) ? s.en_title : s.title;
-    var heroTag = (currentLang === 'en' && s.en_tag) ? s.en_tag : s.tag;
-    set('[data-hero="eng"]', s.eng);
-    set('[data-hero="title"]', heroTitle);
-    set('[data-hero="sub"]', heroSub);
-    set('[data-hero="meta"]', heroTag + " · " + s.date);
-    var link = document.querySelector('[data-hero="link"]');
-    if (link && s.url) link.setAttribute('href', s.url);
-  }
-
-  function nextSlide() {
-    applySlide((currentSlide + 1) % Math.max(slideData.length, 1));
-  }
-
-  function bindCarousel() {
-    var dots = document.querySelectorAll("[data-hero-dot]");
-    dots.forEach(function (dot) {
-      dot.addEventListener("click", function () {
-        applySlide(+dot.getAttribute("data-hero-dot"));
-        resetInterval();
-      });
-    });
-    var hero = document.querySelector(".hero");
-    if (hero && slideData.length > 1) {
-      hero.addEventListener("mouseenter", function () { clearInterval(slideInterval); });
-      hero.addEventListener("mouseleave", resetInterval);
-      resetInterval();
-    }
-  }
-
-  function resetInterval() {
-    clearInterval(slideInterval);
-    if (slideData.length > 1) {
-      slideInterval = setInterval(nextSlide, 5000);
-    }
-  }
-
   /* ---------- scroll effects ---------- */
   var raf = 0;
   function onScroll() {
@@ -315,16 +238,6 @@
       raf = 0;
       var vh = window.innerHeight;
       var top = window.pageYOffset || document.documentElement.scrollTop || 0;
-
-      if (!reduceMotion) {
-        revealEls = revealEls.filter(function (el) {
-          if (el.getBoundingClientRect().top < vh * 0.9) {
-            el.classList.add("in");
-            return false;
-          }
-          return true;
-        });
-      }
 
       var docH = document.documentElement.scrollHeight - vh;
       var bar = document.getElementById("dyl-progress");
@@ -337,14 +250,6 @@
         nav.classList.toggle("scrolled", top > 40);
       }
 
-      if (!reduceMotion && !isMobile) {
-        Array.from(document.querySelectorAll("[data-parallax]")).forEach(function (el) {
-          var r = el.getBoundingClientRect();
-          var off = r.top + r.height / 2 - vh / 2;
-          var f = parseFloat(el.getAttribute("data-parallax")) || 0.08;
-          el.style.transform = "translate3d(0," + (off * f).toFixed(1) + "px,0)";
-        });
-      }
     });
   }
 
@@ -362,33 +267,6 @@
   var LS_KEY = "dyl_site_lang";
   var lang = "zh";
   try { lang = localStorage.getItem(LS_KEY) || "zh"; } catch (e) {}
-
-  function updateHeroKicker() {
-    var el = document.querySelector('.kicker-label');
-    if (!el) return;
-    var zh = el.getAttribute('data-zh');
-    var en = el.getAttribute('data-en');
-    el.textContent = (currentLang === 'en' && en) ? en : (zh || '');
-  }
-
-  function updateFeaturedCards() {
-    document.querySelectorAll('.featured-heading').forEach(function (el) {
-      var key = currentLang === 'en' ? 'data-en-title' : 'data-zh-title';
-      if (el.hasAttribute(key)) el.textContent = el.getAttribute(key);
-    });
-    document.querySelectorAll('.featured-desc').forEach(function (el) {
-      var key = currentLang === 'en' ? 'data-en-sub' : 'data-zh-sub';
-      if (el.hasAttribute(key)) el.textContent = el.getAttribute(key);
-    });
-    document.querySelectorAll('.featured-meta').forEach(function (el) {
-      var zhTag = el.getAttribute('data-zh-tag');
-      var enTag = el.getAttribute('data-en-tag');
-      if (!zhTag) return;
-      var tag = (currentLang === 'en' && enTag) ? enTag : zhTag;
-      var date = el.textContent.split(' · ')[1] || '';
-      el.textContent = tag + ' · ' + date;
-    });
-  }
 
   function updateRecentItems() {
     document.querySelectorAll('.recent-cat').forEach(function (el) {
@@ -449,13 +327,12 @@
     document.documentElement.lang = target === "en" ? "en" : "zh-CN";
     currentLang = target;
     updateThemeLabel();
-    updateHeroKicker();
-    updateFeaturedCards();
+    document.querySelectorAll('[data-zh][data-en]').forEach(function (el) {
+      el.textContent = el.getAttribute(target === 'en' ? 'data-en' : 'data-zh');
+    });
     updateRecentItems();
     updateTagChips();
-    if (typeof applySlide === 'function') {
-      applySlide(currentSlide || 0);
-    }
+
   }
 
   function bindLang() {
@@ -569,6 +446,7 @@
       if (grid) grid.classList.toggle('toc-collapsed', !expanded);
     }
 
+    if (window.innerWidth <= 760) setExpanded(false);
     header.addEventListener('click', function () {
       var isExpanded = toggle.getAttribute('aria-expanded') === 'true';
       setExpanded(!isExpanded);
@@ -584,15 +462,18 @@
     var closeBtn = document.getElementById('dyl-search-close');
     if (!overlay || !input || !results) return;
 
-    var cfg = window.DYL_SEARCH || {};
-    var client = null;
-    var index = null;
-    if (cfg.appId && cfg.apiKey && cfg.indexName && window.algoliasearch) {
-      client = window.algoliasearch(cfg.appId, cfg.apiKey);
-      index = client.initIndex(cfg.indexName);
+    var searchData;
+    function loadSearch() {
+      if (!searchData) searchData = fetch(window.DYL_SEARCH.url).then(function (response) {
+        if (!response.ok) throw new Error('Search index unavailable');
+        return response.json();
+      }).catch(function (error) { searchData = null; throw error; });
+      return searchData;
     }
 
     function open() {
+      ++requestId;
+      clearTimeout(debounce);
       lastTrigger = document.activeElement;
       overlay.classList.add('active');
       overlay.setAttribute('aria-hidden', 'false');
@@ -603,6 +484,8 @@
     }
 
     function close() {
+      ++requestId;
+      clearTimeout(debounce);
       overlay.classList.remove('active');
       overlay.setAttribute('aria-hidden', 'true');
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
@@ -620,44 +503,43 @@
 
     function renderHits(hits) {
       if (!hits.length) {
-        results.innerHTML = '<div class="search-no-results" data-i18n="search_no_results">' + escapeHtml(getI18n('search_no_results')) + '</div>';
+        results.innerHTML = '<div class="search-no-results">' + escapeHtml(getI18n('search_no_results')) + '</div>';
         resetFocus();
         return;
       }
       results.innerHTML = hits.map(function (hit) {
-        var title = (hit._highlightResult && hit._highlightResult.title && hit._highlightResult.title.value) || hit.title || '';
-        var excerpt = (hit._highlightResult && hit._highlightResult.content && hit._highlightResult.content.value) || '';
-        var link = hit.permalink || hit.url || '#';
-        return '<a href="' + escapeHtml(link) + '" class="search-result">' +
-          '<div class="search-result-title">' + title + '</div>' +
-          '<div class="search-result-meta">' + escapeHtml(hit.date || '') + '</div>' +
-          '<div class="search-result-excerpt">' + excerpt + '</div>' +
-          '</a>';
+        return '<a href="' + escapeHtml(hit.url) + '" class="search-result">' +
+          '<div class="search-result-title">' + escapeHtml(hit.title) + '</div>' +
+          '<div class="search-result-meta">' + escapeHtml(hit.date + ' · ' + hit.categories) + '</div></a>';
       }).join('');
       resetFocus();
     }
 
     var debounce = 0;
+    var requestId = 0;
     input.addEventListener('input', function () {
       clearTimeout(debounce);
-      var q = input.value.trim();
+      var currentRequest = ++requestId;
+      var q = input.value.trim().toLowerCase();
       if (!q) {
-        results.innerHTML = '<div class="search-empty" data-i18n="search_shortcut">' + escapeHtml(getI18n('search_shortcut')) + '</div>';
+        results.innerHTML = '<div class="search-empty">' + escapeHtml(getI18n('search_shortcut')) + '</div>';
         resetFocus();
         return;
       }
-      results.innerHTML = '<div class="search-empty">Searching...</div>';
-      if (!index) {
-        results.innerHTML = '<div class="search-error" data-i18n="search_index_missing">' + escapeHtml(getI18n('search_index_missing')) + '</div>';
-        return;
-      }
+      results.innerHTML = '<div class="search-empty">' + (currentLang === 'en' ? 'Searching…' : '检索中…') + '</div>';
       debounce = setTimeout(function () {
-        index.search(q, { hitsPerPage: 10 }).then(function (res) {
-          renderHits(res.hits);
+        loadSearch().then(function (posts) {
+          if (currentRequest !== requestId) return;
+          var terms = q.split(/\s+/);
+          renderHits(posts.filter(function (post) {
+            var text = (post.title + ' ' + post.categories).toLowerCase();
+            return terms.every(function (term) { return text.indexOf(term) !== -1; });
+          }).slice(0, 30));
         }).catch(function () {
-          results.innerHTML = '<div class="search-error" data-i18n="search_index_missing">' + escapeHtml(getI18n('search_index_missing')) + '</div>';
+          if (currentRequest !== requestId) return;
+          results.innerHTML = '<div class="search-error">' + (currentLang === 'en' ? 'Search is unavailable. Browse the journal instead.' : '搜索暂不可用，请通过文章列表浏览。') + '</div>';
         });
-      }, 150);
+      }, 120);
     });
 
     if (trigger) trigger.addEventListener('click', open);
@@ -671,6 +553,12 @@
           open();
         }
         return;
+      }
+      if (e.key === 'Tab') {
+        var focusable = Array.from(overlay.querySelectorAll('input, button, a[href]'));
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
       if (e.key === 'Escape') {
         close();
@@ -713,11 +601,6 @@
       var a = document.createElement('a');
       a.href = post.u;
       a.className = 'archive-item';
-      var coverImg = document.createElement('img');
-      coverImg.className = 'archive-item-cover';
-      coverImg.src = post.v || '';
-      coverImg.alt = '';
-      coverImg.loading = 'lazy';
       var dateSpan = document.createElement('span');
       dateSpan.className = 'archive-date';
       dateSpan.textContent = post.d;
@@ -730,7 +613,6 @@
       var arrow = document.createElement('span');
       arrow.className = 'archive-arrow';
       arrow.textContent = '→';
-      a.appendChild(coverImg);
       a.appendChild(dateSpan);
       a.appendChild(catSpan);
       a.appendChild(titleSpan);
@@ -773,6 +655,12 @@
     var toggle = document.getElementById('dyl-mobile-menu-toggle');
     var menu = document.getElementById('dyl-mobile-nav');
     if (!toggle || !menu) return;
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && menu.classList.contains('active')) { toggle.click(); toggle.focus(); }
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 760 && menu.classList.contains('active')) toggle.click();
+    });
     toggle.addEventListener('click', function () {
       var open = menu.classList.toggle('active');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -847,7 +735,7 @@
   function renderGitHubError(message) {
     var container = document.getElementById('github-repos');
     if (!container) return;
-    container.innerHTML = '<div class="repo-card repo-card--error">' + escapeHtml(message) + '</div>';
+    container.innerHTML = '<a class="repo-card repo-card--error" href="https://github.com/DYL521" target="_blank" rel="noopener">' + escapeHtml(message) + ' ↗</a>';
   }
 
   function initGitHubRepos() {
@@ -914,18 +802,20 @@
       'DYL521/DYL521'
     ];
 
-    var userPromise = fetch(USER_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+    var repoController = new AbortController();
+    var repoTimeout = setTimeout(function () { repoController.abort(); }, 10000);
+    var userPromise = fetch(USER_API, { signal: repoController.signal, headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
       if (!res.ok) throw new Error('GitHub user API ' + res.status);
       return res.json();
     });
 
-    var reposPromise = fetch(REPOS_API, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+    var reposPromise = fetch(REPOS_API, { signal: repoController.signal, headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
       if (!res.ok) throw new Error('GitHub repos API ' + res.status);
       return res.json();
     });
 
     var featuredPromises = FEATURED_REPOS.map(function (url) {
-      return fetch(url, { headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
+      return fetch(url, { signal: repoController.signal, headers: { 'Accept': 'application/vnd.github.v3+json' } }).then(function (res) {
         if (!res.ok) throw new Error('GitHub featured repo API ' + res.status);
         return res.json();
       });
@@ -933,6 +823,7 @@
 
     Promise.all([userPromise, reposPromise].concat(featuredPromises))
       .then(function (values) {
+        clearTimeout(repoTimeout);
         var profile = values[0];
         var repos = values[1];
         if (!Array.isArray(repos)) throw new Error('Unexpected response');
@@ -957,6 +848,7 @@
         }
       })
       .catch(function (err) {
+        clearTimeout(repoTimeout);
         if (window.console && console.warn) console.warn('GitHub repos load failed:', err);
         renderGitHubError(getI18nKey('about_repos_error', 'Projects are temporarily unavailable. Visit GitHub instead.'));
       });
@@ -977,10 +869,7 @@
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     syncThemeUI(theme);
-    if (slideData.length) {
-      applySlide(0);
-      bindCarousel();
-    }
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
