@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
+    
+    <link rel="canonical" href="https://dyl521.github.io/page/25/index.html">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=5ab46a9d7ff3">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <main id="main-content"><section class="editorial-hero shell">
+    <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> DYL521 / ENGINEERING LOG</div>
+        <h1><span data-zh="构建系统，" data-en="Build systems.">构建系统，</span><br><em data-zh="理解复杂。" data-en="Understand complexity.">理解复杂。</em></h1>
+        <p class="hero-intro" data-zh="你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。" data-en="I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.">你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。</p>
+        <div class="hero-actions"><a class="btn-primary" href="../../posts/"><span data-zh="阅读文章" data-en="Explore the journal">阅读文章</span><span>↗</span></a><a class="text-link" href="../../pages/dyl521/"><span data-zh="关于我" data-en="About me">关于我</span> ↗</a></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <div class="art-caption">FIG. 001 / COMPLEXITY → STRUCTURE</div>
+        <svg viewBox="0 0 420 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="currentColor" stroke-width=".8">
+                <ellipse cx="210" cy="174" rx="24" ry="145" transform="rotate(-48 210 174)"/><ellipse cx="210" cy="174" rx="31" ry="145" transform="rotate(-43 210 174)"/><ellipse cx="210" cy="174" rx="38" ry="145" transform="rotate(-38 210 174)"/><ellipse cx="210" cy="174" rx="45" ry="145" transform="rotate(-33 210 174)"/><ellipse cx="210" cy="174" rx="52" ry="145" transform="rotate(-28 210 174)"/><ellipse cx="210" cy="174" rx="59" ry="145" transform="rotate(-23 210 174)"/><ellipse cx="210" cy="174" rx="66" ry="145" transform="rotate(-18 210 174)"/><ellipse cx="210" cy="174" rx="73" ry="145" transform="rotate(-13 210 174)"/><ellipse cx="210" cy="174" rx="80" ry="145" transform="rotate(-8 210 174)"/><ellipse cx="210" cy="174" rx="87" ry="145" transform="rotate(-3 210 174)"/><ellipse cx="210" cy="174" rx="94" ry="145" transform="rotate(2 210 174)"/><ellipse cx="210" cy="174" rx="101" ry="145" transform="rotate(7 210 174)"/><ellipse cx="210" cy="174" rx="108" ry="145" transform="rotate(12 210 174)"/><ellipse cx="210" cy="174" rx="115" ry="145" transform="rotate(17 210 174)"/><ellipse cx="210" cy="174" rx="122" ry="145" transform="rotate(22 210 174)"/><ellipse cx="210" cy="174" rx="129" ry="145" transform="rotate(27 210 174)"/><ellipse cx="210" cy="174" rx="136" ry="145" transform="rotate(32 210 174)"/><ellipse cx="210" cy="174" rx="143" ry="145" transform="rotate(37 210 174)"/><ellipse cx="210" cy="174" rx="150" ry="145" transform="rotate(42 210 174)"/>
+                <path d="M25 174H395M210 18V331" stroke-dasharray="3 7" opacity=".35"/>
+            </g>
+            <circle cx="210" cy="174" r="8" fill="currentColor"/>
+            <circle cx="338" cy="83" r="5" fill="var(--bg)" stroke="currentColor" stroke-width="2"/>
+            <path d="M338 83L364 54H401" stroke="currentColor"/>
+            <text x="18" y="341" fill="currentColor" font-size="10" font-family="monospace">THINK → BUILD → REFINE</text>
+            <text x="345" y="341" fill="currentColor" font-size="10" font-family="monospace">∞</text>
+        </svg>
+        <div class="art-foot"><span>持续探索 / ALWAYS CURIOUS</span><span>2020 — 2026</span></div>
+    </div>
+</section>
+<div class="journal-strip shell"><span data-zh="SYSTEM NOTES / 一份持续迭代的工程手记" data-en="An evolving collection of engineering notes">SYSTEM NOTES / 一份持续迭代的工程手记</span><div><span><b>241</b> <span data-zh="篇文章" data-en="ARTICLES">篇文章</span></span><span class="strip-divider">/</span><span>AI · BACKEND · SYSTEMS</span></div></div>
+
+<section class="selected-section shell">
+    <div class="section-heading">
+<div>
+<span class="eyebrow">01 / SELECTED WRITING</span>
+<h2 data-zh="值得展开的思考" data-en="Ideas worth exploring">值得展开的思考</h2>
+</div>
+<a class="text-link" href="../../posts/">
+<span data-zh="全部文章" data-en="All articles">全部文章</span> ↗</a>
+</div>
+    <div class="selected-grid">
+        
+        <a class="story-card" href="../../2026/07/31/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/02.MCP%202026-07-28%E8%A7%84%E8%8C%83%E8%A7%A3%E8%AF%BB/">
+            
+            <div class="story-art" aria-hidden="true">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23bd95f9%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M600%20335L840%20335%22%2F%3E%3Ccircle%20cx%3D%22840%22%20cy%3D%22335%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20479.6388242565855%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22479.6388242565855%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504846%20515.3616637536373%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504846%22%20cy%3D%22515.3616637536373%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.76747170341946%20415.2684917367483%22%2F%3E%3Ccircle%20cx%3D%22383.76747170341946%22%20cy%3D%22415.2684917367483%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.7674717034194%20254.73150826325178%22%2F%3E%3Ccircle%20cx%3D%22383.7674717034194%22%20cy%3D%22254.73150826325178%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504845%20154.63833624636263%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504845%22%20cy%3D%22154.63833624636263%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20190.36117574341446%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22190.36117574341446%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2268%22%20fill%3D%22%23211a2b%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2235%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="" width="640" height="360" loading="lazy" decoding="async">
+            </div>
+            
+            <div class="story-meta">
+<span>
+人工智能
+</span>
+<time datetime="2026-07-31">
+2026.07.31
+</time>
+</div>
+            <h3>
+MCP 2026-07-28 规范解读：从有状态连接走向无状态 Agent 基础设施
+</h3>
+<p data-zh="从连接与状态出发，重新理解 Agent 与工具之间的协作边界。" data-en="Rethinking the boundary between agents and tools, through connections and state.">
+从连接与状态出发，重新理解 Agent 与工具之间的协作边界。
+</p>
+<span class="story-read">
+<span data-zh="阅读笔记" data-en="Read the story">阅读笔记</span>
+<span>↗</span>
+</span>
+        </a>
+
+        <a class="story-card" href="../../2025/10/15/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/enterprise_ai_agent/">
+            
+            <div class="story-art" aria-hidden="true">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23bd95f9%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M600%20335L840%20335%22%2F%3E%3Ccircle%20cx%3D%22840%22%20cy%3D%22335%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20479.6388242565855%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22479.6388242565855%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504846%20515.3616637536373%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504846%22%20cy%3D%22515.3616637536373%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.76747170341946%20415.2684917367483%22%2F%3E%3Ccircle%20cx%3D%22383.76747170341946%22%20cy%3D%22415.2684917367483%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.7674717034194%20254.73150826325178%22%2F%3E%3Ccircle%20cx%3D%22383.7674717034194%22%20cy%3D%22254.73150826325178%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504845%20154.63833624636263%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504845%22%20cy%3D%22154.63833624636263%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20190.36117574341446%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22190.36117574341446%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2268%22%20fill%3D%22%23211a2b%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2235%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="" width="640" height="360" loading="lazy" decoding="async">
+            </div>
+            
+            <div class="story-meta">
+<span>
+人工智能
+</span>
+<time datetime="2025-10-15">
+2025.10.15
+</time>
+</div>
+            <h3>
+企业级 AI Agent 完整架构方案
+</h3>
+<p data-zh="从整体架构到工程实现，拆解企业级 AI Agent 系统的组成与取舍。" data-en="Architecture, implementation, and the trade-offs behind an enterprise AI agent.">
+从整体架构到工程实现，拆解企业级 AI Agent 系统的组成与取舍。
+</p>
+<span class="story-read">
+<span data-zh="阅读笔记" data-en="Read the story">阅读笔记</span>
+<span>↗</span>
+</span>
+        </a>
+
+        <a class="story-card" href="../../2026/09/12/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">
+            
+            <div class="story-art" aria-hidden="true">
+                <img src="/post-images/07.面试题/Golang常见面试题/cover-thumb.webp?v=b42da80ac596" alt="" width="640" height="360" loading="lazy" decoding="async">
+            </div>
+            
+            <div class="story-meta">
+<span>
+面试题
+</span>
+<time datetime="2026-09-12">
+2026.09.12
+</time>
+</div>
+            <h3>
+Go 常见面试题
+</h3>
+<p data-zh="从语言基础到并发运行时，梳理 Channel、GMP 调度、垃圾回收与性能优化。" data-en="From language fundamentals to channels, scheduling, garbage collection, and performance.">
+从语言基础到并发运行时，梳理 Channel、GMP 调度、垃圾回收与性能优化。
+</p>
+<span class="story-read">
+<span data-zh="阅读笔记" data-en="Read the story">阅读笔记</span>
+<span>↗</span>
+</span>
+        </a>
+
+    </div>
+</section>
+<section class="notes-section shell" id="recent">
+    <div class="notes-main">
+<div class="section-heading">
+<div>
+<span class="eyebrow">02 / LATEST NOTES</span>
+<h2 data-zh="最近在写" data-en="Fresh from the notebook">最近在写</h2>
+</div>
+<a class="text-link" href="../../posts/" data-zh="查看全部 ↗" data-en="View all ↗">查看全部 ↗</a>
+</div>
+    <div class="note-list">
+
+<a class="note-row" href="../../2026/09/12/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">
+<time datetime="2026-09-12">
+09.12
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+面试题
+</span>
+<h3>
+Go 常见面试题
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+<a class="note-row" href="../../2026/09/12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/03.%E9%80%9A%E9%81%93-%20channel/">
+<time datetime="2026-09-12">
+09.12
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+Go
+</span>
+<h3>
+通道- Channel
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+<a class="note-row" href="../../2026/09/12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+<time datetime="2026-09-12">
+09.12
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+Go
+</span>
+<h3>
+内存模型
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+<a class="note-row" href="../../2026/09/12/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/02.%E4%B8%8A%E4%B8%8B%E6%96%87%20-%20context/">
+<time datetime="2026-09-12">
+09.12
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+Go
+</span>
+<h3>
+上下文-Context
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+<a class="note-row" href="../../2026/07/31/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/02.MCP%202026-07-28%E8%A7%84%E8%8C%83%E8%A7%A3%E8%AF%BB/">
+<time datetime="2026-07-31">
+07.31
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+人工智能
+</span>
+<h3>
+MCP 2026-07-28 规范解读：从有状态连接走向无状态 Agent 基础设施
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+<a class="note-row" href="../../2026/07/12/github-actions-auto-deploy-test/">
+<time datetime="2026-07-12">
+07.12
+<small>
+2026
+</small>
+</time>
+<div>
+<span class="note-category">
+自动化部署
+</span>
+<h3>
+GitHub Actions 自动部署测试
+</h3>
+</div>
+<span class="note-arrow">↗</span>
+</a>
+
+</div>
+</div>
+    <aside class="now-card">
+<div class="eyebrow">
+<span class="status-dot">
+</span> THE WORKBENCH</div>
+<h2 data-zh="保持好奇，持续构建。" data-en="Stay curious. Keep building.">保持好奇，持续构建。</h2>
+<p data-zh="一些正在探索的方向，也可能是下一篇文章的起点。" data-en="What I'm exploring now. Perhaps the beginning of the next story.">一些正在探索的方向，也可能是下一篇文章的起点。</p>
+<ul>
+
+<li>
+<span>
+LangGraph / StateGraph
+</span>
+<small>
+多步推理 · 状态持久化
+</small>
+</li>
+
+<li>
+<span>
+RAG / 检索增强
+</span>
+<small>
+召回质量决定上限
+</small>
+</li>
+
+<li>
+<span>
+Claude Code · MCP
+</span>
+<small>
+插件与工具链
+</small>
+</li>
+
+<li>
+<span>
+tmux 多 Agent 编排
+</span>
+<small>
+朴素但好用
+</small>
+</li>
+
+</ul>
+<a class="text-link" href="https://github.com/DYL521" target="_blank" rel="noopener">GitHub ↗</a>
+<div class="now-foot">LEARN IN PUBLIC. BUILD WITH CARE.</div>
+</aside>
+</section>
+<section class="topics-section shell">
+<div class="section-heading">
+<div>
+<span class="eyebrow">03 / COLLECTIONS</span>
+<h2 data-zh="沿着主题，继续阅读" data-en="Follow a thread">沿着主题，继续阅读</h2>
+</div>
+<a class="text-link" href="../../categories/" data-zh="全部分类 ↗" data-en="All topics ↗">全部分类 ↗</a>
+</div>
+<div class="topic-grid">
+
+<a class="topic-item" href="../../categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">
+<span class="topic-num">01
+</span>
+<h3>
+人工智能
+</h3>
+<span class="topic-count">
+4 <span data-zh="篇文章" data-en="articles">篇文章</span> ↗</span>
+</a>
+
+<a class="topic-item" href="../../categories/Python/">
+<span class="topic-num">02
+</span>
+<h3>
+Python
+</h3>
+<span class="topic-count">
+65 <span data-zh="篇文章" data-en="articles">篇文章</span> ↗</span>
+</a>
+
+<a class="topic-item" href="../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+<span class="topic-num">03
+</span>
+<h3>
+数据库
+</h3>
+<span class="topic-count">
+40 <span data-zh="篇文章" data-en="articles">篇文章</span> ↗</span>
+</a>
+
+<a class="topic-item" href="../../categories/%E7%AE%97%E6%B3%95/">
+<span class="topic-num">04
+</span>
+<h3>
+算法
+</h3>
+<span class="topic-count">
+26 <span data-zh="篇文章" data-en="articles">篇文章</span> ↗</span>
+</a>
+
+</div>
+</section>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="241" data-site-tags="164" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../search.json" };</script>
+    
+    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+</body>
+</html>
