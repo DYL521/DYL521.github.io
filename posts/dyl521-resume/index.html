@@ -150,7 +150,7 @@
 <h3 id="上海集度汽车有限公司研发效能平台-企业系统集成工程师"><a class="markdownIt-Anchor" href="#上海集度汽车有限公司研发效能平台-企业系统集成工程师"></a> 上海集度汽车有限公司｜研发效能平台 / 企业系统集成工程师</h3>
 <p><strong>2022.01 - 2024.12</strong></p>
 <ul>
-<li>打通 Jira、Jama、Confluence、飞书及反馈、BUG、车辆问题等 10+ 内部系统，基于 ScriptRunner / Groovy 开发 REST Endpoint、Behaviours、Listeners 和自动流转，推动 PMO、研发与供应商协作流程标准化，内部流程<span class="hl-g">自动化率提升约 85%</span>。</li>
+<li>打通 Jira、Jama、Confluence、飞书及反馈、BUG、车辆问题等 10+ 内部系统，基于 ScriptRunner / Groovy 开发 REST Endpoint、Behaviours、Listeners 和自动流转，推动 PMO、研发与供应商协作流程标准化，内部流程<span class="hl-g">自动化率提升约 85%</span>。（Jira 平台建设与工具链集成详见下方代表项目）</li>
 <li>设计 Webhook → MQ 削峰解耦方案，降低 Jira API 直连压力，并提升跨系统事件处理的可扩展性与故障隔离能力。</li>
 <li>主导全公司<strong>域账号与密码平台</strong>建设（入离职、外采账号、权限变更预警、飞书审计日志、MFA），基于 <strong>JWT</strong> 打通 Moka、AD 与人力主数据，覆盖 Web / 飞书 / 移动 / 企业微信多端，并通过 MQ 消费工单消息维护各系统安全组权限；入离职处理由天级缩短至小时级，每年节省许可证预算 <span class="hl-y">200 万元以上</span>。</li>
 <li>优化组织架构同步机制，拆解大事务与无效更新，将同步任务执行时间<span class="hl-g">由平均 15 分钟缩短至 3 分钟以内</span>，大幅降低 AD 服务器负担；排查并修复 AD 密码不同步、跨服务器延时等线上问题，保障系统稳定运行。</li>
@@ -212,6 +212,18 @@
 <li>将 Embedding Provider 抽象为<strong>可插拔</strong>（OpenAI / Azure / Bedrock / HuggingFace / TEI / Vertex AI / Ollama），向量库 pgvector 与 Atlas MongoDB 可切换，模型与模型维度解耦。</li>
 <li>建设多格式文档解析链路（PDF / Word / PPT / Excel / CSV / Markdown），集成 RapidOCR 做 PDF 图片内容抽取。</li>
 <li>全链路异步：asyncpg 连接池 + <strong>有界共享线程池</strong>承接 CPU 密集的文档解析 / embedding，避免阻塞事件循环；pgvector 索引与查询优化保障高并发入库与检索。</li>
+</ul>
+</div>
+<div class="r-card">
+<h3 id="集度汽车-jira-研发管理平台企业级-jira-平台建设与研发工具链集成"><a class="markdownIt-Anchor" href="#集度汽车-jira-研发管理平台企业级-jira-平台建设与研发工具链集成"></a> 集度汽车 Jira 研发管理平台｜企业级 Jira 平台建设与研发工具链集成</h3>
+<p><strong>2022 - 2024｜Jira Server / Data Center / Groovy / ScriptRunner / Jira REST API / Spring Boot / Redis / MQ / Elasticsearch / Webhook</strong></p>
+<ul>
+<li>承担 Jira <strong>系统管理员</strong>职责，负责 Server / Data Center 平台日常运维与版本升级，开展升级方案制定、插件兼容性检查、升级验证与异常处理，协同运维排查平台运行、接口调用与插件故障，保障平台稳定运行。</li>
+<li>对接产品、研发、测试、PMO 等团队梳理需求 / 缺陷 / 审批流程，负责项目创建、自定义字段与字段上下文、界面方案、问题类型、状态、工作流及相关方案配置，兼顾统一标准与项目差异化需求。</li>
+<li>负责用户组、项目角色、权限方案与问题安全配置，设计并实施供应商与合作伙伴<strong>访问控制方案</strong>，规范外部用户访问范围与工单申请流程，满足跨团队协作与数据隔离需求。</li>
+<li>基于 ScriptRunner 开发并维护 <span class="hl-b">100+ Groovy 脚本</span>，实现流程校验、业务自动化与平台功能扩展；封装通用能力减少重复开发，提升 PMO 与项目经理的流程管理效率。</li>
+<li>对接 <strong>MDM 人力主数据</strong>，封装报告人 / 经办人所属部门的查询与赋值能力，并通过 ScriptRunner REST Endpoints 扩展官方 API 未覆盖的业务功能，为内部系统提供标准化、可复用的集成接口。</li>
+<li>打通 Jama / Jira / 飞书工具链，对接反馈、BUG、车辆问题等 <span class="hl-b">10+ 内部系统</span>实现数据同步与流程联动；将 Jira Webhook 事件转发至 MQ 由第三方异步消费，结合 ES 分担查询请求，降低同步耦合与集中请求压力，并支撑研发指标整合与可视化。</li>
 </ul>
 </div>
 <div class="r-card">
@@ -324,6 +336,11 @@
                     
                     
                     <a href="#rag_apiid-based-rag-索引-检索微服务" class="toc-item"> rag_api｜ID-based RAG 索引 / 检索微服务</a>
+                
+                    
+                    
+                    
+                    <a href="#集度汽车-jira-研发管理平台企业级-jira-平台建设与研发工具链集成" class="toc-item"> 集度汽车 Jira 研发管理平台｜企业级 Jira 平台建设与研发工具链集成</a>
                 
                     
                     
