@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
+    
+    <link rel="canonical" href="https://dyl521.github.io/2026/10/15/07.%E9%9D%A2%E8%AF%95%E9%A2%98/1.%20AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>
+        
+            AI 应用开发 / Agent 面试题 - DYL521
+        
+    </title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+        
+            
+            <a href="../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+        
+            
+            <a href="../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+        
+            
+            <a href="../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+        
+            
+            <a href="../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+        
+            
+            <a href="../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+    
+        
+        <a href="../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+    
+        
+        <a href="../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+    
+        
+        <a href="../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+    
+        
+        <a href="../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+    
+        
+        <a href="../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2026</span></div>
+            
+            <h1 class="article-title" data-reveal>AI 应用开发 / Agent 面试题</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">面试题</span>
+                <span>2026-10-15</span>
+                <span>· 126 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 37605 <span data-i18n="post_words_suffix">words</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M600%20335L840%20335%22%2F%3E%3Ccircle%20cx%3D%22840%22%20cy%3D%22335%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20479.6388242565855%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22479.6388242565855%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504846%20515.3616637536373%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504846%22%20cy%3D%22515.3616637536373%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.76747170341946%20415.2684917367483%22%2F%3E%3Ccircle%20cx%3D%22383.76747170341946%22%20cy%3D%22415.2684917367483%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.7674717034194%20254.73150826325178%22%2F%3E%3Ccircle%20cx%3D%22383.7674717034194%22%20cy%3D%22254.73150826325178%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504845%20154.63833624636263%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504845%22%20cy%3D%22154.63833624636263%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20190.36117574341446%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22190.36117574341446%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2268%22%20fill%3D%22%23211a2b%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2235%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="AI 应用开发 / Agent 面试题 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <h1 id="ai-应用开发-agent-面试题"><a class="markdownIt-Anchor" href="#ai-应用开发-agent-面试题"></a> AI 应用开发 / Agent 面试题</h1>
+<blockquote>
+<p>按主题归类，相似问题已合并。括号内为原始题号。答案结合三个真实项目（mate-assist / jarvis-registry / rag_api）作答，并对齐官方知识点。<br />
+答题策略：先讲<strong>官方原理/取舍</strong>，再落到<strong>我项目里怎么做的 + 为什么</strong>，最后点一句<strong>踩坑/效果</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="项目"><a class="markdownIt-Anchor" href="#项目"></a> 项目</h2>
+<h3 id="项目-amate-assist-汽车销售助手后端"><a class="markdownIt-Anchor" href="#项目-amate-assist-汽车销售助手后端"></a> 项目 A：mate-assist —— 汽车销售助手后端</h3>
+<ul>
+<li><strong>定位</strong>：基于 <strong>FastAPI + LangGraph</strong> 的汽车销售助手后端，给一线销售提供「知识问答 + 销售话术 + 图片识车」能力。</li>
+<li><strong>核心流程图（LangGraph 对话主图）</strong>：</li>
+</ul>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TD
+    S([用户请求 /chat]) --> CC[context_control<br/>上下文裁剪 · 滚动摘要]
+    CC --> VP[vision_perceive<br/>识图→结构化事实·接地 last_car]
+    VP --> QR[query_rewrite<br/>指代消解→自包含query]
+    QR --> IC[intent_classify<br/>意图分类 · 回写 last_intent]
+    IC -->|route_by_intent 确定性查表| R{意图路由}
+    R -->|knowledge / sales_support| RT[rag_retrieve<br/>多路召回+rerank]
+    R -->|chat| GEN
+    R -->|discourse| DIS[discourse 话术<br/>槽位填充·缺参interrupt反问] --> E([END])
+    R -->|vision_answer| VA[vision_answer 渲染识图结论] --> E
+    RT -->|route_after_retrieve| RG[rag_grade<br/>相关性打分 CRAG]
+    RT -.直接够用.-> GEN
+    RG -->|relevant| GEN[generate_answer<br/>流式 SSE · 不加retry]
+    RG -->|irrelevant| RW[rag_rewrite<br/>换角度·rewrite_count 上限防死循环]
+    RW --> RT
+    GEN --> ME[memory_extract<br/>后台异步抽取长期记忆]
+    ME --> E
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>四层模块</strong>：<strong>接入层</strong> FastAPI/SSE → <strong>编排层</strong> LangGraph StateGraph（上图节点+条件边）→ <strong>能力层</strong> RAG(Weaviate+reranker)/记忆(checkpointer+MySQL store)/视觉/话术 → <strong>基础设施</strong> MySQL·Redis·COS·OTel·prompt-manager。</li>
+<li><strong>关键设计</strong>：
+<ul>
+<li>State 里 <code>messages</code>（ground truth，<code>add_messages</code> reducer + checkpointer 持久化）和 <code>model_input</code>（本轮喂模型的临时上下文，覆盖语义）<strong>严格分离</strong>，裁剪/摘要/记忆注入只写 <code>model_input</code>，<strong>绝不回写 messages</strong>，防止污染历史。</li>
+<li><code>rewritten_query</code>（给生成/意图用的自包含问题）和 <code>retrieval_query</code>（给检索换角度用的词）<strong>严格隔离</strong>，防止检索截短词污染用户真实问题。</li>
+<li><code>last_intent</code>、<code>last_car</code> 持久化跨轮透传，解决「加个价格 / 换个版本」这类追问被无状态重判带偏。</li>
+<li>节点级 <code>RetryPolicy(max_attempts=3)</code>，只重试瞬时故障（network/5xx/限流），<code>generate_answer</code> 流式节点<strong>不重试</strong>（重试会重复吐字）。</li>
+</ul>
+</li>
+<li><strong>技术栈</strong>：FastAPI、LangGraph（StateGraph + Checkpointer + Store）、MySQL（对话/记忆/checkpoint）、Redis、Weaviate 向量库、独立 reranker 服务、腾讯 COS（图片）、OpenTelemetry。</li>
+<li><strong>提示词运维</strong>：prompt 资产独立放 <code>prompt-manager</code> 仓库，本地热加载、线上按不可变 release tag 加载，和代码解耦；<code>catalog.py</code> 在工作树不干净 / tag 不匹配时<strong>拒绝加载</strong>，测试走 fixture 镜像。</li>
+<li><strong>离线侧</strong>：另有 <strong>Celery + Beat</strong> 跑批（约 1w 顾问、客户画像 + 推荐策略），源表（只读外部库）与结果库<strong>分库</strong>，首次全量 + 后续增量合并（latest-wins）。</li>
+<li><strong>回归体系</strong>：<code>scripts/</code> 下一整套<strong>端到端黑盒回归</strong>（意图延续、长期记忆、合规门禁、视觉、媒体、RAG 等），<code>run_all_regression.py</code> 统一入口接 CI。</li>
+</ul>
+<blockquote>
+<p>面试可量化的亮点：滚动摘要让长对话 <strong>token 成本恒定</strong>；媒体链路优化把一次 <code>/chat</code> 从 <strong>2 分 7 秒</strong>降到正常；离线跑批并发 limit 8→20 让闸门等待 <strong>P50 32.5s→10.5s</strong>。</p>
+</blockquote>
+<h3 id="项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台"><a class="markdownIt-Anchor" href="#项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台"></a> 项目 B：jarvis-registry —— 企业级 MCP Gateway / A2A 编排平台</h3>
+<ul>
+<li><strong>定位</strong>：开源的企业级 <strong>MCP（Model Context Protocol）网关 + A2A（Agent-to-Agent）编排平台</strong>，让任意 AI copilot / 自治 Agent 安全、受治理地访问企业内部工具和数据。</li>
+<li><strong>核心能力</strong>：
+<ul>
+<li><strong>MCP 网关 / 反向代理</strong>：所有 AI 客户端统一经一个认证入口，走 MCP over SSE / Streamable HTTP。</li>
+<li><strong>身份与鉴权</strong>：OAuth 2.0 / OIDC，对接 Keycloak、Cognito、Entra ID，自己不写认证代码。</li>
+<li><strong>细粒度 ACL</strong>：<code>middleware/rbac.py</code> + <code>acl_schema.py</code>，scope / role 权限细到<strong>单个工具级别</strong>。</li>
+<li><strong>语义化工具发现</strong>：<code>services/search</code>（<strong>FAISS</strong> 向量检索）对 skill/描述/tag 做语义搜索，Agent 运行时按需找到对的 MCP server / A2A agent。</li>
+<li><strong>无状态网关</strong>：<code>mcpgw/core/client_info_store.py</code> 用 <strong>Redis</strong> 缓存 client-info，网关做成 stateless，可水平扩容。</li>
+<li><strong>审计与可观测</strong>：全量请求日志、OpenTelemetry tracing、Prometheus metrics。</li>
+<li><strong>Federation + workflow-worker</strong>：多注册中心联邦 + 工作流 executor/scheduler。</li>
+</ul>
+</li>
+<li><strong>一句话价值</strong>：解决企业 AI「工具访问碎片化 + 安全盲区」问题——把鉴权、权限、审计、发现从每个 Agent 里抽出来，下沉到网关。</li>
+<li><strong>核心流程图（MCP 网关 / A2A 编排）</strong>：</li>
+</ul>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TD
+    subgraph CL[AI 客户端 / Agent]
+      A[Cursor · Claude Desktop · Copilot]
+      O[Orchestrator Agent]
+    end
+    A -->|MCP over SSE/HTTP| GW
+    O -->|MCP over SSE/HTTP| GW
+    GW[统一认证入口 / 反向代理] --> AUTH[身份认证<br/>OAuth2·OIDC<br/>Keycloak/Cognito/Entra]
+    AUTH --> ACL[RBAC / ACL<br/>scope·role 细到工具级]
+    ACL --> PROXY[MCP 反向代理<br/>无状态 · Redis client-info 缓存]
+    DISC[语义工具发现<br/>FAISS 向量检索 skill/tag] -.运行时按需定位.-> PROXY
+    PROXY --> M1[MCP Server A]
+    PROXY --> M2[MCP Server B]
+    PROXY --> W[A2A Worker Agent]
+    PROXY --> OBS[审计 & 可观测<br/>全量日志·OTel·Prometheus]
+    FED[Federation 多注册中心联邦] -.-> PROXY
+    WF[workflow-worker<br/>executor · scheduler] -.-> PROXY
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="项目-crag_api-id-based-rag-索引检索微服务"><a class="markdownIt-Anchor" href="#项目-crag_api-id-based-rag-索引检索微服务"></a> 项目 C：rag_api —— ID-based RAG 索引/检索微服务</h3>
+<ul>
+<li><strong>定位</strong>：<strong>LangChain + FastAPI</strong> 的异步、可扩展 RAG 后端，文档按 <code>file_id</code> 组织 embedding，用 <strong>PostgreSQL/pgvector</strong> 做向量库。给 LibreChat 等上层提供「文档入库 / 检索 / 删除」的 RAG 基础能力——是把 <strong>RAG 当独立服务</strong>沉淀，而不是塞在 Agent 里。</li>
+<li><strong>核心能力</strong>：
+<ul>
+<li><strong>文件级（ID-based）索引</strong>：embedding 按 <code>file_id</code> 分组，配合文件元数据做<strong>精准定向检索</strong>（只在指定文件集里检索），天然支持多租户/权限隔离。</li>
+<li><strong>可插拔 embedding</strong>：openai / azure / bedrock / huggingface(sentence-transformers) / TEI / vertexai / ollama 一套配置切换，模型和模型维度解耦。</li>
+<li><strong>可插拔向量库</strong>：默认 pgvector，也支持 Atlas MongoDB 向量检索（cosine + file_id filter）。</li>
+<li><strong>多格式文档解析</strong>：pypdf / unstructured / docx / pptx / xlsx / csv / markdown，PDF 图片走 <strong>RapidOCR</strong> 抽取。</li>
+<li><strong>分块</strong>：<code>langchain_text_splitters</code>，默认 <code>CHUNK_SIZE=1500</code> / <code>CHUNK_OVERLAP=100</code>。</li>
+<li><strong>鉴权</strong>：JWT 验签（假设上游签发），security middleware。</li>
+</ul>
+</li>
+<li><strong>工程亮点</strong>：asyncpg 连接池 + <strong>有界共享线程池</strong>（<code>ThreadPoolExecutor</code>，按 CPU 核数、上限 8）跑 CPU 密集的 embedding/解析，不阻塞事件循环；embedding 路由异步化；pgvector 索引 <code>ensure_vector_indexes</code> + PostgreSQL 查询优化 + 可选 detailed query logging 排查慢查询；支持 PG Unix socket 连接。</li>
+<li><strong>一句话价值</strong>：把「切片/embedding/入库/检索」做成<strong>与业务解耦的通用服务</strong>，上层 Agent 只管调接口；对比 mate-assist 把 RAG 作为图里的子链，这里是<strong>RAG-as-a-Service</strong>。</li>
+<li><strong>核心流程图（入库 + 检索双流程）</strong>：</li>
+</ul>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph ING[入库 POST /documents]
+      U[上传文件 + file_id] --> LD[document_loader<br/>pdf/docx/pptx/xlsx/csv/md<br/>PDF图→RapidOCR]
+      LD --> SP[text_splitter<br/>chunk 1500 / overlap 100]
+      SP --> EM[embedding 可插拔<br/>openai/azure/bedrock/HF/TEI/ollama]
+      EM --> VS[(pgvector / Atlas<br/>按 file_id 分组)]
+    end
+    subgraph QRY[检索 POST /query]
+      Q[query + file_id 范围] --> EQ[embed query]
+      EQ --> SR[向量检索<br/>元数据按 file_id 过滤]
+      VS --> SR
+      SR --> TK[topK chunks → 上层 LLM]
+    end
+    TP[[有界线程池 ThreadPoolExecutor<br/>CPU密集:解析/embedding]] -.run_in_executor.-> LD
+    TP -.-> EM
+    DB[(asyncpg 连接池)] -.异步 I/O.-> VS
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>面试组合拳（三项目各打一个点）：</p>
+<ul>
+<li><strong>mate-assist</strong> 讲「单 Agent 对话系统的<strong>深度</strong>」——RAG 子链/记忆分层/状态图/流式/合规；</li>
+<li><strong>jarvis-registry</strong> 讲「Agent 基础设施的<strong>广度</strong>」——MCP 网关/多 Agent/权限/可观测；</li>
+<li><strong>rag_api</strong> 讲「RAG <strong>工程基建</strong>」——ID-based 索引/pgvector/可插拔 embedding/异步线程池。<br />
+问 RAG 原理用 mate-assist 的检索-精排-grade 子链答效果，问 RAG 工程/选型用 rag_api 答基建。</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="目录"><a class="markdownIt-Anchor" href="#目录"></a> 目录</h2>
+<ol>
+<li><a href="#%E4%B8%80%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%E4%B8%8E%E8%BD%AF%E6%8A%80%E8%83%BD">项目介绍与软技能</a></li>
+<li><a href="#%E4%BA%8Cagent-%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%A8%A1%E5%BC%8F%E9%80%89%E5%9E%8B">Agent 架构与模式选型</a></li>
+<li><a href="#%E4%B8%89%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%E4%B8%8E%E8%B7%AF%E7%94%B1">意图识别与路由</a></li>
+<li><a href="#%E5%9B%9Brag-%E5%85%A8%E9%93%BE%E8%B7%AF%E4%B8%8E%E6%A3%80%E7%B4%A2">RAG 全链路与检索</a></li>
+<li><a href="#%E4%BA%94%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8function-calling--mcp--skill">工具调用：Function Calling / MCP / Skill</a></li>
+<li><a href="#%E5%85%ADagent-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BC%82%E5%B8%B8%E6%AD%BB%E5%BE%AA%E7%8E%AF%E5%AE%B9%E9%94%99">Agent 稳定性：异常、死循环、容错</a></li>
+<li><a href="#%E4%B8%83%E8%AE%B0%E5%BF%86%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86">记忆与上下文管理</a></li>
+<li><a href="#%E5%85%AB%E5%A4%9A-agent-%E5%8D%8F%E4%BD%9C">多 Agent 协作</a></li>
+<li><a href="#%E4%B9%9D%E6%A1%86%E6%9E%B6langgraph--langchain--agentscope">框架：LangGraph / LangChain / AgentScope</a></li>
+<li><a href="#%E5%8D%81%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E8%B0%83%E5%8F%82%E4%B8%8E%E5%BE%AE%E8%B0%83">模型原理、调参与微调</a></li>
+<li><a href="#%E5%8D%81%E4%B8%80%E6%B5%81%E5%BC%8F%E8%BE%93%E5%87%BA-sse">流式输出 SSE</a></li>
+<li><a href="#%E5%8D%81%E4%BA%8C%E5%B7%A5%E7%A8%8B%E6%9E%B6%E6%9E%84%E5%BC%82%E6%AD%A5redismysql%E5%8F%AF%E8%A7%82%E6%B5%8B">工程架构：异步、Redis、MySQL、可观测</a></li>
+<li><a href="#%E5%8D%81%E4%B8%89%E8%AF%84%E6%B5%8B%E4%B8%8E-bad-case-%E9%97%AD%E7%8E%AF">评测与 Bad Case 闭环</a></li>
+<li><a href="#%E5%8D%81%E5%9B%9B%E6%88%90%E6%9C%AC%E6%8E%A7%E5%88%B6">成本控制</a></li>
+<li><a href="#%E5%8D%81%E4%BA%94%E5%90%88%E8%A7%84%E4%B8%8E%E5%AE%89%E5%85%A8b-%E7%AB%AF%E9%87%8D%E7%82%B9">合规与安全（B 端重点）</a></li>
+<li><a href="#%E5%8D%81%E5%85%AD%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%8E%A8%E7%90%86%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E5%85%9C%E5%BA%95">模型与推理基础（原理兜底）</a></li>
+<li><a href="#%E5%8D%81%E4%B8%83prompt-%E5%B7%A5%E7%A8%8B%E4%B8%8E%E9%AB%98%E7%BA%A7-rag-%E8%8C%83%E5%BC%8F">Prompt 工程与高级 RAG 范式</a></li>
+<li><a href="#%E5%8D%81%E5%85%AB%E6%89%8B%E6%92%95--%E7%8E%B0%E5%9C%BA%E7%BC%96%E7%A0%81%E9%AB%98%E9%A2%91%E9%A2%98">手撕 / 现场编码高频题</a></li>
+<li><a href="#%E5%8D%81%E4%B9%9D%E9%83%A8%E7%BD%B2%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8Fsre-%E8%A7%86%E8%A7%92">部署与分布式（SRE 视角）</a></li>
+<li><a href="#%E4%BA%8C%E5%8D%81%E6%95%B0%E5%AD%97%E5%87%86%E5%A4%87%E6%B8%85%E5%8D%95%E9%9D%A2%E5%89%8D%E5%A1%AB%E5%A5%BD%E8%83%8C%E7%86%9F">数字准备清单</a></li>
+<li><a href="#%E4%BA%8C%E5%8D%81%E4%B8%802-%E5%88%86%E9%92%9F%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D--%E9%A1%B9%E7%9B%AE-star-%E8%AF%9D%E6%9C%AF">自我介绍 + 项目 STAR 话术</a></li>
+<li><a href="#%E4%BA%8C%E5%8D%81%E4%BA%8C%E5%8F%8D%E9%97%AE%E9%9D%A2%E8%AF%95%E5%AE%98%E7%9A%84%E5%A5%BD%E9%97%AE%E9%A2%98%E6%94%B6%E5%B0%BE%E5%8A%A0%E5%88%86">反问面试官的好问题</a></li>
+</ol>
+<hr />
+<h2 id="一-项目介绍与软技能"><a class="markdownIt-Anchor" href="#一-项目介绍与软技能"></a> 一、项目介绍与软技能</h2>
+<h3 id="1-讲一个最熟悉最复杂的-agent-生产项目架构分几层1-15-28-47-60-72"><a class="markdownIt-Anchor" href="#1-讲一个最熟悉最复杂的-agent-生产项目架构分几层1-15-28-47-60-72"></a> 1. 讲一个最熟悉/最复杂的 Agent 生产项目，架构分几层？（1 / 15 / 28 / 47 / 60 / 72）</h3>
+<ul>
+<li><strong>答题框架（四层）</strong>：
+<ol>
+<li><strong>接入层</strong>：FastAPI，SSE 流式接口，鉴权、限流、请求追踪。</li>
+<li><strong>编排层</strong>：LangGraph StateGraph，节点化编排（context_control / intent / rag / generate / memory），条件边路由。</li>
+<li><strong>能力层</strong>：RAG 检索（Weaviate + reranker）、工具调用、记忆（短期 checkpointer + 长期 MySQL store）、视觉识车。</li>
+<li><strong>基础设施</strong>：MySQL（对话/记忆/checkpoint）、Redis（会话/缓存/限流）、COS（图片）、OpenTelemetry（链路追踪）、prompt-manager（提示词版本化）。</li>
+</ol>
+</li>
+<li><strong>讲清调用量/延迟/成本</strong>：准备好数字——QPS、P95 延迟（流式首 token 时延 TTFT 单独说）、单次会话 token 成本、RAG 召回+rerank 耗时占比。</li>
+<li><strong>踩坑点各备 1~2 个</strong>：如 messages 被摘要污染导致答非所问、意图无状态重判导致追问跑偏、流式节点加重试导致重复吐字。</li>
+</ul>
+<h3 id="2-ragagent-项目的业务痛点是什么1"><a class="markdownIt-Anchor" href="#2-ragagent-项目的业务痛点是什么1"></a> 2. RAG/Agent 项目的业务痛点是什么？（1）</h3>
+<ul>
+<li>mate-assist：销售面对<strong>几千条车型知识 + 话术</strong>，人工记不住、新车上市知识更新快；痛点是<strong>准确率</strong>（答错影响成单）和<strong>时效</strong>（知识随 release 更新）→ 用 RAG 把知识和模型解耦，prompt/知识独立版本化。</li>
+<li>jarvis-registry：企业接入 AI 时<strong>每个 Agent 各自对接内部工具</strong>，重复造鉴权、权限、审计，且有安全盲区；痛点是<strong>治理与安全</strong>→ 用统一 MCP 网关收口。</li>
+</ul>
+<h3 id="3-讲清一个最复杂的-ai-工作流输入推理工具记忆输出回写65"><a class="markdownIt-Anchor" href="#3-讲清一个最复杂的-ai-工作流输入推理工具记忆输出回写65"></a> 3. 讲清一个最复杂的 AI 工作流（输入→推理→工具→记忆→输出→回写）（65）</h3>
+<ul>
+<li>用 mate-assist 的「带图追问」链路举例：输入（图片+问题）→ vision_perceive 识车写 <code>last_car</code> → query_rewrite 指代消解 → intent 分类 → RAG 检索接地 → generate 流式输出 → memory_extract 抽取用户偏好回写长期记忆 + context_summary 回写会话表。强调<strong>每一步读什么写什么、哪些持久化</strong>。</li>
+</ul>
+<h3 id="4-需求排期模型同学和工程同学怎么协同40"><a class="markdownIt-Anchor" href="#4-需求排期模型同学和工程同学怎么协同40"></a> 4. 需求/排期/模型同学和工程同学怎么协同？（40）</h3>
+<ul>
+<li>要点：需求先对齐<strong>评测标准</strong>（什么叫答对）再开工；模型同学管 prompt/召回效果、工程同学管链路/稳定性/可观测；用<strong>评测集 + Bad Case 看板</strong>做共同语言，避免「我觉得好了」的扯皮；prompt 用独立仓库版本化，模型同学可独立迭代不发版。</li>
+</ul>
+<h3 id="5-用-codexclaude-code-把模糊需求写成-spec79"><a class="markdownIt-Anchor" href="#5-用-codexclaude-code-把模糊需求写成-spec79"></a> 5. 用 codex/claude code 把模糊需求写成 Spec？（79）</h3>
+<ul>
+<li>要点：先把模糊需求拆成<strong>可验收的输入/输出样例</strong>（给几个 Bad Case 当测试）；明确<strong>边界与非目标</strong>；让编码 Agent 先产出方案再写码（plan-then-code）；关键逻辑要求留<strong>可运行的自测</strong>。对齐「需求 = 可执行的验收用例」。</li>
+</ul>
+<h2 id="二-agent-架构与模式选型"><a class="markdownIt-Anchor" href="#二-agent-架构与模式选型"></a> 二、Agent 架构与模式选型</h2>
+<h3 id="1-react-和-plan-and-execute-replan-的区别-场景-选型2"><a class="markdownIt-Anchor" href="#1-react-和-plan-and-execute-replan-的区别-场景-选型2"></a> 1. ReAct 和 Plan-and-Execute-Replan 的区别、场景、选型？（2）</h3>
+<ul>
+<li><strong>ReAct</strong>：Reason→Act→Observe 循环，每步看结果再决定下一步。优点灵活、适合<strong>不确定步数/探索型</strong>任务；缺点步数发散、token 高、易绕圈。</li>
+<li><strong>Plan-and-Execute</strong>：先出完整计划再逐步执行，Replan 在偏离时重规划。优点可控、可并行、成本低；缺点计划僵化，环境突变要靠 replan 补救。</li>
+<li><strong>选型</strong>：步骤可预判、追求稳定/低成本 → Plan-and-Execute 或干脆固定 workflow；步骤高度动态、需要试探 → ReAct。</li>
+<li><strong>结合项目</strong>：mate-assist 对话链路<strong>可预判</strong>（意图→检索→生成），所以用<strong>确定性 LangGraph 图 + 条件边</strong>而非自由 ReAct，只在 RAG 子链留了「grade 不相关→重写重检索」的有界循环。这就是「能用 workflow 不用自由 Agent」。</li>
+</ul>
+<h3 id="2-ai-工作流和纯-agent-自主规划的区别什么时候不该上-agent23-71"><a class="markdownIt-Anchor" href="#2-ai-工作流和纯-agent-自主规划的区别什么时候不该上-agent23-71"></a> 2. AI 工作流和纯 Agent 自主规划的区别？什么时候不该上 Agent？（23 / 71）</h3>
+<ul>
+<li><strong>Workflow</strong>：开发者预先编排好节点和路由，确定性高、可测、可观测、成本可控。</li>
+<li><strong>纯 Agent</strong>：模型自己规划步骤和工具，灵活但不可控、难测、成本高。</li>
+<li><strong>不该上 Agent 的场景</strong>：流程固定、强合规、低延迟要求、错一步代价大的场景——这时用 workflow + 规则。</li>
+<li><strong>结合项目</strong>：mate-assist 绝大部分是 workflow，只有局部（RAG 换角度重检索）给了有限自主。「自主程度只在真正需要的地方给」。</li>
+</ul>
+<h3 id="3-workflow-graph-loop-的区别59"><a class="markdownIt-Anchor" href="#3-workflow-graph-loop-的区别59"></a> 3. Workflow、Graph、Loop 的区别？（59）</h3>
+<ul>
+<li>Workflow = 线性/DAG 的确定性流程；Graph = 带条件分支和回边的状态图（LangGraph）；Loop = Agent 自我循环调工具直到满足条件。Loop 最灵活也最危险（死循环）。mate-assist 用 Graph，循环只在 RAG 子链且带 <code>rewrite_count</code> 上限。</li>
+</ul>
+<h3 id="4-agentic-rag-和普通-rag-的区别什么时候让-agent-再检索76"><a class="markdownIt-Anchor" href="#4-agentic-rag-和普通-rag-的区别什么时候让-agent-再检索76"></a> 4. Agentic RAG 和普通 RAG 的区别？什么时候让 Agent 再检索？（76）</h3>
+<ul>
+<li><strong>普通 RAG</strong>：一次检索→塞上下文→生成，固定单跳。</li>
+<li><strong>Agentic RAG</strong>：Agent 自己判断要不要检索、检索几次、换什么词、够不够再补一次（多跳/自省）。</li>
+<li><strong>何时再检索</strong>：召回相关性不足、问题需要多跳、答案要跨多个文档聚合时。</li>
+<li><strong>结合项目</strong>：mate-assist 的 <code>rag_grade</code> 给召回打相关性分，不相关就 <code>rag_rewrite</code> 换角度重检索——这就是轻量版 <strong>CRAG（Corrective RAG）</strong>，但用 <code>rewrite_count</code> 卡死循环。</li>
+</ul>
+<h3 id="5-复杂问题路由何时直接-llm-rag-图数据库-多子-agent61"><a class="markdownIt-Anchor" href="#5-复杂问题路由何时直接-llm-rag-图数据库-多子-agent61"></a> 5. 复杂问题路由：何时直接 LLM / RAG / 图数据库 / 多子 Agent？（61）</h3>
+<ul>
+<li>要点：<strong>闲聊/通用常识</strong> → 直接 LLM；<strong>企业私有知识</strong> → RAG；<strong>强关系/多跳推理（谁的上级是谁）</strong> → 图数据库；<strong>需要多技能协作/工具编排</strong> → 多子 Agent。</li>
+<li>结合项目：mate-assist 的 <code>route_by_intent</code> 是<strong>确定性查表</strong>（intent→node），不是让模型自由决定，保证路由可测可控。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：单意图 → 多意图编排</strong>。真实用户常一句话多意图：「梦想家和问界 M9 怎么比？再给几张对比图，顺便写段话术」。单标签分类器 + 单分支路由表达不了。我们的演进结论是把它拆成<strong>可执行任务图</strong>：有依赖的任务串行（先识别车型→再生成话术）、互不相关的并行（对比图 ∥ 话术）。关键认知是：这不是「分类器多输出几个标签」那么简单，而是编排层要支持 DAG 式的任务分解与汇总。</p>
+</blockquote>
+<h2 id="三-意图识别与路由"><a class="markdownIt-Anchor" href="#三-意图识别与路由"></a> 三、意图识别与路由</h2>
+<h3 id="1-意图识别怎么落地规则分类模型llm-路由怎么配合如何避免误判进错工具错-rag16-48"><a class="markdownIt-Anchor" href="#1-意图识别怎么落地规则分类模型llm-路由怎么配合如何避免误判进错工具错-rag16-48"></a> 1. 意图识别怎么落地？规则/分类模型/LLM 路由怎么配合？如何避免误判进错工具/错 RAG？（16 / 48）</h3>
+<ul>
+<li><strong>三层配合</strong>：高频固定句式用<strong>规则/关键词</strong>（快、准、零成本）兜底；中间用<strong>轻量分类模型</strong>；复杂/长尾用 <strong>LLM 路由</strong>。三者按「便宜的先拦」排。</li>
+<li><strong>避免误判</strong>：
+<ul>
+<li>路由做成<strong>确定性查表</strong>（intent→node），不让模型直接决定走哪，降低发散。</li>
+<li>喂<strong>上一轮意图 <code>last_intent</code></strong> 给分类器，让「加价格/加版本」这类追问沿用上轮意图，不被无状态重判带偏。</li>
+<li>低置信度时<strong>反问澄清</strong>而不是硬路由。</li>
+</ul>
+</li>
+<li><strong>结合项目</strong>：mate-assist 的 <code>intent_classify_node</code> + <code>route_by_intent</code>，意图分 knowledge/sales_support/chat/discourse/vision_answer，<code>last_intent</code> 持久化回写。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战 Bad Case（意图延续）</strong>：知识类线程里用户逐轮精修——「加版本」「加价格」「去掉续航列」「那快充呢」——从第 2 轮起意图被<strong>无状态重判带偏</strong>：要么掉到闲聊返回空洞应答「好嘞这就给您加上😉」，要么掉到话术链路反问「您想要哪个场景的话术？」（场景陷阱）。修复 = <code>intent_classify</code> prompt 加「知识类多轮延续」规则 + State 持久化 <code>last_intent</code> 每轮喂回分类器。黑盒难直接读 intent，用服务日志 <code>event_code=intent_classified</code>（含 intent/last_intent）拿 ground-truth，这条已固化成 <code>6_intent_continuity_regression_test.py</code> 防回退。</p>
+</blockquote>
+<h3 id="2-意图识别错了怎么发现-怎么兜底17"><a class="markdownIt-Anchor" href="#2-意图识别错了怎么发现-怎么兜底17"></a> 2. 意图识别错了怎么发现、怎么兜底？（17）</h3>
+<ul>
+<li><strong>发现</strong>：线上埋点监控「路由后空召回率 / 用户追问&amp;重问率 / 负反馈」；评测集覆盖易混意图。</li>
+<li><strong>兜底</strong>：低置信度反问澄清；路由后若该分支明显无结果（如 RAG 空召回）<strong>回退</strong>到 chat 模板说明「没找到」而不是硬编；保留人工纠偏。</li>
+<li>结合项目：mate-assist 对「明确要图/视频但空召回」会保留 <code>requested_media_types</code>，用 RAG 接地模板说「暂未找到」，不掉到无知识 chat 模板。</li>
+</ul>
+<h3 id="3-长对话里意图漂移怎么拉回35"><a class="markdownIt-Anchor" href="#3-长对话里意图漂移怎么拉回35"></a> 3. 长对话里意图漂移怎么拉回？（35）</h3>
+<ul>
+<li>用<strong>状态 + 记忆</strong>：持久化 <code>last_intent</code> / <code>last_car</code> / <code>focus_car</code>，每轮喂回；滚动摘要保留话题主线；指代消解把「它/这个」接地到当前焦点。mate-assist 三者都做了。</li>
+</ul>
+<h3 id="4-意图识别路由做成平台能力怎么给多业务用45"><a class="markdownIt-Anchor" href="#4-意图识别路由做成平台能力怎么给多业务用45"></a> 4. 意图识别+路由做成平台能力怎么给多业务用？（45）</h3>
+<ul>
+<li>要点：把意图 schema、路由表、prompt 做成<strong>可配置</strong>（不同业务不同意图集和分支）；统一 SDK/网关接入；各业务独立评测集。对应 jarvis-registry 的「网关收口 + 按业务隔离」思路。</li>
+</ul>
+<h3 id="5-case帮我退昨天买的充电宝agent-查天气怎么修27"><a class="markdownIt-Anchor" href="#5-case帮我退昨天买的充电宝agent-查天气怎么修27"></a> 5. 【Case】&quot;帮我退昨天买的充电宝&quot;→Agent 查天气，怎么修？（27）</h3>
+<ul>
+<li>排查顺序：① 意图分类错了？（退货→查天气，分类严重跑偏）② 路由表配错？③ 工具描述歧义导致选错工具？</li>
+<li>修法：先看意图置信度和分类输入（是否被历史污染）；补该类 Bad Case 进评测集；加规则兜底高频「退货/退款」关键词；工具/意图描述去歧义；低置信反问。<strong>根因通常在意图层</strong>，别只在工具层打补丁。</li>
+</ul>
+<h2 id="四-rag-全链路与检索"><a class="markdownIt-Anchor" href="#四-rag-全链路与检索"></a> 四、RAG 全链路与检索</h2>
+<h3 id="1-rag-全链路入库-清洗-分块-多模态解析-为什么选-weaviate4"><a class="markdownIt-Anchor" href="#1-rag-全链路入库-清洗-分块-多模态解析-为什么选-weaviate4"></a> 1. RAG 全链路：入库、清洗、分块、多模态解析、为什么选 Weaviate？（4）</h3>
+<ul>
+<li><strong>全链路</strong>：采集 → 清洗（去噪/去重/规范化）→ 分块（按语义/标题结构，带 overlap）→ embedding → 入向量库 → 检索 → rerank → 进上下文 → 生成。</li>
+<li><strong>多模态</strong>：PDF 用版面解析，表格转结构化（Markdown/行列保序），图片走 OCR/视觉模型抽描述再 embedding；mate-assist 单独有<strong>视觉识车链路</strong>（vision_perceive）。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：多模态「感知-接地-行动」三段解耦</strong>。被识别的实体（车型）藏在<strong>像素</strong>里，下游专业链（话术/RAG）是<strong>文本+槽位</strong>驱动的。错误做法是让「一次视觉调用」既看图又当生成器——<strong>破坏概念完整性、无法组合</strong>。正确做法三段解耦：① Perception 视觉步骤只输出<strong>结构化事实</strong>（非自由文本）；② Grounding 把事实写进<strong>持久化槽位/焦点实体</strong>（<code>last_car</code>，且 confidence≥medium + 过受控车型库校验才写）；③ Routing→Action 正常按「模态+任务」派给专家，各专家消费同一接地槽位。核心一句：<strong>&quot;分开处理&quot;的是感知，不是任务执行</strong>——感知是喂给共享管线的预处理，不是死胡同分支。</p>
+</blockquote>
+<ul>
+<li><strong>为什么 Weaviate</strong>：支持向量+关键词<strong>混合检索</strong>、带元数据过滤、schema 化、易水平扩展、生态成熟。按「团队熟悉度 + 混合检索 + 过滤能力」选型，不是唯一答案。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：向量库选型 pgvector vs 专用向量库</strong>。rag_api 用的是 <strong>PostgreSQL/pgvector</strong>。取舍：pgvector 的最大优势是<strong>和业务数据同库</strong>——向量、文件元数据、权限在一个事务里，省一套中间件、运维简单、支持 SQL 元数据过滤；代价是<strong>超大规模（亿级向量）性能和索引能力不如专用库</strong>（Weaviate/Milvus）。所以：<strong>中小规模 + 强元数据过滤 + 想少运维</strong> → pgvector；<strong>超大规模 + 极致召回性能</strong> → 专用向量库。rag_api 还抽象了 <code>VECTOR_DB_TYPE</code>，pgvector 和 Atlas MongoDB 可切换，说明向量库应该是<strong>可插拔</strong>的。</p>
+<p>📌 <strong>实战：ID-based（文件级）RAG</strong>。rag_api 的 embedding 按 <code>file_id</code> 分组，检索时按文件元数据<strong>圈定范围再检索</strong>——好处是多租户/权限隔离天然（只检索你有权限的文件）、删除/更新以文件为单位干净利落（删文件就删它的所有 chunk）。这是 B 端知识库很实用的设计：知识更新频繁时按文件增量重建，不用全库重算。</p>
+</blockquote>
+<h3 id="2-多路召回怎么搭向量bm25知识图谱元数据过滤各负责什么怎么融合进-rerank3-51"><a class="markdownIt-Anchor" href="#2-多路召回怎么搭向量bm25知识图谱元数据过滤各负责什么怎么融合进-rerank3-51"></a> 2. 多路召回怎么搭？向量/BM25/知识图谱/元数据过滤各负责什么？怎么融合进 Rerank？（3 / 51）</h3>
+<ul>
+<li><strong>各自分工</strong>：向量召回管<strong>语义</strong>（同义/改写/口语）；BM25/关键词管<strong>精确术语/型号/编号/低频词</strong>（向量恰恰弱在字面精确）；知识图谱管<strong>关系/多跳</strong>；元数据过滤管<strong>权限/品牌/时间等硬条件</strong>（先过滤再检索，省算力也防串权限）。</li>
+<li><strong>为什么要混合（hybrid search）</strong>：稠密向量会漏「字面精确但语义平平」的词（车架号、配置代号），稀疏 BM25 会漏「换了说法」的——两者互补。</li>
+<li><strong>融合方法</strong>：
+<ul>
+<li><strong>RRF（Reciprocal Rank Fusion）</strong>：<code>score(d)=Σ 1/(k+rank_i(d))</code>，k 常取 60，<strong>只用排名不用原始分</strong>，天然免去「余弦分和 BM25 分不可比」的归一化难题，社区默认首选（ES/Weaviate 内置）。</li>
+<li><strong>加权分数融合</strong>：各路分数先归一化（min-max / z-score）再加权，可调权重但要调参、易被异常分带偏。</li>
+</ul>
+</li>
+<li><strong>查询侧增强（社区）</strong>：<strong>HyDE</strong>（先让 LLM 生成假设答案再拿它检索，缓解 query 与 doc 不同构）、<strong>multi-query / query expansion</strong>（一问改写成多条并路召回）、<strong>step-back prompting</strong>（先退一步问更抽象的问题）。</li>
+<li><strong>结合项目</strong>：mate-assist 关键词+向量多路召回、分数融合后过独立 reranker 服务；<code>query_rewrite</code> 节点做的指代消解本质就是<strong>检索前 query 增强</strong>——把「它续航多少」接地成「泰山续航多少」再召回。</li>
+</ul>
+<h3 id="3-rerank-的作用rerank-模型-vs-向量库各解决什么放哪个阶段3-77"><a class="markdownIt-Anchor" href="#3-rerank-的作用rerank-模型-vs-向量库各解决什么放哪个阶段3-77"></a> 3. Rerank 的作用？rerank 模型 vs 向量库各解决什么？放哪个阶段？（3 / 77）</h3>
+<ul>
+<li><strong>向量库（召回/recall 阶段）</strong>：bi-encoder，快、粗，负责「别漏」，从全库捞回候选。</li>
+<li><strong>Rerank（精排阶段）</strong>：cross-encoder，query 和 doc 一起进模型算相关性，准、慢，负责「排对」，对召回的几十条做精排。</li>
+<li><strong>位置</strong>：召回之后、进 LLM 之前。先召回缩小候选，再 rerank 精排，兼顾速度和精度。</li>
+</ul>
+<h3 id="4-reranker-为什么不能全库跑cross-vs-bi-encoder没-gpu-怎么办52"><a class="markdownIt-Anchor" href="#4-reranker-为什么不能全库跑cross-vs-bi-encoder没-gpu-怎么办52"></a> 4. Reranker 为什么不能全库跑？cross vs bi-encoder？没 GPU 怎么办？（52）</h3>
+<ul>
+<li><strong>不能全库跑</strong>：cross-encoder 把 query 和 doc <strong>拼在一起过一次模型</strong>算相关性，每对一次前向，全库 O(N) 太慢太贵，所以只对召回的候选集（几十~几百条）精排。</li>
+<li><strong>三种结构（能分清加分）</strong>：
+<ul>
+<li><strong>bi-encoder</strong>：query/doc 各自独立编码成向量，可离线预计算、检索快、精度一般——<strong>召回</strong>用。</li>
+<li><strong>cross-encoder</strong>：query+doc 联合编码、交互充分、精度高但不可预计算——<strong>精排</strong>用。</li>
+<li><strong>late interaction（ColBERT）</strong>：token 级向量 + MaxSim，兼顾精度与可预计算，适合大规模精排。</li>
+</ul>
+</li>
+<li><strong>具体模型</strong>：开源 <strong>bge-reranker-v2-m3</strong>、<strong>Jina reranker</strong>；云服务 <strong>Cohere Rerank</strong>。向量侧 embedding 常用 bge-m3 / text-embedding-3 / Jina。</li>
+<li><strong>没 GPU</strong>：用 <strong>RRF</strong> 纯排名融合（零模型）做轻量重排；或小 CPU 友好 rerank 模型 + 限候选数；或把 rerank 做成独立服务按需扩容——mate-assist 就是<strong>独立 reranker 服务</strong>，和主链路解耦，可单独上 GPU/扩缩容。</li>
+</ul>
+<h3 id="5-chunk-size-overlap-embedding-rerank-怎么调优先级36"><a class="markdownIt-Anchor" href="#5-chunk-size-overlap-embedding-rerank-怎么调优先级36"></a> 5. chunk size、overlap、embedding、rerank 怎么调？优先级？（36）</h3>
+<ul>
+<li>优先级一般：<strong>先切片（chunk/overlap）→ 再 embedding 模型 → 再召回策略 → 最后 rerank</strong>，因为切片错了后面全废。</li>
+<li>chunk 太大噪声多、太小丢上下文；overlap 防切断语义；embedding 选领域匹配的；rerank 调 topN。调参要<strong>以评测集驱动</strong>，别凭感觉。</li>
+<li><strong>进阶切分策略（社区）</strong>：① <strong>语义切分</strong>（按句向量相似度断句，而非固定长度）；② <strong>父子 / small-to-big</strong>（parent-document retriever：用小块保召回精度，命中后返回所在大块给 LLM 保上下文完整）；③ <strong>按结构切</strong>（Markdown 标题层级、表格行列保序，技术文档尤其重要）；④ <strong>late chunking</strong>（先整文过长上下文 embedding 再切，保留跨块语义）。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：embedding 要做成可插拔 + 注意维度耦合</strong>。rag_api 把 embedding provider 抽象成配置（openai/azure/bedrock/huggingface/TEI/vertexai/ollama 一键切），默认 <code>text-embedding-3-small</code>。两个坑：① <strong>换 embedding 模型 = 向量维度变 = 全库要重建索引</strong>（1536 维 ↔ 其它维不兼容），不能热切；② 本地/私有部署用 HuggingFace sentence-transformers 或 TEI 省钱、数据不出境，B 端常用。chunk 默认 <code>1500/overlap 100</code> 是通用起点，领域文档要按评测集再调。</p>
+</blockquote>
+<h3 id="6-rag-接在项目哪里检索结果怎么进-agent-上下文18"><a class="markdownIt-Anchor" href="#6-rag-接在项目哪里检索结果怎么进-agent-上下文18"></a> 6. RAG 接在项目哪里？检索结果怎么进 Agent 上下文？（18）</h3>
+<ul>
+<li>mate-assist：RAG 是图里的<strong>子链</strong>（rag_retrieve→grade→generate），检索结果写进 State 的 <code>retrieved_records</code>，generate 节点用<strong>RAG 接地模板</strong>把它拼进 <code>model_input</code>（注意：只进 model_input，不进 messages 历史）。</li>
+</ul>
+<h3 id="7-rag-召回质量差先查召回重排切片prompt19"><a class="markdownIt-Anchor" href="#7-rag-召回质量差先查召回重排切片prompt19"></a> 7. RAG 召回质量差，先查召回/重排/切片/prompt？（19）</h3>
+<ul>
+<li>排查顺序：① 先看<strong>召回</strong>（相关 doc 到底在不在 topK 里）——不在就是切片/embedding/召回策略问题；② 在但排序靠后 → <strong>rerank</strong>；③ doc 对但答错 → <strong>prompt/生成</strong>。「先定位在召回还是生成」，别一上来改 prompt。</li>
+</ul>
+<h3 id="8-幻觉的原因rag-怎么缓解召回对了模型仍编造怎么办12"><a class="markdownIt-Anchor" href="#8-幻觉的原因rag-怎么缓解召回对了模型仍编造怎么办12"></a> 8. 幻觉的原因？RAG 怎么缓解？召回对了模型仍编造怎么办？（12）</h3>
+<ul>
+<li><strong>原因</strong>：训练数据缺失/过时、模型过度自信补全、上下文不足。</li>
+<li><strong>RAG 缓解</strong>：用检索到的事实接地 + prompt 要求「只依据给定资料回答」。</li>
+<li><strong>召回对仍编造</strong>：① prompt 强约束 + 要求<strong>引用来源/片段</strong>（带 citation 可追溯）；② 降 temperature；③ 加<strong>答案核查</strong>（生成后校验每句是否出自召回）；④ 召回不足就明确说「不知道」而非编。</li>
+<li><strong>社区方法 / 幻觉检测</strong>：<strong>RAG Triad</strong>（TruLens 的三相关性——context relevance 召回相不相关、groundedness 答案是否出自召回、answer relevance 答案切不切题）；<strong>RAGAS</strong> 的 faithfulness（忠实度）/ answer relevancy 量化幻觉；<strong>SelfCheckGPT</strong>（多次采样看是否自洽）做无参考检测；<strong>Self-RAG / CRAG</strong>（模型自判要不要检索、召回够不够、要不要纠偏）。</li>
+<li><strong>结合项目</strong>：mate-assist 的 <code>rag_grade</code> 就是 groundedness 思想的工程落地——召回不相关宁可 <code>rag_rewrite</code> 重检索/兜底也不硬生成。</li>
+</ul>
+<h2 id="五-工具调用function-calling-mcp-skill"><a class="markdownIt-Anchor" href="#五-工具调用function-calling-mcp-skill"></a> 五、工具调用：Function Calling / MCP / Skill</h2>
+<h3 id="1-function-calling-原理mcp-是什么mcp-和-skill-区别6"><a class="markdownIt-Anchor" href="#1-function-calling-原理mcp-是什么mcp-和-skill-区别6"></a> 1. Function Calling 原理？MCP 是什么？MCP 和 Skill 区别？（6）</h3>
+<ul>
+<li><strong>Function Calling 原理</strong>：给模型工具的 JSON Schema（名字/描述/参数），模型把「调哪个工具+参数」输出成<strong>结构化 JSON</strong>（底层是受约束解码/训练出来的能力），外部代码执行后把结果作为 <code>tool</code> 角色消息回喂，模型据此续写。模型<strong>只决策不执行</strong>，支持<strong>并行工具调用</strong>（一轮吐多个 tool_call）。</li>
+<li><strong>MCP（Model Context Protocol）</strong>：Anthropic 2024 开源的<strong>开放协议</strong>，统一「AI 应用 ↔ 工具/数据源」的接法，官方比喻「AI 的 USB-C」。架构 Host（Claude Desktop/Cursor 等）↔ MCP Server；Server 暴露三类原语：<strong>Tools</strong>（可调函数）、<strong>Resources</strong>（可读数据/文件）、<strong>Prompts</strong>（预设模板）。传输：本地 <strong>stdio</strong>、远程 <strong>SSE / Streamable HTTP</strong>。价值：把 M×N 集成爆炸降成 M+N。</li>
+<li><strong>MCP vs Function Calling</strong>：不对立——Function Calling 是<strong>模型层</strong>「怎么决定调用」，MCP 是<strong>系统层</strong>「工具怎么被标准化接入/发现」；MCP tool 最终仍以 function calling 形式交给模型。</li>
+<li><strong>MCP vs Skill</strong>：MCP 是<strong>接入协议</strong>；Skill 是<strong>一个能力单元</strong>；一个 MCP server 可暴露多个 skill。</li>
+<li><strong>A2A（Agent-to-Agent）</strong>：Google 提的 Agent 间协作协议，与 MCP 互补——MCP 管「Agent 调工具」，A2A 管「Agent 调 Agent」。</li>
+<li><strong>结合项目</strong>：jarvis-registry 就是<strong>企业级 MCP 网关 + A2A 编排平台</strong>——统一认证入口反代所有 MCP server，FAISS 语义发现 tool，ACL 控到工具级，同时编排 A2A worker agent，把 MCP/A2A 的「接入、发现、鉴权、审计」做成基础设施。</li>
+</ul>
+<h3 id="2-工具膨胀几百个-skill怎么做工具发现避免塞爆-prompt5"><a class="markdownIt-Anchor" href="#2-工具膨胀几百个-skill怎么做工具发现避免塞爆-prompt5"></a> 2. 工具膨胀（几百个 skill）怎么做工具发现，避免塞爆 prompt？（5）</h3>
+<ul>
+<li><strong>核心</strong>：别把所有工具塞进 prompt，用<strong>检索式工具发现</strong>——对工具的名称/描述/tag 做 embedding，运行时按当前 query <strong>语义检索 topK 相关工具</strong>只喂这几个给模型。</li>
+<li>配合：工具分组/命名空间、按意图预过滤、按权限过滤（无权限的不进候选）。</li>
+<li><strong>结合项目</strong>：jarvis-registry 的 <code>services/search</code> 用 <strong>FAISS</strong> 对 skill/描述/tag 做语义搜索，Agent 运行时才找到对的 server/agent，不是全量进 prompt。这是这题的标准答案。</li>
+</ul>
+<h3 id="3-工具调用的-schema-校验-参数修正-重试-限流-降级56"><a class="markdownIt-Anchor" href="#3-工具调用的-schema-校验-参数修正-重试-限流-降级56"></a> 3. 工具调用的 schema 校验、参数修正、重试、限流、降级？（56）</h3>
+<ul>
+<li>schema 校验：用 Pydantic/JSON Schema 校验模型吐的参数；缺参/类型错 → 回喂报错让模型<strong>自我修正</strong>（反射重试）。</li>
+<li>重试：瞬时故障（超时/5xx/限流）指数退避重试 + 幂等键；限流：令牌桶/信号量控并发；降级：下游挂了走缓存/默认值/友好兜底话术。</li>
+<li>结合项目：mate-assist 节点级 <code>RetryPolicy</code> 只重试瞬时故障；jarvis-registry 网关层统一做限流/鉴权/降级。详见第六章。</li>
+</ul>
+<h2 id="六-agent-稳定性异常-死循环-容错"><a class="markdownIt-Anchor" href="#六-agent-稳定性异常-死循环-容错"></a> 六、Agent 稳定性：异常、死循环、容错</h2>
+<h3 id="1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7"><a class="markdownIt-Anchor" href="#1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7"></a> 1. 工具调用异常（JSON 解析失败/参数缺失/超时）：重试、幂等、熔断？（7）</h3>
+<ul>
+<li><strong>JSON 解析失败/参数缺失</strong>：校验后把错误回喂模型自我修正（限次数），仍失败则降级。</li>
+<li><strong>超时</strong>：设超时 + 指数退避重试，但<strong>写操作必须带幂等键</strong>（否则重试重复下单/重复退款）。</li>
+<li><strong>熔断</strong>：下游连续失败触发熔断器（circuit breaker），快速失败走降级，避免雪崩；半开探测恢复。</li>
+<li>结合项目：mate-assist <code>default_retry_on</code> 排除 ValueError/TypeError 等编程错误，<strong>只重试瞬时故障</strong>——这是关键，编程 bug 重试没用还放大。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：确定性错误被误当瞬时错误重试</strong>（离线跑批事故）。ASR 片段「我姓习」触发豆包 <code>finish_reason=content_filter</code>，应用错误地把它包成 <code>LLMBatchTransientError</code> → 相同输入<strong>重试 4 次</strong>、最终整门店跑批失败。教训：<strong>按错误类型分流</strong>——<code>content_filter</code>、<code>LengthFinishReasonError</code> 是<strong>确定性错误</strong>，重试一定再失败，必须直接失败/跳过/降级，绝不整任务重试；只有 network/5xx/限流才退避重试。另一个坑：<code>LengthFinishReasonError</code> 平均要 <strong>74 秒</strong>才失败，长期占用并发名额，要设更激进的超时。</p>
+</blockquote>
+<h3 id="2-agent-调用失败超时脏数据怎么处理21-56"><a class="markdownIt-Anchor" href="#2-agent-调用失败超时脏数据怎么处理21-56"></a> 2. Agent 调用失败/超时/脏数据怎么处理？（21 / 56）</h3>
+<ul>
+<li>失败/超时：重试+熔断+降级（同上）。</li>
+<li><strong>脏数据</strong>：出参也要 schema 校验；不信任下游，做字段白名单/范围校验；脏数据触发兜底而非直接喂给模型（防二次幻觉/注入）。</li>
+</ul>
+<h3 id="3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74"><a class="markdownIt-Anchor" href="#3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74"></a> 3. 循环调用/死循环/无限工具调用怎么防？max step 之外还有啥？（34 / 59 / 68 / 74）</h3>
+<ul>
+<li><strong>max step / 递归上限</strong>：最基础，LangGraph 有 recursion_limit。</li>
+<li><strong>重复动作检测</strong>：记录 (工具,参数) 指纹，重复同一调用直接打断。</li>
+<li><strong>结果校验/进展判定</strong>：每步判断是否有实质进展，无进展计数超限就停。</li>
+<li><strong>预算上限</strong>：token / 调用次数 / 时间预算，超了强制收尾。</li>
+<li><strong>结合项目</strong>：mate-assist RAG 子链用 <code>rewrite_count</code> 卡重写次数，到上限就直接 generate，不无限重检索。「max step 是底线，重复检测 + 进展判定 + 预算才是真正的防线」。</li>
+</ul>
+<h2 id="七-记忆与上下文管理"><a class="markdownIt-Anchor" href="#七-记忆与上下文管理"></a> 七、记忆与上下文管理</h2>
+<h3 id="1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49"><a class="markdownIt-Anchor" href="#1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49"></a> 1. 记忆分层/三层记忆：会话级、工作/实体级、长期分别存什么？何时读写？怎么防污染？（8 / 9 / 49）</h3>
+<ul>
+<li><strong>三层</strong>：
+<ul>
+<li><strong>会话级（短期）</strong>：当前对话消息，存 checkpointer（mate-assist 用 MySQL checkpointer），随会话走。</li>
+<li><strong>工作/实体级</strong>：本轮/近期的焦点实体和槽位（如 <code>focus_car</code>/<code>last_car</code>/<code>last_intent</code>），跨轮透传。</li>
+<li><strong>长期</strong>：用户画像/偏好，跨会话，存长期 store（mate-assist <code>memory/mysql_store</code>）。</li>
+</ul>
+</li>
+<li><strong>何时写</strong>：generate 后的 <code>memory_extract</code> 节点抽取并写长期记忆；何时读：下一轮按需注入 <code>model_input</code>。</li>
+<li><strong>防污染（关键）</strong>：
+<ul>
+<li>记忆/摘要只写 <code>model_input</code>，<strong>绝不回写 messages</strong>（ground truth 不被污染）。</li>
+<li>长期记忆写入要<strong>抽取+校验</strong>（置信度门槛），mate-assist 的 <code>last_car</code> 只有 confidence≥medium 且过受控车型库校验才写。</li>
+<li>冲突偏好做合并策略，不是无脑覆盖。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战 1：namespace 必须带业务 scope 防串味</strong>。同一销售（同 <code>user_id</code>）跨会话聊<strong>不同客户</strong>：客户 A=30 万/泰山、客户 B=50 万/梦想家。若 namespace 只用 <code>user_id</code>，再开客户 A 会话问预算会<strong>串到客户 B 的 50 万</strong>。解法：记忆 namespace = <code>user_id + customer_id</code>，scope 隔离。这条固化成 <code>9_long_term_memory_regression_test.py</code> 的 M3。</p>
+<p>📌 <strong>实战 2：记忆抽取异步、不阻塞首字</strong>。<code>memory_extract</code> 是生成后的<strong>后台异步任务</strong>写 <code>profile</code>，不卡用户首 token；代价是时序敏感——回归脚本要<strong>轮询</strong> <code>GET /users/&#123;uid&#125;/memory</code> 确认落库，别把「还没抽完」误报成「没记住」。</p>
+<p>📌 <strong>实战 3：画像增量合并（跑批侧）</strong>。客户画像不是每天全量重算，而是<strong>首次全量 + 后续增量合并</strong>，<code>latest-wins</code>（昨天意向「泰山」今天「泰山 X8」→ 更新为泰山 X8）；存储用「稳定列 + JSON 属性袋」（<code>schema_version</code> + 开放 <code>attributes</code> + <code>evidence</code>）可扩展模型。</p>
+<p>📌 <strong>实战 4：会话&quot;毒化&quot;事故（高频考点）</strong>。失败轮（如网关返回 400）只把用户输入落进 checkpointer、<strong>没写回助手消息</strong>，历史里就沉淀出<strong>连续多条孤儿 <code>HumanMessage</code></strong>；豆包/火山网关要求 Human/AI 交替，于是此后<strong>每轮都 400、会话永久卡死</strong>。处置：写运维脚本 <code>clean_poisoned_thread.py</code> 把「最后一条 <code>AIMessage</code> 之后的所有消息」用 <code>RemoveMessage</code> 删掉，让历史以 AI 收尾、恢复交替；<strong>走真实 <code>build_graph</code> 的 <code>aupdate_state</code></strong>，确保 <code>last_car</code>/<code>context_summary</code> 等其它 channel 不丢；默认 DRY-RUN。根因修复在上游：失败轮要么回滚本轮 Human、要么补一条占位 AI 消息。</p>
+</blockquote>
+<h3 id="2-三层记忆在长期任务里怎么演化新事实写入旧事实过期冲突合并画像重建62"><a class="markdownIt-Anchor" href="#2-三层记忆在长期任务里怎么演化新事实写入旧事实过期冲突合并画像重建62"></a> 2. 三层记忆在长期任务里怎么演化：新事实写入/旧事实过期/冲突合并/画像重建？（62）</h3>
+<ul>
+<li>新事实：抽取后带时间戳写入；旧事实：TTL/版本化过期；冲突：以<strong>新+高置信</strong>覆盖或保留多值+场景区分；跨会话画像：定期用历史会话聚合重建。强调「记忆要有生命周期，不是只增不删」。</li>
+<li><strong>社区框架（可点名）</strong>：<strong>MemGPT / Letta</strong>（把 LLM 当 OS，分「主上下文 + 外部记忆」自动换页）、<strong>mem0</strong>（抽取-更新-检索的记忆层，带冲突消解）、LangGraph/LlamaIndex 的 memory 模块。mate-assist 的三层记忆 + <code>memory_extract</code> 异步抽取 + <code>latest-wins</code> 冲突合并，就是这套思想的自研落地。</li>
+</ul>
+<h3 id="3-上下文超长怎么处理滑动窗口摘要关键信息抽取向量检索历史怎么组合9-50"><a class="markdownIt-Anchor" href="#3-上下文超长怎么处理滑动窗口摘要关键信息抽取向量检索历史怎么组合9-50"></a> 3. 上下文超长怎么处理？滑动窗口/摘要/关键信息抽取/向量检索历史怎么组合？（9 / 50）</h3>
+<ul>
+<li><strong>滑动窗口</strong>：保最近 N 轮，适合短对话、强时序。</li>
+<li><strong>摘要压缩</strong>：把旧消息折叠成摘要，适合长对话。</li>
+<li><strong>关键信息抽取</strong>：只留结构化关键事实（槽位/实体）。</li>
+<li><strong>向量检索历史</strong>：历史入库，按当前问题检索相关片段，适合超长、跨会话。</li>
+<li><strong>组合</strong>：近期用窗口原文 + 远期用滚动摘要 + 关键实体结构化 + 必要时检索历史。</li>
+<li><strong>结合项目</strong>：mate-assist <code>context_control</code> 做<strong>增量滚动摘要</strong>——已折叠进摘要的旧消息用 <code>RemoveMessage</code> 裁出 messages，摘要持久化到 checkpointer + 回写 <code>conversations.context_summary</code>，<strong>下一轮只摘「老摘要 + 新增轮次」，成本恒定</strong>。这是亮点。</li>
+</ul>
+<h3 id="4-长对话怎么防上下文漂移state-状态机怎么设计8"><a class="markdownIt-Anchor" href="#4-长对话怎么防上下文漂移state-状态机怎么设计8"></a> 4. 长对话怎么防上下文漂移？State 状态机怎么设计？（8）</h3>
+<ul>
+<li>State 设计原则：ground truth（messages）与临时上下文（model_input）分离；跨轮状态（intent/car）持久化透传；每个字段注释清楚<strong>谁写、谁读、是否持久化、reducer 语义</strong>。mate-assist 的 ChatState 就是这么设计的。</li>
+</ul>
+<h3 id="5-共享-memory-和私有-memory-怎么设计67"><a class="markdownIt-Anchor" href="#5-共享-memory-和私有-memory-怎么设计67"></a> 5. 共享 memory 和私有 memory 怎么设计？（67）</h3>
+<ul>
+<li>私有：每个 Agent/会话独占，隔离防串味；共享：多 Agent 协作需要的公共黑板（任务状态/中间结果），要做<strong>访问控制 + 写冲突处理</strong>。见第八章。</li>
+</ul>
+<h2 id="八-多-agent-协作"><a class="markdownIt-Anchor" href="#八-多-agent-协作"></a> 八、多 Agent 协作</h2>
+<h3 id="1-子-agent-之间怎么通讯-任务怎么拆分20"><a class="markdownIt-Anchor" href="#1-子-agent-之间怎么通讯-任务怎么拆分20"></a> 1. 子 Agent 之间怎么通讯、任务怎么拆分？（20）</h3>
+<ul>
+<li><strong>通讯</strong>：① 共享黑板/State（LangGraph 共享 state）；② 消息传递（A2A）；③ 经网关中转。</li>
+<li><strong>拆分</strong>：按<strong>能力边界</strong>（检索/计算/写操作各一个）或<strong>流程阶段</strong>（规划/执行/审查）拆。</li>
+<li><strong>结合项目</strong>：jarvis-registry 是 <strong>A2A 编排平台</strong>——orchestrator agent 协调 worker agent，全部经同一安全网关通讯，统一鉴权审计。</li>
+</ul>
+<h3 id="2-supervisorplannerworkerreviewer-的边界怎么划工具集能共用吗73"><a class="markdownIt-Anchor" href="#2-supervisorplannerworkerreviewer-的边界怎么划工具集能共用吗73"></a> 2. Supervisor/Planner/Worker/Reviewer 的边界怎么划？工具集能共用吗？（73）</h3>
+<ul>
+<li><strong>边界</strong>：Supervisor 调度分发、Planner 拆计划、Worker 执行具体任务、Reviewer 校验结果。职责单一、输入输出契约清晰。</li>
+<li><strong>工具集</strong>：可共用底层工具，但<strong>按角色+权限做 ACL 限制</strong>——Worker 能调写操作，Reviewer 只读。对应 jarvis-registry 的<strong>工具级 ACL</strong>。</li>
+</ul>
+<h3 id="3-多-agent-上下文怎么传会不会越传越多污染66-67"><a class="markdownIt-Anchor" href="#3-多-agent-上下文怎么传会不会越传越多污染66-67"></a> 3. 多 Agent 上下文怎么传？会不会越传越多/污染？（66 / 67）</h3>
+<ul>
+<li><strong>会</strong>——这是多 Agent 的核心坑。对策：① 传<strong>摘要/结构化结果</strong>而非全量历史；② 私有 memory 隔离、共享 memory 做访问控制；③ 每层只传下游需要的最小上下文。</li>
+</ul>
+<h3 id="4-子-agent-再调-agenttoken-怎么炸怎么隔离状态75"><a class="markdownIt-Anchor" href="#4-子-agent-再调-agenttoken-怎么炸怎么隔离状态75"></a> 4. 子 Agent 再调 Agent，token 怎么炸？怎么隔离状态？（75）</h3>
+<ul>
+<li>token 炸因为<strong>上下文层层累加</strong>。对策：子 Agent 独立 context 窗口（状态隔离），只返回<strong>结论/摘要</strong>给父 Agent，不回传全过程；设每层 token 预算；限制嵌套深度。</li>
+</ul>
+<h3 id="5-怎么避免两个-agent-互相甩锅式调用33"><a class="markdownIt-Anchor" href="#5-怎么避免两个-agent-互相甩锅式调用33"></a> 5. 怎么避免两个 Agent 互相甩锅式调用？（33）</h3>
+<ul>
+<li>明确<strong>职责边界和终止条件</strong>；禁止循环调用（调用图做成 DAG 或带环检测）；每个 Agent 必须对自己的输出负责（不能无脑转发）；加全局 step/预算上限。</li>
+</ul>
+<h3 id="6-多-agent-平台化工具权限-沙箱-审计-成本怎么管43"><a class="markdownIt-Anchor" href="#6-多-agent-平台化工具权限-沙箱-审计-成本怎么管43"></a> 6. 多 Agent 平台化：工具权限、沙箱、审计、成本怎么管？（43）</h3>
+<ul>
+<li>这题就是 <strong>jarvis-registry 的主场</strong>：
+<ul>
+<li><strong>权限</strong>：OAuth2/OIDC 身份 + RBAC/ACL scope 细到工具级（<code>middleware/rbac.py</code>）。</li>
+<li><strong>沙箱</strong>：工具经网关代理执行，隔离、限流、超时。</li>
+<li><strong>审计</strong>：全量请求日志 + OpenTelemetry tracing + Prometheus metrics。</li>
+<li><strong>成本</strong>：网关统一统计 token/调用次数，按租户/Agent 配额。</li>
+</ul>
+</li>
+</ul>
+<h2 id="九-框架langgraph-langchain-agentscope"><a class="markdownIt-Anchor" href="#九-框架langgraph-langchain-agentscope"></a> 九、框架：LangGraph / LangChain / AgentScope</h2>
+<h3 id="1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53"><a class="markdownIt-Anchor" href="#1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53"></a> 1. LangChain 和 LangGraph 区别？何时链够用、何时必须上状态图？（53）</h3>
+<ul>
+<li><strong>LangChain</strong>：链式编排（Chain），线性、无状态记忆跨步、分支弱。适合<strong>简单单向流程</strong>（如一次 RAG 问答）。</li>
+<li><strong>LangGraph</strong>：状态图，有 State、条件分支、回边、持久化 checkpointer。适合<strong>多轮、带分支/循环、需断点恢复</strong>的复杂 Agent。</li>
+<li><strong>何时上图</strong>：需要条件路由、循环（重检索）、多轮状态、人工审核中断恢复时——mate-assist 全部需要，所以用 LangGraph。</li>
+</ul>
+<h3 id="2-langgraph-的-statenodeedgeconditional-edge-实际怎么用63"><a class="markdownIt-Anchor" href="#2-langgraph-的-statenodeedgeconditional-edge-实际怎么用63"></a> 2. LangGraph 的 State/Node/Edge/Conditional Edge 实际怎么用？（63）</h3>
+<ul>
+<li><strong>State</strong>：TypedDict + reducer（如 <code>add_messages</code>），节点读写。</li>
+<li><strong>Node</strong>：一个函数，接收 state 返回 state 增量。</li>
+<li><strong>Edge</strong>：固定跳转；<strong>Conditional Edge</strong>：路由函数返回 key，查表决定下一节点。</li>
+<li><strong>结合项目</strong>：mate-assist <code>add_conditional_edges(&quot;intent_classify&quot;, route_by_intent, _ROUTE_TO_NODE)</code>——路由函数出口映射到节点名，<strong>确定性查表</strong>（非模型决策）。</li>
+</ul>
+<h3 id="3-statereducercheckpointer-怎么做断点恢复和多轮对话54"><a class="markdownIt-Anchor" href="#3-statereducercheckpointer-怎么做断点恢复和多轮对话54"></a> 3. State/Reducer/Checkpointer 怎么做断点恢复和多轮对话？（54）</h3>
+<ul>
+<li><strong>Reducer</strong>：定义 state 字段如何合并（追加 vs 覆盖），如 messages 用 <code>add_messages</code> 追加。</li>
+<li><strong>Checkpointer</strong>：每步把 state 持久化（按 thread_id），<strong>崩溃/中断后可从断点恢复</strong>，也是<strong>多轮对话记忆</strong>的载体和人工审核中断（interrupt）恢复的基础。</li>
+<li><strong>结合项目</strong>：mate-assist 用 MySQL checkpointer，thread_id 对应会话；<code>messages</code> 用 add_messages reducer，<code>model_input</code> 用覆盖语义。</li>
+</ul>
+<h3 id="4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55"><a class="markdownIt-Anchor" href="#4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55"></a> 4. 图数据库选 Neo4j 还是其他？实体/关系/属性怎么建模？图查询和向量召回怎么互补？（55）</h3>
+<ul>
+<li>选型：Neo4j 成熟、Cypher 易用；也可 NebulaGraph（大规模）。按规模和团队选。</li>
+<li>建模：实体=节点、关系=边、属性挂节点/边。</li>
+<li><strong>互补</strong>：向量召回管<strong>模糊语义匹配</strong>，图查询管<strong>精确多跳关系</strong>（A 的配件兼容哪些车型）；<strong>GraphRAG</strong> 思路——先向量定位实体，再图上扩展关系补全上下文。</li>
+</ul>
+<h2 id="十-模型原理-调参与微调"><a class="markdownIt-Anchor" href="#十-模型原理-调参与微调"></a> 十、模型原理、调参与微调</h2>
+<h3 id="1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11"><a class="markdownIt-Anchor" href="#1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11"></a> 1. KV Cache 原理？temperature/top_p/top_k？B 端怎么调参？（11）</h3>
+<ul>
+<li><strong>原理</strong>：Transformer 自回归逐 token 生成，每步都要对前缀所有 token 做 attention。KV Cache 把每层已算过的 Key/Value 缓存下来，新 token 只算自己的 Q 去和缓存的 K/V 交互，把每步的 O(n²) 重算摊薄成 O(n)，<strong>空间换时间</strong>。代价：显存 ≈ <code>2 × 层数 × 序列长 × 隐藏维 × batch</code>，长上下文下 KV Cache 本身就吃爆显存。</li>
+<li><strong>社区优化（能点名加分）</strong>：
+<ul>
+<li><strong>PagedAttention / vLLM</strong>：像 OS 分页一样管理 KV Cache，消除显存碎片，吞吐翻数倍，已是推理引擎事实标准。</li>
+<li><strong>GQA / MQA</strong>（分组/多查询注意力）：多个 Q 头共享一组 K/V，直接缩小 KV Cache（Llama-2/3、Mistral 都用）。</li>
+<li><strong>Prefix Caching 前缀缓存</strong>：相同系统 prompt / few-shot 前缀的 KV 跨请求复用——这正是各家 API「缓存命中 token 更便宜」的底层（直接关系成本，见第十四章）。</li>
+</ul>
+</li>
+<li><strong>采样参数</strong>：<code>temperature</code> 缩放 logits 控随机性（0≈贪心、越高越发散）；<code>top_k</code> 只在概率最高 k 个里采样；<code>top_p</code>（核采样）在累积概率达 p 的最小集合里采样，比 top_k 自适应。注意：<strong>即使 temperature=0 也不保证完全可复现</strong>（浮点非结合性、batch、MoE 路由都会引抖动）。</li>
+<li><strong>B 端调参</strong>：要<strong>稳定/可复现/少幻觉</strong> → temperature 0~0.3、top_p 收紧(~0.8)、固定 seed；抽取/分类/function-calling 用近 0 温保结构稳定；创意话术可放到 0.7。</li>
+<li><strong>结合项目</strong>：mate-assist 知识问答/意图分类走低温保稳定、话术生成略高保多样；长对话靠滚动摘要压上下文，顺带也压住了 KV Cache 显存和首 token 延迟。</li>
+</ul>
+<h3 id="2-rag-vs-fine-tuning-怎么选b-端客户场景13"><a class="markdownIt-Anchor" href="#2-rag-vs-fine-tuning-怎么选b-端客户场景13"></a> 2. RAG vs Fine-tuning 怎么选？B 端客户场景？（13）</h3>
+<ul>
+<li><strong>RAG</strong>：知识<strong>频繁更新、要可溯源、要隔离权限</strong>时用；改知识不动模型。</li>
+<li><strong>Fine-tuning</strong>：改<strong>风格/格式/固定行为模式</strong>、领域术语习惯时用；不适合装易变知识。</li>
+<li><strong>B 端</strong>：知识多变 + 要溯源 + 多租户隔离 → <strong>优先 RAG</strong>；特定输出风格再叠 SFT。mate-assist 选 RAG（车型知识随上市更新）。</li>
+</ul>
+<h3 id="3-lora-原理merge-权重优缺点sftdpo-对齐目标何时微调何时-rag14"><a class="markdownIt-Anchor" href="#3-lora-原理merge-权重优缺点sftdpo-对齐目标何时微调何时-rag14"></a> 3. LoRA 原理？Merge 权重优缺点？SFT/DPO 对齐目标？何时微调何时 RAG？（14）</h3>
+<ul>
+<li><strong>LoRA 原理</strong>：冻结原权重 W，旁路加低秩分解 <code>ΔW = B·A</code>（A 把维度降到 rank r、B 升回原维），只训 A/B。基于「微调的权重更新是低秩的」假设。超参：<strong>rank r</strong>（8/16/32，越大容量越大越易过拟合）、<strong>alpha</strong>（缩放，常令 alpha=2r）、作用层（常 q/v proj，也可全 attention+MLP）。可训参数降到全量的 0.1%~1%。</li>
+<li><strong>QLoRA</strong>：主干先 4bit 量化（NF4）再在上面训 LoRA，单张消费级卡就能微调 7B~13B——社区最常用的省钱方案。</li>
+<li><strong>Merge 权重</strong>：把 <code>B·A</code> 加回 W。优点：推理零额外开销、部署简单；缺点：失去可插拔性、不能动态切多适配器、多任务要各 merge 出多份全量权重。不 merge 则一主干挂多 LoRA 热切（多租户各一份）。</li>
+<li><strong>对齐三段</strong>：<strong>SFT</strong>（监督微调）学「输入→理想输出」，教格式/风格/领域语气；<strong>RLHF/PPO</strong> 用奖励模型 + RL 对齐偏好，效果好但复杂不稳；<strong>DPO</strong>（Direct Preference Optimization）用「优答 vs 劣答」成对数据直接优化、<strong>绕开显式奖励模型</strong>，简单稳定是社区主流，衍生 ORPO/KTO/SimPO。</li>
+<li><strong>坑</strong>：微调有<strong>灾难性遗忘</strong>（学新忘旧），且知识类微调「背不准还更自信」；<strong>数据质量 &gt; 数量</strong>（几千条高质常胜过几万条噪声）。</li>
+<li><strong>何时微调/RAG</strong>：知识多变/要溯源/多租户 → RAG；固定风格/输出格式/领域语气/想缩短 prompt → 微调；<strong>常组合</strong>（RAG 装知识 + LoRA 调风格）。</li>
+<li><strong>结合项目</strong>：mate-assist 车型知识随上市频繁更新 + 要可溯源 → 坚决走 RAG 不微调；话术风格靠 prompt 工程（prompt-manager 版本化）而非微调，迭代更快、可回滚。</li>
+</ul>
+<h2 id="十一-流式输出-sse"><a class="markdownIt-Anchor" href="#十一-流式输出-sse"></a> 十一、流式输出 SSE</h2>
+<h3 id="1-sse-怎么实现异常断流怎么处理乱序问题10"><a class="markdownIt-Anchor" href="#1-sse-怎么实现异常断流怎么处理乱序问题10"></a> 1. SSE 怎么实现？异常断流怎么处理？乱序问题？（10）</h3>
+<ul>
+<li><strong>实现</strong>：HTTP long-lived 连接，<code>text/event-stream</code>，服务端逐 token <code>yield</code> data 帧；FastAPI 用 <code>StreamingResponse</code>/<code>EventSourceResponse</code>；LangGraph 用 <code>stream_mode=&quot;messages&quot;</code> 逐 token 透出。</li>
+<li><strong>异常断流</strong>：SSE 自带 <code>id:</code> + 客户端 <code>Last-Event-ID</code> 自动重连;服务端用心跳帧保活;生成中断要发<strong>结束/错误帧</strong>让前端收尾。</li>
+<li><strong>乱序</strong>：SSE 基于单条 TCP 连接<strong>天然有序</strong>，乱序风险主要在前端并发处理或多路合并——用序号帧保证拼接顺序。</li>
+<li><strong>结合项目</strong>：mate-assist <code>generate_answer</code> 用 <code>stream_mode=&quot;messages&quot;</code> 逐 token 透出，SSE 结束帧带 <code>faq_list</code>/<code>discourse_ask</code> 等元信息；<strong>正因流式，generate 节点特意不加 retry</strong>（重试会向客户端重复吐字）——这是流式和重试冲突的经典坑。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战 1：别让模型逐 token 复制长内容</strong>。早期把完整媒体标签（<code>&lt;image src=&quot;很长的 COS 签名 URL&quot; poster=&quot;...&quot;&gt;</code>）塞进 Prompt 要模型<strong>原样复制</strong>，导致模型逐 token 吐超长 URL，一次 <code>/chat</code> 耗时 <strong>2 分 7 秒</strong>、响应体 182KB。优化：Prompt 里只放<strong>短占位符/媒体 id</strong>，真实 URL 由<strong>后端拼接</strong>，不进模型。结论：流式场景下「模型要输出的 token 数」直接决定延迟和成本，长 URL/大 JSON 这类死内容一律移出模型。</p>
+<p>📌 <strong>实战 2：SSE 把辅助 token 当正文透出的 bug</strong>。<code>stream_mode=&quot;messages&quot;</code> 会把图里<strong>所有</strong> LLM 节点的 token 都往外吐——场景兜底匹配的辅助 LLM 吐的英文场景 key（<code>close_deal</code>/<code>general_service</code>）被当正文流给了前端。要<strong>按节点/标签过滤</strong>，只透出 <code>generate_answer</code> 的正文流；已固化成合规回归的 PART 4。</p>
+</blockquote>
+<h2 id="十二-工程架构异步-redis-mysql-可观测"><a class="markdownIt-Anchor" href="#十二-工程架构异步-redis-mysql-可观测"></a> 十二、工程架构：异步、Redis、MySQL、可观测</h2>
+<h3 id="1-agent-调用链里异步-vs-同步怎么选为什么64"><a class="markdownIt-Anchor" href="#1-agent-调用链里异步-vs-同步怎么选为什么64"></a> 1. Agent 调用链里异步 vs 同步怎么选？为什么？（64）</h3>
+<ul>
+<li>Agent 链路大量是 <strong>I/O 密集</strong>（调 LLM、检索、工具 HTTP），用 <strong>asyncio 异步</strong>能在等待时让出，大幅提升并发吞吐；CPU 密集（本地 rerank/编码）用线程池/进程池别阻塞事件循环。mate-assist 全链路 async（FastAPI + async 节点）。</li>
+</ul>
+<h3 id="2-asyncio-批量跑-agent-为什么不能无脑并发怎么限流70"><a class="markdownIt-Anchor" href="#2-asyncio-批量跑-agent-为什么不能无脑并发怎么限流70"></a> 2. asyncio 批量跑 Agent 为什么不能无脑并发？怎么限流？（70）</h3>
+<ul>
+<li>无脑并发会<strong>打爆下游</strong>（LLM 限流 429、DB 连接耗尽、内存爆）。限流：<code>asyncio.Semaphore</code> 控并发数、令牌桶控速率、<code>gather</code> 分批、下游连接池上限。「并发是为了吞吐，不是越多越好」。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：CPU 密集任务别放事件循环，用有界线程池</strong>。rag_api 的 embedding 计算、文档解析是 <strong>CPU 密集</strong>的，直接在 async 路由里跑会<strong>阻塞整个事件循环</strong>。做法：在 lifespan 里建一个<strong>有界共享</strong> <code>ThreadPoolExecutor</code>（按 <code>os.cpu_count()</code>、<strong>上限 8</strong>），CPU 活用 <code>run_in_executor</code> 丢进去，async 只管 I/O（asyncpg 连接池调 PG）。「async 快的是 I/O 等待，CPU 活要进线程/进程池，而且池要<strong>有界</strong>防打爆」。embedding 路由本身也做了异步化，批量入库时并发可控。</p>
+</blockquote>
+<h3 id="3-怎么设计可观测的-agent-调用链22"><a class="markdownIt-Anchor" href="#3-怎么设计可观测的-agent-调用链22"></a> 3. 怎么设计可观测的 Agent 调用链？（22）</h3>
+<ul>
+<li><strong>三支柱</strong>：Tracing（一次请求跨节点/工具/LLM 的 span，带 trace_id）、Metrics（QPS/延迟/token/成功率）、Logging（结构化日志带 trace_id 串联）。</li>
+<li><strong>结合项目</strong>：mate-assist <code>observability/</code> 有 <code>otel.py</code>/<code>tracing.py</code>/<code>node_span.py</code>/<code>llm_callback.py</code>/<code>metrics.py</code>——每个图节点一个 span，LLM 回调记 token，OpenTelemetry 导出；jarvis-registry 网关层统一 OTel + Prometheus。</li>
+</ul>
+<h3 id="4-redis-在-agent-里用在哪会话状态意图缓存工具结果缓存分布式锁限流57-78"><a class="markdownIt-Anchor" href="#4-redis-在-agent-里用在哪会话状态意图缓存工具结果缓存分布式锁限流57-78"></a> 4. Redis 在 Agent 里用在哪？会话状态/意图缓存/工具结果缓存/分布式锁/限流？（57 / 78）</h3>
+<ul>
+<li><strong>会话状态</strong>：热会话缓存（比每次查 DB 快）。</li>
+<li><strong>缓存</strong>：意图结果、召回结果、工具结果缓存（相同 query 命中省 LLM/检索成本）。</li>
+<li><strong>分布式锁</strong>：同一会话并发请求串行化、防重复执行（SETNX + 过期）。</li>
+<li><strong>限流</strong>：令牌桶/滑动窗口计数。</li>
+<li><strong>结合项目</strong>：jarvis-registry 用 Redis 做 <strong>client-info 缓存让 MCP 网关无状态化</strong>（<code>client_info_store.py</code>），这样网关可水平扩容——这是很好的答法。</li>
+</ul>
+<h3 id="5-mysql-存对话记忆任务状态怎么分表热点用户怎么避免单表膨胀58"><a class="markdownIt-Anchor" href="#5-mysql-存对话记忆任务状态怎么分表热点用户怎么避免单表膨胀58"></a> 5. MySQL 存对话/记忆/任务状态怎么分表？热点用户怎么避免单表膨胀？（58）</h3>
+<ul>
+<li>分表：按 <strong>user_id / 时间</strong> 分库分表（如按 user_id hash 分片 + 按月归档冷数据）；对话消息表量大，冷热分离（热数据在线表、冷数据归档表/对象存储）。</li>
+<li>热点用户：会话加 Redis 缓存层挡读；大会话滚动摘要压缩（见第七章）控制单会话消息行数。mate-assist 的滚动摘要同时也是控表膨胀的手段。</li>
+</ul>
+<blockquote>
+<p>📌 <strong>实战：源/结果分库 + 只读引擎</strong>。离线画像跑批读的是<strong>外部业务库</strong>（<code>ai_mate</code>，只读），结果写<strong>本地库</strong>。做法是<strong>两个独立引擎</strong>：只读 <code>source_engine</code>（<code>PROFILING_SOURCE_DATABASE_URL</code>，强制与结果库 <code>DATABASE_URL</code> 不同库，为空即启动报错）+ 写主库引擎；DB 访问统一走 <code>db_session()</code>（只读）/ <code>db_transaction()</code>（写）两个上下文。避免跑批把线上在线库拖垮，也防误写源表。</p>
+</blockquote>
+<h3 id="6-补充离线跑批怎么做并发调度和可靠性源自跑批优化实战"><a class="markdownIt-Anchor" href="#6-补充离线跑批怎么做并发调度和可靠性源自跑批优化实战"></a> 6. 【补充】离线跑批怎么做并发调度和可靠性？（源自跑批优化实战）</h3>
+<ul>
+<li><strong>调度</strong>：Celery + Beat（分布式 worker、可重试、可横向扩展），错峰触发避免 23:00 后画像/简报/暂败任务同时 fan-out 争抢。</li>
+<li><strong>并发闸门别用一个全局值</strong>：早期所有离线业务共享一个固定并发闸门，应升级成 <strong>provider/model 并发 + RPM + TPM + 业务配额</strong> 的联合调度器。</li>
+<li><strong>边际递减要讲清</strong>：并发 limit 8→20，闸门等待 P50 从 32.5s 降到 10.5s，但 P95 仍 76s——继续调大边际收益递减，还会挤压在线对话、触发网关限流。调参要用<strong>分位数</strong>说话，不是只看均值。</li>
+</ul>
+<h2 id="十三-评测与-bad-case-闭环"><a class="markdownIt-Anchor" href="#十三-评测与-bad-case-闭环"></a> 十三、评测与 Bad Case 闭环</h2>
+<h3 id="1-怎么定义-agent-答得对评测集谁建-标签谁标25"><a class="markdownIt-Anchor" href="#1-怎么定义-agent-答得对评测集谁建-标签谁标25"></a> 1. 怎么定义 Agent 答得对？评测集谁建、标签谁标？（25）</h3>
+<ul>
+<li><strong>定义「对」</strong>：拆成可量化维度——意图正确、检索命中、答案事实正确、格式/话术合规。不同场景不同标准。</li>
+<li><strong>谁建/标</strong>：业务+算法共建评测集（覆盖真实分布+易错长尾）；标签由业务专家标（金标），可用 LLM 预标 + 人工复核降本。</li>
+</ul>
+<h3 id="2-智能体评测怎么做离线-vs-线上分别看什么指标29"><a class="markdownIt-Anchor" href="#2-智能体评测怎么做离线-vs-线上分别看什么指标29"></a> 2. 智能体评测怎么做？离线 vs 线上分别看什么指标？（29）</h3>
+<ul>
+<li><strong>离线</strong>：固定评测集，看准确率/召回命中率/意图准确率/幻觉率；可复现、迭代用。</li>
+<li><strong>线上</strong>：真实流量，看<strong>用户负反馈率/重问率/会话完成率/人工接管率/成本延迟</strong>；反映真实体验。</li>
+<li><strong>RAG 专项指标（社区框架 RAGAS / TruLens / DeepEval）</strong>：context precision/recall（召回质量）、faithfulness（忠实度/反幻觉）、answer relevancy（切题度）；检索单看 <strong>Hit@k / MRR / NDCG</strong>。</li>
+<li><strong>Agent 专项</strong>：工具选择准确率、参数正确率、任务完成率（task success）、轨迹/步数效率。</li>
+<li><strong>平台</strong>：LangSmith / Langfuse 做 trace + 评测 + 数据集回流，与线上可观测打通。</li>
+</ul>
+<h3 id="3-自动评测和人工评测怎么配合评分怎么防主观30"><a class="markdownIt-Anchor" href="#3-自动评测和人工评测怎么配合评分怎么防主观30"></a> 3. 自动评测和人工评测怎么配合？评分怎么防主观？（30）</h3>
+<ul>
+<li>自动（含 <strong>LLM-as-judge</strong>）跑量、覆盖全集；人工抽检校准、处理长尾和争议。防主观：<strong>明确评分 Rubric（维度+分档+示例）</strong>、多人标注算一致性（Kappa）、LLM judge 给固定标准 + few-shot 锚点。</li>
+</ul>
+<h3 id="4-评测体系从-0-到-1先搭数据指标平台看板41"><a class="markdownIt-Anchor" href="#4-评测体系从-0-到-1先搭数据指标平台看板41"></a> 4. 评测体系从 0 到 1，先搭数据/指标/平台/看板？（41）</h3>
+<ul>
+<li>顺序：<strong>先数据（评测集）→ 再指标（定义对错）→ 再平台（自动化跑）→ 最后看板（可视化趋势）</strong>。没有数据和指标，平台看板都是空壳。</li>
+</ul>
+<h3 id="5-评测集只有-200-条线上几十万用户怎么看结论39"><a class="markdownIt-Anchor" href="#5-评测集只有-200-条线上几十万用户怎么看结论39"></a> 5. 评测集只有 200 条，线上几十万用户，怎么看结论？（39）</h3>
+<ul>
+<li>200 条<strong>不能代表线上分布</strong>，只能做<strong>回归/相对比较</strong>（版本间好坏），不能当绝对准确率。要补：按线上真实分布分层采样扩充、持续从 Bad Case 回流扩集、用线上指标交叉验证。强调「小评测集看相对变化，别当绝对真理」。</li>
+</ul>
+<h3 id="6-bad-case-闭环系统怎么设计采集归类复盘回归要不要产品化roi-怎么讲31-42"><a class="markdownIt-Anchor" href="#6-bad-case-闭环系统怎么设计采集归类复盘回归要不要产品化roi-怎么讲31-42"></a> 6. Bad Case 闭环系统怎么设计（采集→归类→复盘→回归）？要不要产品化？ROI 怎么讲？（31 / 42）</h3>
+<ul>
+<li><strong>闭环</strong>：采集（负反馈/人工接管/低置信自动捞）→ 归类（按意图/检索/生成/工具分桶）→ 复盘（定位根因层）→ 修复 → <strong>回归（进评测集防复发）</strong>。</li>
+<li><strong>产品化 ROI</strong>：Bad Case 多、迭代频繁时值得产品化（自动采集+看板+回归），把人工排查时间换成系统化沉淀；跟老板讲「单次人工排查成本 × 频次 vs 系统投入 + 复发率下降带来的准确率提升」。</li>
+</ul>
+<h3 id="7-bad-case-来了从用户原话意图检索工具模型输出怎么逐层定位24"><a class="markdownIt-Anchor" href="#7-bad-case-来了从用户原话意图检索工具模型输出怎么逐层定位24"></a> 7. Bad Case 来了，从用户原话/意图/检索/工具/模型输出怎么逐层定位？（24）</h3>
+<ul>
+<li><strong>分层定位（顺着链路走）</strong>：① 用户原话是否有歧义/脏输入 → ② 指代消解/改写对不对 → ③ 意图分类对不对 → ④ 路由对不对 → ⑤ 检索召回+rerank 有没有命中 → ⑥ 工具调用参数/结果对不对 → ⑦ 模型生成有没有忠于上下文。<strong>mate-assist 的链路节点天然就是定位锚点</strong>（有 trace+每节点 span，能看每层中间产物）。</li>
+</ul>
+<h3 id="8-相似-bad-case-反复出现怎么判断是数据prompt检索模型问题32"><a class="markdownIt-Anchor" href="#8-相似-bad-case-反复出现怎么判断是数据prompt检索模型问题32"></a> 8. 相似 Bad Case 反复出现，怎么判断是数据/prompt/检索/模型问题？（32）</h3>
+<ul>
+<li>数据问题：知识库缺这条/过时 → 补数据；检索问题：数据在但召不回 → 调切片/召回；prompt 问题：召回对但答偏 → 改 prompt；模型问题：换模型/加约束仍不行才是模型能力上限。<strong>按链路做消融</strong>（固定其他变量只改一层看是否解决）。</li>
+</ul>
+<h3 id="9-caseagent-线上大面积答非所问第一反应和排查顺序26"><a class="markdownIt-Anchor" href="#9-caseagent-线上大面积答非所问第一反应和排查顺序26"></a> 9. 【Case】Agent 线上大面积答非所问，第一反应和排查顺序？（26）</h3>
+<ul>
+<li><strong>第一反应</strong>：先止血不先 debug——看是不是刚发版（prompt/模型/知识库/路由表变更），能回滚先回滚。</li>
+<li><strong>排查顺序</strong>：看监控（哪个意图/分支集中出问题）→ 看是全局还是局部 → 全局多半是<strong>公共依赖</strong>（模型降级/检索服务挂/prompt 发错 tag/embedding 版本不匹配）→ 局部看具体分支。先定位爆炸半径再修。</li>
+</ul>
+<h3 id="10-补充端到端回归体系怎么工程化源自-scripts-回归实战"><a class="markdownIt-Anchor" href="#10-补充端到端回归体系怎么工程化源自-scripts-回归实战"></a> 10. 【补充】端到端回归体系怎么工程化？（源自 scripts/ 回归实战）</h3>
+<ul>
+<li><strong>黑盒端到端</strong>：对运行中的服务打真实 <code>/chat</code>，用<strong>可观测信号间接判定</strong>（意图对不对看日志 <code>event_code=intent_classified</code>、不空洞应答、不误进场景陷阱），不依赖内部实现细节。</li>
+<li><strong>进程隔离 + 不阻断</strong>：<code>run_all_regression.py</code> 每个子脚本独立进程跑、失败不阻断后续、末尾打汇总表、整体有失败以<strong>非零退出码</strong>接 CI；支持 <code>--only/--skip</code> 按编号跑。</li>
+<li><strong>硬断言 vs 软断言</strong>：确定性的（红线词黑名单不出现）是<strong>硬断言</strong>失败即 FAIL；LLM 措辞多变的（应有安抚措辞）是<strong>软断言</strong>，缺失记 <strong>DEGRADED</strong> 而非 FAIL，降误判。</li>
+<li><strong>异步链路要轮询</strong>：记忆抽取是后台任务，断言前轮询落库，避免误报。</li>
+<li>工程细节：所有网络回归脚本加 <code>NO_PROXY='*'</code> 绕本机代理防慢失败。</li>
+<li><strong>每修一个 Bad Case 就固化成一条回归</strong>：意图延续、长期记忆串味、合规红线、会话毒化、视觉识别、媒体流——都从线上 Bad Case 沉淀成脚本防回退。</li>
+</ul>
+<h3 id="11-老板说准确率-8095怎么操作38"><a class="markdownIt-Anchor" href="#11-老板说准确率-8095怎么操作38"></a> 11. 老板说准确率 80%→95%，怎么操作？（38）</h3>
+<ul>
+<li>先拆：95% 在<strong>哪个维度、哪个评测集</strong>上？先做 Bad Case 归因看 80% 错的那 20% 分布在哪层（检索？意图？生成？）→ 抓<strong>占比最大的根因</strong>集中打（通常 RAG 召回和意图是大头）→ 每修一类进回归集 → 迭代逼近。强调「准确率提升是归因驱动的，不是拍脑袋」，并说明<strong>最后几个点边际成本陡增</strong>，要和老板对齐投入产出。</li>
+</ul>
+<h2 id="十四-成本控制"><a class="markdownIt-Anchor" href="#十四-成本控制"></a> 十四、成本控制</h2>
+<h3 id="1-agent-线上成本炸了token工具检索都高先砍哪块46"><a class="markdownIt-Anchor" href="#1-agent-线上成本炸了token工具检索都高先砍哪块46"></a> 1. Agent 线上成本炸了（token/工具/检索都高），先砍哪块？（46）</h3>
+<ul>
+<li>先<strong>归因</strong>（可观测统计各项占比），砍占比最大的。一般优先级：① 砍无效 LLM 调用（能用规则/缓存的不调模型）→ ② 压上下文 token（滚动摘要、只喂必要上下文）→ ③ 缓存（意图/召回/工具结果）→ ④ 减检索次数/路数 → ⑤ 大小模型分级（简单问题走小模型）。</li>
+</ul>
+<h3 id="2-高并发下-llm-成本怎么控-token-和钱69"><a class="markdownIt-Anchor" href="#2-高并发下-llm-成本怎么控-token-和钱69"></a> 2. 高并发下 LLM 成本怎么控 token 和钱？（69）</h3>
+<ul>
+<li><strong>省 token</strong>：精简 prompt、上下文压缩、输出长度上限、few-shot 按需。</li>
+<li><strong>省钱</strong>：缓存命中、小模型分流、批处理、KV cache 复用；设租户/会话<strong>预算上限</strong>超了降级。</li>
+<li>结合项目：mate-assist 滚动摘要让长对话 token <strong>成本恒定</strong>；jarvis-registry 网关统一配额统计。</li>
+</ul>
+<h3 id="3-rag多-agent工作流技术选型怎么平衡效果延迟成本44"><a class="markdownIt-Anchor" href="#3-rag多-agent工作流技术选型怎么平衡效果延迟成本44"></a> 3. RAG+多 Agent+工作流，技术选型怎么平衡效果/延迟/成本？（44）</h3>
+<ul>
+<li>三角权衡：<strong>效果↑通常延迟↑成本↑</strong>。做法：按场景分级——简单问答少跳少 Agent、复杂问题才上多跳 Agentic RAG + 多 Agent；延迟敏感的用缓存+小模型+并行召回；用评测集量化「每多一跳/多一路召回带来的效果增益 vs 延迟成本增量」，只在增益划算处加。「用数据驱动取舍，不是堆满所有能力」。</li>
+</ul>
+<h2 id="十五-合规与安全b-端重点"><a class="markdownIt-Anchor" href="#十五-合规与安全b-端重点"></a> 十五、合规与安全（B 端重点）</h2>
+<blockquote>
+<p>B 端销售场景，答错不只是体验问题，可能是<strong>合规/法律风险</strong>。这块能讲出来是加分项。</p>
+</blockquote>
+<h3 id="1-agent-输出合规怎么守源自话术合规门禁实战"><a class="markdownIt-Anchor" href="#1-agent-输出合规怎么守源自话术合规门禁实战"></a> 1. Agent 输出合规怎么守？（源自话术合规门禁实战）</h3>
+<ul>
+<li><strong>三大失败模式</strong>（销售场景）：① 该生成却被「请选择场景」顶回不生成；② 投诉/故障/功能等<strong>服务诉求被无视、硬转卖车</strong>（被全局「每轮推进成交」prompt 带偏）；③ <strong>逼单乱承诺</strong>（虚构优惠/稀缺/回购）、<strong>诱导代付</strong>（最危险）、<strong>贬低友商</strong>。</li>
+<li><strong>守法方式</strong>：
+<ul>
+<li><strong>红线词黑名单 = 确定性硬门禁</strong>：诱导代付、乱承诺、贬低竞品的措辞一律拦，不靠模型自觉。</li>
+<li><strong>兜底场景</strong>：无销售线索的服务诉求路由到 <code>general_service</code> 承接（安抚/解决导向），不硬转卖车。</li>
+<li><strong>门禁回归</strong>（<code>12_compliance_regression_test.py</code>）：红线词硬断言 FAIL、应有措辞软断言 DEGRADED，防 prompt 调整悄悄回退。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-根因不一定在-prompt也可能在代码"><a class="markdownIt-Anchor" href="#2-根因不一定在-prompt也可能在代码"></a> 2. 根因不一定在 Prompt——也可能在代码</h3>
+<ul>
+<li>📌 <strong>实战教训</strong>：话术「反问菜单」失败模式，根因其实在<strong>代码的确定性槽位提取</strong>（<code>discourse_slots.py</code> 里 <code>scene</code> 是必填槽位，命中 0 个就 <code>interrupt()</code> 反问），改 prompt <strong>根本不生效</strong>；兜底场景 <code>general_service</code> 因为不在 <code>SceneEnum</code> 枚举里是<strong>死代码</strong>，必须靠代码 wiring 才能用。<strong>定位要先分清「这是 prompt 控制的还是代码控制的」</strong>，别在错误的层打补丁。</li>
+</ul>
+<h3 id="3-pii-内容安全怎么处理"><a class="markdownIt-Anchor" href="#3-pii-内容安全怎么处理"></a> 3. PII / 内容安全怎么处理？</h3>
+<ul>
+<li><strong>PII</strong>：对话/录音入库和喂模型前做 PII 识别与脱敏（姓名/电话/身份证/车牌），调研过 content-filter 与 PII 的社区方案。</li>
+<li><strong>内容过滤</strong>：模型网关自带 <code>content_filter</code>（如豆包对敏感词返回 <code>finish_reason=content_filter</code>），应用要<strong>正确识别为确定性拒绝</strong>（不是瞬时错误、不重试，见第六章实战），并给用户体面兜底。</li>
+<li><strong>输入侧</strong>：警惕 prompt 注入——检索到的文档、用户上传内容都是<strong>不可信数据</strong>，不能当指令执行；工具出参也要校验防二次注入。</li>
+</ul>
+<h3 id="4-llm-应用安全有哪些系统性风险owasp-llm-top-10"><a class="markdownIt-Anchor" href="#4-llm-应用安全有哪些系统性风险owasp-llm-top-10"></a> 4. LLM 应用安全有哪些系统性风险？（OWASP LLM Top 10）</h3>
+<ul>
+<li>面试能报出框架加分：<strong>OWASP LLM Top 10</strong>（2025）覆盖——<strong>LLM01 Prompt Injection</strong>（直接/间接注入，最高频）、<strong>LLM02 敏感信息泄漏</strong>、<strong>LLM05 不安全的输出处理</strong>（模型输出直接拼 SQL/命令/HTML → 注入）、<strong>LLM06 过度代理权限</strong>（Agent 工具权限过大）、<strong>LLM08 向量/embedding 投毒</strong>、<strong>LLM10 无限资源消耗</strong>（成本/DoS）等。</li>
+<li><strong>工程对策串起来</strong>：输入侧——检索内容/用户上传当不可信数据、做隔离与标注；输出侧——结构化校验、转义、不直接执行模型吐的代码；工具侧——<strong>最小权限 ACL + 沙箱 + 审计</strong>（jarvis-registry 的工具级 ACL 正是治 LLM06）；资源侧——token/调用预算上限治 LLM10（见第十四章）。</li>
+</ul>
+<h2 id="十六-模型与推理基础原理兜底"><a class="markdownIt-Anchor" href="#十六-模型与推理基础原理兜底"></a> 十六、模型与推理基础（原理兜底）</h2>
+<blockquote>
+<p>这些是「应用层问多了必然往下探」的底层，答不出会显得只会调 API。不用背公式，但要讲清<strong>机制和取舍</strong>。</p>
+</blockquote>
+<h3 id="1-transformer-self-attention-原理为什么是-on2"><a class="markdownIt-Anchor" href="#1-transformer-self-attention-原理为什么是-on2"></a> 1. Transformer / Self-Attention 原理？为什么是 O(n²)？</h3>
+<ul>
+<li><strong>Self-Attention</strong>：每个 token 生成 Query/Key/Value 三个向量；用自己的 Q 和所有 token 的 K 点积得到注意力权重（<code>softmax(QKᵀ/√d)</code>），再加权求和各 token 的 V。本质是「每个词按相关性从全序列聚合信息」。</li>
+<li><strong>多头</strong>：多组 QKV 并行，各看不同子空间关系，拼接后投影。</li>
+<li><strong>O(n²)</strong>：每个 token 要和其它所有 token 算相关性 → n×n 注意力矩阵，这就是<strong>长上下文又贵又慢</strong>的根因，也是 FlashAttention（IO 优化）、稀疏/线性注意力要解决的。</li>
+<li><strong>比 RNN 强在</strong>：全序列并行（RNN 必须串行）、长距离依赖一步可达。</li>
+</ul>
+<h3 id="2-位置编码长上下文怎么外推"><a class="markdownIt-Anchor" href="#2-位置编码长上下文怎么外推"></a> 2. 位置编码？长上下文怎么外推？</h3>
+<ul>
+<li>Attention 本身对顺序无感，要靠位置编码注入次序。<strong>绝对位置编码</strong>（原始 Transformer 正弦）、<strong>RoPE 旋转位置编码</strong>（Llama 系主流，把位置编码成旋转、相对位置友好）、<strong>ALiBi</strong>（给注意力加距离惩罚）。</li>
+<li><strong>长上下文外推</strong>：<strong>YaRN / NTK 插值</strong>（缩放 RoPE 频率，把训练时 4k 的模型撑到几十 k）。但注意<strong>Lost in the Middle</strong>（Liu et al. 2023）——超长上下文里<strong>中间部分信息最易被忽略</strong>，所以重要内容放<strong>开头/结尾</strong>，别指望「塞进去就会用」。</li>
+</ul>
+<h3 id="3-embedding-原理相似度怎么算"><a class="markdownIt-Anchor" href="#3-embedding-原理相似度怎么算"></a> 3. Embedding 原理？相似度怎么算？</h3>
+<ul>
+<li><strong>原理</strong>：用对比学习训练句/段编码器，把语义近的文本拉近、远的推开；输出定长向量（如 1536 维）。池化方式（CLS / mean pooling）、是否归一化影响效果。</li>
+<li><strong>相似度</strong>：<code>cosine</code>（最常用，只看方向）、<code>dot</code>（含模长）、<code>L2</code>。向量<strong>归一化后 cosine 与 dot 等价</strong>。</li>
+<li><strong>要点</strong>：embedding 模型要和<strong>检索语料领域匹配</strong>；多语言选多语模型（bge-m3）；换模型=换维度=全库重建（见第四章实战）。</li>
+</ul>
+<h3 id="4-推理为什么慢贵有哪些优化"><a class="markdownIt-Anchor" href="#4-推理为什么慢贵有哪些优化"></a> 4. 推理为什么慢/贵？有哪些优化？</h3>
+<ul>
+<li><strong>两阶段</strong>：<strong>Prefill</strong>（并行处理输入 prompt，算力瓶颈）+ <strong>Decode</strong>（逐 token 生成，受显存带宽瓶颈，KV Cache 在这）。首 token 延迟(TTFT) 看 prefill，吐字速度看 decode。</li>
+<li><strong>优化</strong>：<strong>vLLM/PagedAttention</strong>（显存管理）+ <strong>continuous batching</strong>（动态拼批提吞吐）、<strong>投机解码 speculative decoding</strong>（小模型草稿 + 大模型校验，加速 decode）、<strong>量化</strong>（GPTQ/AWQ/GGUF/INT8-FP8，省显存降延迟、略损精度）、<strong>GQA/MQA</strong>（见 KV Cache）。</li>
+<li><strong>MoE</strong>：混合专家，每 token 只激活部分专家，总参数大但单次推理激活少（DeepSeek、Mixtral），省算力但调度/显存更复杂。</li>
+</ul>
+<h2 id="十七-prompt-工程与高级-rag-范式"><a class="markdownIt-Anchor" href="#十七-prompt-工程与高级-rag-范式"></a> 十七、Prompt 工程与高级 RAG 范式</h2>
+<h3 id="1-prompt-工程有哪些实打实的手段"><a class="markdownIt-Anchor" href="#1-prompt-工程有哪些实打实的手段"></a> 1. Prompt 工程有哪些实打实的手段？</h3>
+<ul>
+<li><strong>基本要素</strong>：角色 + 任务 + 约束 + 输出格式 + few-shot 示例；指令放开头、长上下文关键信息放首尾（对抗 Lost in the Middle）。</li>
+<li><strong>推理增强</strong>：<strong>CoT</strong>（Chain-of-Thought，让模型分步想）、<strong>Few-shot CoT / Zero-shot CoT</strong>（“let’s think step by step”）、<strong>Self-Consistency</strong>（多次采样取多数票）、<strong>ReAct</strong>（思考-行动-观察交替，Agent 基础）、<strong>Step-back</strong>（先抽象再具体）。</li>
+<li><strong>结构化输出</strong>：JSON mode / <strong>guided decoding / 受约束解码</strong>（用 schema 约束生成，保证可解析）、function calling 出结构化参数。工程上<strong>一定要 schema 校验 + 失败回喂重修</strong>，别信模型永远吐合法 JSON。</li>
+<li><strong>工程化</strong>：prompt 要<strong>版本化、可回滚、可灰度</strong>——mate-assist 用独立 <code>prompt-manager</code> 仓库 + release tag 管理，模型同学改 prompt 不用发版、线上按不可变 tag 加载。</li>
+</ul>
+<h3 id="2-rag-的演进范式naive-advanced-modular"><a class="markdownIt-Anchor" href="#2-rag-的演进范式naive-advanced-modular"></a> 2. RAG 的演进范式？（Naive → Advanced → Modular）</h3>
+<ul>
+<li><strong>Naive RAG</strong>：切块→embedding→单次检索→塞进 prompt→生成。问题：召回不准、答非所问、无纠错。</li>
+<li><strong>Advanced RAG</strong>：加<strong>检索前优化</strong>（query 改写/扩展/HyDE、元数据过滤）+ <strong>检索后优化</strong>（rerank、压缩、去重、parent-doc 返回大块）。mate-assist / rag_api 都在这一层。</li>
+<li><strong>Modular RAG</strong>：检索、路由、记忆、工具变成可编排模块（接近 Agentic）。</li>
+<li><strong>高级范式速查</strong>（按「要不要让系统自己纠错/多跳」升级）：
+<ul>
+<li><strong>HyDE</strong>：假设答案再检索（第四章）。</li>
+<li><strong>Parent-Document / small-to-big</strong>：小块召回、大块喂模型。</li>
+<li><strong>CRAG（Corrective RAG）</strong>：给召回打分，差就触发纠偏（换源/重检索）——mate-assist 的 <code>rag_grade→rag_rewrite</code> 就是它。</li>
+<li><strong>Self-RAG</strong>：模型自判要不要检索、召回够不够、答案是否有据。</li>
+<li><strong>GraphRAG</strong>（微软）：先抽实体关系建图 + 社区摘要，擅长「跨多文档的全局性问题」和多跳关系；和向量召回互补（第九章）。</li>
+<li><strong>Agentic RAG</strong>：把检索当工具交给 Agent 自主多轮调用（第二章）。</li>
+</ul>
+</li>
+<li><strong>一句话选型</strong>：单跳够用就别上 Agentic（贵、慢、难测）；需要纠错上 CRAG，需要多跳关系上 GraphRAG，需要跨文档聚合+自主规划才上 Agentic RAG。</li>
+</ul>
+<h2 id="十八-手撕-现场编码高频题"><a class="markdownIt-Anchor" href="#十八-手撕-现场编码高频题"></a> 十八、手撕 / 现场编码高频题</h2>
+<blockquote>
+<p>大厂常要求现场写一段——不求花哨，<strong>能跑、边界清楚、讲得出复杂度</strong>即可。下面都是可直接背的最小实现。</p>
+</blockquote>
+<h3 id="1-手写-self-attentionnumpy"><a class="markdownIt-Anchor" href="#1-手写-self-attentionnumpy"></a> 1. 手写 Self-Attention（numpy）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+<span class="token keyword">def</span> <span class="token function">softmax</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> x <span class="token operator">-</span> x<span class="token punctuation">.</span>max<span class="token punctuation">(</span>axis<span class="token operator">=</span>axis<span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>      <span class="token comment" spellcheck="true"># 数值稳定：减最大值防 exp 溢出</span>
+    e <span class="token operator">=</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> e <span class="token operator">/</span> e<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>axis<span class="token operator">=</span>axis<span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">self_attention</span><span class="token punctuation">(</span>X<span class="token punctuation">,</span> Wq<span class="token punctuation">,</span> Wk<span class="token punctuation">,</span> Wv<span class="token punctuation">,</span> mask<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""X: (seq, d_model)；返回 (seq, d_k)。"""</span>
+    Q<span class="token punctuation">,</span> K<span class="token punctuation">,</span> V <span class="token operator">=</span> X @ Wq<span class="token punctuation">,</span> X @ Wk<span class="token punctuation">,</span> X @ Wv             <span class="token comment" spellcheck="true"># 各 (seq, d_k)</span>
+    d_k <span class="token operator">=</span> Q<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    scores <span class="token operator">=</span> Q @ K<span class="token punctuation">.</span>T <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>d_k<span class="token punctuation">)</span>              <span class="token comment" spellcheck="true"># (seq, seq)，/√d_k 防梯度消失</span>
+    <span class="token keyword">if</span> mask <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>                          <span class="token comment" spellcheck="true"># 因果掩码：上三角置 -inf</span>
+        scores <span class="token operator">=</span> np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>mask<span class="token punctuation">,</span> scores<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1e9</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> softmax<span class="token punctuation">(</span>scores<span class="token punctuation">)</span> @ V                    <span class="token comment" spellcheck="true"># 加权求和各 token 的 V</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>讲点：<code>/√d_k</code> 的作用、causal mask 怎么来、多头就是切成 h 份各算再拼、复杂度 O(n²·d)。</li>
+</ul>
+<h3 id="2-手写最小-rag-检索cosine-top-k"><a class="markdownIt-Anchor" href="#2-手写最小-rag-检索cosine-top-k"></a> 2. 手写最小 RAG 检索（cosine top-k）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+<span class="token keyword">def</span> <span class="token function">embed</span><span class="token punctuation">(</span>texts<span class="token punctuation">)</span><span class="token punctuation">:</span>              <span class="token comment" spellcheck="true"># 占位：真实换成 bge / openai embedding</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token keyword">def</span> <span class="token function">retrieve</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> doc_vecs<span class="token punctuation">,</span> docs<span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    q <span class="token operator">=</span> embed<span class="token punctuation">(</span><span class="token punctuation">[</span>query<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    q <span class="token operator">=</span> q <span class="token operator">/</span> <span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>norm<span class="token punctuation">(</span>q<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">8</span><span class="token punctuation">)</span>
+    d <span class="token operator">=</span> doc_vecs <span class="token operator">/</span> <span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>norm<span class="token punctuation">(</span>doc_vecs<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">8</span><span class="token punctuation">)</span>
+    sims <span class="token operator">=</span> d @ q               <span class="token comment" spellcheck="true"># 归一化后点积 = cosine</span>
+    top <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span><span class="token operator">-</span>sims<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span>k<span class="token punctuation">]</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>docs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> float<span class="token punctuation">(</span>sims<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> top<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>讲点：归一化后点积=cosine；大规模要换 ANN（HNSW/IVF）而非暴力 O(N)；加元数据过滤就是先 mask 再排序。</li>
+</ul>
+<h3 id="3-手写-rrf-多路融合"><a class="markdownIt-Anchor" href="#3-手写-rrf-多路融合"></a> 3. 手写 RRF 多路融合</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">rrf</span><span class="token punctuation">(</span>rank_lists<span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""rank_lists: [[docA, docB...], [...]]，每个是一路按相关性排好的 id。"""</span>
+    scores <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">for</span> lst <span class="token keyword">in</span> rank_lists<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> rank<span class="token punctuation">,</span> doc <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>lst<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            scores<span class="token punctuation">[</span>doc<span class="token punctuation">]</span> <span class="token operator">=</span> scores<span class="token punctuation">.</span>get<span class="token punctuation">(</span>doc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">/</span> <span class="token punctuation">(</span>k <span class="token operator">+</span> rank<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> sorted<span class="token punctuation">(</span>scores<span class="token punctuation">,</span> key<span class="token operator">=</span>scores<span class="token punctuation">.</span>get<span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>讲点：只用名次不用原始分，免归一化；k 调大→名次差异被抹平。</li>
+</ul>
+<h3 id="4-带并发上限的异步批处理agent-常考"><a class="markdownIt-Anchor" href="#4-带并发上限的异步批处理agent-常考"></a> 4. 带并发上限的异步批处理（Agent 常考）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> asyncio
+
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">run_all</span><span class="token punctuation">(</span>items<span class="token punctuation">,</span> worker<span class="token punctuation">,</span> limit<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sem <span class="token operator">=</span> asyncio<span class="token punctuation">.</span>Semaphore<span class="token punctuation">(</span>limit<span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 关键：控并发防打爆下游/429</span>
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">guarded</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">async</span> <span class="token keyword">with</span> sem<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">await</span> worker<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>gather<span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">(</span>guarded<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> items<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>讲点：为什么不能无脑 <code>gather</code>（限流/连接池/内存）；CPU 密集要 <code>run_in_executor</code> 进线程池（见第十二章实战）。</li>
+</ul>
+<h3 id="5-滑动窗口裁上下文控-token"><a class="markdownIt-Anchor" href="#5-滑动窗口裁上下文控-token"></a> 5. 滑动窗口裁上下文（控 token）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">clip_by_tokens</span><span class="token punctuation">(</span>messages<span class="token punctuation">,</span> count_tokens<span class="token punctuation">,</span> budget<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""保最近消息，总 token 不超 budget；真实再叠滚动摘要（第七章）。"""</span>
+    kept<span class="token punctuation">,</span> total <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> m <span class="token keyword">in</span> reversed<span class="token punctuation">(</span>messages<span class="token punctuation">)</span><span class="token punctuation">:</span>            <span class="token comment" spellcheck="true"># 从最新往回留</span>
+        t <span class="token operator">=</span> count_tokens<span class="token punctuation">(</span>m<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> total <span class="token operator">+</span> t <span class="token operator">></span> budget<span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        kept<span class="token punctuation">.</span>append<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span> total <span class="token operator">+=</span> t
+    <span class="token keyword">return</span> list<span class="token punctuation">(</span>reversed<span class="token punctuation">(</span>kept<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="十九-部署与分布式sre-视角"><a class="markdownIt-Anchor" href="#十九-部署与分布式sre-视角"></a> 十九、部署与分布式（SRE 视角）</h2>
+<blockquote>
+<p>工程岗会问「怎么上线、怎么扩、挂了怎么办」。串起前面各章的工程点。</p>
+</blockquote>
+<ul>
+<li><strong>容器化 / K8s</strong>：mate-assist 有 <code>Dockerfile</code> + <code>k8s/</code> 编排；提示词走 <strong>git-sync sidecar</strong> 拉 <code>prompt-manager</code> 挂载给 app（镜像不打包 prompt，和代码解耦）。</li>
+<li><strong>发布与灰度</strong>：prompt 按<strong>不可变 release tag</strong> 加载，改 prompt 不发版、可秒回滚；模型/路由可按租户灰度；配 <code>verify_prompt_source.py</code> 发布前校验 tag 一致。</li>
+<li><strong>水平扩容靠无状态</strong>：网关/应用做<strong>无状态</strong>才能水平扩——jarvis-registry 把 client-info 放 <strong>Redis</strong>（<code>client_info_store</code>）让 MCP 网关 stateless；mate-assist 会话态落 <strong>MySQL checkpointer</strong>，实例可随意扩缩、崩溃可从断点恢复。</li>
+<li><strong>模型网关</strong>：多 provider/模型做<strong>路由 + failover + 限流</strong>（豆包/火山等），按 RPM/TPM 配额调度（见第十二章联合调度器）；<code>content_filter</code> 等确定性错误不重试（第六章）。</li>
+<li><strong>GPU 资源</strong>：把 <strong>reranker / embedding 做成独立服务</strong>（mate-assist 独立 reranker、rag_api embedding 线程池），GPU 活和主链路解耦，单独扩缩容、不被在线对话挤占。</li>
+<li><strong>高可用兜底</strong>：下游挂了熔断降级（走缓存/兜底话术）；离线跑批错峰 + 队列隔离避免洪峰（第十二章）。</li>
+</ul>
+<h2 id="二十-数字准备清单面前填好-背熟"><a class="markdownIt-Anchor" href="#二十-数字准备清单面前填好-背熟"></a> 二十、数字准备清单（面前填好、背熟）</h2>
+<blockquote>
+<p>「结合项目」最怕说不出量级。按下表把<strong>真实数字</strong>填进去，面试张口就来。（下列为要准备的维度，数值以你线上实际为准）</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>取数口径</th>
+<th>mate-assist</th>
+<th>rag_api</th>
+<th>jarvis-registry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>规模</td>
+<td>QPS / DAU / 文档量 / 工具数</td>
+<td>销售数、日会话数</td>
+<td>文档/chunk 量</td>
+<td>接入 MCP server / 工具数、租户数</td>
+</tr>
+<tr>
+<td>延迟</td>
+<td>P50/P95、<strong>流式看 TTFT</strong></td>
+<td>对话 P95、首 token</td>
+<td>入库/检索耗时</td>
+<td>网关转发开销</td>
+</tr>
+<tr>
+<td>效果</td>
+<td>准确率 / 召回 Hit@k / 意图准确率 / 幻觉率</td>
+<td>评测集准确率</td>
+<td>检索 Hit@k、MRR</td>
+<td>工具命中率</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>单会话 token、月成本、缓存命中率</td>
+<td>单轮 token、滚动摘要节省</td>
+<td>embedding 成本</td>
+<td>按租户配额</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>成功率 / 超时率 / 人工接管率</td>
+<td>线上成功率</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>已知亮点数</td>
+<td>优化前后对比</td>
+<td>媒体 <strong>2m7s→正常</strong>；跑批闸门 <strong>P50 32.5→10.5s</strong></td>
+<td>线程池上限 8</td>
+<td>无状态后可水平扩</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>口径优先用<strong>可观测系统</strong>真实导出（mate-assist <code>observability/metrics</code> + OTel），别拍脑袋；说不准的给<strong>量级 + 怎么测的</strong>，比编一个精确假数字可信。</li>
+</ul>
+<h2 id="二十一-2-分钟自我介绍-项目-star-话术"><a class="markdownIt-Anchor" href="#二十一-2-分钟自我介绍-项目-star-话术"></a> 二十一、2 分钟自我介绍 + 项目 STAR 话术</h2>
+<ul>
+<li><strong>开场模板（30 秒）</strong>：「我主要做 AI 应用 / Agent 后端，最近一年落了三个方向——① 一个生产级对话 Agent（mate-assist，FastAPI+LangGraph 的汽车销售助手，深度在 RAG/记忆/状态机/流式/合规）；② 一个企业 Agent 基础设施（jarvis-registry，MCP 网关 + A2A 编排，广度在多 Agent/权限/可观测）；③ 一个 RAG 索引检索微服务（rag_api，pgvector + 可插拔 embedding）。整体从<strong>单 Agent 深度</strong>到<strong>平台广度</strong>到<strong>RAG 基建</strong>都覆盖。」</li>
+<li><strong>STAR 讲项目（每个项目一段，按需展开）</strong>：
+<ul>
+<li><strong>S 场景</strong>：销售面对几千条车型知识+话术，人工记不住、新车知识更新快，答错影响成单。</li>
+<li><strong>T 任务</strong>：做一个准确、可控、低延迟、合规的销售助手后端。</li>
+<li><strong>A 行动</strong>：LangGraph 确定性图编排（意图→RAG 子链→生成→记忆）；CRAG 式 grade+重检索防幻觉；messages/model_input 分离防污染；滚动摘要控 token；节点级重试只重瞬时故障；合规红线硬门禁；一整套端到端回归防回退。</li>
+<li><strong>R 结果</strong>：（填真实数字）准确率 X→Y、媒体链路 2m7s→正常、长对话 token 成本恒定、线上 Bad Case 闭环复发率下降。</li>
+</ul>
+</li>
+<li><strong>讲踩坑（面试官最爱）</strong>：挑 1~2 个一手 Bad Case——会话&quot;毒化&quot;连续孤儿 Human 卡死、content_filter 被误当瞬时错误重试整门店失败、意图无状态重判带偏。能讲清<strong>现象→根因→修法→防回归</strong>就赢了。</li>
+</ul>
+<h2 id="二十二-反问面试官的好问题收尾加分"><a class="markdownIt-Anchor" href="#二十二-反问面试官的好问题收尾加分"></a> 二十二、反问面试官的好问题（收尾加分）</h2>
+<ul>
+<li>团队现在 Agent/RAG 最大的瓶颈是<strong>效果、延迟还是成本</strong>？卡在哪一层？</li>
+<li>你们怎么定义和度量「答得对」？有没有评测集和 Bad Case 闭环？</li>
+<li>线上 Agent 的可观测和回归体系做到什么程度了？出了 Bad Case 怎么定位？</li>
+<li>模型是自研微调为主还是 API + RAG 为主？怎么平衡效果和成本？</li>
+<li>这个岗位半年内最想让我解决的一个具体问题是什么？</li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../00.%E6%A0%B7%E5%BC%8F%E6%89%8B%E5%86%8C/%E6%A0%B7%E5%BC%8F%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-title">笔记样式速查手册</div>
+                </a>
+                
+                
+                <a href="../../../../07/31/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/02.MCP%202026-07-28%E8%A7%84%E8%8C%83%E8%A7%A3%E8%AF%BB/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-title">MCP 2026-07-28 规范解读：从有状态连接走向无状态 Agent 基础设施</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#项目" class="toc-item"> 项目</a>
+                
+                    
+                    
+                    
+                    <a href="#项目-amate-assist-汽车销售助手后端" class="toc-item"> 项目 A：mate-assist —— 汽车销售助手后端</a>
+                
+                    
+                    
+                    
+                    <a href="#项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台" class="toc-item"> 项目 B：jarvis-registry —— 企业级 MCP Gateway / A2A 编排平台</a>
+                
+                    
+                    
+                    
+                    <a href="#项目-crag_api-id-based-rag-索引检索微服务" class="toc-item"> 项目 C：rag_api —— ID-based RAG 索引/检索微服务</a>
+                
+                    
+                    
+                    
+                    <a href="#目录" class="toc-item"> 目录</a>
+                
+                    
+                    
+                    
+                    <a href="#一-项目介绍与软技能" class="toc-item"> 一、项目介绍与软技能</a>
+                
+                    
+                    
+                    
+                    <a href="#1-讲一个最熟悉最复杂的-agent-生产项目架构分几层1-15-28-47-60-72" class="toc-item"> 1. 讲一个最熟悉/最复杂的 Agent 生产项目，架构分几层？（1 / 15 / 28 / 47 / 60 / 72）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-ragagent-项目的业务痛点是什么1" class="toc-item"> 2. RAG/Agent 项目的业务痛点是什么？（1）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-讲清一个最复杂的-ai-工作流输入推理工具记忆输出回写65" class="toc-item"> 3. 讲清一个最复杂的 AI 工作流（输入→推理→工具→记忆→输出→回写）（65）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-需求排期模型同学和工程同学怎么协同40" class="toc-item"> 4. 需求/排期/模型同学和工程同学怎么协同？（40）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-用-codexclaude-code-把模糊需求写成-spec79" class="toc-item"> 5. 用 codex/claude code 把模糊需求写成 Spec？（79）</a>
+                
+                    
+                    
+                    
+                    <a href="#二-agent-架构与模式选型" class="toc-item"> 二、Agent 架构与模式选型</a>
+                
+                    
+                    
+                    
+                    <a href="#1-react-和-plan-and-execute-replan-的区别-场景-选型2" class="toc-item"> 1. ReAct 和 Plan-and-Execute-Replan 的区别、场景、选型？（2）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-ai-工作流和纯-agent-自主规划的区别什么时候不该上-agent23-71" class="toc-item"> 2. AI 工作流和纯 Agent 自主规划的区别？什么时候不该上 Agent？（23 / 71）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-workflow-graph-loop-的区别59" class="toc-item"> 3. Workflow、Graph、Loop 的区别？（59）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-agentic-rag-和普通-rag-的区别什么时候让-agent-再检索76" class="toc-item"> 4. Agentic RAG 和普通 RAG 的区别？什么时候让 Agent 再检索？（76）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-复杂问题路由何时直接-llm-rag-图数据库-多子-agent61" class="toc-item"> 5. 复杂问题路由：何时直接 LLM / RAG / 图数据库 / 多子 Agent？（61）</a>
+                
+                    
+                    
+                    
+                    <a href="#三-意图识别与路由" class="toc-item"> 三、意图识别与路由</a>
+                
+                    
+                    
+                    
+                    <a href="#1-意图识别怎么落地规则分类模型llm-路由怎么配合如何避免误判进错工具错-rag16-48" class="toc-item"> 1. 意图识别怎么落地？规则/分类模型/LLM 路由怎么配合？如何避免误判进错工具/错 RAG？（16 / 48）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-意图识别错了怎么发现-怎么兜底17" class="toc-item"> 2. 意图识别错了怎么发现、怎么兜底？（17）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-长对话里意图漂移怎么拉回35" class="toc-item"> 3. 长对话里意图漂移怎么拉回？（35）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-意图识别路由做成平台能力怎么给多业务用45" class="toc-item"> 4. 意图识别+路由做成平台能力怎么给多业务用？（45）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-case帮我退昨天买的充电宝agent-查天气怎么修27" class="toc-item"> 5. 【Case】&quot;帮我退昨天买的充电宝&quot;→Agent 查天气，怎么修？（27）</a>
+                
+                    
+                    
+                    
+                    <a href="#四-rag-全链路与检索" class="toc-item"> 四、RAG 全链路与检索</a>
+                
+                    
+                    
+                    
+                    <a href="#1-rag-全链路入库-清洗-分块-多模态解析-为什么选-weaviate4" class="toc-item"> 1. RAG 全链路：入库、清洗、分块、多模态解析、为什么选 Weaviate？（4）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-多路召回怎么搭向量bm25知识图谱元数据过滤各负责什么怎么融合进-rerank3-51" class="toc-item"> 2. 多路召回怎么搭？向量/BM25/知识图谱/元数据过滤各负责什么？怎么融合进 Rerank？（3 / 51）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-rerank-的作用rerank-模型-vs-向量库各解决什么放哪个阶段3-77" class="toc-item"> 3. Rerank 的作用？rerank 模型 vs 向量库各解决什么？放哪个阶段？（3 / 77）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-reranker-为什么不能全库跑cross-vs-bi-encoder没-gpu-怎么办52" class="toc-item"> 4. Reranker 为什么不能全库跑？cross vs bi-encoder？没 GPU 怎么办？（52）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-chunk-size-overlap-embedding-rerank-怎么调优先级36" class="toc-item"> 5. chunk size、overlap、embedding、rerank 怎么调？优先级？（36）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-rag-接在项目哪里检索结果怎么进-agent-上下文18" class="toc-item"> 6. RAG 接在项目哪里？检索结果怎么进 Agent 上下文？（18）</a>
+                
+                    
+                    
+                    
+                    <a href="#7-rag-召回质量差先查召回重排切片prompt19" class="toc-item"> 7. RAG 召回质量差，先查召回/重排/切片/prompt？（19）</a>
+                
+                    
+                    
+                    
+                    <a href="#8-幻觉的原因rag-怎么缓解召回对了模型仍编造怎么办12" class="toc-item"> 8. 幻觉的原因？RAG 怎么缓解？召回对了模型仍编造怎么办？（12）</a>
+                
+                    
+                    
+                    
+                    <a href="#五-工具调用function-calling-mcp-skill" class="toc-item"> 五、工具调用：Function Calling / MCP / Skill</a>
+                
+                    
+                    
+                    
+                    <a href="#1-function-calling-原理mcp-是什么mcp-和-skill-区别6" class="toc-item"> 1. Function Calling 原理？MCP 是什么？MCP 和 Skill 区别？（6）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-工具膨胀几百个-skill怎么做工具发现避免塞爆-prompt5" class="toc-item"> 2. 工具膨胀（几百个 skill）怎么做工具发现，避免塞爆 prompt？（5）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-工具调用的-schema-校验-参数修正-重试-限流-降级56" class="toc-item"> 3. 工具调用的 schema 校验、参数修正、重试、限流、降级？（56）</a>
+                
+                    
+                    
+                    
+                    <a href="#六-agent-稳定性异常-死循环-容错" class="toc-item"> 六、Agent 稳定性：异常、死循环、容错</a>
+                
+                    
+                    
+                    
+                    <a href="#1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7" class="toc-item"> 1. 工具调用异常（JSON 解析失败/参数缺失/超时）：重试、幂等、熔断？（7）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-agent-调用失败超时脏数据怎么处理21-56" class="toc-item"> 2. Agent 调用失败/超时/脏数据怎么处理？（21 / 56）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74" class="toc-item"> 3. 循环调用/死循环/无限工具调用怎么防？max step 之外还有啥？（34 / 59 / 68 / 74）</a>
+                
+                    
+                    
+                    
+                    <a href="#七-记忆与上下文管理" class="toc-item"> 七、记忆与上下文管理</a>
+                
+                    
+                    
+                    
+                    <a href="#1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49" class="toc-item"> 1. 记忆分层/三层记忆：会话级、工作/实体级、长期分别存什么？何时读写？怎么防污染？（8 / 9 / 49）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-三层记忆在长期任务里怎么演化新事实写入旧事实过期冲突合并画像重建62" class="toc-item"> 2. 三层记忆在长期任务里怎么演化：新事实写入/旧事实过期/冲突合并/画像重建？（62）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-上下文超长怎么处理滑动窗口摘要关键信息抽取向量检索历史怎么组合9-50" class="toc-item"> 3. 上下文超长怎么处理？滑动窗口/摘要/关键信息抽取/向量检索历史怎么组合？（9 / 50）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-长对话怎么防上下文漂移state-状态机怎么设计8" class="toc-item"> 4. 长对话怎么防上下文漂移？State 状态机怎么设计？（8）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-共享-memory-和私有-memory-怎么设计67" class="toc-item"> 5. 共享 memory 和私有 memory 怎么设计？（67）</a>
+                
+                    
+                    
+                    
+                    <a href="#八-多-agent-协作" class="toc-item"> 八、多 Agent 协作</a>
+                
+                    
+                    
+                    
+                    <a href="#1-子-agent-之间怎么通讯-任务怎么拆分20" class="toc-item"> 1. 子 Agent 之间怎么通讯、任务怎么拆分？（20）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-supervisorplannerworkerreviewer-的边界怎么划工具集能共用吗73" class="toc-item"> 2. Supervisor/Planner/Worker/Reviewer 的边界怎么划？工具集能共用吗？（73）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-多-agent-上下文怎么传会不会越传越多污染66-67" class="toc-item"> 3. 多 Agent 上下文怎么传？会不会越传越多/污染？（66 / 67）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-子-agent-再调-agenttoken-怎么炸怎么隔离状态75" class="toc-item"> 4. 子 Agent 再调 Agent，token 怎么炸？怎么隔离状态？（75）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-怎么避免两个-agent-互相甩锅式调用33" class="toc-item"> 5. 怎么避免两个 Agent 互相甩锅式调用？（33）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-多-agent-平台化工具权限-沙箱-审计-成本怎么管43" class="toc-item"> 6. 多 Agent 平台化：工具权限、沙箱、审计、成本怎么管？（43）</a>
+                
+                    
+                    
+                    
+                    <a href="#九-框架langgraph-langchain-agentscope" class="toc-item"> 九、框架：LangGraph / LangChain / AgentScope</a>
+                
+                    
+                    
+                    
+                    <a href="#1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53" class="toc-item"> 1. LangChain 和 LangGraph 区别？何时链够用、何时必须上状态图？（53）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-langgraph-的-statenodeedgeconditional-edge-实际怎么用63" class="toc-item"> 2. LangGraph 的 State/Node/Edge/Conditional Edge 实际怎么用？（63）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-statereducercheckpointer-怎么做断点恢复和多轮对话54" class="toc-item"> 3. State/Reducer/Checkpointer 怎么做断点恢复和多轮对话？（54）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55" class="toc-item"> 4. 图数据库选 Neo4j 还是其他？实体/关系/属性怎么建模？图查询和向量召回怎么互补？（55）</a>
+                
+                    
+                    
+                    
+                    <a href="#十-模型原理-调参与微调" class="toc-item"> 十、模型原理、调参与微调</a>
+                
+                    
+                    
+                    
+                    <a href="#1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11" class="toc-item"> 1. KV Cache 原理？temperature/top_p/top_k？B 端怎么调参？（11）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-rag-vs-fine-tuning-怎么选b-端客户场景13" class="toc-item"> 2. RAG vs Fine-tuning 怎么选？B 端客户场景？（13）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-lora-原理merge-权重优缺点sftdpo-对齐目标何时微调何时-rag14" class="toc-item"> 3. LoRA 原理？Merge 权重优缺点？SFT/DPO 对齐目标？何时微调何时 RAG？（14）</a>
+                
+                    
+                    
+                    
+                    <a href="#十一-流式输出-sse" class="toc-item"> 十一、流式输出 SSE</a>
+                
+                    
+                    
+                    
+                    <a href="#1-sse-怎么实现异常断流怎么处理乱序问题10" class="toc-item"> 1. SSE 怎么实现？异常断流怎么处理？乱序问题？（10）</a>
+                
+                    
+                    
+                    
+                    <a href="#十二-工程架构异步-redis-mysql-可观测" class="toc-item"> 十二、工程架构：异步、Redis、MySQL、可观测</a>
+                
+                    
+                    
+                    
+                    <a href="#1-agent-调用链里异步-vs-同步怎么选为什么64" class="toc-item"> 1. Agent 调用链里异步 vs 同步怎么选？为什么？（64）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-asyncio-批量跑-agent-为什么不能无脑并发怎么限流70" class="toc-item"> 2. asyncio 批量跑 Agent 为什么不能无脑并发？怎么限流？（70）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-怎么设计可观测的-agent-调用链22" class="toc-item"> 3. 怎么设计可观测的 Agent 调用链？（22）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-redis-在-agent-里用在哪会话状态意图缓存工具结果缓存分布式锁限流57-78" class="toc-item"> 4. Redis 在 Agent 里用在哪？会话状态/意图缓存/工具结果缓存/分布式锁/限流？（57 / 78）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-mysql-存对话记忆任务状态怎么分表热点用户怎么避免单表膨胀58" class="toc-item"> 5. MySQL 存对话/记忆/任务状态怎么分表？热点用户怎么避免单表膨胀？（58）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-补充离线跑批怎么做并发调度和可靠性源自跑批优化实战" class="toc-item"> 6. 【补充】离线跑批怎么做并发调度和可靠性？（源自跑批优化实战）</a>
+                
+                    
+                    
+                    
+                    <a href="#十三-评测与-bad-case-闭环" class="toc-item"> 十三、评测与 Bad Case 闭环</a>
+                
+                    
+                    
+                    
+                    <a href="#1-怎么定义-agent-答得对评测集谁建-标签谁标25" class="toc-item"> 1. 怎么定义 Agent 答得对？评测集谁建、标签谁标？（25）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-智能体评测怎么做离线-vs-线上分别看什么指标29" class="toc-item"> 2. 智能体评测怎么做？离线 vs 线上分别看什么指标？（29）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-自动评测和人工评测怎么配合评分怎么防主观30" class="toc-item"> 3. 自动评测和人工评测怎么配合？评分怎么防主观？（30）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-评测体系从-0-到-1先搭数据指标平台看板41" class="toc-item"> 4. 评测体系从 0 到 1，先搭数据/指标/平台/看板？（41）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-评测集只有-200-条线上几十万用户怎么看结论39" class="toc-item"> 5. 评测集只有 200 条，线上几十万用户，怎么看结论？（39）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-bad-case-闭环系统怎么设计采集归类复盘回归要不要产品化roi-怎么讲31-42" class="toc-item"> 6. Bad Case 闭环系统怎么设计（采集→归类→复盘→回归）？要不要产品化？ROI 怎么讲？（31 / 42）</a>
+                
+                    
+                    
+                    
+                    <a href="#7-bad-case-来了从用户原话意图检索工具模型输出怎么逐层定位24" class="toc-item"> 7. Bad Case 来了，从用户原话/意图/检索/工具/模型输出怎么逐层定位？（24）</a>
+                
+                    
+                    
+                    
+                    <a href="#8-相似-bad-case-反复出现怎么判断是数据prompt检索模型问题32" class="toc-item"> 8. 相似 Bad Case 反复出现，怎么判断是数据/prompt/检索/模型问题？（32）</a>
+                
+                    
+                    
+                    
+                    <a href="#9-caseagent-线上大面积答非所问第一反应和排查顺序26" class="toc-item"> 9. 【Case】Agent 线上大面积答非所问，第一反应和排查顺序？（26）</a>
+                
+                    
+                    
+                    
+                    <a href="#10-补充端到端回归体系怎么工程化源自-scripts-回归实战" class="toc-item"> 10. 【补充】端到端回归体系怎么工程化？（源自 scripts/ 回归实战）</a>
+                
+                    
+                    
+                    
+                    <a href="#11-老板说准确率-8095怎么操作38" class="toc-item"> 11. 老板说准确率 80%→95%，怎么操作？（38）</a>
+                
+                    
+                    
+                    
+                    <a href="#十四-成本控制" class="toc-item"> 十四、成本控制</a>
+                
+                    
+                    
+                    
+                    <a href="#1-agent-线上成本炸了token工具检索都高先砍哪块46" class="toc-item"> 1. Agent 线上成本炸了（token/工具/检索都高），先砍哪块？（46）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-高并发下-llm-成本怎么控-token-和钱69" class="toc-item"> 2. 高并发下 LLM 成本怎么控 token 和钱？（69）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-rag多-agent工作流技术选型怎么平衡效果延迟成本44" class="toc-item"> 3. RAG+多 Agent+工作流，技术选型怎么平衡效果/延迟/成本？（44）</a>
+                
+                    
+                    
+                    
+                    <a href="#十五-合规与安全b-端重点" class="toc-item"> 十五、合规与安全（B 端重点）</a>
+                
+                    
+                    
+                    
+                    <a href="#1-agent-输出合规怎么守源自话术合规门禁实战" class="toc-item"> 1. Agent 输出合规怎么守？（源自话术合规门禁实战）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-根因不一定在-prompt也可能在代码" class="toc-item"> 2. 根因不一定在 Prompt——也可能在代码</a>
+                
+                    
+                    
+                    
+                    <a href="#3-pii-内容安全怎么处理" class="toc-item"> 3. PII / 内容安全怎么处理？</a>
+                
+                    
+                    
+                    
+                    <a href="#4-llm-应用安全有哪些系统性风险owasp-llm-top-10" class="toc-item"> 4. LLM 应用安全有哪些系统性风险？（OWASP LLM Top 10）</a>
+                
+                    
+                    
+                    
+                    <a href="#十六-模型与推理基础原理兜底" class="toc-item"> 十六、模型与推理基础（原理兜底）</a>
+                
+                    
+                    
+                    
+                    <a href="#1-transformer-self-attention-原理为什么是-on2" class="toc-item"> 1. Transformer / Self-Attention 原理？为什么是 O(n²)？</a>
+                
+                    
+                    
+                    
+                    <a href="#2-位置编码长上下文怎么外推" class="toc-item"> 2. 位置编码？长上下文怎么外推？</a>
+                
+                    
+                    
+                    
+                    <a href="#3-embedding-原理相似度怎么算" class="toc-item"> 3. Embedding 原理？相似度怎么算？</a>
+                
+                    
+                    
+                    
+                    <a href="#4-推理为什么慢贵有哪些优化" class="toc-item"> 4. 推理为什么慢/贵？有哪些优化？</a>
+                
+                    
+                    
+                    
+                    <a href="#十七-prompt-工程与高级-rag-范式" class="toc-item"> 十七、Prompt 工程与高级 RAG 范式</a>
+                
+                    
+                    
+                    
+                    <a href="#1-prompt-工程有哪些实打实的手段" class="toc-item"> 1. Prompt 工程有哪些实打实的手段？</a>
+                
+                    
+                    
+                    
+                    <a href="#2-rag-的演进范式naive-advanced-modular" class="toc-item"> 2. RAG 的演进范式？（Naive → Advanced → Modular）</a>
+                
+                    
+                    
+                    
+                    <a href="#十八-手撕-现场编码高频题" class="toc-item"> 十八、手撕 / 现场编码高频题</a>
+                
+                    
+                    
+                    
+                    <a href="#1-手写-self-attentionnumpy" class="toc-item"> 1. 手写 Self-Attention（numpy）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-手写最小-rag-检索cosine-top-k" class="toc-item"> 2. 手写最小 RAG 检索（cosine top-k）</a>
+                
+                    
+                    
+                    
+                    <a href="#3-手写-rrf-多路融合" class="toc-item"> 3. 手写 RRF 多路融合</a>
+                
+                    
+                    
+                    
+                    <a href="#4-带并发上限的异步批处理agent-常考" class="toc-item"> 4. 带并发上限的异步批处理（Agent 常考）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-滑动窗口裁上下文控-token" class="toc-item"> 5. 滑动窗口裁上下文（控 token）</a>
+                
+                    
+                    
+                    
+                    <a href="#十九-部署与分布式sre-视角" class="toc-item"> 十九、部署与分布式（SRE 视角）</a>
+                
+                    
+                    
+                    
+                    <a href="#二十-数字准备清单面前填好-背熟" class="toc-item"> 二十、数字准备清单（面前填好、背熟）</a>
+                
+                    
+                    
+                    
+                    <a href="#二十一-2-分钟自我介绍-项目-star-话术" class="toc-item"> 二十一、2 分钟自我介绍 + 项目 STAR 话术</a>
+                
+                    
+                    
+                    
+                    <a href="#二十二-反问面试官的好问题收尾加分" class="toc-item"> 二十二、反问面试官的好问题（收尾加分）</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
+            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="243" data-site-tags="167" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../../../../search.json" };</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+</body>
+</html>
