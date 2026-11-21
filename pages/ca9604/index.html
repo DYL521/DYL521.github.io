@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    
+    <meta name="description" content="https://github.com/run-llama/llama_index https://llamahub.ai/ 注意：上面两个链接是 LlamaIndex（一个 RAG / 数据接入框架）的仓库和插">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Llama 快速入门 - DYL521">
+    <meta property="og:description" content="https://github.com/run-llama/llama_index https://llamahub.ai/ 注意：上面两个链接是 LlamaIndex（一个 RAG / 数据接入框架）的仓库和插">
+    <meta property="og:url" content="https://dyl521.github.io/pages/ca9604/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="Llama 快速入门 - DYL521">
+    
+    <meta property="article:published_time" content="2025-04-28T09:43:57.000Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Llama 快速入门 - DYL521">
+    <meta name="twitter:description" content="https://github.com/run-llama/llama_index https://llamahub.ai/ 注意：上面两个链接是 LlamaIndex（一个 RAG / 数据接入框架）的仓库和插">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <link rel="canonical" href="https://dyl521.github.io/pages/ca9604/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>Llama 快速入门 - DYL521</title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">首页</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">分类</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">归档</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">标签</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2025</span></div>
+            
+            <h1 class="article-title" data-reveal>Llama 快速入门</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">人工智能</span>
+                <span>2025-04-28</span>
+                <span>· 21 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 6141 <span data-i18n="post_words_suffix">字</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M140%20150C420%20520%20740%2050%201060%20170%22%2F%3E%3Cpath%20d%3D%22M140%20173C420%20505%20740%2069%201060%20193%22%2F%3E%3Cpath%20d%3D%22M140%20196C420%20490%20740%2088%201060%20216%22%2F%3E%3Cpath%20d%3D%22M140%20219C420%20475%20740%20107%201060%20239%22%2F%3E%3Cpath%20d%3D%22M140%20242C420%20460%20740%20126%201060%20262%22%2F%3E%3Cpath%20d%3D%22M140%20265C420%20445%20740%20145%201060%20285%22%2F%3E%3Cpath%20d%3D%22M140%20288C420%20430%20740%20164%201060%20308%22%2F%3E%3Cpath%20d%3D%22M140%20311C420%20415%20740%20183%201060%20331%22%2F%3E%3Cpath%20d%3D%22M140%20334C420%20400%20740%20202%201060%20354%22%2F%3E%3Cpath%20d%3D%22M140%20357C420%20385%20740%20221%201060%20377%22%2F%3E%3Cpath%20d%3D%22M140%20380C420%20370%20740%20240%201060%20400%22%2F%3E%3Cpath%20d%3D%22M140%20403C420%20355%20740%20259%201060%20423%22%2F%3E%3Cpath%20d%3D%22M140%20426C420%20340%20740%20278%201060%20446%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Llama 快速入门 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/run-llama/llama_index">https://github.com/run-llama/llama_index</a></li>
+<li><a target="_blank" rel="noopener" href="https://llamahub.ai/">https://llamahub.ai/</a></li>
+</ul>
+<blockquote>
+<p>注意：上面两个链接是 <strong>LlamaIndex</strong>（一个 RAG / 数据接入框架）的仓库和插件市场，它和 Meta 的 <strong>Llama 模型</strong>只是名字相近，并不是同一个东西。本文先讲 Llama 模型本身怎么跑起来，LlamaIndex 在 RAG 部分再展开。</p>
+</blockquote>
+<h2 id="01llama-是什么"><a class="markdownIt-Anchor" href="#01llama-是什么"></a> 01.Llama 是什么</h2>
+<p>Llama 是 Meta 发布的一系列**开放权重（open weights）**大语言模型。&quot;开放权重&quot;的意思是可以下载模型参数在本地推理、微调，但它使用的是 Meta 自己的社区许可证，而不是 Apache/MIT 这类标准开源协议（后文&quot;许可证&quot;一节细说）。</p>
+<h3 id="11-模型家族概览"><a class="markdownIt-Anchor" href="#11-模型家族概览"></a> 1.1 模型家族概览</h3>
+<table>
+<thead>
+<tr>
+<th>代际</th>
+<th>大致时间</th>
+<th>代表尺寸</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Llama 1</td>
+<td>2023.02</td>
+<td>7B / 13B / 33B / 65B</td>
+<td>仅研究用途，开启了开源社区微调热潮（Alpaca、Vicuna 等）</td>
+</tr>
+<tr>
+<td>Llama 2</td>
+<td>2023.07</td>
+<td>7B / 13B / 70B</td>
+<td>提供 Chat 版本，许可证允许商用（有附加条款）</td>
+</tr>
+<tr>
+<td>Llama 3</td>
+<td>2024.04</td>
+<td>8B / 70B</td>
+<td>新分词器（词表约 128K），效果大幅提升</td>
+</tr>
+<tr>
+<td>Llama 3.1</td>
+<td>2024.07</td>
+<td>8B / 70B / 405B</td>
+<td>上下文扩展到 128K，支持工具调用</td>
+</tr>
+<tr>
+<td>Llama 3.2</td>
+<td>2024.09</td>
+<td>1B / 3B（文本），11B / 90B（视觉）</td>
+<td>小模型面向端侧，大模型支持图像输入</td>
+</tr>
+<tr>
+<td>Llama 3.3</td>
+<td>2024.12</td>
+<td>70B</td>
+<td>仅指令版，效果接近 3.1 405B</td>
+</tr>
+<tr>
+<td>Llama 4</td>
+<td>2025.04</td>
+<td>Scout / Maverick 等</td>
+<td>改为 MoE（混合专家）架构，原生多模态</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>具体参数、上下文长度以官方模型卡（Hugging Face 上 <code>meta-llama</code> 组织下的 Model Card）为准，新版本迭代很快，这里只列大方向。</p>
+</blockquote>
+<h3 id="12-base-模型-vs-instruct-模型"><a class="markdownIt-Anchor" href="#12-base-模型-vs-instruct-模型"></a> 1.2 Base 模型 vs Instruct 模型</h3>
+<ul>
+<li><strong>Base（预训练）模型</strong>：只会&quot;续写&quot;，适合继续预训练、做领域微调。</li>
+<li><strong>Instruct / Chat 模型</strong>：在 Base 上做了指令微调和对齐，能按对话模板回答问题，<strong>日常使用、做 RAG 都选 Instruct 版</strong>。</li>
+<li>Instruct 模型对输入格式（chat template）有要求，自己拼 prompt 容易出错，尽量用框架提供的 <code>apply_chat_template</code> 或 Ollama 等工具自动处理。</li>
+</ul>
+<h2 id="02用-ollama-最快跑起来"><a class="markdownIt-Anchor" href="#02用-ollama-最快跑起来"></a> 02.用 Ollama 最快跑起来</h2>
+<p><a target="_blank" rel="noopener" href="https://ollama.com">Ollama</a> 把模型下载、量化格式、推理服务打包成一个命令行工具，是本地体验 Llama 最省事的方式。</p>
+<h3 id="21-安装与运行"><a class="markdownIt-Anchor" href="#21-安装与运行"></a> 2.1 安装与运行</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># macOS 可以直接下载安装包，或者用 brew</span>
+brew <span class="token function">install</span> ollama
+
+<span class="token comment" spellcheck="true"># Linux 官方一键脚本</span>
+curl -fsSL https://ollama.com/install.sh <span class="token operator">|</span> sh
+
+<span class="token comment" spellcheck="true"># 启动服务（桌面版安装后会自动在后台运行）</span>
+ollama serve
+
+<span class="token comment" spellcheck="true"># 拉取并进入交互对话</span>
+ollama run llama3.1:8b
+
+<span class="token comment" spellcheck="true"># 常用管理命令</span>
+ollama pull llama3.2:3b   <span class="token comment" spellcheck="true"># 只下载不运行</span>
+ollama list               <span class="token comment" spellcheck="true"># 查看本地模型</span>
+ollama <span class="token function">ps</span>                 <span class="token comment" spellcheck="true"># 查看正在加载的模型</span>
+ollama <span class="token function">rm</span> llama3.2:3b     <span class="token comment" spellcheck="true"># 删除模型</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Ollama 仓库里的模型默认就是量化后的版本（通常是 4bit 级别），8B 模型几个 GB，普通笔记本也能跑。</p>
+<h3 id="22-通过-http-api-调用"><a class="markdownIt-Anchor" href="#22-通过-http-api-调用"></a> 2.2 通过 HTTP API 调用</h3>
+<p>Ollama 默认监听 <code>http://localhost:11434</code>：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">curl http://localhost:11434/api/chat -d <span class="token string">'{
+  "model": "llama3.1:8b",
+  "messages": [{"role": "user", "content": "用一句话介绍一下 Redis"}],
+  "stream": false
+}'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>它还提供 OpenAI 兼容接口，已有的 OpenAI SDK 代码改一下 <code>base_url</code> 就能用：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+
+client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>base_url<span class="token operator">=</span><span class="token string">"http://localhost:11434/v1"</span><span class="token punctuation">,</span> api_key<span class="token operator">=</span><span class="token string">"ollama"</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># key 随便填</span>
+resp <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
+    model<span class="token operator">=</span><span class="token string">"llama3.1:8b"</span><span class="token punctuation">,</span>
+    messages<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"什么是 RAG？"</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>content<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="23-modelfile-自定义"><a class="markdownIt-Anchor" href="#23-modelfile-自定义"></a> 2.3 Modelfile 自定义</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cat</span> <span class="token operator">></span> Modelfile <span class="token operator">&lt;&lt;</span><span class="token string">'EOF'
+FROM llama3.1:8b
+PARAMETER temperature 0.3
+PARAMETER num_ctx 8192
+SYSTEM 你是一个只用中文回答的技术助手。
+EOF</span>
+
+ollama create my-llama -f Modelfile
+ollama run my-llama
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>坑：Ollama 默认上下文窗口（<code>num_ctx</code>）比模型支持的最大值小得多，做 RAG 塞长文档时要显式调大，否则前面的内容会被截断，表现为&quot;模型没看到资料&quot;。</p>
+</blockquote>
+<h2 id="03用-llamacpp-跑-gguf-模型"><a class="markdownIt-Anchor" href="#03用-llamacpp-跑-gguf-模型"></a> 03.用 llama.cpp 跑 GGUF 模型</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> 是用 C/C++ 实现的推理引擎，Ollama 底层也基于它。直接用 llama.cpp 可以更细地控制量化方式和推理参数。</p>
+<h3 id="31-编译"><a class="markdownIt-Anchor" href="#31-编译"></a> 3.1 编译</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/ggml-org/llama.cpp
+<span class="token function">cd</span> llama.cpp
+
+<span class="token comment" spellcheck="true"># CPU / Apple Silicon（macOS 上默认启用 Metal）</span>
+cmake -B build
+cmake --build build --config Release -j
+
+<span class="token comment" spellcheck="true"># NVIDIA 显卡需开启 CUDA</span>
+<span class="token comment" spellcheck="true"># cmake -B build -DGGML_CUDA=ON</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>编译完成后 <code>build/bin/</code> 下有 <code>llama-cli</code>、<code>llama-server</code>、<code>llama-quantize</code> 等可执行文件。</p>
+<h3 id="32-gguf-与量化"><a class="markdownIt-Anchor" href="#32-gguf-与量化"></a> 3.2 GGUF 与量化</h3>
+<p>GGUF 是 llama.cpp 使用的模型文件格式，把权重、分词器、元数据打包进单个文件。量化就是把 16bit 浮点权重压缩到 8bit、4bit 甚至更低，用少量精度换显存和速度。</p>
+<p>常见量化类型（名字中的数字大致代表每个权重的位数）：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F16</code> / <code>BF16</code></td>
+<td>不量化，体积最大，作为转换中间格式</td>
+</tr>
+<tr>
+<td><code>Q8_0</code></td>
+<td>8bit，几乎无损，体积约为 F16 的一半</td>
+</tr>
+<tr>
+<td><code>Q5_K_M</code></td>
+<td>5bit 级别，质量和体积较均衡</td>
+</tr>
+<tr>
+<td><code>Q4_K_M</code></td>
+<td>4bit 级别，最常用的折中选择</td>
+</tr>
+<tr>
+<td><code>Q2_K</code> / <code>Q3_K_*</code></td>
+<td>体积很小，但质量下降明显</td>
+</tr>
+</tbody>
+</table>
+<p>把 Hugging Face 模型转换并量化：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> -r requirements.txt
+
+<span class="token comment" spellcheck="true"># 1. HF safetensors -> GGUF (F16)</span>
+python convert_hf_to_gguf.py /path/to/Llama-3.1-8B-Instruct \
+    --outfile llama-3.1-8b-f16.gguf --outtype f16
+
+<span class="token comment" spellcheck="true"># 2. 量化为 Q4_K_M</span>
+./build/bin/llama-quantize llama-3.1-8b-f16.gguf llama-3.1-8b-Q4_K_M.gguf Q4_K_M
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上 Hugging Face 上已经有大量社区转换好的 GGUF 文件，直接下载即可，不一定要自己转。</p>
+<h3 id="33-运行"><a class="markdownIt-Anchor" href="#33-运行"></a> 3.3 运行</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 命令行对话</span>
+./build/bin/llama-cli -m llama-3.1-8b-Q4_K_M.gguf -c 8192 -ngl 99
+
+<span class="token comment" spellcheck="true"># 启动 HTTP 服务（同样提供 OpenAI 兼容的 /v1/chat/completions）</span>
+./build/bin/llama-server -m llama-3.1-8b-Q4_K_M.gguf -c 8192 -ngl 99 --port 8080
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>-c</code>：上下文长度</li>
+<li><code>-ngl</code>：放到 GPU 上的层数，设一个很大的值表示尽量全部放 GPU；显存不够时调小，剩余层走 CPU</li>
+</ul>
+<h2 id="04用-hugging-face-transformers"><a class="markdownIt-Anchor" href="#04用-hugging-face-transformers"></a> 04.用 Hugging Face transformers</h2>
+<p>适合需要在 Python 中做实验、微调或者接入训练流程的场景。</p>
+<h3 id="41-获取权重"><a class="markdownIt-Anchor" href="#41-获取权重"></a> 4.1 获取权重</h3>
+<p>Meta 的官方仓库是 <strong>gated（需申请）</strong> 的：在 Hugging Face 模型页面同意许可证，审核通过后用 token 登录：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> -U transformers accelerate torch
+huggingface-cli login   <span class="token comment" spellcheck="true"># 粘贴 HF access token</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="42-最小推理示例"><a class="markdownIt-Anchor" href="#42-最小推理示例"></a> 4.2 最小推理示例</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline
+
+model_id <span class="token operator">=</span> <span class="token string">"meta-llama/Llama-3.1-8B-Instruct"</span>
+
+pipe <span class="token operator">=</span> pipeline<span class="token punctuation">(</span>
+    <span class="token string">"text-generation"</span><span class="token punctuation">,</span>
+    model<span class="token operator">=</span>model_id<span class="token punctuation">,</span>
+    torch_dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span>bfloat16<span class="token punctuation">,</span>
+    device_map<span class="token operator">=</span><span class="token string">"auto"</span><span class="token punctuation">,</span>       <span class="token comment" spellcheck="true"># 自动分配到 GPU / CPU</span>
+<span class="token punctuation">)</span>
+
+messages <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"你是一个简洁的中文助手。"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"解释一下什么是向量数据库。"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+out <span class="token operator">=</span> pipe<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> max_new_tokens<span class="token operator">=</span><span class="token number">256</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>out<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"generated_text"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>传入 <code>messages</code> 列表时，pipeline 会自动调用模型自带的 chat template，不用手写 <code>&lt;|start_header_id|&gt;</code> 之类的特殊 token。</p>
+<h3 id="43-低显存加载4bit"><a class="markdownIt-Anchor" href="#43-低显存加载4bit"></a> 4.3 低显存加载（4bit）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForCausalLM<span class="token punctuation">,</span> AutoTokenizer<span class="token punctuation">,</span> BitsAndBytesConfig
+
+bnb <span class="token operator">=</span> BitsAndBytesConfig<span class="token punctuation">(</span>load_in_4bit<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> bnb_4bit_compute_dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span>bfloat16<span class="token punctuation">)</span>
+tok <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_id<span class="token punctuation">)</span>
+model <span class="token operator">=</span> AutoModelForCausalLM<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_id<span class="token punctuation">,</span> quantization_config<span class="token operator">=</span>bnb<span class="token punctuation">,</span> device_map<span class="token operator">=</span><span class="token string">"auto"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p><code>bitsandbytes</code> 主要支持 NVIDIA CUDA；Mac 上更推荐 Ollama / llama.cpp，或 Apple 的 MLX 生态。</p>
+</blockquote>
+<h2 id="05硬件怎么估算"><a class="markdownIt-Anchor" href="#05硬件怎么估算"></a> 05.硬件怎么估算</h2>
+<p>一个粗略的经验公式（<strong>仅估算，实际还要看框架实现和上下文长度</strong>）：</p>
+<pre class="line-numbers language-undefined"><code class="language-undefined">权重占用 ≈ 参数量 × 每个参数的字节数
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>FP16/BF16（2 字节）</th>
+<th>8bit（约 1 字节）</th>
+<th>4bit（约 0.5 字节）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8B</td>
+<td>≈ 16 GB</td>
+<td>≈ 8 GB</td>
+<td>≈ 4~5 GB</td>
+</tr>
+<tr>
+<td>70B</td>
+<td>≈ 140 GB</td>
+<td>≈ 70 GB</td>
+<td>≈ 35~40 GB</td>
+</tr>
+</tbody>
+</table>
+<p>在此基础上还要留出：</p>
+<ul>
+<li><strong>KV Cache</strong>：随上下文长度和并发数线性增长，长上下文时可能比想象中大得多；</li>
+<li>运行时与激活值的额外开销。</li>
+</ul>
+<p>一些实践建议：</p>
+<ul>
+<li>只有 CPU：选 1B~8B 的 4bit 模型，能跑但速度有限；</li>
+<li>Apple Silicon：统一内存可以被 GPU 使用，内存越大能跑的模型越大；</li>
+<li>消费级 NVIDIA 显卡：8B 模型 4bit/8bit 比较舒服，70B 需要多卡或大量 CPU offload；</li>
+<li>生产环境高并发：考虑 vLLM 等推理服务框架，而不是 Ollama。</li>
+</ul>
+<h2 id="06许可证注意事项"><a class="markdownIt-Anchor" href="#06许可证注意事项"></a> 06.许可证注意事项</h2>
+<p>Llama 使用的是 Meta 的社区许可证（如 Llama 2 Community License、Llama 3.x Community License），不是 OSI 认可的开源协议，使用前要读原文，几个常被提到的点：</p>
+<ul>
+<li>允许商用，但<strong>月活用户超过 7 亿</strong>的产品需要另外向 Meta 申请授权；</li>
+<li>需要遵守配套的可接受使用政策（Acceptable Use Policy）；</li>
+<li>Llama 3 系列对衍生模型的命名、署名有要求（例如在名称中体现 “Llama”、注明 “Built with Llama”）；</li>
+<li>不同版本条款并不完全相同（例如部分多模态版本曾对特定地区有限制），<strong>以对应版本的 LICENSE 文件为准</strong>。</li>
+</ul>
+<h2 id="07常见问题"><a class="markdownIt-Anchor" href="#07常见问题"></a> 07.常见问题</h2>
+<ul>
+<li><strong>模型回答胡言乱语 / 不停输出</strong>：多半是 chat template 不对或用了 Base 模型，换 Instruct 版并用框架自带模板。</li>
+<li><strong>中文效果一般</strong>：Llama 训练语料以英文为主，中文场景可以对比一下中文能力更强的开源模型，或做中文微调。</li>
+<li><strong>下载太慢</strong>：可以使用 Hugging Face 镜像站或者先下载 GGUF 文件。</li>
+<li><strong>Ollama 和 llama.cpp 怎么选</strong>：只想用 → Ollama；要精细控制量化、参数、部署 → llama.cpp；要训练微调 → transformers。</li>
+</ul>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ul>
+<li>Llama 是 Meta 的开放权重模型家族，日常使用选 Instruct 版本；</li>
+<li>本地体验首选 <strong>Ollama</strong>，需要定制选 <strong>llama.cpp + GGUF</strong>，做实验/微调选 <strong>transformers</strong>；</li>
+<li>量化（Q4_K_M、Q8_0 等）是在消费级硬件上跑大模型的关键，显存估算记住&quot;参数量 × 字节数 + KV Cache&quot;；</li>
+<li>商用前一定要看清对应版本的许可证条款。</li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/dyl521-en/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">邓玉林的英文简历</div>
+                </a>
+                
+                
+                <a href="../../pages/18adac/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">Weaviate</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01llama-是什么" class="toc-item">01.Llama 是什么</a>
+                
+                    
+                    
+                    
+                    <a href="#11-模型家族概览" class="toc-item">1.1 模型家族概览</a>
+                
+                    
+                    
+                    
+                    <a href="#12-base-模型-vs-instruct-模型" class="toc-item">1.2 Base 模型 vs Instruct 模型</a>
+                
+                    
+                    
+                    
+                    <a href="#02用-ollama-最快跑起来" class="toc-item">02.用 Ollama 最快跑起来</a>
+                
+                    
+                    
+                    
+                    <a href="#21-安装与运行" class="toc-item">2.1 安装与运行</a>
+                
+                    
+                    
+                    
+                    <a href="#22-通过-http-api-调用" class="toc-item">2.2 通过 HTTP API 调用</a>
+                
+                    
+                    
+                    
+                    <a href="#23-modelfile-自定义" class="toc-item">2.3 Modelfile 自定义</a>
+                
+                    
+                    
+                    
+                    <a href="#03用-llamacpp-跑-gguf-模型" class="toc-item">03.用 llama.cpp 跑 GGUF 模型</a>
+                
+                    
+                    
+                    
+                    <a href="#31-编译" class="toc-item">3.1 编译</a>
+                
+                    
+                    
+                    
+                    <a href="#32-gguf-与量化" class="toc-item">3.2 GGUF 与量化</a>
+                
+                    
+                    
+                    
+                    <a href="#33-运行" class="toc-item">3.3 运行</a>
+                
+                    
+                    
+                    
+                    <a href="#04用-hugging-face-transformers" class="toc-item">04.用 Hugging Face transformers</a>
+                
+                    
+                    
+                    
+                    <a href="#41-获取权重" class="toc-item">4.1 获取权重</a>
+                
+                    
+                    
+                    
+                    <a href="#42-最小推理示例" class="toc-item">4.2 最小推理示例</a>
+                
+                    
+                    
+                    
+                    <a href="#43-低显存加载4bit" class="toc-item">4.3 低显存加载（4bit）</a>
+                
+                    
+                    
+                    
+                    <a href="#05硬件怎么估算" class="toc-item">05.硬件怎么估算</a>
+                
+                    
+                    
+                    
+                    <a href="#06许可证注意事项" class="toc-item">06.许可证注意事项</a>
+                
+                    
+                    
+                    
+                    <a href="#07常见问题" class="toc-item">07.常见问题</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../search.json?v=ac54700a2d85" };</script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+</body>
+</html>

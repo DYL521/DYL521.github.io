@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="https://labuladong.online/algo/essential-technique/linked-list-skills-summary/ 链表题目看起来花样很多，但核心技巧只有三个：虚拟头节">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="手把手刷链表算法 - DYL521">
+    <meta property="og:description" content="https://labuladong.online/algo/essential-technique/linked-list-skills-summary/ 链表题目看起来花样很多，但核心技巧只有三个：虚拟头节">
+    <meta property="og:url" content="https://dyl521.github.io/2024/12/15/06.%E7%AE%97%E6%B3%95/03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.1%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E9%93%BE%E8%A1%A8%E7%AE%97%E6%B3%95/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="手把手刷链表算法 - DYL521">
+    
+    <meta property="article:published_time" content="2024-12-15T10:53:14.000Z">
+    <meta property="article:modified_time" content="2024-12-15T10:53:14.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="手把手刷链表算法 - DYL521">
+    <meta name="twitter:description" content="https://labuladong.online/algo/essential-technique/linked-list-skills-summary/ 链表题目看起来花样很多，但核心技巧只有三个：虚拟头节">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/2024/12/15/06.%E7%AE%97%E6%B3%95/03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.1%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E9%93%BE%E8%A1%A8%E7%AE%97%E6%B3%95/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            手把手刷链表算法 - DYL521
-        
-    </title>
+    <title>手把手刷链表算法 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2024</span></div>
+            <div class="breadcrumb"><a href="../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2024</span></div>
             
             <h1 class="article-title" data-reveal>手把手刷链表算法</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">算法</span>
                 <span>2024-12-15</span>
-                <span>· 0 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 0 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 24 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 7079 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -125,20 +138,274 @@
             
 
             <div class="article-body" data-reveal>
-                
+                <ul>
+<li><a target="_blank" rel="noopener" href="https://labuladong.online/algo/essential-technique/linked-list-skills-summary/">https://labuladong.online/algo/essential-technique/linked-list-skills-summary/</a></li>
+</ul>
+<p>链表题目看起来花样很多，但核心技巧只有三个：<strong>虚拟头节点（dummy）</strong>、<strong>双指针（快慢指针 / 两条链表各一个指针）</strong>、<strong>递归/迭代反转</strong>。本篇把这几类技巧和代表题整理在一起，数组上的双指针见《手把手刷数组算法》，链表在 LRU 中的应用见《手撸LRU算法》。</p>
+<p>下面所有代码都基于 LeetCode 的链表节点定义：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">ListNode</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> val<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> next<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>val <span class="token operator">=</span> val
+        self<span class="token punctuation">.</span>next <span class="token operator">=</span> next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="一-虚拟头节点合并与分解链表"><a class="markdownIt-Anchor" href="#一-虚拟头节点合并与分解链表"></a> 一、虚拟头节点：合并与分解链表</h2>
+<p><strong>什么时候用 dummy？</strong> 当你需要<strong>创造一条新链表</strong>（合并、分解、删除节点后返回新头）时，头节点可能会变化，用一个 dummy 占位可以避免对「空链表 / 头节点」做特殊判断，最后返回 <code>dummy.next</code> 即可。</p>
+<h3 id="21-合并两个有序链表"><a class="markdownIt-Anchor" href="#21-合并两个有序链表"></a> 21. 合并两个有序链表</h3>
+<p>思路：两个指针 p1、p2 分别在两条链表上前进，每次把较小的节点接到结果链表尾部，类似「拉拉链」。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">mergeTwoLists</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> list1<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">,</span> list2<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        dummy <span class="token operator">=</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        p<span class="token punctuation">,</span> p1<span class="token punctuation">,</span> p2 <span class="token operator">=</span> dummy<span class="token punctuation">,</span> list1<span class="token punctuation">,</span> list2
+        <span class="token keyword">while</span> p1 <span class="token operator">and</span> p2<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> p1<span class="token punctuation">.</span>val <span class="token operator">&lt;=</span> p2<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                p<span class="token punctuation">.</span>next <span class="token operator">=</span> p1
+                p1 <span class="token operator">=</span> p1<span class="token punctuation">.</span>next
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                p<span class="token punctuation">.</span>next <span class="token operator">=</span> p2
+                p2 <span class="token operator">=</span> p2<span class="token punctuation">.</span>next
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next
+        <span class="token comment" spellcheck="true"># 剩下的那条直接接上</span>
+        p<span class="token punctuation">.</span>next <span class="token operator">=</span> p1 <span class="token keyword">if</span> p1 <span class="token keyword">else</span> p2
+        <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(m+n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>，空间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span>。</p>
+<h3 id="86-分隔链表"><a class="markdownIt-Anchor" href="#86-分隔链表"></a> 86. 分隔链表</h3>
+<p>把小于 x 的节点放左边，其余放右边，保持相对顺序。思路是「<strong>分解</strong>」：用两个 dummy 分别收集两类节点，最后拼接。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">,</span> x<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        dummy1<span class="token punctuation">,</span> dummy2 <span class="token operator">=</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        p1<span class="token punctuation">,</span> p2<span class="token punctuation">,</span> p <span class="token operator">=</span> dummy1<span class="token punctuation">,</span> dummy2<span class="token punctuation">,</span> head
+        <span class="token keyword">while</span> p<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> p<span class="token punctuation">.</span>val <span class="token operator">&lt;</span> x<span class="token punctuation">:</span>
+                p1<span class="token punctuation">.</span>next <span class="token operator">=</span> p
+                p1 <span class="token operator">=</span> p1<span class="token punctuation">.</span>next
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                p2<span class="token punctuation">.</span>next <span class="token operator">=</span> p
+                p2 <span class="token operator">=</span> p2<span class="token punctuation">.</span>next
+            <span class="token comment" spellcheck="true"># 断开原链表的 next，避免成环</span>
+            nxt <span class="token operator">=</span> p<span class="token punctuation">.</span>next
+            p<span class="token punctuation">.</span>next <span class="token operator">=</span> None
+            p <span class="token operator">=</span> nxt
+        p1<span class="token punctuation">.</span>next <span class="token operator">=</span> dummy2<span class="token punctuation">.</span>next
+        <span class="token keyword">return</span> dummy1<span class="token punctuation">.</span>next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>坑</strong>：一定要断开 <code>p.next</code>，否则大链表的尾节点可能仍然指向某个小节点，结果成环。</p>
+<h3 id="23-合并-k-个升序链表"><a class="markdownIt-Anchor" href="#23-合并-k-个升序链表"></a> 23. 合并 K 个升序链表</h3>
+<p>合并两条链表时每次比较 2 个节点，合并 k 条就需要快速拿到 k 个节点里的最小值 —— <strong>最小堆</strong>。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> heapq
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">mergeKLists</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> lists<span class="token punctuation">:</span> List<span class="token punctuation">[</span>Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        dummy <span class="token operator">=</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        p <span class="token operator">=</span> dummy
+        heap <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i<span class="token punctuation">,</span> head <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>lists<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> head<span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true"># 加入下标 i 作为第二关键字，避免 val 相同时比较 ListNode 报错</span>
+                heapq<span class="token punctuation">.</span>heappush<span class="token punctuation">(</span>heap<span class="token punctuation">,</span> <span class="token punctuation">(</span>head<span class="token punctuation">.</span>val<span class="token punctuation">,</span> i<span class="token punctuation">,</span> head<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">while</span> heap<span class="token punctuation">:</span>
+            _<span class="token punctuation">,</span> i<span class="token punctuation">,</span> node <span class="token operator">=</span> heapq<span class="token punctuation">.</span>heappop<span class="token punctuation">(</span>heap<span class="token punctuation">)</span>
+            p<span class="token punctuation">.</span>next <span class="token operator">=</span> node
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next
+            <span class="token keyword">if</span> node<span class="token punctuation">.</span>next<span class="token punctuation">:</span>
+                heapq<span class="token punctuation">.</span>heappush<span class="token punctuation">(</span>heap<span class="token punctuation">,</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>next<span class="token punctuation">.</span>val<span class="token punctuation">,</span> i<span class="token punctuation">,</span> node<span class="token punctuation">.</span>next<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>设节点总数为 N，堆大小最多 k，时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>N</mi><mi>log</mi><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(N \log k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>，空间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="二-快慢指针"><a class="markdownIt-Anchor" href="#二-快慢指针"></a> 二、快慢指针</h2>
+<h3 id="19-删除链表的倒数第-n-个结点"><a class="markdownIt-Anchor" href="#19-删除链表的倒数第-n-个结点"></a> 19. 删除链表的倒数第 N 个结点</h3>
+<p><strong>找倒数第 k 个节点</strong>：让 p1 先走 k 步，然后 p1、p2 同时走，p1 走到末尾（None）时，p2 正好在倒数第 k 个节点。要删除倒数第 n 个，就要找到<strong>倒数第 n+1 个</strong>（它的前驱）。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">removeNthFromEnd</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">,</span> n<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        dummy <span class="token operator">=</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> head<span class="token punctuation">)</span>
+
+        <span class="token keyword">def</span> <span class="token function">find_from_end</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            p1 <span class="token operator">=</span> p2 <span class="token operator">=</span> start
+            <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                p1 <span class="token operator">=</span> p1<span class="token punctuation">.</span>next
+            <span class="token keyword">while</span> p1<span class="token punctuation">:</span>
+                p1 <span class="token operator">=</span> p1<span class="token punctuation">.</span>next
+                p2 <span class="token operator">=</span> p2<span class="token punctuation">.</span>next
+            <span class="token keyword">return</span> p2
+
+        <span class="token comment" spellcheck="true"># 从 dummy 出发找倒数第 n+1 个节点</span>
+        prev <span class="token operator">=</span> find_from_end<span class="token punctuation">(</span>dummy<span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        prev<span class="token punctuation">.</span>next <span class="token operator">=</span> prev<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next
+        <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>坑</strong>：必须从 dummy 开始找。如果要删的是头节点（n 等于链表长度），倒数第 n+1 个节点就是 dummy，不用 dummy 会空指针。</p>
+<h3 id="876-链表的中间结点"><a class="markdownIt-Anchor" href="#876-链表的中间结点"></a> 876. 链表的中间结点</h3>
+<p>慢指针一次走一步，快指针一次走两步，快指针到达末尾时慢指针就在中点。节点数为偶数时返回的是<strong>靠后</strong>的那个中点。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">middleNode</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        slow <span class="token operator">=</span> fast <span class="token operator">=</span> head
+        <span class="token keyword">while</span> fast <span class="token operator">and</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">:</span>
+            slow <span class="token operator">=</span> slow<span class="token punctuation">.</span>next
+            fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next
+        <span class="token keyword">return</span> slow
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="141-142-环形链表"><a class="markdownIt-Anchor" href="#141-142-环形链表"></a> 141 / 142. 环形链表</h3>
+<ul>
+<li>判断有环：快慢指针若相遇则有环（141）；</li>
+<li>找环起点（142）：相遇后，把其中一个指针放回 head，两者都<strong>每次走一步</strong>，再次相遇处就是环起点。</li>
+</ul>
+<p><strong>原理</strong>：设相遇时慢指针走了 k 步，快指针走了 2k 步，多走的 k 步恰好是环长的整数倍。设环起点到相遇点距离为 m，那么从 head 到环起点的距离为 k-m，从相遇点继续走 k-m 步也恰好回到环起点。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">detectCycle</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        slow <span class="token operator">=</span> fast <span class="token operator">=</span> head
+        <span class="token keyword">while</span> fast <span class="token operator">and</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">:</span>
+            slow <span class="token operator">=</span> slow<span class="token punctuation">.</span>next
+            fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next
+            <span class="token keyword">if</span> slow <span class="token keyword">is</span> fast<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> None  <span class="token comment" spellcheck="true"># fast 走到尽头，无环</span>
+        slow <span class="token operator">=</span> head
+        <span class="token keyword">while</span> slow <span class="token keyword">is</span> <span class="token operator">not</span> fast<span class="token punctuation">:</span>
+            slow <span class="token operator">=</span> slow<span class="token punctuation">.</span>next
+            fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next
+        <span class="token keyword">return</span> slow
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="160-相交链表"><a class="markdownIt-Anchor" href="#160-相交链表"></a> 160. 相交链表</h3>
+<p>两条链表长度不同，无法同时到达交点。技巧：p1 走完 A 后接着走 B，p2 走完 B 后接着走 A，这样两者走过的总长度都是 <code>lenA + lenB</code>，会<strong>同时</strong>到达交点；若不相交，会同时到达 None。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">getIntersectionNode</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> headA<span class="token punctuation">:</span> ListNode<span class="token punctuation">,</span> headB<span class="token punctuation">:</span> ListNode<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        p1<span class="token punctuation">,</span> p2 <span class="token operator">=</span> headA<span class="token punctuation">,</span> headB
+        <span class="token keyword">while</span> p1 <span class="token keyword">is</span> <span class="token operator">not</span> p2<span class="token punctuation">:</span>
+            p1 <span class="token operator">=</span> p1<span class="token punctuation">.</span>next <span class="token keyword">if</span> p1 <span class="token keyword">else</span> headB
+            p2 <span class="token operator">=</span> p2<span class="token punctuation">.</span>next <span class="token keyword">if</span> p2 <span class="token keyword">else</span> headA
+        <span class="token keyword">return</span> p1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="三-反转链表"><a class="markdownIt-Anchor" href="#三-反转链表"></a> 三、反转链表</h2>
+<h3 id="206-反转链表"><a class="markdownIt-Anchor" href="#206-反转链表"></a> 206. 反转链表</h3>
+<p>迭代写法：三个指针 <code>pre / cur / nxt</code>，逐个把 <code>cur.next</code> 指回前驱。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">reverseList</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        pre<span class="token punctuation">,</span> cur <span class="token operator">=</span> None<span class="token punctuation">,</span> head
+        <span class="token keyword">while</span> cur<span class="token punctuation">:</span>
+            nxt <span class="token operator">=</span> cur<span class="token punctuation">.</span>next
+            cur<span class="token punctuation">.</span>next <span class="token operator">=</span> pre
+            pre<span class="token punctuation">,</span> cur <span class="token operator">=</span> cur<span class="token punctuation">,</span> nxt
+        <span class="token keyword">return</span> pre
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>递归写法体现了「分解问题」的思维（见《手把手刷二叉树算法》的核心纲领）：<strong><code>reverseList(head)</code> 的定义是反转以 head 为头的链表并返回新头</strong>。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">reverseList</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> head <span class="token keyword">is</span> None <span class="token operator">or</span> head<span class="token punctuation">.</span>next <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> head
+        last <span class="token operator">=</span> self<span class="token punctuation">.</span>reverseList<span class="token punctuation">(</span>head<span class="token punctuation">.</span>next<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 反转 head 之后的部分</span>
+        head<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next <span class="token operator">=</span> head               <span class="token comment" spellcheck="true"># 后继节点指回自己</span>
+        head<span class="token punctuation">.</span>next <span class="token operator">=</span> None
+        <span class="token keyword">return</span> last
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>递归写法空间是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span> 的栈，链表很长时可能爆栈，工程上推荐迭代。</p>
+<h3 id="92-反转链表-ii"><a class="markdownIt-Anchor" href="#92-反转链表-ii"></a> 92. 反转链表 II</h3>
+<p>反转区间 <code>[left, right]</code>。用 dummy 找到 <code>left</code> 的前驱 pre，然后<strong>头插法</strong>：把 <code>cur</code> 后面的节点依次摘下来插到 pre 后面，执行 <code>right - left</code> 次。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">reverseBetween</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">,</span> left<span class="token punctuation">:</span> int<span class="token punctuation">,</span> right<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        dummy <span class="token operator">=</span> ListNode<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> head<span class="token punctuation">)</span>
+        pre <span class="token operator">=</span> dummy
+        <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>left <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            pre <span class="token operator">=</span> pre<span class="token punctuation">.</span>next
+        cur <span class="token operator">=</span> pre<span class="token punctuation">.</span>next
+        <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>right <span class="token operator">-</span> left<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            nxt <span class="token operator">=</span> cur<span class="token punctuation">.</span>next
+            cur<span class="token punctuation">.</span>next <span class="token operator">=</span> nxt<span class="token punctuation">.</span>next
+            nxt<span class="token punctuation">.</span>next <span class="token operator">=</span> pre<span class="token punctuation">.</span>next
+            pre<span class="token punctuation">.</span>next <span class="token operator">=</span> nxt
+        <span class="token keyword">return</span> dummy<span class="token punctuation">.</span>next
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="25-k-个一组翻转链表"><a class="markdownIt-Anchor" href="#25-k-个一组翻转链表"></a> 25. K 个一组翻转链表</h3>
+<p>先检查剩余节点是否够 k 个，够的话反转 <code>[a, b)</code> 区间，然后递归处理后面的部分并接上。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">reverseKGroup</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> head<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">,</span> k<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>ListNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        a <span class="token operator">=</span> b <span class="token operator">=</span> head
+        <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> b <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> head  <span class="token comment" spellcheck="true"># 不足 k 个，保持原样</span>
+            b <span class="token operator">=</span> b<span class="token punctuation">.</span>next
+        <span class="token comment" spellcheck="true"># 反转 [a, b)</span>
+        pre<span class="token punctuation">,</span> cur <span class="token operator">=</span> None<span class="token punctuation">,</span> a
+        <span class="token keyword">while</span> cur <span class="token keyword">is</span> <span class="token operator">not</span> b<span class="token punctuation">:</span>
+            nxt <span class="token operator">=</span> cur<span class="token punctuation">.</span>next
+            cur<span class="token punctuation">.</span>next <span class="token operator">=</span> pre
+            pre<span class="token punctuation">,</span> cur <span class="token operator">=</span> cur<span class="token punctuation">,</span> nxt
+        <span class="token comment" spellcheck="true"># 反转后 a 变成这一组的尾巴，接上后面递归的结果</span>
+        a<span class="token punctuation">.</span>next <span class="token operator">=</span> self<span class="token punctuation">.</span>reverseKGroup<span class="token punctuation">(</span>b<span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> pre
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>，递归深度 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi mathvariant="normal">/</mi><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n/k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mord mathrm">/</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="四-复杂度与常见坑"><a class="markdownIt-Anchor" href="#四-复杂度与常见坑"></a> 四、复杂度与常见坑</h2>
+<table>
+<thead>
+<tr>
+<th>题目</th>
+<th>技巧</th>
+<th>时间</th>
+<th>空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21 / 86</td>
+<td>dummy + 双指针</td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td>23</td>
+<td>dummy + 最小堆</td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>N</mi><mi>log</mi><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(N\log k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td>19 / 876 / 141 / 142</td>
+<td>快慢指针</td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td>160</td>
+<td>双指针拼接</td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(m+n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td>206 / 92 / 25</td>
+<td>反转</td>
+<td><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span></td>
+<td>迭代 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>改指针前先保存 <code>next</code></strong>：<code>nxt = cur.next</code> 永远写在修改 <code>cur.next</code> 之前；</li>
+<li><strong>断链防环</strong>：把原链表节点挂到新链表时，注意旧的 <code>next</code> 是否需要置 None（86 题）；</li>
+<li><strong>循环条件</strong>：快慢指针写 <code>while fast and fast.next</code>，否则 <code>fast.next.next</code> 会空指针；</li>
+<li><strong>Python 的 <code>is</code> 与 <code>==</code></strong>：比较节点身份用 <code>is</code>，<code>ListNode</code> 未定义 <code>__eq__</code>，<code>==</code> 虽然也是比较身份，但语义上 <code>is</code> 更清晰；</li>
+<li><strong>堆中放元组时加唯一序号</strong>：值相同时 Python 会继续比较 <code>ListNode</code> 而抛 <code>TypeError</code>。</li>
+</ul>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ol>
+<li>需要构造新链表 → 先想 <strong>dummy</strong>；</li>
+<li>涉及「倒数第 k 个 / 中点 / 环 / 相交」→ 想 <strong>双指针</strong>，关键是让两个指针「步数差」或「总路程」满足某种关系；</li>
+<li>反转类 → 熟练掌握 206 的迭代模板，92、25 都是在它的基础上划定区间；</li>
+<li>写完后用「空链表、单节点、操作头节点、操作尾节点」四种边界手动走一遍。</li>
+</ol>
+
             </div>
 
             
             <div class="article-nav" data-reveal>
                 
-                <a href="../../04.%E6%A0%B8%E5%BF%83%E5%88%B7%E9%A2%98%E6%A1%86%E6%9E%B6/0.2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%A7%A3%E9%A2%98%E5%A5%97%E8%B7%AF%E6%A1%86%E6%9E%B6/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
-                    <div class="nav-title">动态规划解题套路框架</div>
+                <a href="../../../../17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/03.python%E9%AB%98%E7%BA%A7/01.python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">Python的内存管理机制</div>
                 </a>
                 
                 
                 <a href="../0.2%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E6%95%B0%E7%BB%84%E7%AE%97%E6%B3%95/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">手把手刷数组算法</div>
                 </a>
                 
@@ -148,6 +415,94 @@
 
         
         
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#一-虚拟头节点合并与分解链表" class="toc-item">一、虚拟头节点：合并与分解链表</a>
+                
+                    
+                    
+                    
+                    <a href="#21-合并两个有序链表" class="toc-item">21. 合并两个有序链表</a>
+                
+                    
+                    
+                    
+                    <a href="#86-分隔链表" class="toc-item">86. 分隔链表</a>
+                
+                    
+                    
+                    
+                    <a href="#23-合并-k-个升序链表" class="toc-item">23. 合并 K 个升序链表</a>
+                
+                    
+                    
+                    
+                    <a href="#二-快慢指针" class="toc-item">二、快慢指针</a>
+                
+                    
+                    
+                    
+                    <a href="#19-删除链表的倒数第-n-个结点" class="toc-item">19. 删除链表的倒数第 N 个结点</a>
+                
+                    
+                    
+                    
+                    <a href="#876-链表的中间结点" class="toc-item">876. 链表的中间结点</a>
+                
+                    
+                    
+                    
+                    <a href="#141-142-环形链表" class="toc-item">141 / 142. 环形链表</a>
+                
+                    
+                    
+                    
+                    <a href="#160-相交链表" class="toc-item">160. 相交链表</a>
+                
+                    
+                    
+                    
+                    <a href="#三-反转链表" class="toc-item">三、反转链表</a>
+                
+                    
+                    
+                    
+                    <a href="#206-反转链表" class="toc-item">206. 反转链表</a>
+                
+                    
+                    
+                    
+                    <a href="#92-反转链表-ii" class="toc-item">92. 反转链表 II</a>
+                
+                    
+                    
+                    
+                    <a href="#25-k-个一组翻转链表" class="toc-item">25. K 个一组翻转链表</a>
+                
+                    
+                    
+                    
+                    <a href="#四-复杂度与常见坑" class="toc-item">四、复杂度与常见坑</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -155,17 +510,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -176,7 +531,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -186,13 +541,13 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

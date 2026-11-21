@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="01.JWT 与单点登录是什么关系 **单点登录（SSO）**解决的是“登录一次，如何访问多个相互信任的应用”；**JWT（JSON Web Token）**是一种自包含的令牌格式。二者不是同一个概念：JWT ">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="JWT单点登录 - DYL521">
+    <meta property="og:description" content="01.JWT 与单点登录是什么关系 **单点登录（SSO）**解决的是“登录一次，如何访问多个相互信任的应用”；**JWT（JSON Web Token）**是一种自包含的令牌格式。二者不是同一个概念：JWT ">
+    <meta property="og:url" content="https://dyl521.github.io/pages/3692bc/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="JWT单点登录 - DYL521">
+    
+    <meta property="article:published_time" content="2021-02-12T06:46:34.000Z">
+    <meta property="article:modified_time" content="2026-11-21T17:37:27.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JWT单点登录 - DYL521">
+    <meta name="twitter:description" content="01.JWT 与单点登录是什么关系 **单点登录（SSO）**解决的是“登录一次，如何访问多个相互信任的应用”；**JWT（JSON Web Token）**是一种自包含的令牌格式。二者不是同一个概念：JWT ">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/pages/3692bc/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            JWT单点登录 - DYL521
-        
-    </title>
+    <title>JWT单点登录 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2021</span></div>
+            <div class="breadcrumb"><a href="../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2021</span></div>
             
             <h1 class="article-title" data-reveal>JWT单点登录</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">面试题</span>
                 <span>2021-02-12</span>
-                <span>· 1 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 58 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 12 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 3333 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -125,11 +138,153 @@
             
 
             <div class="article-body" data-reveal>
-                <h1 id="01jwt单点登录"><a class="markdownIt-Anchor" href="#01jwt单点登录"></a> 01.JWT单点登录</h1>
-<blockquote>
-<p>基于JWT技术及RSA非对称加密实现真正无状态的单点登录（单点等第二种方法：JWT）</p>
-</blockquote>
-<p><img src="/post-images/07.%E9%9D%A2%E8%AF%95%E9%A2%98/05.%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E7%82%B9/assets/1582080198139.png" alt="1582080198139" /></p>
+                <h2 id="01jwt-与单点登录是什么关系"><a class="markdownIt-Anchor" href="#01jwt-与单点登录是什么关系"></a> 01.JWT 与单点登录是什么关系</h2>
+<p>**单点登录（SSO）**解决的是“登录一次，如何访问多个相互信任的应用”；**JWT（JSON Web Token）**是一种自包含的令牌格式。二者不是同一个概念：JWT 可以作为 SSO 中传递身份信息的凭证，但完整的 SSO 还需要统一认证中心、应用间跳转、令牌校验、退出与吊销机制。</p>
+<p>与基于 Redis 的服务端 Session 方案相比，资源服务验证 JWT 时通常不必查询中心存储，因此扩展方便、跨服务传递简单；代价是令牌签发后难以立即失效，而且载荷会随请求传输。</p>
+<h2 id="02一次完整的登录与访问流程"><a class="markdownIt-Anchor" href="#02一次完整的登录与访问流程"></a> 02.一次完整的登录与访问流程</h2>
+<p>下面以“统一认证中心 + 业务应用 + 资源服务”为例。浏览器先通过授权码完成登录，业务后端再取得 JWT；不要把 JWT 直接拼在重定向 URL 中。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    autonumber
+    participant U as 浏览器
+    participant A as 业务应用
+    participant S as 统一认证中心
+    participant R as 资源服务
+
+    U->>A: 访问受保护页面
+    A->>U: 跳转认证中心，携带 redirect_uri、state
+    U->>S: 完成登录与授权
+    S->>U: 携带一次性授权码回调应用
+    U->>A: 提交授权码与 state
+    A->>A: 校验 state
+    A->>S: 后端用授权码换取 JWT
+    S-->>A: 返回短期访问令牌与刷新令牌
+    A-->>U: 建立本站登录会话
+    U->>A: 请求受保护 API
+    A->>R: Authorization: Bearer 访问令牌
+    R->>R: 用可信公钥验签并校验声明
+    R-->>A: 返回受保护资源
+    A-->>U: 返回处理结果
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>授权码应只能使用一次并设置很短的有效期。公开客户端（如纯 SPA、移动端）无法安全保存 <code>client_secret</code>，应使用授权码模式加 PKCE；传统服务端应用可以由后端保存密钥并完成换令牌。</p>
+<h2 id="03jwt-的三个部分"><a class="markdownIt-Anchor" href="#03jwt-的三个部分"></a> 03.JWT 的三个部分</h2>
+<p>JWT 的外观是三段由点分隔的 Base64URL 文本：</p>
+<pre class="line-numbers language-text"><code class="language-text">base64url(header).base64url(payload).base64url(signature)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"RS256"</span><span class="token punctuation">,</span>
+  <span class="token property">"typ"</span><span class="token operator">:</span> <span class="token string">"JWT"</span><span class="token punctuation">,</span>
+  <span class="token property">"kid"</span><span class="token operator">:</span> <span class="token string">"sso-key-2026-01"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"sub"</span><span class="token operator">:</span> <span class="token string">"user-1001"</span><span class="token punctuation">,</span>
+  <span class="token property">"iss"</span><span class="token operator">:</span> <span class="token string">"https://sso.example.com"</span><span class="token punctuation">,</span>
+  <span class="token property">"aud"</span><span class="token operator">:</span> <span class="token string">"order-api"</span><span class="token punctuation">,</span>
+  <span class="token property">"iat"</span><span class="token operator">:</span> <span class="token number">1735689600</span><span class="token punctuation">,</span>
+  <span class="token property">"exp"</span><span class="token operator">:</span> <span class="token number">1735690500</span><span class="token punctuation">,</span>
+  <span class="token property">"jti"</span><span class="token operator">:</span> <span class="token string">"a-unique-token-id"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>Header</strong>：签名算法、令牌类型和密钥 ID。</li>
+<li><strong>Payload</strong>：用户标识、签发者、受众、签发时间、过期时间等声明。</li>
+<li><strong>Signature</strong>：对前两段编码结果及分隔点进行签名，用于发现篡改和确认签发者。</li>
+</ul>
+<p>**Base64URL 只是编码，不是加密。**任何拿到令牌的人都能解码 Header 和 Payload，因此默认不能把密码、身份证号等敏感信息放进去。需要保密内容时，应使用 JWE 或只传不透明引用，而不是误以为普通 JWT 已加密。</p>
+<h2 id="04rsa-在-rs256-中做什么"><a class="markdownIt-Anchor" href="#04rsa-在-rs256-中做什么"></a> 04.RSA 在 RS256 中做什么</h2>
+<p>RS256 使用的是 <strong>RSA 数字签名 + SHA-256</strong>，不是用 RSA 加密整个 JWT：</p>
+<ol>
+<li>认证中心保管私钥，对令牌的签名输入计算摘要并生成签名。</li>
+<li>业务服务从预先配置的公钥或可信 JWKS 地址取得公钥。</li>
+<li>业务服务用公钥验证签名，从而确认令牌确实由认证中心签发且内容未被修改。</li>
+</ol>
+<p>私钥只能存在于认证中心；公钥可以分发，但必须来自可信来源。业务方不能因为“公钥可以公开”就接受令牌自己提供的任意 JWKS 地址。</p>
+<h2 id="05资源服务必须校验什么"><a class="markdownIt-Anchor" href="#05资源服务必须校验什么"></a> 05.资源服务必须校验什么</h2>
+<p>只解析 Payload 而不验签等于没有认证。一个完整的校验过程至少包括：</p>
+<ol>
+<li><strong>限定算法</strong>：服务端明确只允许 <code>RS256</code>，拒绝 <code>none</code>，不能根据令牌中的 <code>alg</code> 临时切换成不安全的验证逻辑。</li>
+<li><strong>选择密钥</strong>：根据 <code>kid</code> 从可信密钥集合中选公钥，并支持旧公钥短期保留、密钥轮换和缓存刷新。</li>
+<li><strong>验证签名</strong>：签名不通过直接返回 401。</li>
+<li><strong>校验时间</strong>：检查 <code>exp</code>、<code>nbf</code>、<code>iat</code>，只允许很小的时钟偏差；过期令牌不能因为签名正确而继续使用。</li>
+<li><strong>校验签发者和受众</strong>：<code>iss</code> 必须是本站信任的认证中心，<code>aud</code> 必须包含当前服务，避免把给其他系统的令牌拿过来用。</li>
+<li><strong>校验业务身份</strong>：确认 <code>sub</code> 对应的用户仍被允许访问；涉及 OIDC 登录时还要校验 <code>nonce</code>。</li>
+</ol>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 伪代码：具体参数名以所用 JWT 库为准</span>
+payload <span class="token operator">=</span> jwt<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>
+    token<span class="token punctuation">,</span>
+    public_key<span class="token punctuation">,</span>
+    algorithms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"RS256"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    issuer<span class="token operator">=</span><span class="token string">"https://sso.example.com"</span><span class="token punctuation">,</span>
+    audience<span class="token operator">=</span><span class="token string">"order-api"</span><span class="token punctuation">,</span>
+    options<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"require"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"sub"</span><span class="token punctuation">,</span> <span class="token string">"iss"</span><span class="token punctuation">,</span> <span class="token string">"aud"</span><span class="token punctuation">,</span> <span class="token string">"iat"</span><span class="token punctuation">,</span> <span class="token string">"exp"</span><span class="token punctuation">,</span> <span class="token string">"jti"</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不要在生产代码里手写 Base64 解码后就直接信任 <code>sub</code>，也不要为了“兼容”关闭签名或过期校验。</p>
+<h2 id="06访问令牌-刷新令牌与退出"><a class="markdownIt-Anchor" href="#06访问令牌-刷新令牌与退出"></a> 06.访问令牌、刷新令牌与退出</h2>
+<p>常见做法是把两种令牌分开：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>有效期</th>
+<th>用途</th>
+<th>泄露后的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access Token</td>
+<td>几分钟到十几分钟</td>
+<td>调用资源 API</td>
+<td>在过期前可能被直接使用</td>
+</tr>
+<tr>
+<td>Refresh Token</td>
+<td>数天到数周，支持轮换</td>
+<td>到认证中心换新的访问令牌</td>
+<td>风险更高，必须严格保存并可吊销</td>
+</tr>
+</tbody>
+</table>
+<p>浏览器退出登录时，至少要清除本站会话和本地凭据，并在认证中心吊销刷新令牌。如果要求所有应用立即退出，还要让认证中心结束 SSO 会话，并使各应用删除自己的会话。</p>
+<p>“JWT 无状态”只表示资源服务可以不保存访问令牌会话，<strong>不代表整个认证系统没有任何状态</strong>。用户、授权、刷新令牌通常仍需持久化；如果通过 <code>jti</code> 黑名单立即吊销访问令牌，也就重新引入了状态查询。这是安全与架构成本之间的取舍，不是实现错误。</p>
+<h2 id="07浏览器如何保存凭据"><a class="markdownIt-Anchor" href="#07浏览器如何保存凭据"></a> 07.浏览器如何保存凭据</h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>主要风险与适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BFF/后端保存令牌，浏览器只持有 HttpOnly Session Cookie</td>
+<td>JavaScript 读不到访问令牌，攻击面较小</td>
+<td>要防 CSRF；Cookie 设置 <code>Secure</code>、合适的 <code>SameSite</code> 和作用域</td>
+</tr>
+<tr>
+<td>SPA 内存保存访问令牌</td>
+<td>不持久化到磁盘，刷新页面后重新获取</td>
+<td>XSS 仍能读取内存；需要可靠的刷新机制</td>
+</tr>
+<tr>
+<td>localStorage 长期保存访问/刷新令牌</td>
+<td>实现简单、跨刷新保留</td>
+<td>XSS 可直接窃取，不建议用于高安全场景</td>
+</tr>
+</tbody>
+</table>
+<p>没有一种存储方式能替代 XSS 防护。输入转义、内容安全策略、依赖治理和减少敏感令牌暴露时间仍然必要。</p>
+<h2 id="08常见问题与面试回答"><a class="markdownIt-Anchor" href="#08常见问题与面试回答"></a> 08.常见问题与面试回答</h2>
+<ul>
+<li>**JWT 能防止篡改吗？**能，前提是正确验签；但它默认不防读取。</li>
+<li>**JWT 能实现单点登录吗？**它是凭证格式，SSO 还需要认证中心和跨应用登录流程。</li>
+<li>**JWT 过期了怎么办？**用可吊销、最好带轮换和重用检测的刷新令牌换新的访问令牌，而不是无限延长访问令牌。</li>
+<li>**用户被禁用后怎么办？**缩短访问令牌有效期，吊销刷新令牌；高安全接口再查询用户状态或令牌版本。</li>
+<li>**所有请求都查用户状态还能叫无状态吗？**资源服务增加了状态依赖，但往往是为了满足安全要求，应按业务风险选择，而不是追求概念上的“纯无状态”。</li>
+</ul>
+<p>生产环境还必须全程使用 HTTPS，精确校验回调地址，保护授权码交换过程，避免在日志中记录完整令牌，并限制令牌权限范围（scope）。</p>
 
             </div>
 
@@ -137,13 +292,13 @@
             <div class="article-nav" data-reveal>
                 
                 <a href="../../pages/c46e51/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">三方登录</div>
                 </a>
                 
                 
                 <a href="../../pages/b8caad/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">项目并发分析</div>
                 </a>
                 
@@ -155,8 +310,57 @@
         
             
             
-            
         
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01jwt-与单点登录是什么关系" class="toc-item">01.JWT 与单点登录是什么关系</a>
+                
+                    
+                    
+                    
+                    <a href="#02一次完整的登录与访问流程" class="toc-item">02.一次完整的登录与访问流程</a>
+                
+                    
+                    
+                    
+                    <a href="#03jwt-的三个部分" class="toc-item">03.JWT 的三个部分</a>
+                
+                    
+                    
+                    
+                    <a href="#04rsa-在-rs256-中做什么" class="toc-item">04.RSA 在 RS256 中做什么</a>
+                
+                    
+                    
+                    
+                    <a href="#05资源服务必须校验什么" class="toc-item">05.资源服务必须校验什么</a>
+                
+                    
+                    
+                    
+                    <a href="#06访问令牌-刷新令牌与退出" class="toc-item">06.访问令牌、刷新令牌与退出</a>
+                
+                    
+                    
+                    
+                    <a href="#07浏览器如何保存凭据" class="toc-item">07.浏览器如何保存凭据</a>
+                
+                    
+                    
+                    
+                    <a href="#08常见问题与面试回答" class="toc-item">08.常见问题与面试回答</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -164,17 +368,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -185,7 +389,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -195,13 +399,15 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="https://go.dev/ref/mem 01. 内存模型 Go 内存模型（The Go Memory Model）回答的是一个问题：一个 goroutine 写入的变量，在什么条件下能保证被另一个 gor">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="内存模型 - DYL521">
+    <meta property="og:description" content="https://go.dev/ref/mem 01. 内存模型 Go 内存模型（The Go Memory Model）回答的是一个问题：一个 goroutine 写入的变量，在什么条件下能保证被另一个 gor">
+    <meta property="og:url" content="https://dyl521.github.io/2026/07/30/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="内存模型 - DYL521">
+    
+    <meta property="article:published_time" content="2026-07-30T15:50:31.832Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="内存模型 - DYL521">
+    <meta name="twitter:description" content="https://go.dev/ref/mem 01. 内存模型 Go 内存模型（The Go Memory Model）回答的是一个问题：一个 goroutine 写入的变量，在什么条件下能保证被另一个 gor">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/2026/07/30/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/01.%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            内存模型 - DYL521
-        
-    </title>
+    <title>内存模型 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../../../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../../../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../../../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../../../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../../../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2026</span></div>
+            <div class="breadcrumb"><a href="../../../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
             
             <h1 class="article-title" data-reveal>内存模型</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">Go</span>
                 <span>2026-07-30</span>
-                <span>· 1 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 35 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 18 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 5114 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -128,7 +141,247 @@
                 <ul>
 <li><a target="_blank" rel="noopener" href="https://go.dev/ref/mem">https://go.dev/ref/mem</a></li>
 </ul>
-<h1 id="01-内存模型"><a class="markdownIt-Anchor" href="#01-内存模型"></a> 01. 内存模型</h1>
+<h2 id="01-内存模型"><a class="markdownIt-Anchor" href="#01-内存模型"></a> 01. 内存模型</h2>
+<p>Go 内存模型（The Go Memory Model）回答的是一个问题：<strong>一个 goroutine 写入的变量，在什么条件下能保证被另一个 goroutine 读到？</strong></p>
+<p>现代 CPU 有多级缓存、写缓冲，编译器和 CPU 都会对指令重排序，所以&quot;代码里先写后读&quot;并不等于&quot;另一个核心先看到写再看到读&quot;。内存模型就是语言给出的一份契约：只要按它规定的方式同步，程序的行为就是可预期的。</p>
+<p>官方文档开篇的建议非常直白：</p>
+<blockquote>
+<p>If you must read the rest of this document to understand the behavior of your program, you are being too clever. Don’t be clever.</p>
+</blockquote>
+<p>也就是说，日常开发只需要记住：<strong>多个 goroutine 访问共享数据，且至少有一个是写操作时，必须用 channel、sync 包或 sync/atomic 同步</strong>。</p>
+<h2 id="11-happens-before-关系"><a class="markdownIt-Anchor" href="#11-happens-before-关系"></a> 1.1 happens-before 关系</h2>
+<p>happens-before 是内存模型的核心概念：</p>
+<ul>
+<li>如果事件 e1 <strong>happens-before</strong> e2，那么 e1 的结果（比如对变量的写）对 e2 一定可见；</li>
+<li>如果 e1 和 e2 之间没有 happens-before 关系，就称它们是<strong>并发的</strong>，谁先谁后、能否看见都没有保证。</li>
+</ul>
+<p>在<strong>单个 goroutine 内</strong>，happens-before 顺序就是程序代码表达的顺序（编译器可以重排，但不能改变单 goroutine 内可观察到的结果）。</p>
+<p><strong>跨 goroutine</strong> 的 happens-before 只能通过同步操作建立。下面这个例子就是错误的：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> a <span class="token builtin">string</span>
+<span class="token keyword">var</span> done <span class="token builtin">bool</span>
+
+<span class="token keyword">func</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	a <span class="token operator">=</span> <span class="token string">"hello, world"</span>
+	done <span class="token operator">=</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">go</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> <span class="token operator">!</span>done <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 数据竞争：读 done 与写 done 之间没有同步</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 可能打印空字符串，循环甚至可能永远不退出</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>即使 <code>main</code> 观察到了 <code>done == true</code>，也<strong>不保证</strong>能看到 <code>a</code> 的写入；更糟的是编译器可能把 <code>done</code> 的读取提到循环外，导致死循环。</p>
+<h3 id="数据竞争与-drf-sc"><a class="markdownIt-Anchor" href="#数据竞争与-drf-sc"></a> 数据竞争与 DRF-SC</h3>
+<p>数据竞争（data race）的定义：两个 goroutine 并发访问同一内存位置，且至少一个是写，且不是都通过 sync/atomic 完成。</p>
+<p>Go 1.19 修订后的内存模型明确了 <strong>DRF-SC</strong> 保证：<strong>没有数据竞争的程序，其行为等价于所有 goroutine 的操作按某种顺序交错执行（顺序一致性）</strong>。所以只要消灭数据竞争，就不需要考虑重排序这些底层细节。</p>
+<h2 id="12-go-语言内置的同步点"><a class="markdownIt-Anchor" href="#12-go-语言内置的同步点"></a> 1.2 Go 语言内置的同步点</h2>
+<h3 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h3>
+<ul>
+<li>如果包 p 导入了包 q，q 的 <code>init</code> 函数执行完毕 happens-before p 的任何代码开始；</li>
+<li>所有 <code>init</code> 函数完成 happens-before <code>main.main</code> 开始。</li>
+</ul>
+<h3 id="goroutine-的创建与退出"><a class="markdownIt-Anchor" href="#goroutine-的创建与退出"></a> goroutine 的创建与退出</h3>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> a <span class="token builtin">string</span>
+
+<span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	a <span class="token operator">=</span> <span class="token string">"hello, world"</span>
+	<span class="token keyword">go</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// go 语句 happens-before 新 goroutine 开始执行，所以 f 一定能看到 a</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但 <strong>goroutine 的退出不与任何事件同步</strong>：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> a <span class="token operator">=</span> <span class="token string">"hello"</span> <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 没有任何保证，需要 channel/WaitGroup 等待</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="13-channel-的保证"><a class="markdownIt-Anchor" href="#13-channel-的保证"></a> 1.3 channel 的保证</h2>
+<p>channel 是 Go 中最主要的同步手段，内存模型规定了四条规则：</p>
+<ol>
+<li>对一个 channel 的<strong>发送</strong> happens-before 对应的<strong>接收完成</strong>；</li>
+<li><strong>关闭</strong> channel happens-before 因 channel 已关闭而返回零值的接收；</li>
+<li>对<strong>无缓冲</strong> channel 的<strong>接收</strong> happens-before 对应的<strong>发送完成</strong>；</li>
+<li>容量为 C 的 channel，第 k 次接收 happens-before 第 k+C 次发送完成。</li>
+</ol>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> a <span class="token builtin">string</span>
+<span class="token keyword">var</span> c <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	a <span class="token operator">=</span> <span class="token string">"hello, world"</span>
+	c <span class="token operator">&lt;-</span> <span class="token number">0</span> <span class="token comment" spellcheck="true">// 也可以换成 close(c)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">go</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token operator">&lt;-</span>c
+	<span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 一定打印 hello, world</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>规则 4 是用带缓冲 channel 做<strong>信号量限流</strong>的理论依据：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> limit <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> w <span class="token operator">:=</span> <span class="token keyword">range</span> work <span class="token punctuation">{</span>
+		<span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span>w <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			limit <span class="token operator">&lt;-</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 同时最多 3 个任务在执行</span>
+			<span class="token function">w</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+			<span class="token operator">&lt;-</span>limit
+		<span class="token punctuation">}</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">select</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="14-sync-包的保证"><a class="markdownIt-Anchor" href="#14-sync-包的保证"></a> 1.4 sync 包的保证</h2>
+<table>
+<thead>
+<tr>
+<th>原语</th>
+<th>保证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sync.Mutex</code> / <code>RWMutex</code></td>
+<td>第 n 次 <code>Unlock</code> happens-before 第 m 次 <code>Lock</code> 返回（n &lt; m）；<code>RWMutex</code> 的 <code>RUnlock</code> 与后续 <code>Lock</code> 同理</td>
+</tr>
+<tr>
+<td><code>sync.Once</code></td>
+<td><code>once.Do(f)</code> 中 f 的执行完成 happens-before 任何 <code>once.Do</code> 返回</td>
+</tr>
+<tr>
+<td><code>sync.WaitGroup</code></td>
+<td><code>Done</code> happens-before 被它解除阻塞的 <code>Wait</code> 返回</td>
+</tr>
+<tr>
+<td><code>sync.Cond</code></td>
+<td>配合 Mutex 使用，<code>Wait</code> 返回时重新持有锁</td>
+</tr>
+</tbody>
+</table>
+<p>互斥锁示例：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> l sync<span class="token punctuation">.</span>Mutex
+<span class="token keyword">var</span> a <span class="token builtin">string</span>
+
+<span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	a <span class="token operator">=</span> <span class="token string">"hello, world"</span>
+	l<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	l<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	l<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 第二次 Lock 在 f 的 Unlock 之后返回</span>
+	<span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 一定能看到写入</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>sync.Once</code> 实现单例：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> <span class="token punctuation">(</span>
+	instance <span class="token operator">*</span>Config
+	once     sync<span class="token punctuation">.</span>Once
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">GetConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>Config <span class="token punctuation">{</span>
+	once<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		instance <span class="token operator">=</span> <span class="token function">loadConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> instance <span class="token comment" spellcheck="true">// 所有调用者都能看到完整初始化后的 instance</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="15-syncatomic"><a class="markdownIt-Anchor" href="#15-syncatomic"></a> 1.5 sync/atomic</h2>
+<p>Go 1.19 起内存模型明确规定：<strong>所有 atomic 操作表现为顺序一致（sequentially consistent）</strong>。如果原子操作 A 的效果被原子操作 B 观察到，那么 A happens-before B。这和 C++ 的 <code>memory_order_seq_cst</code>、Java 的 <code>volatile</code> 语义类似。</p>
+<p>Go 1.19 还新增了类型化的原子类型，推荐优先使用，不容易误用：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> Server <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	reqs   atomic<span class="token punctuation">.</span>Int64
+	ready  atomic<span class="token punctuation">.</span>Bool
+	config atomic<span class="token punctuation">.</span>Pointer<span class="token punctuation">[</span>Config<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>s <span class="token operator">*</span>Server<span class="token punctuation">)</span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	s<span class="token punctuation">.</span>reqs<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> <span class="token operator">!</span>s<span class="token punctuation">.</span>ready<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span>
+	<span class="token punctuation">}</span>
+	cfg <span class="token operator">:=</span> s<span class="token punctuation">.</span>config<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 配置热更新：写方用 Store 整体替换指针</span>
+	<span class="token boolean">_</span> <span class="token operator">=</span> cfg
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：atomic 只保证<strong>单个变量</strong>操作的原子性。需要多个变量一起保持一致时，应该用 Mutex，或者把它们放进一个不可变结构体，用 <code>atomic.Pointer</code> 整体替换。</p>
+<h2 id="16-用-race-检测数据竞争"><a class="markdownIt-Anchor" href="#16-用-race-检测数据竞争"></a> 1.6 用 <code>-race</code> 检测数据竞争</h2>
+<p>Go 自带竞态检测器（基于 ThreadSanitizer）：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">go <span class="token function">test</span> -race ./<span class="token punctuation">..</span>.
+go run -race main.go
+go build -race -o app <span class="token keyword">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	m <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> m<span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	m<span class="token punctuation">[</span><span class="token string">"b"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行 <code>go run -race</code> 会输出 <code>WARNING: DATA RACE</code>，并给出两处冲突访问的调用栈。</p>
+<p>需要注意：</p>
+<ul>
+<li>race detector 只能发现<strong>实际执行到的</strong>竞争，测试覆盖不到的路径发现不了；</li>
+<li>开启后程序的内存和 CPU 开销明显变大，适合测试环境和 CI，一般不在生产常开；</li>
+<li>并发读写 map 即使不开 <code>-race</code>，运行时也可能直接 <code>fatal error: concurrent map writes</code>。</li>
+</ul>
+<h2 id="17-常见错误"><a class="markdownIt-Anchor" href="#17-常见错误"></a> 1.7 常见错误</h2>
+<h3 id="双重检查锁double-checked-locking"><a class="markdownIt-Anchor" href="#双重检查锁double-checked-locking"></a> 双重检查锁（double-checked locking）</h3>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> a <span class="token builtin">string</span>
+<span class="token keyword">var</span> done <span class="token builtin">bool</span>
+<span class="token keyword">var</span> mu sync<span class="token punctuation">.</span>Mutex
+
+<span class="token keyword">func</span> <span class="token function">doprint</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token operator">!</span>done <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 错误：无锁读 done，与下面的写构成数据竞争</span>
+		mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span> <span class="token operator">!</span>done <span class="token punctuation">{</span>
+			a <span class="token operator">=</span> <span class="token string">"hello, world"</span>
+			done <span class="token operator">=</span> <span class="token boolean">true</span>
+		<span class="token punctuation">}</span>
+		mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 看到 done == true 不代表能看到 a 的写入</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 Go 中直接使用 <code>sync.Once</code> 即可，它内部已经用 atomic + Mutex 正确实现了快速路径。</p>
+<h3 id="忙等待一个普通变量"><a class="markdownIt-Anchor" href="#忙等待一个普通变量"></a> 忙等待一个普通变量</h3>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">for</span> <span class="token operator">!</span>done <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 错误：没有同步，可能死循环</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>改为 channel、<code>sync.WaitGroup</code>，或者至少用 <code>atomic.Bool</code>。</p>
+<h3 id="发布未完全初始化的对象"><a class="markdownIt-Anchor" href="#发布未完全初始化的对象"></a> 发布未完全初始化的对象</h3>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> g <span class="token operator">*</span>T
+
+<span class="token keyword">func</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	t <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span>
+	t<span class="token punctuation">.</span>msg <span class="token operator">=</span> <span class="token string">"hello"</span>
+	g <span class="token operator">=</span> t <span class="token comment" spellcheck="true">// 普通写指针，另一个 goroutine 可能看到 g != nil 但 g.msg 为空</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用 <code>atomic.Pointer[T]</code> 发布，或者用 channel 传递指针。</p>
+<h3 id="以为字长内的读写天然原子就够了"><a class="markdownIt-Anchor" href="#以为字长内的读写天然原子就够了"></a> 以为&quot;字长内的读写天然原子&quot;就够了</h3>
+<p>即使某个平台上 int 的读写不会撕裂，没有同步依然不能保证<strong>可见性和顺序</strong>，而且仍然是数据竞争，<code>-race</code> 会报。</p>
+<h3 id="把-timesleep-当同步"><a class="markdownIt-Anchor" href="#把-timesleep-当同步"></a> 把 <code>time.Sleep</code> 当同步</h3>
+<p><code>Sleep</code> 只是&quot;大概率&quot;等到对方执行完，不建立任何 happens-before 关系。</p>
+<h2 id="18-面试要点"><a class="markdownIt-Anchor" href="#18-面试要点"></a> 1.8 面试要点</h2>
+<ul>
+<li><strong>什么是 happens-before？</strong> 描述跨 goroutine 写对读可见的偏序关系，没有这层关系的两个操作就是并发的。</li>
+<li><strong>channel 为什么能保证可见性？</strong> 内存模型规定发送 happens-before 对应接收完成，关闭 happens-before 读到零值的接收。</li>
+<li><strong>atomic 和 Mutex 怎么选？</strong> 单个计数器、标志位、指针替换用 atomic；涉及多个变量的不变式用 Mutex。</li>
+<li><strong>Go 的 atomic 是什么内存序？</strong> 顺序一致（Go 1.19 起写入内存模型文档）。</li>
+<li><strong>如何发现数据竞争？</strong> <code>go test -race</code>，并放到 CI 中执行。</li>
+</ul>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ul>
+<li>内存模型的核心是 happens-before：没有同步，就没有可见性保证；</li>
+<li>同步手段：<code>go</code> 语句、channel 发送/接收/关闭、Mutex、Once、WaitGroup、atomic；</li>
+<li>没有数据竞争的程序表现为顺序一致（DRF-SC），所以重点是<strong>消灭数据竞争</strong>；</li>
+<li>不要自己写双重检查锁或忙等标志位，用 <code>sync.Once</code>、channel、<code>atomic.Xxx</code> 类型；</li>
+<li>把 <code>-race</code> 加进测试流程。</li>
+</ul>
 
             </div>
 
@@ -136,14 +389,14 @@
             <div class="article-nav" data-reveal>
                 
                 <a href="../../../../../../31/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/02.MCP%202026-07-28%E8%A7%84%E8%8C%83%E8%A7%A3%E8%AF%BB/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">MCP 2026-07-28 规范解读：从有状态连接走向无状态 Agent 基础设施</div>
                 </a>
                 
                 
-                <a href="../02.%E4%B8%8A%E4%B8%8B%E6%96%87%20-%20context/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
-                    <div class="nav-title">上下文-Context</div>
+                <a href="../03.%E9%80%9A%E9%81%93-%20channel/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">通道- Channel</div>
                 </a>
                 
             </div>
@@ -154,8 +407,107 @@
         
             
             
-            
         
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01-内存模型" class="toc-item">01. 内存模型</a>
+                
+                    
+                    
+                    
+                    <a href="#11-happens-before-关系" class="toc-item">1.1 happens-before 关系</a>
+                
+                    
+                    
+                    
+                    <a href="#数据竞争与-drf-sc" class="toc-item">数据竞争与 DRF-SC</a>
+                
+                    
+                    
+                    
+                    <a href="#12-go-语言内置的同步点" class="toc-item">1.2 Go 语言内置的同步点</a>
+                
+                    
+                    
+                    
+                    <a href="#初始化" class="toc-item">初始化</a>
+                
+                    
+                    
+                    
+                    <a href="#goroutine-的创建与退出" class="toc-item">goroutine 的创建与退出</a>
+                
+                    
+                    
+                    
+                    <a href="#13-channel-的保证" class="toc-item">1.3 channel 的保证</a>
+                
+                    
+                    
+                    
+                    <a href="#14-sync-包的保证" class="toc-item">1.4 sync 包的保证</a>
+                
+                    
+                    
+                    
+                    <a href="#15-syncatomic" class="toc-item">1.5 sync/atomic</a>
+                
+                    
+                    
+                    
+                    <a href="#16-用-race-检测数据竞争" class="toc-item">1.6 用 -race 检测数据竞争</a>
+                
+                    
+                    
+                    
+                    <a href="#17-常见错误" class="toc-item">1.7 常见错误</a>
+                
+                    
+                    
+                    
+                    <a href="#双重检查锁double-checked-locking" class="toc-item">双重检查锁（double-checked locking）</a>
+                
+                    
+                    
+                    
+                    <a href="#忙等待一个普通变量" class="toc-item">忙等待一个普通变量</a>
+                
+                    
+                    
+                    
+                    <a href="#发布未完全初始化的对象" class="toc-item">发布未完全初始化的对象</a>
+                
+                    
+                    
+                    
+                    <a href="#以为字长内的读写天然原子就够了" class="toc-item">以为&quot;字长内的读写天然原子&quot;就够了</a>
+                
+                    
+                    
+                    
+                    <a href="#把-timesleep-当同步" class="toc-item">把 time.Sleep 当同步</a>
+                
+                    
+                    
+                    
+                    <a href="#18-面试要点" class="toc-item">1.8 面试要点</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -163,17 +515,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -184,7 +536,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -194,13 +546,13 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../../../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../../../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

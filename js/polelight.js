@@ -3,8 +3,15 @@
 
   var THEME_KEY = 'dyl_site_theme';
 
+  var SYSTEM_LIGHT = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+
+  // 未手动选择过时跟随系统；不支持或系统无偏好时默认暗色
   function getSystemTheme() {
-    return 'dark';
+    return SYSTEM_LIGHT && SYSTEM_LIGHT.matches ? 'light' : 'dark';
+  }
+
+  function hasSavedTheme() {
+    try { var v = localStorage.getItem(THEME_KEY); return v === 'dark' || v === 'light'; } catch (e) { return false; }
   }
 
   function resolveTheme() {
@@ -224,8 +231,18 @@
 
   function bindThemeToggle() {
     var btn = document.getElementById('dyl-theme-toggle');
-    if (!btn) return;
-    btn.addEventListener('click', toggleTheme);
+    if (btn) btn.addEventListener('click', toggleTheme);
+    // 系统明暗变化时（如日落自动切换），未手动选择过的访客随之切换
+    if (SYSTEM_LIGHT) {
+      var onSystemChange = function () {
+        if (hasSavedTheme()) return;
+        theme = getSystemTheme();
+        syncThemeUI(theme);
+        rerenderMermaid();
+      };
+      if (SYSTEM_LIGHT.addEventListener) SYSTEM_LIGHT.addEventListener('change', onSystemChange);
+      else if (SYSTEM_LIGHT.addListener) SYSTEM_LIGHT.addListener(onSystemChange);
+    }
   }
 
   var theme = resolveTheme();
@@ -268,43 +285,6 @@
   var lang = "zh";
   try { lang = localStorage.getItem(LS_KEY) || "zh"; } catch (e) {}
 
-  function updateRecentItems() {
-    document.querySelectorAll('.recent-cat').forEach(function (el) {
-      var zh = el.getAttribute('data-zh-cat');
-      var en = el.getAttribute('data-en-cat');
-      if (!zh) return;
-      el.textContent = (currentLang === 'en' && en) ? en : zh;
-    });
-    document.querySelectorAll('.recent-title').forEach(function (el) {
-      var zh = el.getAttribute('data-zh-title');
-      var en = el.getAttribute('data-en-title');
-      if (!zh) return;
-      el.textContent = (currentLang === 'en' && en) ? en : zh;
-    });
-  }
-
-  function updateTagChips() {
-    document.querySelectorAll('.tag-chip').forEach(function (el) {
-      var zh = el.getAttribute('data-zh-name');
-      var en = el.getAttribute('data-en-name');
-      if (!zh) return;
-      var name = (currentLang === 'en' && en) ? en : zh;
-      var count = el.querySelector('.tag-count');
-      var countText = count ? count.textContent : '';
-      el.textContent = '';
-      el.appendChild(document.createTextNode('#' + name + ' '));
-      if (count) {
-        count.textContent = countText;
-        el.appendChild(count);
-      } else {
-        var newCount = document.createElement('span');
-        newCount.className = 'tag-count';
-        newCount.textContent = countText;
-        el.appendChild(newCount);
-      }
-    });
-  }
-
   function applyLang(target) {
     var d = DICT[target];
     if (!d) return;
@@ -330,8 +310,6 @@
     document.querySelectorAll('[data-zh][data-en]').forEach(function (el) {
       el.textContent = el.getAttribute(target === 'en' ? 'data-en' : 'data-zh');
     });
-    updateRecentItems();
-    updateTagChips();
 
   }
 
@@ -501,16 +479,58 @@
     }
     function resetFocus() { focusedIndex = -1; }
 
-    function renderHits(hits) {
+    // 字段权重：标题 > 标签/分类 > 小标题 > 正文；所有关键词都需命中（任意字段）
+    var FIELDS = [['title', 12], ['tags', 6], ['categories', 5], ['headings', 3], ['summary', 2], ['text', 1]];
+    function scorePost(post, terms) {
+      var score = 0;
+      for (var i = 0; i < terms.length; i++) {
+        var best = 0;
+        for (var j = 0; j < FIELDS.length; j++) {
+          var value = (post[FIELDS[j][0]] || '').toLowerCase();
+          if (value.indexOf(terms[i]) !== -1) best = Math.max(best, FIELDS[j][1]);
+        }
+        if (!best) return 0;
+        score += best;
+      }
+      if ((post.title || '').toLowerCase().indexOf(terms.join(' ')) !== -1) score += 8;
+      return score;
+    }
+    function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    // 先在原文上按关键词切分，再逐段转义，避免关键词命中 &amp; 之类的实体
+    function highlight(str, terms) {
+      str = String(str || '');
+      if (!terms.length) return escapeHtml(str);
+      var re = new RegExp('(' + terms.map(escapeRegExp).join('|') + ')', 'gi');
+      return str.split(re).map(function (part, i) {
+        return i % 2 ? '<mark>' + escapeHtml(part) + '</mark>' : escapeHtml(part);
+      }).join('');
+    }
+    function snippet(post, terms) {
+      var sources = [post.text || '', post.headings || '', post.summary || ''];
+      for (var i = 0; i < sources.length; i++) {
+        var lower = sources[i].toLowerCase();
+        for (var j = 0; j < terms.length; j++) {
+          var at = lower.indexOf(terms[j]);
+          if (at === -1) continue;
+          var start = Math.max(0, at - 30), end = Math.min(sources[i].length, at + 70);
+          return (start > 0 ? '…' : '') + sources[i].slice(start, end) + (end < sources[i].length ? '…' : '');
+        }
+      }
+      return post.summary || '';
+    }
+
+    function renderHits(hits, terms) {
       if (!hits.length) {
         results.innerHTML = '<div class="search-no-results">' + escapeHtml(getI18n('search_no_results')) + '</div>';
         resetFocus();
         return;
       }
       results.innerHTML = hits.map(function (hit) {
+        var meta = [hit.date, hit.categories].concat(hit.tags ? ['#' + hit.tags.split(' ').join(' #')] : []).join(' · ');
         return '<a href="' + escapeHtml(hit.url) + '" class="search-result">' +
-          '<div class="search-result-title">' + escapeHtml(hit.title) + '</div>' +
-          '<div class="search-result-meta">' + escapeHtml(hit.date + ' · ' + hit.categories) + '</div></a>';
+          '<div class="search-result-title">' + highlight(hit.title, terms) + '</div>' +
+          '<div class="search-result-excerpt">' + highlight(snippet(hit, terms), terms) + '</div>' +
+          '<div class="search-result-meta">' + highlight(meta, terms) + '</div></a>';
       }).join('');
       resetFocus();
     }
@@ -526,18 +546,19 @@
         resetFocus();
         return;
       }
-      results.innerHTML = '<div class="search-empty">' + (currentLang === 'en' ? 'Searching…' : '检索中…') + '</div>';
+      results.innerHTML = '<div class="search-empty">' + escapeHtml(getI18n('search_loading')) + '</div>';
       debounce = setTimeout(function () {
         loadSearch().then(function (posts) {
           if (currentRequest !== requestId) return;
-          var terms = q.split(/\s+/);
-          renderHits(posts.filter(function (post) {
-            var text = (post.title + ' ' + post.categories).toLowerCase();
-            return terms.every(function (term) { return text.indexOf(term) !== -1; });
-          }).slice(0, 30));
+          var terms = q.split(/\s+/).filter(Boolean);
+          renderHits(posts.map(function (post, i) {
+            return { post: post, score: scorePost(post, terms), order: i };
+          }).filter(function (r) { return r.score > 0; }).sort(function (a, b) {
+            return b.score - a.score || a.order - b.order;
+          }).slice(0, 30).map(function (r) { return r.post; }), terms);
         }).catch(function () {
           if (currentRequest !== requestId) return;
-          results.innerHTML = '<div class="search-error">' + (currentLang === 'en' ? 'Search is unavailable. Browse the journal instead.' : '搜索暂不可用，请通过文章列表浏览。') + '</div>';
+          results.innerHTML = '<div class="search-error">' + escapeHtml(getI18n('search_index_missing')) + '</div>';
         });
       }, 120);
     });
@@ -606,7 +627,7 @@
       dateSpan.textContent = post.d;
       var catSpan = document.createElement('span');
       catSpan.className = 'archive-cat';
-      catSpan.textContent = post.c;
+      catSpan.textContent = !post.c ? getI18n('uncategorized') : (currentLang === 'en' ? post.ce : post.c);
       var titleSpan = document.createElement('span');
       titleSpan.className = 'archive-item-title';
       titleSpan.textContent = post.t;

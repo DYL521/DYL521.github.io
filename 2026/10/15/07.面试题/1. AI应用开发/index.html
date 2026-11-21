@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="AI 应用开发 / Agent 面试题 按主题归类，相似问题已合并。括号内为原始题号。答案结合三个真实项目（mate-assist / jarvis-registry / rag_api）作答，并对齐官方知识点">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI 应用开发 / Agent 面试题 - DYL521">
+    <meta property="og:description" content="AI 应用开发 / Agent 面试题 按主题归类，相似问题已合并。括号内为原始题号。答案结合三个真实项目（mate-assist / jarvis-registry / rag_api）作答，并对齐官方知识点">
+    <meta property="og:url" content="https://dyl521.github.io/2026/10/15/07.%E9%9D%A2%E8%AF%95%E9%A2%98/1.%20AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="AI 应用开发 / Agent 面试题 - DYL521">
+    
+    <meta property="article:published_time" content="2026-10-15T02:00:00.000Z">
+    <meta property="article:modified_time" content="2026-11-08T13:33:41.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI 应用开发 / Agent 面试题 - DYL521">
+    <meta name="twitter:description" content="AI 应用开发 / Agent 面试题 按主题归类，相似问题已合并。括号内为原始题号。答案结合三个真实项目（mate-assist / jarvis-registry / rag_api）作答，并对齐官方知识点">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/2026/10/15/07.%E9%9D%A2%E8%AF%95%E9%A2%98/1.%20AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            AI 应用开发 / Agent 面试题 - DYL521
-        
-    </title>
+    <title>AI 应用开发 / Agent 面试题 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../../../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2026</span></div>
+            <div class="breadcrumb"><a href="../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
             
             <h1 class="article-title" data-reveal>AI 应用开发 / Agent 面试题</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">面试题</span>
                 <span>2026-10-15</span>
-                <span>· 151 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 45275 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 151 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 45275 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -1156,13 +1169,13 @@
             <div class="article-nav" data-reveal>
                 
                 <a href="../../00.%E6%A0%B7%E5%BC%8F%E6%89%8B%E5%86%8C/%E6%A0%B7%E5%BC%8F%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">笔记样式速查手册</div>
                 </a>
                 
                 
                 <a href="../../../../09/04/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">Go 常见面试题</div>
                 </a>
                 
@@ -1174,12 +1187,11 @@
         
             
             
-            
         
         
         <aside class="toc" data-fx-toc>
             <div class="toc-header" id="dyl-toc-header">
-                <div class="toc-label">// <span data-i18n="post_toc_label">On this page</span></div>
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
                 <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
             </div>
             <div class="toc-list" id="dyl-toc-list">
@@ -1187,612 +1199,612 @@
                     
                     
                     
-                    <a href="#项目" class="toc-item"> 项目</a>
+                    <a href="#项目" class="toc-item">项目</a>
                 
                     
                     
                     
-                    <a href="#项目-amate-assist-汽车销售助手后端" class="toc-item"> 项目 A：mate-assist —— 汽车销售助手后端</a>
+                    <a href="#项目-amate-assist-汽车销售助手后端" class="toc-item">项目 A：mate-assist —— 汽车销售助手后端</a>
                 
                     
                     
                     
-                    <a href="#项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台" class="toc-item"> 项目 B：jarvis-registry —— 企业级 MCP Gateway / A2A 编排平台</a>
+                    <a href="#项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台" class="toc-item">项目 B：jarvis-registry —— 企业级 MCP Gateway / A2A 编排平台</a>
                 
                     
                     
                     
-                    <a href="#项目-crag_api-id-based-rag-索引检索微服务" class="toc-item"> 项目 C：rag_api —— ID-based RAG 索引/检索微服务</a>
+                    <a href="#项目-crag_api-id-based-rag-索引检索微服务" class="toc-item">项目 C：rag_api —— ID-based RAG 索引/检索微服务</a>
                 
                     
                     
                     
-                    <a href="#目录" class="toc-item"> 目录</a>
+                    <a href="#目录" class="toc-item">目录</a>
                 
                     
                     
                     
-                    <a href="#一-项目介绍与软技能" class="toc-item"> 一、项目介绍与软技能</a>
+                    <a href="#一-项目介绍与软技能" class="toc-item">一、项目介绍与软技能</a>
                 
                     
                     
                     
-                    <a href="#1-讲一个最熟悉最复杂的-agent-生产项目架构分几层1-15-28-47-60-72" class="toc-item"> 1. 讲一个最熟悉/最复杂的 Agent 生产项目，架构分几层？（1 / 15 / 28 / 47 / 60 / 72）</a>
+                    <a href="#1-讲一个最熟悉最复杂的-agent-生产项目架构分几层1-15-28-47-60-72" class="toc-item">1. 讲一个最熟悉/最复杂的 Agent 生产项目，架构分几层？（1 / 15 / 28 / 47 / 60 / 72）</a>
                 
                     
                     
                     
-                    <a href="#2-ragagent-项目的业务痛点是什么1" class="toc-item"> 2. RAG/Agent 项目的业务痛点是什么？（1）</a>
+                    <a href="#2-ragagent-项目的业务痛点是什么1" class="toc-item">2. RAG/Agent 项目的业务痛点是什么？（1）</a>
                 
                     
                     
                     
-                    <a href="#3-讲清一个最复杂的-ai-工作流输入推理工具记忆输出回写65" class="toc-item"> 3. 讲清一个最复杂的 AI 工作流（输入→推理→工具→记忆→输出→回写）（65）</a>
+                    <a href="#3-讲清一个最复杂的-ai-工作流输入推理工具记忆输出回写65" class="toc-item">3. 讲清一个最复杂的 AI 工作流（输入→推理→工具→记忆→输出→回写）（65）</a>
                 
                     
                     
                     
-                    <a href="#4-需求排期模型同学和工程同学怎么协同40" class="toc-item"> 4. 需求/排期/模型同学和工程同学怎么协同？（40）</a>
+                    <a href="#4-需求排期模型同学和工程同学怎么协同40" class="toc-item">4. 需求/排期/模型同学和工程同学怎么协同？（40）</a>
                 
                     
                     
                     
-                    <a href="#5-用-codexclaude-code-把模糊需求写成-spec79" class="toc-item"> 5. 用 codex/claude code 把模糊需求写成 Spec？（79）</a>
+                    <a href="#5-用-codexclaude-code-把模糊需求写成-spec79" class="toc-item">5. 用 codex/claude code 把模糊需求写成 Spec？（79）</a>
                 
                     
                     
                     
-                    <a href="#二-agent-架构与模式选型" class="toc-item"> 二、Agent 架构与模式选型</a>
+                    <a href="#二-agent-架构与模式选型" class="toc-item">二、Agent 架构与模式选型</a>
                 
                     
                     
                     
-                    <a href="#1-react-和-plan-and-execute-replan-的区别-场景-选型2" class="toc-item"> 1. ReAct 和 Plan-and-Execute-Replan 的区别、场景、选型？（2）</a>
+                    <a href="#1-react-和-plan-and-execute-replan-的区别-场景-选型2" class="toc-item">1. ReAct 和 Plan-and-Execute-Replan 的区别、场景、选型？（2）</a>
                 
                     
                     
                     
-                    <a href="#2-ai-工作流和纯-agent-自主规划的区别什么时候不该上-agent23-71" class="toc-item"> 2. AI 工作流和纯 Agent 自主规划的区别？什么时候不该上 Agent？（23 / 71）</a>
+                    <a href="#2-ai-工作流和纯-agent-自主规划的区别什么时候不该上-agent23-71" class="toc-item">2. AI 工作流和纯 Agent 自主规划的区别？什么时候不该上 Agent？（23 / 71）</a>
                 
                     
                     
                     
-                    <a href="#3-workflow-graph-loop-的区别59" class="toc-item"> 3. Workflow、Graph、Loop 的区别？（59）</a>
+                    <a href="#3-workflow-graph-loop-的区别59" class="toc-item">3. Workflow、Graph、Loop 的区别？（59）</a>
                 
                     
                     
                     
-                    <a href="#4-agentic-rag-和普通-rag-的区别什么时候让-agent-再检索76" class="toc-item"> 4. Agentic RAG 和普通 RAG 的区别？什么时候让 Agent 再检索？（76）</a>
+                    <a href="#4-agentic-rag-和普通-rag-的区别什么时候让-agent-再检索76" class="toc-item">4. Agentic RAG 和普通 RAG 的区别？什么时候让 Agent 再检索？（76）</a>
                 
                     
                     
                     
-                    <a href="#5-复杂问题路由何时直接-llm-rag-图数据库-多子-agent61" class="toc-item"> 5. 复杂问题路由：何时直接 LLM / RAG / 图数据库 / 多子 Agent？（61）</a>
+                    <a href="#5-复杂问题路由何时直接-llm-rag-图数据库-多子-agent61" class="toc-item">5. 复杂问题路由：何时直接 LLM / RAG / 图数据库 / 多子 Agent？（61）</a>
                 
                     
                     
                     
-                    <a href="#三-意图识别与路由" class="toc-item"> 三、意图识别与路由</a>
+                    <a href="#三-意图识别与路由" class="toc-item">三、意图识别与路由</a>
                 
                     
                     
                     
-                    <a href="#1-意图识别怎么落地规则分类模型llm-路由怎么配合如何避免误判进错工具错-rag16-48" class="toc-item"> 1. 意图识别怎么落地？规则/分类模型/LLM 路由怎么配合？如何避免误判进错工具/错 RAG？（16 / 48）</a>
+                    <a href="#1-意图识别怎么落地规则分类模型llm-路由怎么配合如何避免误判进错工具错-rag16-48" class="toc-item">1. 意图识别怎么落地？规则/分类模型/LLM 路由怎么配合？如何避免误判进错工具/错 RAG？（16 / 48）</a>
                 
                     
                     
                     
-                    <a href="#2-意图识别错了怎么发现-怎么兜底17" class="toc-item"> 2. 意图识别错了怎么发现、怎么兜底？（17）</a>
+                    <a href="#2-意图识别错了怎么发现-怎么兜底17" class="toc-item">2. 意图识别错了怎么发现、怎么兜底？（17）</a>
                 
                     
                     
                     
-                    <a href="#3-长对话里意图漂移怎么拉回35" class="toc-item"> 3. 长对话里意图漂移怎么拉回？（35）</a>
+                    <a href="#3-长对话里意图漂移怎么拉回35" class="toc-item">3. 长对话里意图漂移怎么拉回？（35）</a>
                 
                     
                     
                     
-                    <a href="#4-意图识别路由做成平台能力怎么给多业务用45" class="toc-item"> 4. 意图识别+路由做成平台能力怎么给多业务用？（45）</a>
+                    <a href="#4-意图识别路由做成平台能力怎么给多业务用45" class="toc-item">4. 意图识别+路由做成平台能力怎么给多业务用？（45）</a>
                 
                     
                     
                     
-                    <a href="#5-case帮我退昨天买的充电宝agent-查天气怎么修27" class="toc-item"> 5. 【Case】&quot;帮我退昨天买的充电宝&quot;→Agent 查天气，怎么修？（27）</a>
+                    <a href="#5-case帮我退昨天买的充电宝agent-查天气怎么修27" class="toc-item">5. 【Case】&quot;帮我退昨天买的充电宝&quot;→Agent 查天气，怎么修？（27）</a>
                 
                     
                     
                     
-                    <a href="#四-rag-全链路与检索" class="toc-item"> 四、RAG 全链路与检索</a>
+                    <a href="#四-rag-全链路与检索" class="toc-item">四、RAG 全链路与检索</a>
                 
                     
                     
                     
-                    <a href="#1-rag-全链路入库-清洗-分块-多模态解析-为什么选-weaviate4" class="toc-item"> 1. RAG 全链路：入库、清洗、分块、多模态解析、为什么选 Weaviate？（4）</a>
+                    <a href="#1-rag-全链路入库-清洗-分块-多模态解析-为什么选-weaviate4" class="toc-item">1. RAG 全链路：入库、清洗、分块、多模态解析、为什么选 Weaviate？（4）</a>
                 
                     
                     
                     
-                    <a href="#2-多路召回怎么搭向量bm25知识图谱元数据过滤各负责什么怎么融合进-rerank3-51" class="toc-item"> 2. 多路召回怎么搭？向量/BM25/知识图谱/元数据过滤各负责什么？怎么融合进 Rerank？（3 / 51）</a>
+                    <a href="#2-多路召回怎么搭向量bm25知识图谱元数据过滤各负责什么怎么融合进-rerank3-51" class="toc-item">2. 多路召回怎么搭？向量/BM25/知识图谱/元数据过滤各负责什么？怎么融合进 Rerank？（3 / 51）</a>
                 
                     
                     
                     
-                    <a href="#3-rerank-的作用rerank-模型-vs-向量库各解决什么放哪个阶段3-77" class="toc-item"> 3. Rerank 的作用？rerank 模型 vs 向量库各解决什么？放哪个阶段？（3 / 77）</a>
+                    <a href="#3-rerank-的作用rerank-模型-vs-向量库各解决什么放哪个阶段3-77" class="toc-item">3. Rerank 的作用？rerank 模型 vs 向量库各解决什么？放哪个阶段？（3 / 77）</a>
                 
                     
                     
                     
-                    <a href="#4-reranker-为什么不能全库跑cross-vs-bi-encoder没-gpu-怎么办52" class="toc-item"> 4. Reranker 为什么不能全库跑？cross vs bi-encoder？没 GPU 怎么办？（52）</a>
+                    <a href="#4-reranker-为什么不能全库跑cross-vs-bi-encoder没-gpu-怎么办52" class="toc-item">4. Reranker 为什么不能全库跑？cross vs bi-encoder？没 GPU 怎么办？（52）</a>
                 
                     
                     
                     
-                    <a href="#5-chunk-size-overlap-embedding-rerank-怎么调优先级36" class="toc-item"> 5. chunk size、overlap、embedding、rerank 怎么调？优先级？（36）</a>
+                    <a href="#5-chunk-size-overlap-embedding-rerank-怎么调优先级36" class="toc-item">5. chunk size、overlap、embedding、rerank 怎么调？优先级？（36）</a>
                 
                     
                     
                     
-                    <a href="#6-rag-接在项目哪里检索结果怎么进-agent-上下文18" class="toc-item"> 6. RAG 接在项目哪里？检索结果怎么进 Agent 上下文？（18）</a>
+                    <a href="#6-rag-接在项目哪里检索结果怎么进-agent-上下文18" class="toc-item">6. RAG 接在项目哪里？检索结果怎么进 Agent 上下文？（18）</a>
                 
                     
                     
                     
-                    <a href="#7-rag-召回质量差先查召回重排切片prompt19" class="toc-item"> 7. RAG 召回质量差，先查召回/重排/切片/prompt？（19）</a>
+                    <a href="#7-rag-召回质量差先查召回重排切片prompt19" class="toc-item">7. RAG 召回质量差，先查召回/重排/切片/prompt？（19）</a>
                 
                     
                     
                     
-                    <a href="#8-幻觉的原因rag-怎么缓解召回对了模型仍编造怎么办12" class="toc-item"> 8. 幻觉的原因？RAG 怎么缓解？召回对了模型仍编造怎么办？（12）</a>
+                    <a href="#8-幻觉的原因rag-怎么缓解召回对了模型仍编造怎么办12" class="toc-item">8. 幻觉的原因？RAG 怎么缓解？召回对了模型仍编造怎么办？（12）</a>
                 
                     
                     
                     
-                    <a href="#五-工具调用function-calling-mcp-skill" class="toc-item"> 五、工具调用：Function Calling / MCP / Skill</a>
+                    <a href="#五-工具调用function-calling-mcp-skill" class="toc-item">五、工具调用：Function Calling / MCP / Skill</a>
                 
                     
                     
                     
-                    <a href="#1-function-calling-原理mcp-是什么mcp-和-skill-区别6" class="toc-item"> 1. Function Calling 原理？MCP 是什么？MCP 和 Skill 区别？（6）</a>
+                    <a href="#1-function-calling-原理mcp-是什么mcp-和-skill-区别6" class="toc-item">1. Function Calling 原理？MCP 是什么？MCP 和 Skill 区别？（6）</a>
                 
                     
                     
                     
-                    <a href="#2-工具膨胀几百个-skill怎么做工具发现避免塞爆-prompt5" class="toc-item"> 2. 工具膨胀（几百个 skill）怎么做工具发现，避免塞爆 prompt？（5）</a>
+                    <a href="#2-工具膨胀几百个-skill怎么做工具发现避免塞爆-prompt5" class="toc-item">2. 工具膨胀（几百个 skill）怎么做工具发现，避免塞爆 prompt？（5）</a>
                 
                     
                     
                     
-                    <a href="#3-工具调用的-schema-校验-参数修正-重试-限流-降级56" class="toc-item"> 3. 工具调用的 schema 校验、参数修正、重试、限流、降级？（56）</a>
+                    <a href="#3-工具调用的-schema-校验-参数修正-重试-限流-降级56" class="toc-item">3. 工具调用的 schema 校验、参数修正、重试、限流、降级？（56）</a>
                 
                     
                     
                     
-                    <a href="#4-模型返回-tool_call-后参数校验权限校验沙箱执行结果回灌全流程二面-4" class="toc-item"> 4. 模型返回 tool_call 后，参数校验→权限校验→沙箱执行→结果回灌全流程？（二面 4）</a>
+                    <a href="#4-模型返回-tool_call-后参数校验权限校验沙箱执行结果回灌全流程二面-4" class="toc-item">4. 模型返回 tool_call 后，参数校验→权限校验→沙箱执行→结果回灌全流程？（二面 4）</a>
                 
                     
                     
                     
-                    <a href="#5-工具返回数据过大怎么截断摘要二面-11" class="toc-item"> 5. 工具返回数据过大怎么截断/摘要？（二面 11）</a>
+                    <a href="#5-工具返回数据过大怎么截断摘要二面-11" class="toc-item">5. 工具返回数据过大怎么截断/摘要？（二面 11）</a>
                 
                     
                     
                     
-                    <a href="#6-企业级-mcpa2a-网关怎么做注册中心而不只是目录跨云-agent-怎么统一接入jarvis-registry-新增" class="toc-item"> 6. 企业级 MCP/A2A 网关怎么做「注册中心」而不只是目录？跨云 agent 怎么统一接入？（jarvis-registry 新增）</a>
+                    <a href="#6-企业级-mcpa2a-网关怎么做注册中心而不只是目录跨云-agent-怎么统一接入jarvis-registry-新增" class="toc-item">6. 企业级 MCP/A2A 网关怎么做「注册中心」而不只是目录？跨云 agent 怎么统一接入？（jarvis-registry 新增）</a>
                 
                     
                     
                     
-                    <a href="#六-agent-稳定性异常-死循环-容错" class="toc-item"> 六、Agent 稳定性：异常、死循环、容错</a>
+                    <a href="#六-agent-稳定性异常-死循环-容错" class="toc-item">六、Agent 稳定性：异常、死循环、容错</a>
                 
                     
                     
                     
-                    <a href="#1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7" class="toc-item"> 1. 工具调用异常（JSON 解析失败/参数缺失/超时）：重试、幂等、熔断？（7）</a>
+                    <a href="#1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7" class="toc-item">1. 工具调用异常（JSON 解析失败/参数缺失/超时）：重试、幂等、熔断？（7）</a>
                 
                     
                     
                     
-                    <a href="#2-agent-调用失败超时脏数据怎么处理21-56" class="toc-item"> 2. Agent 调用失败/超时/脏数据怎么处理？（21 / 56）</a>
+                    <a href="#2-agent-调用失败超时脏数据怎么处理21-56" class="toc-item">2. Agent 调用失败/超时/脏数据怎么处理？（21 / 56）</a>
                 
                     
                     
                     
-                    <a href="#3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74" class="toc-item"> 3. 循环调用/死循环/无限工具调用怎么防？max step 之外还有啥？（34 / 59 / 68 / 74）</a>
+                    <a href="#3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74" class="toc-item">3. 循环调用/死循环/无限工具调用怎么防？max step 之外还有啥？（34 / 59 / 68 / 74）</a>
                 
                     
                     
                     
-                    <a href="#4-harness-里-agent-loop-怎么设计终止条件除-max_turns-还控哪些二面-3" class="toc-item"> 4. Harness 里 agent loop 怎么设计？终止条件除 max_turns 还控哪些？（二面 3）</a>
+                    <a href="#4-harness-里-agent-loop-怎么设计终止条件除-max_turns-还控哪些二面-3" class="toc-item">4. Harness 里 agent loop 怎么设计？终止条件除 max_turns 还控哪些？（二面 3）</a>
                 
                     
                     
                     
-                    <a href="#七-记忆与上下文管理" class="toc-item"> 七、记忆与上下文管理</a>
+                    <a href="#七-记忆与上下文管理" class="toc-item">七、记忆与上下文管理</a>
                 
                     
                     
                     
-                    <a href="#1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49" class="toc-item"> 1. 记忆分层/三层记忆：会话级、工作/实体级、长期分别存什么？何时读写？怎么防污染？（8 / 9 / 49）</a>
+                    <a href="#1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49" class="toc-item">1. 记忆分层/三层记忆：会话级、工作/实体级、长期分别存什么？何时读写？怎么防污染？（8 / 9 / 49）</a>
                 
                     
                     
                     
-                    <a href="#2-三层记忆在长期任务里怎么演化新事实写入旧事实过期冲突合并画像重建62" class="toc-item"> 2. 三层记忆在长期任务里怎么演化：新事实写入/旧事实过期/冲突合并/画像重建？（62）</a>
+                    <a href="#2-三层记忆在长期任务里怎么演化新事实写入旧事实过期冲突合并画像重建62" class="toc-item">2. 三层记忆在长期任务里怎么演化：新事实写入/旧事实过期/冲突合并/画像重建？（62）</a>
                 
                     
                     
                     
-                    <a href="#3-上下文超长怎么处理滑动窗口摘要关键信息抽取向量检索历史怎么组合9-50" class="toc-item"> 3. 上下文超长怎么处理？滑动窗口/摘要/关键信息抽取/向量检索历史怎么组合？（9 / 50）</a>
+                    <a href="#3-上下文超长怎么处理滑动窗口摘要关键信息抽取向量检索历史怎么组合9-50" class="toc-item">3. 上下文超长怎么处理？滑动窗口/摘要/关键信息抽取/向量检索历史怎么组合？（9 / 50）</a>
                 
                     
                     
                     
-                    <a href="#4-长对话怎么防上下文漂移state-状态机怎么设计8" class="toc-item"> 4. 长对话怎么防上下文漂移？State 状态机怎么设计？（8）</a>
+                    <a href="#4-长对话怎么防上下文漂移state-状态机怎么设计8" class="toc-item">4. 长对话怎么防上下文漂移？State 状态机怎么设计？（8）</a>
                 
                     
                     
                     
-                    <a href="#5-共享-memory-和私有-memory-怎么设计67" class="toc-item"> 5. 共享 memory 和私有 memory 怎么设计？（67）</a>
+                    <a href="#5-共享-memory-和私有-memory-怎么设计67" class="toc-item">5. 共享 memory 和私有 memory 怎么设计？（67）</a>
                 
                     
                     
                     
-                    <a href="#6-摘要压缩丢了关键信息怎么补跨块关联怎么保证二面-6" class="toc-item"> 6. 摘要压缩丢了关键信息怎么补？跨块关联怎么保证？（二面 6）</a>
+                    <a href="#6-摘要压缩丢了关键信息怎么补跨块关联怎么保证二面-6" class="toc-item">6. 摘要压缩丢了关键信息怎么补？跨块关联怎么保证？（二面 6）</a>
                 
                     
                     
                     
-                    <a href="#八-多-agent-协作" class="toc-item"> 八、多 Agent 协作</a>
+                    <a href="#八-多-agent-协作" class="toc-item">八、多 Agent 协作</a>
                 
                     
                     
                     
-                    <a href="#1-子-agent-之间怎么通讯-任务怎么拆分20" class="toc-item"> 1. 子 Agent 之间怎么通讯、任务怎么拆分？（20）</a>
+                    <a href="#1-子-agent-之间怎么通讯-任务怎么拆分20" class="toc-item">1. 子 Agent 之间怎么通讯、任务怎么拆分？（20）</a>
                 
                     
                     
                     
-                    <a href="#2-supervisorplannerworkerreviewer-的边界怎么划工具集能共用吗73" class="toc-item"> 2. Supervisor/Planner/Worker/Reviewer 的边界怎么划？工具集能共用吗？（73）</a>
+                    <a href="#2-supervisorplannerworkerreviewer-的边界怎么划工具集能共用吗73" class="toc-item">2. Supervisor/Planner/Worker/Reviewer 的边界怎么划？工具集能共用吗？（73）</a>
                 
                     
                     
                     
-                    <a href="#3-多-agent-上下文怎么传会不会越传越多污染66-67" class="toc-item"> 3. 多 Agent 上下文怎么传？会不会越传越多/污染？（66 / 67）</a>
+                    <a href="#3-多-agent-上下文怎么传会不会越传越多污染66-67" class="toc-item">3. 多 Agent 上下文怎么传？会不会越传越多/污染？（66 / 67）</a>
                 
                     
                     
                     
-                    <a href="#4-子-agent-再调-agenttoken-怎么炸怎么隔离状态75" class="toc-item"> 4. 子 Agent 再调 Agent，token 怎么炸？怎么隔离状态？（75）</a>
+                    <a href="#4-子-agent-再调-agenttoken-怎么炸怎么隔离状态75" class="toc-item">4. 子 Agent 再调 Agent，token 怎么炸？怎么隔离状态？（75）</a>
                 
                     
                     
                     
-                    <a href="#5-怎么避免两个-agent-互相甩锅式调用33" class="toc-item"> 5. 怎么避免两个 Agent 互相甩锅式调用？（33）</a>
+                    <a href="#5-怎么避免两个-agent-互相甩锅式调用33" class="toc-item">5. 怎么避免两个 Agent 互相甩锅式调用？（33）</a>
                 
                     
                     
                     
-                    <a href="#6-多-agent-平台化工具权限-沙箱-审计-成本怎么管43" class="toc-item"> 6. 多 Agent 平台化：工具权限、沙箱、审计、成本怎么管？（43）</a>
+                    <a href="#6-多-agent-平台化工具权限-沙箱-审计-成本怎么管43" class="toc-item">6. 多 Agent 平台化：工具权限、沙箱、审计、成本怎么管？（43）</a>
                 
                     
                     
                     
-                    <a href="#7-多-agent-结果冲突怎么仲裁二面-7" class="toc-item"> 7. 多 Agent 结果冲突怎么仲裁？（二面 7）</a>
+                    <a href="#7-多-agent-结果冲突怎么仲裁二面-7" class="toc-item">7. 多 Agent 结果冲突怎么仲裁？（二面 7）</a>
                 
                     
                     
                     
-                    <a href="#8-多个-agent-并发改同一文件资源怎么防冲突锁粒度怎么定二面-8" class="toc-item"> 8. 多个 Agent 并发改同一文件/资源怎么防冲突？锁粒度怎么定？（二面 8）</a>
+                    <a href="#8-多个-agent-并发改同一文件资源怎么防冲突锁粒度怎么定二面-8" class="toc-item">8. 多个 Agent 并发改同一文件/资源怎么防冲突？锁粒度怎么定？（二面 8）</a>
                 
                     
                     
                     
-                    <a href="#九-框架langgraph-langchain-agentscope" class="toc-item"> 九、框架：LangGraph / LangChain / AgentScope</a>
+                    <a href="#九-框架langgraph-langchain-agentscope" class="toc-item">九、框架：LangGraph / LangChain / AgentScope</a>
                 
                     
                     
                     
-                    <a href="#1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53" class="toc-item"> 1. LangChain 和 LangGraph 区别？何时链够用、何时必须上状态图？（53）</a>
+                    <a href="#1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53" class="toc-item">1. LangChain 和 LangGraph 区别？何时链够用、何时必须上状态图？（53）</a>
                 
                     
                     
                     
-                    <a href="#2-langgraph-的-statenodeedgeconditional-edge-实际怎么用63" class="toc-item"> 2. LangGraph 的 State/Node/Edge/Conditional Edge 实际怎么用？（63）</a>
+                    <a href="#2-langgraph-的-statenodeedgeconditional-edge-实际怎么用63" class="toc-item">2. LangGraph 的 State/Node/Edge/Conditional Edge 实际怎么用？（63）</a>
                 
                     
                     
                     
-                    <a href="#3-statereducercheckpointer-怎么做断点恢复和多轮对话54" class="toc-item"> 3. State/Reducer/Checkpointer 怎么做断点恢复和多轮对话？（54）</a>
+                    <a href="#3-statereducercheckpointer-怎么做断点恢复和多轮对话54" class="toc-item">3. State/Reducer/Checkpointer 怎么做断点恢复和多轮对话？（54）</a>
                 
                     
                     
                     
-                    <a href="#4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55" class="toc-item"> 4. 图数据库选 Neo4j 还是其他？实体/关系/属性怎么建模？图查询和向量召回怎么互补？（55）</a>
+                    <a href="#4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55" class="toc-item">4. 图数据库选 Neo4j 还是其他？实体/关系/属性怎么建模？图查询和向量召回怎么互补？（55）</a>
                 
                     
                     
                     
-                    <a href="#5-agent-执行到一半服务重启checkpoint-存什么-放哪-怎么恢复现场二面-9" class="toc-item"> 5. Agent 执行到一半服务重启，checkpoint 存什么、放哪、怎么恢复现场？（二面 9）</a>
+                    <a href="#5-agent-执行到一半服务重启checkpoint-存什么-放哪-怎么恢复现场二面-9" class="toc-item">5. Agent 执行到一半服务重启，checkpoint 存什么、放哪、怎么恢复现场？（二面 9）</a>
                 
                     
                     
                     
-                    <a href="#6-human-in-the-loop用户驳回或超时任务怎么续跑和兜底二面-10" class="toc-item"> 6. human-in-the-loop：用户驳回或超时，任务怎么续跑和兜底？（二面 10）</a>
+                    <a href="#6-human-in-the-loop用户驳回或超时任务怎么续跑和兜底二面-10" class="toc-item">6. human-in-the-loop：用户驳回或超时，任务怎么续跑和兜底？（二面 10）</a>
                 
                     
                     
                     
-                    <a href="#十-模型原理-调参与微调" class="toc-item"> 十、模型原理、调参与微调</a>
+                    <a href="#十-模型原理-调参与微调" class="toc-item">十、模型原理、调参与微调</a>
                 
                     
                     
                     
-                    <a href="#1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11" class="toc-item"> 1. KV Cache 原理？temperature/top_p/top_k？B 端怎么调参？（11）</a>
+                    <a href="#1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11" class="toc-item">1. KV Cache 原理？temperature/top_p/top_k？B 端怎么调参？（11）</a>
                 
                     
                     
                     
-                    <a href="#2-rag-vs-fine-tuning-怎么选b-端客户场景13" class="toc-item"> 2. RAG vs Fine-tuning 怎么选？B 端客户场景？（13）</a>
+                    <a href="#2-rag-vs-fine-tuning-怎么选b-端客户场景13" class="toc-item">2. RAG vs Fine-tuning 怎么选？B 端客户场景？（13）</a>
                 
                     
                     
                     
-                    <a href="#3-lora-原理merge-权重优缺点sftdpo-对齐目标何时微调何时-rag14" class="toc-item"> 3. LoRA 原理？Merge 权重优缺点？SFT/DPO 对齐目标？何时微调何时 RAG？（14）</a>
+                    <a href="#3-lora-原理merge-权重优缺点sftdpo-对齐目标何时微调何时-rag14" class="toc-item">3. LoRA 原理？Merge 权重优缺点？SFT/DPO 对齐目标？何时微调何时 RAG？（14）</a>
                 
                     
                     
                     
-                    <a href="#十一-流式输出-sse" class="toc-item"> 十一、流式输出 SSE</a>
+                    <a href="#十一-流式输出-sse" class="toc-item">十一、流式输出 SSE</a>
                 
                     
                     
                     
-                    <a href="#1-sse-怎么实现异常断流怎么处理乱序问题10" class="toc-item"> 1. SSE 怎么实现？异常断流怎么处理？乱序问题？（10）</a>
+                    <a href="#1-sse-怎么实现异常断流怎么处理乱序问题10" class="toc-item">1. SSE 怎么实现？异常断流怎么处理？乱序问题？（10）</a>
                 
                     
                     
                     
-                    <a href="#2-流式输出下工具调用事件怎么往前端正向推送断线重连怎么恢复二面-17" class="toc-item"> 2. 流式输出下，工具调用事件怎么往前端正向推送？断线重连怎么恢复？（二面 17）</a>
+                    <a href="#2-流式输出下工具调用事件怎么往前端正向推送断线重连怎么恢复二面-17" class="toc-item">2. 流式输出下，工具调用事件怎么往前端正向推送？断线重连怎么恢复？（二面 17）</a>
                 
                     
                     
                     
-                    <a href="#十二-工程架构异步-redis-mysql-可观测" class="toc-item"> 十二、工程架构：异步、Redis、MySQL、可观测</a>
+                    <a href="#十二-工程架构异步-redis-mysql-可观测" class="toc-item">十二、工程架构：异步、Redis、MySQL、可观测</a>
                 
                     
                     
                     
-                    <a href="#1-agent-调用链里异步-vs-同步怎么选为什么64" class="toc-item"> 1. Agent 调用链里异步 vs 同步怎么选？为什么？（64）</a>
+                    <a href="#1-agent-调用链里异步-vs-同步怎么选为什么64" class="toc-item">1. Agent 调用链里异步 vs 同步怎么选？为什么？（64）</a>
                 
                     
                     
                     
-                    <a href="#2-asyncio-批量跑-agent-为什么不能无脑并发怎么限流70" class="toc-item"> 2. asyncio 批量跑 Agent 为什么不能无脑并发？怎么限流？（70）</a>
+                    <a href="#2-asyncio-批量跑-agent-为什么不能无脑并发怎么限流70" class="toc-item">2. asyncio 批量跑 Agent 为什么不能无脑并发？怎么限流？（70）</a>
                 
                     
                     
                     
-                    <a href="#3-怎么设计可观测的-agent-调用链22" class="toc-item"> 3. 怎么设计可观测的 Agent 调用链？（22）</a>
+                    <a href="#3-怎么设计可观测的-agent-调用链22" class="toc-item">3. 怎么设计可观测的 Agent 调用链？（22）</a>
                 
                     
                     
                     
-                    <a href="#4-redis-在-agent-里用在哪会话状态意图缓存工具结果缓存分布式锁限流57-78" class="toc-item"> 4. Redis 在 Agent 里用在哪？会话状态/意图缓存/工具结果缓存/分布式锁/限流？（57 / 78）</a>
+                    <a href="#4-redis-在-agent-里用在哪会话状态意图缓存工具结果缓存分布式锁限流57-78" class="toc-item">4. Redis 在 Agent 里用在哪？会话状态/意图缓存/工具结果缓存/分布式锁/限流？（57 / 78）</a>
                 
                     
                     
                     
-                    <a href="#5-mysql-存对话记忆任务状态怎么分表热点用户怎么避免单表膨胀58" class="toc-item"> 5. MySQL 存对话/记忆/任务状态怎么分表？热点用户怎么避免单表膨胀？（58）</a>
+                    <a href="#5-mysql-存对话记忆任务状态怎么分表热点用户怎么避免单表膨胀58" class="toc-item">5. MySQL 存对话/记忆/任务状态怎么分表？热点用户怎么避免单表膨胀？（58）</a>
                 
                     
                     
                     
-                    <a href="#6-补充离线跑批怎么做并发调度和可靠性源自跑批优化实战" class="toc-item"> 6. 【补充】离线跑批怎么做并发调度和可靠性？（源自跑批优化实战）</a>
+                    <a href="#6-补充离线跑批怎么做并发调度和可靠性源自跑批优化实战" class="toc-item">6. 【补充】离线跑批怎么做并发调度和可靠性？（源自跑批优化实战）</a>
                 
                     
                     
                     
-                    <a href="#十三-评测与-bad-case-闭环" class="toc-item"> 十三、评测与 Bad Case 闭环</a>
+                    <a href="#十三-评测与-bad-case-闭环" class="toc-item">十三、评测与 Bad Case 闭环</a>
                 
                     
                     
                     
-                    <a href="#1-怎么定义-agent-答得对评测集谁建-标签谁标25" class="toc-item"> 1. 怎么定义 Agent 答得对？评测集谁建、标签谁标？（25）</a>
+                    <a href="#1-怎么定义-agent-答得对评测集谁建-标签谁标25" class="toc-item">1. 怎么定义 Agent 答得对？评测集谁建、标签谁标？（25）</a>
                 
                     
                     
                     
-                    <a href="#2-智能体评测怎么做离线-vs-线上分别看什么指标29" class="toc-item"> 2. 智能体评测怎么做？离线 vs 线上分别看什么指标？（29）</a>
+                    <a href="#2-智能体评测怎么做离线-vs-线上分别看什么指标29" class="toc-item">2. 智能体评测怎么做？离线 vs 线上分别看什么指标？（29）</a>
                 
                     
                     
                     
-                    <a href="#3-自动评测和人工评测怎么配合评分怎么防主观30" class="toc-item"> 3. 自动评测和人工评测怎么配合？评分怎么防主观？（30）</a>
+                    <a href="#3-自动评测和人工评测怎么配合评分怎么防主观30" class="toc-item">3. 自动评测和人工评测怎么配合？评分怎么防主观？（30）</a>
                 
                     
                     
                     
-                    <a href="#4-评测体系从-0-到-1先搭数据指标平台看板41" class="toc-item"> 4. 评测体系从 0 到 1，先搭数据/指标/平台/看板？（41）</a>
+                    <a href="#4-评测体系从-0-到-1先搭数据指标平台看板41" class="toc-item">4. 评测体系从 0 到 1，先搭数据/指标/平台/看板？（41）</a>
                 
                     
                     
                     
-                    <a href="#5-评测集只有-200-条线上几十万用户怎么看结论39" class="toc-item"> 5. 评测集只有 200 条，线上几十万用户，怎么看结论？（39）</a>
+                    <a href="#5-评测集只有-200-条线上几十万用户怎么看结论39" class="toc-item">5. 评测集只有 200 条，线上几十万用户，怎么看结论？（39）</a>
                 
                     
                     
                     
-                    <a href="#6-bad-case-闭环系统怎么设计采集归类复盘回归要不要产品化roi-怎么讲31-42" class="toc-item"> 6. Bad Case 闭环系统怎么设计（采集→归类→复盘→回归）？要不要产品化？ROI 怎么讲？（31 / 42）</a>
+                    <a href="#6-bad-case-闭环系统怎么设计采集归类复盘回归要不要产品化roi-怎么讲31-42" class="toc-item">6. Bad Case 闭环系统怎么设计（采集→归类→复盘→回归）？要不要产品化？ROI 怎么讲？（31 / 42）</a>
                 
                     
                     
                     
-                    <a href="#7-bad-case-来了从用户原话意图检索工具模型输出怎么逐层定位24" class="toc-item"> 7. Bad Case 来了，从用户原话/意图/检索/工具/模型输出怎么逐层定位？（24）</a>
+                    <a href="#7-bad-case-来了从用户原话意图检索工具模型输出怎么逐层定位24" class="toc-item">7. Bad Case 来了，从用户原话/意图/检索/工具/模型输出怎么逐层定位？（24）</a>
                 
                     
                     
                     
-                    <a href="#8-相似-bad-case-反复出现怎么判断是数据prompt检索模型问题32" class="toc-item"> 8. 相似 Bad Case 反复出现，怎么判断是数据/prompt/检索/模型问题？（32）</a>
+                    <a href="#8-相似-bad-case-反复出现怎么判断是数据prompt检索模型问题32" class="toc-item">8. 相似 Bad Case 反复出现，怎么判断是数据/prompt/检索/模型问题？（32）</a>
                 
                     
                     
                     
-                    <a href="#9-caseagent-线上大面积答非所问第一反应和排查顺序26" class="toc-item"> 9. 【Case】Agent 线上大面积答非所问，第一反应和排查顺序？（26）</a>
+                    <a href="#9-caseagent-线上大面积答非所问第一反应和排查顺序26" class="toc-item">9. 【Case】Agent 线上大面积答非所问，第一反应和排查顺序？（26）</a>
                 
                     
                     
                     
-                    <a href="#10-补充端到端回归体系怎么工程化源自-scripts-回归实战" class="toc-item"> 10. 【补充】端到端回归体系怎么工程化？（源自 scripts/ 回归实战）</a>
+                    <a href="#10-补充端到端回归体系怎么工程化源自-scripts-回归实战" class="toc-item">10. 【补充】端到端回归体系怎么工程化？（源自 scripts/ 回归实战）</a>
                 
                     
                     
                     
-                    <a href="#11-老板说准确率-8095怎么操作38" class="toc-item"> 11. 老板说准确率 80%→95%，怎么操作？（38）</a>
+                    <a href="#11-老板说准确率-8095怎么操作38" class="toc-item">11. 老板说准确率 80%→95%，怎么操作？（38）</a>
                 
                     
                     
                     
-                    <a href="#十四-成本控制" class="toc-item"> 十四、成本控制</a>
+                    <a href="#十四-成本控制" class="toc-item">十四、成本控制</a>
                 
                     
                     
                     
-                    <a href="#1-agent-线上成本炸了token工具检索都高先砍哪块46" class="toc-item"> 1. Agent 线上成本炸了（token/工具/检索都高），先砍哪块？（46）</a>
+                    <a href="#1-agent-线上成本炸了token工具检索都高先砍哪块46" class="toc-item">1. Agent 线上成本炸了（token/工具/检索都高），先砍哪块？（46）</a>
                 
                     
                     
                     
-                    <a href="#2-高并发下-llm-成本怎么控-token-和钱69" class="toc-item"> 2. 高并发下 LLM 成本怎么控 token 和钱？（69）</a>
+                    <a href="#2-高并发下-llm-成本怎么控-token-和钱69" class="toc-item">2. 高并发下 LLM 成本怎么控 token 和钱？（69）</a>
                 
                     
                     
                     
-                    <a href="#3-rag多-agent工作流技术选型怎么平衡效果延迟成本44" class="toc-item"> 3. RAG+多 Agent+工作流，技术选型怎么平衡效果/延迟/成本？（44）</a>
+                    <a href="#3-rag多-agent工作流技术选型怎么平衡效果延迟成本44" class="toc-item">3. RAG+多 Agent+工作流，技术选型怎么平衡效果/延迟/成本？（44）</a>
                 
                     
                     
                     
-                    <a href="#十五-合规与安全b-端重点" class="toc-item"> 十五、合规与安全（B 端重点）</a>
+                    <a href="#十五-合规与安全b-端重点" class="toc-item">十五、合规与安全（B 端重点）</a>
                 
                     
                     
                     
-                    <a href="#1-agent-输出合规怎么守源自话术合规门禁实战" class="toc-item"> 1. Agent 输出合规怎么守？（源自话术合规门禁实战）</a>
+                    <a href="#1-agent-输出合规怎么守源自话术合规门禁实战" class="toc-item">1. Agent 输出合规怎么守？（源自话术合规门禁实战）</a>
                 
                     
                     
                     
-                    <a href="#2-根因不一定在-prompt也可能在代码" class="toc-item"> 2. 根因不一定在 Prompt——也可能在代码</a>
+                    <a href="#2-根因不一定在-prompt也可能在代码" class="toc-item">2. 根因不一定在 Prompt——也可能在代码</a>
                 
                     
                     
                     
-                    <a href="#3-pii-内容安全怎么处理" class="toc-item"> 3. PII / 内容安全怎么处理？</a>
+                    <a href="#3-pii-内容安全怎么处理" class="toc-item">3. PII / 内容安全怎么处理？</a>
                 
                     
                     
                     
-                    <a href="#4-llm-应用安全有哪些系统性风险owasp-llm-top-10" class="toc-item"> 4. LLM 应用安全有哪些系统性风险？（OWASP LLM Top 10）</a>
+                    <a href="#4-llm-应用安全有哪些系统性风险owasp-llm-top-10" class="toc-item">4. LLM 应用安全有哪些系统性风险？（OWASP LLM Top 10）</a>
                 
                     
                     
                     
-                    <a href="#5-skill-工具供应链怎么防投毒jarvis-registry-新增" class="toc-item"> 5. Skill / 工具供应链怎么防投毒？（jarvis-registry 新增）</a>
+                    <a href="#5-skill-工具供应链怎么防投毒jarvis-registry-新增" class="toc-item">5. Skill / 工具供应链怎么防投毒？（jarvis-registry 新增）</a>
                 
                     
                     
                     
-                    <a href="#十六-模型与推理基础原理兜底" class="toc-item"> 十六、模型与推理基础（原理兜底）</a>
+                    <a href="#十六-模型与推理基础原理兜底" class="toc-item">十六、模型与推理基础（原理兜底）</a>
                 
                     
                     
                     
-                    <a href="#1-transformer-self-attention-原理为什么是-on2" class="toc-item"> 1. Transformer / Self-Attention 原理？为什么是 O(n²)？</a>
+                    <a href="#1-transformer-self-attention-原理为什么是-on2" class="toc-item">1. Transformer / Self-Attention 原理？为什么是 O(n²)？</a>
                 
                     
                     
                     
-                    <a href="#2-位置编码长上下文怎么外推" class="toc-item"> 2. 位置编码？长上下文怎么外推？</a>
+                    <a href="#2-位置编码长上下文怎么外推" class="toc-item">2. 位置编码？长上下文怎么外推？</a>
                 
                     
                     
                     
-                    <a href="#3-embedding-原理相似度怎么算" class="toc-item"> 3. Embedding 原理？相似度怎么算？</a>
+                    <a href="#3-embedding-原理相似度怎么算" class="toc-item">3. Embedding 原理？相似度怎么算？</a>
                 
                     
                     
                     
-                    <a href="#4-推理为什么慢贵有哪些优化" class="toc-item"> 4. 推理为什么慢/贵？有哪些优化？</a>
+                    <a href="#4-推理为什么慢贵有哪些优化" class="toc-item">4. 推理为什么慢/贵？有哪些优化？</a>
                 
                     
                     
                     
-                    <a href="#十七-prompt-工程与高级-rag-范式" class="toc-item"> 十七、Prompt 工程与高级 RAG 范式</a>
+                    <a href="#十七-prompt-工程与高级-rag-范式" class="toc-item">十七、Prompt 工程与高级 RAG 范式</a>
                 
                     
                     
                     
-                    <a href="#1-prompt-工程有哪些实打实的手段" class="toc-item"> 1. Prompt 工程有哪些实打实的手段？</a>
+                    <a href="#1-prompt-工程有哪些实打实的手段" class="toc-item">1. Prompt 工程有哪些实打实的手段？</a>
                 
                     
                     
                     
-                    <a href="#2-rag-的演进范式naive-advanced-modular" class="toc-item"> 2. RAG 的演进范式？（Naive → Advanced → Modular）</a>
+                    <a href="#2-rag-的演进范式naive-advanced-modular" class="toc-item">2. RAG 的演进范式？（Naive → Advanced → Modular）</a>
                 
                     
                     
                     
-                    <a href="#十八-手撕-现场编码高频题" class="toc-item"> 十八、手撕 / 现场编码高频题</a>
+                    <a href="#十八-手撕-现场编码高频题" class="toc-item">十八、手撕 / 现场编码高频题</a>
                 
                     
                     
                     
-                    <a href="#1-手写-self-attentionnumpy" class="toc-item"> 1. 手写 Self-Attention（numpy）</a>
+                    <a href="#1-手写-self-attentionnumpy" class="toc-item">1. 手写 Self-Attention（numpy）</a>
                 
                     
                     
                     
-                    <a href="#2-手写最小-rag-检索cosine-top-k" class="toc-item"> 2. 手写最小 RAG 检索（cosine top-k）</a>
+                    <a href="#2-手写最小-rag-检索cosine-top-k" class="toc-item">2. 手写最小 RAG 检索（cosine top-k）</a>
                 
                     
                     
                     
-                    <a href="#3-手写-rrf-多路融合" class="toc-item"> 3. 手写 RRF 多路融合</a>
+                    <a href="#3-手写-rrf-多路融合" class="toc-item">3. 手写 RRF 多路融合</a>
                 
                     
                     
                     
-                    <a href="#4-带并发上限的异步批处理agent-常考" class="toc-item"> 4. 带并发上限的异步批处理（Agent 常考）</a>
+                    <a href="#4-带并发上限的异步批处理agent-常考" class="toc-item">4. 带并发上限的异步批处理（Agent 常考）</a>
                 
                     
                     
                     
-                    <a href="#5-滑动窗口裁上下文控-token" class="toc-item"> 5. 滑动窗口裁上下文（控 token）</a>
+                    <a href="#5-滑动窗口裁上下文控-token" class="toc-item">5. 滑动窗口裁上下文（控 token）</a>
                 
                     
                     
                     
-                    <a href="#6-扁平列表带-parent_id恢复成树返回根节点列表二面-18" class="toc-item"> 6. 扁平列表（带 parent_id）恢复成树，返回根节点列表（二面 18）</a>
+                    <a href="#6-扁平列表带-parent_id恢复成树返回根节点列表二面-18" class="toc-item">6. 扁平列表（带 parent_id）恢复成树，返回根节点列表（二面 18）</a>
                 
                     
                     
                     
-                    <a href="#十九-部署与分布式sre-视角" class="toc-item"> 十九、部署与分布式（SRE 视角）</a>
+                    <a href="#十九-部署与分布式sre-视角" class="toc-item">十九、部署与分布式（SRE 视角）</a>
                 
                     
                     
                     
-                    <a href="#二十-数字准备清单面前填好-背熟" class="toc-item"> 二十、数字准备清单（面前填好、背熟）</a>
+                    <a href="#二十-数字准备清单面前填好-背熟" class="toc-item">二十、数字准备清单（面前填好、背熟）</a>
                 
                     
                     
                     
-                    <a href="#二十一-2-分钟自我介绍-项目-star-话术" class="toc-item"> 二十一、2 分钟自我介绍 + 项目 STAR 话术</a>
+                    <a href="#二十一-2-分钟自我介绍-项目-star-话术" class="toc-item">二十一、2 分钟自我介绍 + 项目 STAR 话术</a>
                 
                     
                     
                     
-                    <a href="#二十二-反问面试官的好问题收尾加分" class="toc-item"> 二十二、反问面试官的好问题（收尾加分）</a>
+                    <a href="#二十二-反问面试官的好问题收尾加分" class="toc-item">二十二、反问面试官的好问题（收尾加分）</a>
                 
             </div>
         </aside>
@@ -1803,17 +1815,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -1824,7 +1836,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -1834,15 +1846,15 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="01.Zabbix 是什么 Zabbix 是一款开源的企业级分布式监控系统，可以监控服务器、网络设备、虚拟化、数据库、中间件和应用等，提供数据采集、告警、可视化、自动发现等完整能力，全部功能通过 Web 界面配">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Zabbix基础 - DYL521">
+    <meta property="og:description" content="01.Zabbix 是什么 Zabbix 是一款开源的企业级分布式监控系统，可以监控服务器、网络设备、虚拟化、数据库、中间件和应用等，提供数据采集、告警、可视化、自动发现等完整能力，全部功能通过 Web 界面配">
+    <meta property="og:url" content="https://dyl521.github.io/pages/94bcd2/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="Zabbix基础 - DYL521">
+    
+    <meta property="article:published_time" content="2021-02-09T03:40:53.000Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zabbix基础 - DYL521">
+    <meta name="twitter:description" content="01.Zabbix 是什么 Zabbix 是一款开源的企业级分布式监控系统，可以监控服务器、网络设备、虚拟化、数据库、中间件和应用等，提供数据采集、告警、可视化、自动发现等完整能力，全部功能通过 Web 界面配">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/pages/94bcd2/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            Zabbix基础 - DYL521
-        
-    </title>
+    <title>Zabbix基础 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2021</span></div>
+            <div class="breadcrumb"><a href="../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2021</span></div>
             
             <h1 class="article-title" data-reveal>Zabbix基础</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">操作系统</span>
                 <span>2021-02-09</span>
-                <span>· 0 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 0 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 16 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 4536 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -125,20 +138,238 @@
             
 
             <div class="article-body" data-reveal>
-                
+                <h2 id="01zabbix-是什么"><a class="markdownIt-Anchor" href="#01zabbix-是什么"></a> 01.Zabbix 是什么</h2>
+<p>Zabbix 是一款开源的企业级分布式监控系统，可以监控服务器、网络设备、虚拟化、数据库、中间件和应用等，提供数据采集、告警、可视化、自动发现等完整能力，全部功能通过 Web 界面配置。</p>
+<p>为什么需要监控：</p>
+<ul>
+<li><strong>事前预警</strong>：磁盘快满、负载过高时提前告警，而不是等服务挂了才发现。</li>
+<li><strong>事后排查</strong>：保留历史数据，便于分析故障发生时的资源变化。</li>
+<li><strong>容量规划</strong>：根据趋势数据评估扩容时机。</li>
+</ul>
+<p>版本说明：Zabbix 的 LTS 版本有 5.0、6.0、7.0（每个 LTS 提供 5 年支持），新部署建议直接使用 7.0 LTS 或 6.0 LTS。6.0 起服务端要求 PHP 7.4+，并原生支持高可用集群（HA）；7.0 增加了 Proxy 负载均衡、更多仪表盘组件等。</p>
+<h2 id="02架构与组件"><a class="markdownIt-Anchor" href="#02架构与组件"></a> 02.架构与组件</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    A1[Agent / Agent 2<br/>被监控主机] -->|10050/10051| S[Zabbix Server]
+    A2[SNMP / IPMI / JMX<br/>网络设备、Java 应用] --> S
+    A3[被监控主机] --> P[Zabbix Proxy] -->|10051| S
+    S --> DB[(MySQL / PostgreSQL)]
+    W[Web 前端<br/>Nginx/Apache + PHP] --> DB
+    W --> S
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zabbix Server</td>
+<td>核心，负责接收数据、计算触发器、发送告警，默认监听 <strong>10051</strong></td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>保存配置和历史数据，支持 MySQL/MariaDB、PostgreSQL（可配合 TimescaleDB）</td>
+</tr>
+<tr>
+<td>Web 前端</td>
+<td>PHP 编写的管理界面</td>
+</tr>
+<tr>
+<td>Zabbix Agent</td>
+<td>安装在被监控主机上采集数据，默认监听 <strong>10050</strong></td>
+</tr>
+<tr>
+<td>Zabbix Agent 2</td>
+<td>Go 编写的新一代 Agent，支持插件，内置 MySQL、Redis、Docker 等监控</td>
+</tr>
+<tr>
+<td>Zabbix Proxy</td>
+<td>代理，替 Server 采集数据后再转发，用于跨机房、分担 Server 压力</td>
+</tr>
+</tbody>
+</table>
+<h2 id="03核心概念"><a class="markdownIt-Anchor" href="#03核心概念"></a> 03.核心概念</h2>
+<p>理解 Zabbix 的关键是搞清楚以下对象之间的关系：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    H[主机 Host] --> I[监控项 Item]
+    I --> T[触发器 Trigger]
+    T --> E[事件 Event]
+    E --> AC[动作 Action]
+    AC --> M[告警媒介 Media]
+    TPL[模板 Template] -.包含.-> I
+    TPL -.包含.-> T
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主机（Host）</td>
+<td>被监控的对象，如一台服务器、一台交换机</td>
+</tr>
+<tr>
+<td>主机群组（Host group）</td>
+<td>主机的逻辑分组，便于权限和批量管理</td>
+</tr>
+<tr>
+<td>监控项（Item）</td>
+<td>要采集的一个具体指标，例如 <code>system.cpu.load[all,avg1]</code></td>
+</tr>
+<tr>
+<td>触发器（Trigger）</td>
+<td>基于监控项数据的判断表达式，定义什么情况算&quot;有问题&quot;</td>
+</tr>
+<tr>
+<td>事件（Event）</td>
+<td>触发器状态变化产生的记录</td>
+</tr>
+<tr>
+<td>动作（Action）</td>
+<td>事件发生后要做什么：发消息、执行远程命令</td>
+</tr>
+<tr>
+<td>告警媒介（Media type）</td>
+<td>邮件、钉钉/企业微信/飞书 Webhook、短信等</td>
+</tr>
+<tr>
+<td>模板（Template）</td>
+<td>监控项、触发器、图形、自动发现规则的集合，可批量关联到主机</td>
+</tr>
+<tr>
+<td>自动发现（LLD）</td>
+<td>低级别发现，自动发现磁盘分区、网卡、端口等并生成监控项</td>
+</tr>
+</tbody>
+</table>
+<h3 id="31-主动模式与被动模式"><a class="markdownIt-Anchor" href="#31-主动模式与被动模式"></a> 3.1 主动模式与被动模式</h3>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>方向</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>被动（passive）</td>
+<td>Server → Agent:10050</td>
+<td>Server 主动来要数据，Agent 配置 <code>Server=</code></td>
+</tr>
+<tr>
+<td>主动（active）</td>
+<td>Agent → Server:10051</td>
+<td>Agent 从 Server 拉取监控项列表后主动上报，配置 <code>ServerActive=</code></td>
+</tr>
+</tbody>
+</table>
+<p>主机较多时推荐主动模式，可以显著减轻 Server 的轮询压力，也更适合 Agent 在 NAT 后面的场景。</p>
+<h3 id="32-触发器表达式"><a class="markdownIt-Anchor" href="#32-触发器表达式"></a> 3.2 触发器表达式</h3>
+<p>Zabbix 5.4 起触发器使用新语法 <code>函数(/主机/监控项键值, 参数)</code>：</p>
+<pre class="line-numbers language-text"><code class="language-text"># 最近 5 分钟 CPU 1 分钟平均负载都大于 5
+min(/Linux server/system.cpu.load[all,avg1],5m)>5
+
+# 根分区可用空间低于 10%
+last(/Linux server/vfs.fs.size[/,pfree])<10
+
+# 3 分钟内没有收到 Agent 数据
+nodata(/Linux server/agent.ping,3m)=1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>触发器严重级别：未分类、信息、警告、一般严重、严重、灾难。</p>
+<h2 id="04安装部署以-rockyrhel-9-zabbix-70-mysql-为例"><a class="markdownIt-Anchor" href="#04安装部署以-rockyrhel-9-zabbix-70-mysql-为例"></a> 04.安装部署（以 Rocky/RHEL 9 + Zabbix 7.0 + MySQL 为例）</h2>
+<p>具体仓库地址以 Zabbix 官网下载页面生成的命令为准，大致流程如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 1. 安装 Zabbix 官方仓库</span>
+<span class="token comment" spellcheck="true">#    在官网下载页选择 版本/系统/数据库/Web 服务器 后，复制页面给出的 zabbix-release 包地址</span>
+rpm -Uvh <span class="token operator">&lt;</span>官网下载页给出的 zabbix-release rpm 地址<span class="token operator">></span>
+dnf clean all
+
+<span class="token comment" spellcheck="true"># 2. 安装 Server、前端、Agent</span>
+dnf <span class="token function">install</span> -y zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf \
+    zabbix-sql-scripts zabbix-selinux-policy zabbix-agent2
+
+<span class="token comment" spellcheck="true"># 3. 创建数据库（MySQL 中执行）</span>
+<span class="token comment" spellcheck="true">#   create database zabbix character set utf8mb4 collate utf8mb4_bin;</span>
+<span class="token comment" spellcheck="true">#   create user zabbix@localhost identified by 'password';</span>
+<span class="token comment" spellcheck="true">#   grant all privileges on zabbix.* to zabbix@localhost;</span>
+<span class="token comment" spellcheck="true">#   set global log_bin_trust_function_creators = 1;</span>
+
+<span class="token comment" spellcheck="true"># 4. 导入初始表结构和数据</span>
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz <span class="token operator">|</span> \
+    mysql --default-character-set<span class="token operator">=</span>utf8mb4 -uzabbix -p zabbix
+<span class="token comment" spellcheck="true">#   导入完成后：set global log_bin_trust_function_creators = 0;</span>
+
+<span class="token comment" spellcheck="true"># 5. 配置数据库密码</span>
+vim /etc/zabbix/zabbix_server.conf      <span class="token comment" spellcheck="true"># DBPassword=password</span>
+
+<span class="token comment" spellcheck="true"># 6. 启动服务</span>
+systemctl <span class="token function">enable</span> --now zabbix-server zabbix-agent2 nginx php-fpm
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后浏览器访问 Web 前端完成初始化向导，默认账号 <strong>Admin / zabbix</strong>（注意 A 大写），登录后第一时间修改密码。</p>
+<h2 id="05agent-配置"><a class="markdownIt-Anchor" href="#05agent-配置"></a> 05.Agent 配置</h2>
+<p>被监控主机安装 Agent 2，修改 <code>/etc/zabbix/zabbix_agent2.conf</code>：</p>
+<pre class="line-numbers language-conf"><code class="language-conf">Server=192.168.1.10            # 允许被动模式连接的 Server/Proxy 地址
+ServerActive=192.168.1.10      # 主动模式上报地址
+Hostname=web01                 # 必须与 Web 中配置的主机名称完全一致
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash"><code class="language-bash">systemctl <span class="token function">enable</span> --now zabbix-agent2
+firewall-cmd --permanent --add-port<span class="token operator">=</span>10050/tcp <span class="token operator">&amp;&amp;</span> firewall-cmd --reload
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在 Server 端用 <code>zabbix_get</code> 测试被动模式取数（需安装 <code>zabbix-get</code> 包）：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">zabbix_get -s 192.168.1.21 -k system.uname
+zabbix_get -s 192.168.1.21 -k <span class="token string">"vfs.fs.size[/,pfree]"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>之后在 Web 中：<strong>数据采集 → 主机 → 创建主机</strong>，填写主机名称、群组、Agent 接口 IP，关联模板 <code>Linux by Zabbix agent</code>（主动模式可选 <code>Linux by Zabbix agent active</code>）即可。</p>
+<h2 id="06自定义监控项"><a class="markdownIt-Anchor" href="#06自定义监控项"></a> 06.自定义监控项</h2>
+<p>当内置键值不满足需求时，可以用 <code>UserParameter</code> 自定义：</p>
+<pre class="line-numbers language-conf"><code class="language-conf"># /etc/zabbix/zabbix_agent2.d/custom.conf
+UserParameter=nginx.active,curl -s http://127.0.0.1/nginx_status | awk '/Active/{print $3}'
+UserParameter=tcp.state[*],ss -ant | awk 'NR>1 && $$1=="$1"' | wc -l
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>带 <code>[*]</code> 的键值可以接收参数，脚本中用 <code>$1</code>、<code>$2</code> 引用；awk 中自身的 <code>$1</code> 要写成 <code>$$1</code> 进行转义。</li>
+<li>修改后重启 Agent，并先用 <code>zabbix_get -k nginx.active</code> 验证能取到数据，再到 Web 中添加监控项。</li>
+</ul>
+<h2 id="07告警配置流程"><a class="markdownIt-Anchor" href="#07告警配置流程"></a> 07.告警配置流程</h2>
+<ol>
+<li><strong>告警 → 媒介</strong>：启用并配置邮件或 Webhook（钉钉、企业微信、飞书等）。</li>
+<li><strong>用户 → 报警媒介</strong>：给接收告警的用户添加媒介和收件地址。</li>
+<li><strong>告警 → 动作 → 触发器动作</strong>：设置条件（如严重级别 ≥ 一般严重），在&quot;操作&quot;中选择发送给哪些用户/用户组，并可配置恢复通知。</li>
+</ol>
+<h2 id="08常见问题"><a class="markdownIt-Anchor" href="#08常见问题"></a> 08.常见问题</h2>
+<ol>
+<li><strong>主机可用性图标变红</strong>：Server 无法连接 Agent 10050 端口，检查防火墙、Agent 的 <code>Server=</code> 是否包含 Server IP。</li>
+<li><strong>主动模式无数据</strong>：Agent 中的 <code>Hostname</code> 与 Web 中主机名称不一致；或 Server 的 10051 端口未放行。</li>
+<li><strong>Web 中文乱码</strong>：图形中中文显示为方块，需要把中文字体替换到前端字体目录（如 <code>/usr/share/zabbix/assets/fonts/</code>，路径随版本有差异）。</li>
+<li><strong>数据库膨胀</strong>：历史数据量大，需要合理设置监控项的历史/趋势保留时间，大规模场景使用 PostgreSQL + TimescaleDB 分区。</li>
+<li><strong>“Zabbix server is not running”</strong>：前端连不上 Server，检查 <code>zabbix-server</code> 进程、日志 <code>/var/log/zabbix/zabbix_server.log</code> 和 SELinux。</li>
+</ol>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ul>
+<li>Zabbix = Server + 数据库 + Web + Agent（可选 Proxy），端口 10050（Agent）/ 10051（Server）。</li>
+<li>核心链路：<strong>主机 → 监控项 → 触发器 → 事件 → 动作 → 媒介</strong>，用模板批量管理。</li>
+<li>主机多时优先用主动模式；不满足需求时用 <code>UserParameter</code> 自定义监控项。</li>
+<li>新部署选择 7.0 / 6.0 LTS，并在初始化后立即修改默认 Admin 密码。</li>
+</ul>
+
             </div>
 
             
             <div class="article-nav" data-reveal>
                 
                 <a href="../../pages/7bd748/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">Nginx基础</div>
                 </a>
                 
                 
                 <a href="../../pages/0dda3d/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">Ansible基础</div>
                 </a>
                 
@@ -148,6 +379,74 @@
 
         
         
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01zabbix-是什么" class="toc-item">01.Zabbix 是什么</a>
+                
+                    
+                    
+                    
+                    <a href="#02架构与组件" class="toc-item">02.架构与组件</a>
+                
+                    
+                    
+                    
+                    <a href="#03核心概念" class="toc-item">03.核心概念</a>
+                
+                    
+                    
+                    
+                    <a href="#31-主动模式与被动模式" class="toc-item">3.1 主动模式与被动模式</a>
+                
+                    
+                    
+                    
+                    <a href="#32-触发器表达式" class="toc-item">3.2 触发器表达式</a>
+                
+                    
+                    
+                    
+                    <a href="#04安装部署以-rockyrhel-9-zabbix-70-mysql-为例" class="toc-item">04.安装部署（以 Rocky/RHEL 9 + Zabbix 7.0 + MySQL 为例）</a>
+                
+                    
+                    
+                    
+                    <a href="#05agent-配置" class="toc-item">05.Agent 配置</a>
+                
+                    
+                    
+                    
+                    <a href="#06自定义监控项" class="toc-item">06.自定义监控项</a>
+                
+                    
+                    
+                    
+                    <a href="#07告警配置流程" class="toc-item">07.告警配置流程</a>
+                
+                    
+                    
+                    
+                    <a href="#08常见问题" class="toc-item">08.常见问题</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -155,17 +454,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -176,7 +475,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -186,13 +485,15 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

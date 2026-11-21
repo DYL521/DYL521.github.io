@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="01.Flask是什么 Flask 是一个用 Python 编写的轻量级 Web 框架，常被称为“微框架”（micro framework）。“微”并不是说功能弱，而是核心只保留了最基础的部分： Werkzeu">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Flask 基础 - DYL521">
+    <meta property="og:description" content="01.Flask是什么 Flask 是一个用 Python 编写的轻量级 Web 框架，常被称为“微框架”（micro framework）。“微”并不是说功能弱，而是核心只保留了最基础的部分： Werkzeu">
+    <meta property="og:url" content="https://dyl521.github.io/2021/02/17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/05.flask/01.flask%E5%9F%BA%E7%A1%80/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="Flask 基础 - DYL521">
+    
+    <meta property="article:published_time" content="2021-02-17T06:05:27.000Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Flask 基础 - DYL521">
+    <meta name="twitter:description" content="01.Flask是什么 Flask 是一个用 Python 编写的轻量级 Web 框架，常被称为“微框架”（micro framework）。“微”并不是说功能弱，而是核心只保留了最基础的部分： Werkzeu">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/2021/02/17/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/05.flask/01.flask%E5%9F%BA%E7%A1%80/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            Flask 基础 - DYL521
-        
-    </title>
+    <title>Flask 基础 - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2021</span></div>
+            <div class="breadcrumb"><a href="../../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2021</span></div>
             
             <h1 class="article-title" data-reveal>Flask 基础</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">Python</span>
                 <span>2021-02-17</span>
-                <span>· 0 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 0 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 23 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 6729 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -125,20 +138,326 @@
             
 
             <div class="article-body" data-reveal>
-                
+                <h2 id="01flask是什么"><a class="markdownIt-Anchor" href="#01flask是什么"></a> 01.Flask是什么</h2>
+<p>Flask 是一个用 Python 编写的<strong>轻量级 Web 框架</strong>，常被称为“微框架”（micro framework）。“微”并不是说功能弱，而是核心只保留了最基础的部分：</p>
+<ul>
+<li><strong>Werkzeug</strong>：WSGI 工具库，负责请求、响应、路由等底层工作。</li>
+<li><strong>Jinja2</strong>：模板引擎。</li>
+<li><strong>Click</strong>：命令行工具（<code>flask run</code> 等）。</li>
+</ul>
+<p>数据库、表单校验、用户认证等功能都不内置，需要时通过扩展（Flask-SQLAlchemy、Flask-WTF、Flask-Login 等）按需引入。</p>
+<p>和 Django 的对比（面试常问）：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Flask</th>
+<th>Django</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定位</td>
+<td>微框架，核心精简</td>
+<td>全功能框架，“自带电池”</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>无，常配合 SQLAlchemy</td>
+<td>自带 ORM</td>
+</tr>
+<tr>
+<td>后台管理</td>
+<td>无</td>
+<td>自带 admin</td>
+</tr>
+<tr>
+<td>项目结构</td>
+<td>自由组织</td>
+<td>约定好的 project/app 结构</td>
+</tr>
+<tr>
+<td>适合场景</td>
+<td>小型服务、API、需要高度定制</td>
+<td>中大型业务系统、快速搭建后台</td>
+</tr>
+</tbody>
+</table>
+<h2 id="02安装与第一个应用"><a class="markdownIt-Anchor" href="#02安装与第一个应用"></a> 02.安装与第一个应用</h2>
+<pre class="line-numbers language-bash"><code class="language-bash">python -m venv .venv
+<span class="token function">source</span> .venv/bin/activate        <span class="token comment" spellcheck="true"># Windows: .venv\Scripts\activate</span>
+pip <span class="token function">install</span> flask
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># app.py</span>
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+
+
+@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"Hello, Flask!"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行开发服务器：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">flask --app app run --debug
+<span class="token comment" spellcheck="true"># * Running on http://127.0.0.1:5000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><code>--app app</code> 指定应用所在的模块（文件名叫 <code>app.py</code> 或 <code>wsgi.py</code> 时可以省略）。</li>
+<li><code>--debug</code> 开启调试模式：代码修改后自动重载，出错时显示交互式调试页面。</li>
+<li>也可以在文件末尾写 <code>if __name__ == &quot;__main__&quot;: app.run(debug=True)</code>，然后 <code>python app.py</code> 运行。</li>
+</ul>
+<blockquote>
+<p>旧教程里的 <code>FLASK_ENV=development</code> 已在 Flask 2.3 中移除，现在用 <code>--debug</code> 或 <code>FLASK_DEBUG=1</code>。</p>
+</blockquote>
+<h2 id="03路由"><a class="markdownIt-Anchor" href="#03路由"></a> 03.路由</h2>
+<h3 id="31-基本路由与-http-方法"><a class="markdownIt-Anchor" href="#31-基本路由与-http-方法"></a> 3.1 基本路由与 HTTP 方法</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask<span class="token punctuation">,</span> request
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+
+
+@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/login"</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"POST"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> request<span class="token punctuation">.</span>method <span class="token operator">==</span> <span class="token string">"POST"</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"处理登录"</span>
+    <span class="token keyword">return</span> <span class="token string">"显示登录页"</span>
+
+
+<span class="token comment" spellcheck="true"># Flask 2.0+ 提供了快捷装饰器</span>
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">list_users</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"用户列表"</span>
+
+
+@app<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">create_user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"创建用户"</span><span class="token punctuation">,</span> <span class="token number">201</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="32-动态路由与转换器"><a class="markdownIt-Anchor" href="#32-动态路由与转换器"></a> 3.2 动态路由与转换器</h3>
+<pre class="line-numbers language-python"><code class="language-python">@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/user/&lt;username>"</span><span class="token punctuation">)</span>            <span class="token comment" spellcheck="true"># 默认 string，不含斜杠</span>
+<span class="token keyword">def</span> <span class="token function">profile</span><span class="token punctuation">(</span>username<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> f<span class="token string">"用户：{username}"</span>
+
+
+@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/post/&lt;int:post_id>"</span><span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 只匹配整数，并自动转成 int</span>
+<span class="token keyword">def</span> <span class="token function">show_post</span><span class="token punctuation">(</span>post_id<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> f<span class="token string">"文章 ID：{post_id}，类型 {type(post_id).__name__}"</span>
+
+
+@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/files/&lt;path:subpath>"</span><span class="token punctuation">)</span>        <span class="token comment" spellcheck="true"># path 可以包含斜杠</span>
+<span class="token keyword">def</span> <span class="token function">show_file</span><span class="token punctuation">(</span>subpath<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> subpath
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>内置转换器：<code>string</code>（默认）、<code>int</code>、<code>float</code>、<code>path</code>、<code>uuid</code>。</p>
+<h3 id="33-url_for-反向解析"><a class="markdownIt-Anchor" href="#33-url_for-反向解析"></a> 3.3 url_for 反向解析</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> url_for
+
+<span class="token keyword">with</span> app<span class="token punctuation">.</span>test_request_context<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">"index"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                    <span class="token comment" spellcheck="true"># /</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">"show_post"</span><span class="token punctuation">,</span> post_id<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>     <span class="token comment" spellcheck="true"># /post/3</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">"profile"</span><span class="token punctuation">,</span> username<span class="token operator">=</span><span class="token string">"tom"</span><span class="token punctuation">,</span> page<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># /user/tom?page=2</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>url_for</code> 的第一个参数是<strong>视图函数名（endpoint）</strong>，不是 URL。用它生成链接，修改路由时不需要到处改代码。</p>
+<h2 id="04请求对象-request"><a class="markdownIt-Anchor" href="#04请求对象-request"></a> 04.请求对象 request</h2>
+<p><code>request</code> 是一个“全局”对象，但实际上每个请求都是独立的（见第 8 节上下文）。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> request
+
+
+@app<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"/demo"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    page <span class="token operator">=</span> request<span class="token punctuation">.</span>args<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"page"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> type<span class="token operator">=</span>int<span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># 查询参数 ?page=2</span>
+    name <span class="token operator">=</span> request<span class="token punctuation">.</span>form<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span>                 <span class="token comment" spellcheck="true"># 表单数据</span>
+    data <span class="token operator">=</span> request<span class="token punctuation">.</span>get_json<span class="token punctuation">(</span>silent<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>            <span class="token comment" spellcheck="true"># JSON 请求体，解析失败返回 None</span>
+    token <span class="token operator">=</span> request<span class="token punctuation">.</span>headers<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"Authorization"</span><span class="token punctuation">)</span>    <span class="token comment" spellcheck="true"># 请求头</span>
+    sid <span class="token operator">=</span> request<span class="token punctuation">.</span>cookies<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"sid"</span><span class="token punctuation">)</span>                <span class="token comment" spellcheck="true"># Cookie</span>
+    f <span class="token operator">=</span> request<span class="token punctuation">.</span>files<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"avatar"</span><span class="token punctuation">)</span>                 <span class="token comment" spellcheck="true"># 上传的文件</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token string">"method"</span><span class="token punctuation">:</span> request<span class="token punctuation">.</span>method<span class="token punctuation">,</span>
+        <span class="token string">"path"</span><span class="token punctuation">:</span> request<span class="token punctuation">.</span>path<span class="token punctuation">,</span>
+        <span class="token string">"page"</span><span class="token punctuation">:</span> page<span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> name<span class="token punctuation">,</span>
+        <span class="token string">"json"</span><span class="token punctuation">:</span> data<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>request.args</code>、<code>request.form</code> 都是 <code>MultiDict</code>，用 <code>.get()</code> 取值不会因为缺少键而报错；直接用 <code>request.form[&quot;name&quot;]</code> 取不存在的键会返回 400 错误。</p>
+<h2 id="05响应"><a class="markdownIt-Anchor" href="#05响应"></a> 05.响应</h2>
+<p>视图函数的返回值会被转换成响应对象：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> jsonify<span class="token punctuation">,</span> make_response<span class="token punctuation">,</span> redirect<span class="token punctuation">,</span> abort<span class="token punctuation">,</span> url_for
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/a"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"纯文本"</span>                          <span class="token comment" spellcheck="true"># 字符串 -> text/html</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/b"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"code"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"msg"</span><span class="token punctuation">:</span> <span class="token string">"ok"</span><span class="token punctuation">}</span>          <span class="token comment" spellcheck="true"># dict 自动转 JSON（list 也可以，Flask 2.2+）</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/c"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">c</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>code<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> data<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># 显式返回 JSON</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/d"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">d</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">"已创建"</span><span class="token punctuation">,</span> <span class="token number">201</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">"X-Custom"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span>   <span class="token comment" spellcheck="true"># (body, 状态码, 响应头)</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/e"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">e</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    resp <span class="token operator">=</span> make_response<span class="token punctuation">(</span><span class="token string">"设置 cookie"</span><span class="token punctuation">)</span>
+    resp<span class="token punctuation">.</span>set_cookie<span class="token punctuation">(</span><span class="token string">"sid"</span><span class="token punctuation">,</span> <span class="token string">"abc123"</span><span class="token punctuation">,</span> httponly<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> resp
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/old"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">old</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">"index"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment" spellcheck="true"># 302 重定向</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/admin"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">admin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    abort<span class="token punctuation">(</span><span class="token number">403</span><span class="token punctuation">)</span>                               <span class="token comment" spellcheck="true"># 直接中断，返回 403</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>自定义错误页：</p>
+<pre class="line-numbers language-python"><code class="language-python">@app<span class="token punctuation">.</span>errorhandler<span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">not_found</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"code"</span><span class="token punctuation">:</span> <span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"msg"</span><span class="token punctuation">:</span> <span class="token string">"资源不存在"</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">404</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="06模板"><a class="markdownIt-Anchor" href="#06模板"></a> 06.模板</h2>
+<p>Flask 默认从项目下的 <code>templates/</code> 目录加载 Jinja2 模板，<code>static/</code> 目录存放静态文件。</p>
+<pre class="line-numbers language-undefined"><code class="language-undefined">project/
+├── app.py
+├── templates/
+│   └── hello.html
+└── static/
+    └── style.css
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> render_template
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/hello/&lt;name>"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">hello</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> render_template<span class="token punctuation">(</span><span class="token string">"hello.html"</span><span class="token punctuation">,</span> name<span class="token operator">=</span>name<span class="token punctuation">,</span> items<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token comment" spellcheck="true">&lt;!-- templates/hello.html --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{{ url_for(<span class="token punctuation">'</span>static<span class="token punctuation">'</span>, filename<span class="token punctuation">=</span><span class="token punctuation">'</span>style.css<span class="token punctuation">'</span>) }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>你好，{{ name }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+  {% for item in items %}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>{{ item }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+  {% endfor %}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>渲染 <code>.html</code> 等模板时，Jinja2 默认会对双花括号表达式输出的内容做 HTML 转义，防止 XSS。</p>
+<h2 id="07配置与-session"><a class="markdownIt-Anchor" href="#07配置与-session"></a> 07.配置与 session</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask<span class="token punctuation">,</span> session
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">"SECRET_KEY"</span><span class="token punctuation">]</span> <span class="token operator">=</span> os<span class="token punctuation">.</span>environ<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"SECRET_KEY"</span><span class="token punctuation">,</span> <span class="token string">"dev-only-key"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 也可以 app.config.from_object("config.ProdConfig") 或 app.config.from_prefixed_env()</span>
+
+
+@app<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"/login"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    session<span class="token punctuation">[</span><span class="token string">"user_id"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> <span class="token string">"登录成功"</span>
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/me"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">me</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"user_id"</span><span class="token punctuation">:</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"user_id"</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Flask 默认的 session 是<strong>基于 Cookie 的客户端 session</strong>：数据经过签名后存放在浏览器 Cookie 中，用户能看到内容（只是 Base64 编码），但无法篡改。因此：</p>
+<ul>
+<li>必须设置 <code>SECRET_KEY</code>，且不能泄露；</li>
+<li>不要在 session 里存敏感信息或大量数据。需要服务端 session 可以使用 Flask-Session 等扩展。</li>
+</ul>
+<h2 id="08上下文current_app-g-request"><a class="markdownIt-Anchor" href="#08上下文current_app-g-request"></a> 08.上下文：current_app、g、request</h2>
+<p>Flask 有两种上下文：</p>
+<ul>
+<li><strong>应用上下文</strong>：<code>current_app</code>（当前应用）、<code>g</code>（一次请求/上下文内的临时存储）。</li>
+<li><strong>请求上下文</strong>：<code>request</code>、<code>session</code>。</li>
+</ul>
+<p>每个请求进来时，Flask 会推入这两个上下文，所以在视图函数里可以直接使用这些“全局”对象，而且它们在多线程下互不干扰（底层基于 <code>contextvars</code> 实现）。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> g
+
+
+@app<span class="token punctuation">.</span>before_request
+<span class="token keyword">def</span> <span class="token function">load_user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    g<span class="token punctuation">.</span>user <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"tom"</span><span class="token punctuation">}</span>     <span class="token comment" spellcheck="true"># 每个请求开始时执行</span>
+
+
+@app<span class="token punctuation">.</span>after_request
+<span class="token keyword">def</span> <span class="token function">add_header</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    response<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">"X-App"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"demo"</span>     <span class="token comment" spellcheck="true"># 每个请求返回前执行</span>
+    <span class="token keyword">return</span> response
+
+
+@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/whoami"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">whoami</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> g<span class="token punctuation">.</span>user
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在请求之外（比如脚本、单元测试）使用 <code>current_app</code> 会报 <code>RuntimeError: Working outside of application context</code>，需要手动推入上下文：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">with</span> app<span class="token punctuation">.</span>app_context<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>current_app<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="09蓝图-blueprint"><a class="markdownIt-Anchor" href="#09蓝图-blueprint"></a> 09.蓝图 Blueprint</h2>
+<p>项目变大后，用蓝图按功能拆分路由：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># user/views.py</span>
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Blueprint
+
+user_bp <span class="token operator">=</span> Blueprint<span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> __name__<span class="token punctuation">,</span> url_prefix<span class="token operator">=</span><span class="token string">"/user"</span><span class="token punctuation">)</span>
+
+
+@user_bp<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/&lt;int:uid>"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">detail</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"uid"</span><span class="token punctuation">:</span> uid<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># app.py</span>
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask
+<span class="token keyword">from</span> user<span class="token punctuation">.</span>views <span class="token keyword">import</span> user_bp
+
+
+<span class="token keyword">def</span> <span class="token function">create_app</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+    app<span class="token punctuation">.</span>register_blueprint<span class="token punctuation">(</span>user_bp<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> app
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>蓝图中的视图 endpoint 会带上蓝图名前缀，反向解析时写 <code>url_for(&quot;user.detail&quot;, uid=1)</code>。<code>create_app()</code> 这种<strong>应用工厂</strong>模式便于为测试、开发、生产创建不同配置的应用实例，也是 Flask 官方推荐的写法（<code>flask --app &quot;app:create_app&quot; run</code>）。</p>
+<h2 id="10常见坑"><a class="markdownIt-Anchor" href="#10常见坑"></a> 10.常见坑</h2>
+<ol>
+<li><strong>开发服务器不能用于生产</strong>：<code>flask run</code> / <code>app.run()</code> 仅用于开发，生产环境使用 Gunicorn、uWSGI、Waitress 等 WSGI 服务器，例如 <code>gunicorn -w 4 &quot;app:create_app()&quot;</code>。</li>
+<li><strong>生产环境不要开 debug</strong>：调试页面可以执行任意 Python 代码，暴露在公网非常危险。</li>
+<li><strong>路由末尾斜杠</strong>：<code>@app.route(&quot;/about/&quot;)</code> 访问 <code>/about</code> 会被重定向到 <code>/about/</code>；而 <code>@app.route(&quot;/about&quot;)</code> 访问 <code>/about/</code> 会返回 404。</li>
+<li><strong>循环导入</strong>：<code>app.py</code> 导入视图、视图又导入 <code>app</code>，容易循环导入。使用蓝图 + 应用工厂，在视图中通过 <code>current_app</code> 访问应用。</li>
+<li><strong><code>g</code> 不能跨请求保存数据</strong>：每个请求结束后 <code>g</code> 就失效了，跨请求的数据放 session、数据库或缓存。</li>
+</ol>
+<h2 id="11小结"><a class="markdownIt-Anchor" href="#11小结"></a> 11.小结</h2>
+<ul>
+<li>Flask 核心精简：路由（Werkzeug）+ 模板（Jinja2），其余靠扩展。</li>
+<li>重点 API：<code>@app.route</code> / <code>@app.get</code>、<code>request</code>、<code>render_template</code>、<code>url_for</code>、<code>redirect</code>、<code>abort</code>、<code>session</code>、<code>g</code>。</li>
+<li>视图可以直接返回字符串、字典、元组或 Response 对象。</li>
+<li>项目变大后使用<strong>蓝图 + 应用工厂</strong>组织代码；生产部署用 WSGI 服务器，不开 debug。</li>
+</ul>
+
             </div>
 
             
             <div class="article-nav" data-reveal>
                 
                 <a href="../../../../../../../pages/4e837b/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">Restful风格</div>
                 </a>
                 
                 
                 <a href="../../../../../../../pages/fe0612/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">web开发两种模式</div>
                 </a>
                 
@@ -148,6 +467,89 @@
 
         
         
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01flask是什么" class="toc-item">01.Flask是什么</a>
+                
+                    
+                    
+                    
+                    <a href="#02安装与第一个应用" class="toc-item">02.安装与第一个应用</a>
+                
+                    
+                    
+                    
+                    <a href="#03路由" class="toc-item">03.路由</a>
+                
+                    
+                    
+                    
+                    <a href="#31-基本路由与-http-方法" class="toc-item">3.1 基本路由与 HTTP 方法</a>
+                
+                    
+                    
+                    
+                    <a href="#32-动态路由与转换器" class="toc-item">3.2 动态路由与转换器</a>
+                
+                    
+                    
+                    
+                    <a href="#33-url_for-反向解析" class="toc-item">3.3 url_for 反向解析</a>
+                
+                    
+                    
+                    
+                    <a href="#04请求对象-request" class="toc-item">04.请求对象 request</a>
+                
+                    
+                    
+                    
+                    <a href="#05响应" class="toc-item">05.响应</a>
+                
+                    
+                    
+                    
+                    <a href="#06模板" class="toc-item">06.模板</a>
+                
+                    
+                    
+                    
+                    <a href="#07配置与-session" class="toc-item">07.配置与 session</a>
+                
+                    
+                    
+                    
+                    <a href="#08上下文current_app-g-request" class="toc-item">08.上下文：current_app、g、request</a>
+                
+                    
+                    
+                    
+                    <a href="#09蓝图-blueprint" class="toc-item">09.蓝图 Blueprint</a>
+                
+                    
+                    
+                    
+                    <a href="#10常见坑" class="toc-item">10.常见坑</a>
+                
+                    
+                    
+                    
+                    <a href="#11小结" class="toc-item">11.小结</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -155,17 +557,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -176,7 +578,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -186,13 +588,13 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>

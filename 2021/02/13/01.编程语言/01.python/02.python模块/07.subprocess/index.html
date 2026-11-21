@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin">
-    <meta name="description" content="DYL521 的个人工程手记，记录 AI、后端系统、编程实践与持续学习。">
     
+    <meta name="description" content="01.subprocess是什么 subprocess 是 Python 标准库中用来创建子进程、执行外部命令的模块：可以运行 shell 命令，拿到它的输出、错误信息和退出码，还可以通过管道与子进程交互。 它">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="subprocess - DYL521">
+    <meta property="og:description" content="01.subprocess是什么 subprocess 是 Python 标准库中用来创建子进程、执行外部命令的模块：可以运行 shell 命令，拿到它的输出、错误信息和退出码，还可以通过管道与子进程交互。 它">
+    <meta property="og:url" content="https://dyl521.github.io/2021/02/13/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/02.python%E6%A8%A1%E5%9D%97/07.subprocess/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="subprocess - DYL521">
+    
+    <meta property="article:published_time" content="2021-02-13T12:43:10.000Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="subprocess - DYL521">
+    <meta name="twitter:description" content="01.subprocess是什么 subprocess 是 Python 标准库中用来创建子进程、执行外部命令的模块：可以运行 shell 命令，拿到它的输出、错误信息和退出码，还可以通过管道与子进程交互。 它">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
     <link rel="canonical" href="https://dyl521.github.io/2021/02/13/01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01.python/02.python%E6%A8%A1%E5%9D%97/07.subprocess/">
     <script>
     (function () {
@@ -13,26 +29,23 @@
         var theme;
         try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
         if (theme !== 'dark' && theme !== 'light') {
-            theme = 'dark';
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
-    <title>
-        
-            subprocess - DYL521
-        
-    </title>
+    <title>subprocess - DYL521</title>
     <link rel="shortcut icon" href="/image/mark.svg">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=5a87b7fde50c">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
     <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索文章标题或分类…","search_no_results":"没有找到相关文章","search_index_missing":"搜索索引尚未生成，请运行 hexo algolia","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles or categories…","search_no_results":"No matching posts found","search_index_missing":"Search index is missing. Run hexo algolia to build it.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
-    <a class="skip-link" href="#main-content">跳转到正文 / Skip to content</a>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
     <div id="dyl-progress" aria-hidden="true"></div>
 
     
@@ -45,22 +58,22 @@
     <div class="nav-links" data-fx-navlinks>
         
             
-            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">Home</a>
+            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
         
             
-            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">Posts</a>
+            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
         
             
-            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">Category</a>
+            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
         
             
-            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">Archive</a>
+            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
         
             
-            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">Tag</a>
+            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
         
             
-            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">About</a>
+            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
         
     </div>
     <div class="nav-actions">
@@ -70,8 +83,8 @@
             <span></span>
         </button>
         <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -79,22 +92,22 @@
 <div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
     
         
-        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">Home</a>
+        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
     
         
-        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">Posts</a>
+        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
     
         
-        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">Category</a>
+        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
     
         
-        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">Archive</a>
+        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
     
         
-        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">Tag</a>
+        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
     
         
-        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">About</a>
+        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
     
 </div>
 
@@ -107,14 +120,14 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../../../posts/" data-zh="文章" data-en="Journal">文章</a><span> / </span><span>2021</span></div>
+            <div class="breadcrumb"><a href="../../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2021</span></div>
             
             <h1 class="article-title" data-reveal>subprocess</h1>
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">Python</span>
                 <span>2021-02-13</span>
-                <span>· 0 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 0 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 17 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 5085 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -125,20 +138,269 @@
             
 
             <div class="article-body" data-reveal>
-                
+                <h2 id="01subprocess是什么"><a class="markdownIt-Anchor" href="#01subprocess是什么"></a> 01.subprocess是什么</h2>
+<p><code>subprocess</code> 是 Python 标准库中用来<strong>创建子进程、执行外部命令</strong>的模块：可以运行 shell 命令，拿到它的输出、错误信息和退出码，还可以通过管道与子进程交互。</p>
+<p>它是 <code>os.system</code>、<code>os.popen</code> 等老接口的官方替代品：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>能拿输出</th>
+<th>能拿退出码</th>
+<th>推荐程度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>os.system(cmd)</code></td>
+<td>不能（直接打印到终端）</td>
+<td>能</td>
+<td>不推荐</td>
+</tr>
+<tr>
+<td><code>os.popen(cmd)</code></td>
+<td>能</td>
+<td>不方便</td>
+<td>不推荐</td>
+</tr>
+<tr>
+<td><code>subprocess.run()</code></td>
+<td>能</td>
+<td>能</td>
+<td><strong>首选</strong></td>
+</tr>
+<tr>
+<td><code>subprocess.Popen</code></td>
+<td>能</td>
+<td>能</td>
+<td>需要细粒度控制时用</td>
+</tr>
+</tbody>
+</table>
+<h2 id="02subprocessrun最常用的接口"><a class="markdownIt-Anchor" href="#02subprocessrun最常用的接口"></a> 02.subprocess.run：最常用的接口</h2>
+<p><code>run()</code> 会执行命令、<strong>等待它结束</strong>，然后返回一个 <code>CompletedProcess</code> 对象。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> subprocess
+
+result <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ls"</span><span class="token punctuation">,</span> <span class="token string">"-l"</span><span class="token punctuation">,</span> <span class="token string">"/tmp"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> capture_output<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>args<span class="token punctuation">)</span>         <span class="token comment" spellcheck="true"># ['ls', '-l', '/tmp']</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>returncode<span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># 退出码，0 表示成功</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>stdout<span class="token punctuation">)</span>       <span class="token comment" spellcheck="true"># 标准输出（因为 text=True，所以是 str）</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>stderr<span class="token punctuation">)</span>       <span class="token comment" spellcheck="true"># 标准错误</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>args</code></td>
+<td>要执行的命令，推荐传<strong>列表</strong>：<code>[&quot;git&quot;, &quot;status&quot;]</code></td>
+</tr>
+<tr>
+<td><code>capture_output=True</code></td>
+<td>捕获 stdout 和 stderr，等价于 <code>stdout=PIPE, stderr=PIPE</code></td>
+</tr>
+<tr>
+<td><code>text=True</code></td>
+<td>以字符串而不是 bytes 返回输出（老写法 <code>universal_newlines=True</code>）</td>
+</tr>
+<tr>
+<td><code>encoding=&quot;utf-8&quot;</code></td>
+<td>指定编码，同时也会开启文本模式</td>
+</tr>
+<tr>
+<td><code>check=True</code></td>
+<td>退出码非 0 时抛出 <code>CalledProcessError</code></td>
+</tr>
+<tr>
+<td><code>timeout=10</code></td>
+<td>超时秒数，超时会杀掉子进程并抛 <code>TimeoutExpired</code></td>
+</tr>
+<tr>
+<td><code>cwd=&quot;/path&quot;</code></td>
+<td>子进程的工作目录</td>
+</tr>
+<tr>
+<td><code>env=&#123;...&#125;</code></td>
+<td>子进程的环境变量（会<strong>整体替换</strong>，而不是追加）</td>
+</tr>
+<tr>
+<td><code>input=&quot;...&quot;</code></td>
+<td>写入子进程标准输入的数据</td>
+</tr>
+<tr>
+<td><code>shell=True</code></td>
+<td>通过 shell 执行（见下文的安全问题）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="03错误处理"><a class="markdownIt-Anchor" href="#03错误处理"></a> 03.错误处理</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> subprocess
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>
+        <span class="token punctuation">[</span><span class="token string">"git"</span><span class="token punctuation">,</span> <span class="token string">"rev-parse"</span><span class="token punctuation">,</span> <span class="token string">"HEAD"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        capture_output<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+        text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+        check<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>       <span class="token comment" spellcheck="true"># 非 0 退出码直接抛异常</span>
+        timeout<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"当前提交:"</span><span class="token punctuation">,</span> result<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> subprocess<span class="token punctuation">.</span>CalledProcessError <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"命令失败，退出码:"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span>returncode<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"错误输出:"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span>stderr<span class="token punctuation">)</span>
+<span class="token keyword">except</span> subprocess<span class="token punctuation">.</span>TimeoutExpired<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"命令超时"</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> FileNotFoundError<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"找不到 git 可执行文件"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意三种异常的区别：</p>
+<ul>
+<li><code>FileNotFoundError</code>：命令本身不存在（列表形式、不经过 shell 时）。</li>
+<li><code>CalledProcessError</code>：命令执行了，但退出码不是 0（需要 <code>check=True</code>）。</li>
+<li><code>TimeoutExpired</code>：超过了 <code>timeout</code>。</li>
+</ul>
+<p>只想要输出的话，还有一个快捷函数 <code>check_output</code>，相当于 <code>run(..., check=True, stdout=PIPE).stdout</code>：</p>
+<pre class="line-numbers language-python"><code class="language-python">out <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>check_output<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"python"</span><span class="token punctuation">,</span> <span class="token string">"--version"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># Python 3.12.3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="04输入-重定向与环境变量"><a class="markdownIt-Anchor" href="#04输入-重定向与环境变量"></a> 04.输入、重定向与环境变量</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> subprocess
+
+<span class="token comment" spellcheck="true"># 1. 给子进程传入标准输入</span>
+r <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"grep"</span><span class="token punctuation">,</span> <span class="token string">"py"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> input<span class="token operator">=</span><span class="token string">"a.py\nb.txt\nc.py\n"</span><span class="token punctuation">,</span>
+                   capture_output<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>stdout<span class="token punctuation">)</span>        <span class="token comment" spellcheck="true"># a.py\nc.py\n</span>
+
+<span class="token comment" spellcheck="true"># 2. 把 stderr 合并到 stdout</span>
+r <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ls"</span><span class="token punctuation">,</span> <span class="token string">"/not-exist"</span><span class="token punctuation">,</span> <span class="token string">"/tmp"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">,</span> stderr<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>STDOUT<span class="token punctuation">,</span> text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 3. 丢弃输出</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ping"</span><span class="token punctuation">,</span> <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token string">"127.0.0.1"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>DEVNULL<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 4. 输出直接写到文件</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">"out.log"</span><span class="token punctuation">,</span> <span class="token string">"w"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ls"</span><span class="token punctuation">,</span> <span class="token string">"-l"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> stdout<span class="token operator">=</span>f<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 5. 在原有环境变量基础上追加，而不是整体替换</span>
+env <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">**</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">,</span> <span class="token string">"APP_ENV"</span><span class="token punctuation">:</span> <span class="token string">"test"</span><span class="token punctuation">}</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"python"</span><span class="token punctuation">,</span> <span class="token string">"app.py"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> env<span class="token operator">=</span>env<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="05shelltrue-与命令注入"><a class="markdownIt-Anchor" href="#05shelltrue-与命令注入"></a> 05.shell=True 与命令注入</h2>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> subprocess
+
+<span class="token comment" spellcheck="true"># 推荐：列表形式，不经过 shell，参数原样传给程序</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ls"</span><span class="token punctuation">,</span> <span class="token string">"-l"</span><span class="token punctuation">,</span> <span class="token string">"my dir"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># shell=True：传字符串，由 /bin/sh 解析，可以用管道、通配符、重定向</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token string">"ls -l | grep py > result.txt"</span><span class="token punctuation">,</span> shell<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>shell=True</code> 的风险在于<strong>命令注入</strong>：</p>
+<pre class="line-numbers language-python"><code class="language-python">filename <span class="token operator">=</span> <span class="token string">"a.txt; rm -rf ~"</span>          <span class="token comment" spellcheck="true"># 来自用户输入</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span>f<span class="token string">"cat {filename}"</span><span class="token punctuation">,</span> shell<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># 危险！分号后面的命令也会执行</span>
+subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"cat"</span><span class="token punctuation">,</span> filename<span class="token punctuation">]</span><span class="token punctuation">)</span>                <span class="token comment" spellcheck="true"># 安全：整个字符串只是一个参数</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>原则：</p>
+<ul>
+<li>能用列表就用列表，绝不把用户输入拼进 <code>shell=True</code> 的字符串。</li>
+<li>确实需要 shell 时，用 <code>shlex.quote()</code> 对参数转义。</li>
+<li>想把一条命令字符串拆成列表，可以用 <code>shlex.split(&quot;ls -l 'my dir'&quot;)</code> → <code>['ls', '-l', 'my dir']</code>。</li>
+</ul>
+<h2 id="06popen更底层的控制"><a class="markdownIt-Anchor" href="#06popen更底层的控制"></a> 06.Popen：更底层的控制</h2>
+<p><code>run()</code> 内部就是基于 <code>Popen</code> 实现的。需要<strong>不等待子进程结束</strong>、实时读取输出或者搭建管道时，直接使用 <code>Popen</code>。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> subprocess
+
+<span class="token comment" spellcheck="true"># 实时逐行读取输出（例如长时间运行的构建任务）</span>
+<span class="token keyword">with</span> subprocess<span class="token punctuation">.</span>Popen<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token string">"ping"</span><span class="token punctuation">,</span> <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"3"</span><span class="token punctuation">,</span> <span class="token string">"127.0.0.1"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">,</span>
+    stderr<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>STDOUT<span class="token punctuation">,</span>
+    text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span> <span class="token keyword">as</span> proc<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> line <span class="token keyword">in</span> proc<span class="token punctuation">.</span>stdout<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"输出:"</span><span class="token punctuation">,</span> line<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"退出码:"</span><span class="token punctuation">,</span> proc<span class="token punctuation">.</span>returncode<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用管道连接两个进程，相当于 <code>ps aux | grep python</code>：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> subprocess
+
+p1 <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>Popen<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"ps"</span><span class="token punctuation">,</span> <span class="token string">"aux"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">)</span>
+p2 <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>Popen<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"grep"</span><span class="token punctuation">,</span> <span class="token string">"python"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> stdin<span class="token operator">=</span>p1<span class="token punctuation">.</span>stdout<span class="token punctuation">,</span>
+                      stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">,</span> text<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+p1<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 让 p1 能在 p2 提前退出时收到 SIGPIPE</span>
+out<span class="token punctuation">,</span> _ <span class="token operator">=</span> p2<span class="token punctuation">.</span>communicate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Popen</code> 常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>poll()</code></td>
+<td>检查是否结束，未结束返回 <code>None</code>，否则返回退出码</td>
+</tr>
+<tr>
+<td><code>wait(timeout=None)</code></td>
+<td>等待结束并返回退出码</td>
+</tr>
+<tr>
+<td><code>communicate(input=None, timeout=None)</code></td>
+<td>写入 stdin、读完 stdout/stderr 并等待结束，返回 <code>(out, err)</code></td>
+</tr>
+<tr>
+<td><code>terminate()</code> / <code>kill()</code></td>
+<td>发送 SIGTERM / SIGKILL</td>
+</tr>
+<tr>
+<td><code>pid</code></td>
+<td>子进程的进程号</td>
+</tr>
+</tbody>
+</table>
+<h2 id="07常见坑"><a class="markdownIt-Anchor" href="#07常见坑"></a> 07.常见坑</h2>
+<ol>
+<li><strong>管道死锁</strong>：使用 <code>stdout=PIPE</code> 时如果调用 <code>wait()</code>，而子进程输出很多、把管道缓冲区写满了，子进程会阻塞在写操作上，父进程又在等它结束，于是死锁。应该使用 <code>communicate()</code> 或 <code>run()</code>。</li>
+<li><strong><code>communicate</code> 超时后要手动杀进程</strong>：<code>Popen.communicate(timeout=...)</code> 超时抛异常时子进程<strong>不会</strong>被自动杀死，需要 <code>proc.kill()</code> 后再 <code>proc.communicate()</code> 回收。<code>run(timeout=...)</code> 会帮你做这件事。</li>
+<li><strong>字符串命令不加 <code>shell=True</code></strong>：<code>subprocess.run(&quot;ls -l&quot;)</code> 在 Linux 上会把整个 <code>&quot;ls -l&quot;</code> 当成程序名去找，报 <code>FileNotFoundError</code>。</li>
+<li><strong>忘记 <code>text=True</code></strong>：得到的是 <code>bytes</code>，<code>result.stdout.strip() == &quot;ok&quot;</code> 永远为 <code>False</code>。</li>
+<li><strong><code>env</code> 会整体替换环境变量</strong>：只传 <code>&#123;&quot;A&quot;: &quot;1&quot;&#125;</code> 会导致子进程连 <code>PATH</code> 都没有，应使用 <code>&#123;**os.environ, &quot;A&quot;: &quot;1&quot;&#125;</code>。</li>
+<li><strong><code>cd</code> 不会生效</strong>：<code>subprocess.run(&quot;cd /tmp&quot;, shell=True)</code> 只改变了子 shell 的目录，对当前 Python 进程没影响，应该用 <code>cwd</code> 参数或 <code>os.chdir()</code>。</li>
+<li><strong>编码问题</strong>：Windows 下命令输出可能不是 UTF-8，解码出错时可以显式指定 <code>encoding</code> 和 <code>errors=&quot;replace&quot;</code>。</li>
+</ol>
+<h2 id="08小结"><a class="markdownIt-Anchor" href="#08小结"></a> 08.小结</h2>
+<ul>
+<li>首选 <code>subprocess.run(列表, capture_output=True, text=True, check=True, timeout=...)</code>，基本覆盖九成场景。</li>
+<li>需要实时输出、管道组合或异步控制时用 <code>Popen</code>，读写管道时用 <code>communicate()</code> 避免死锁。</li>
+<li>尽量不用 <code>shell=True</code>，绝不把不可信输入拼进 shell 命令。</li>
+<li>面试可能问：<code>os.system</code> 与 <code>subprocess</code> 的区别、<code>shell=True</code> 的风险、PIPE 死锁的原因。</li>
+</ul>
+
             </div>
 
             
             <div class="article-nav" data-reveal>
                 
                 <a href="../../../../../../../pages/3180c1/" class="nav-card">
-                    <div class="nav-label" data-i18n="post_prev_label">Previous</div>
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
                     <div class="nav-title">sys</div>
                 </a>
                 
                 
                 <a href="../08.logging/" class="nav-card nav-next">
-                    <div class="nav-label" data-i18n="post_next_label">Next</div>
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
                     <div class="nav-title">logging</div>
                 </a>
                 
@@ -148,6 +410,59 @@
 
         
         
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01subprocess是什么" class="toc-item">01.subprocess是什么</a>
+                
+                    
+                    
+                    
+                    <a href="#02subprocessrun最常用的接口" class="toc-item">02.subprocess.run：最常用的接口</a>
+                
+                    
+                    
+                    
+                    <a href="#03错误处理" class="toc-item">03.错误处理</a>
+                
+                    
+                    
+                    
+                    <a href="#04输入-重定向与环境变量" class="toc-item">04.输入、重定向与环境变量</a>
+                
+                    
+                    
+                    
+                    <a href="#05shelltrue-与命令注入" class="toc-item">05.shell=True 与命令注入</a>
+                
+                    
+                    
+                    
+                    <a href="#06popen更底层的控制" class="toc-item">06.Popen：更底层的控制</a>
+                
+                    
+                    
+                    
+                    <a href="#07常见坑" class="toc-item">07.常见坑</a>
+                
+                    
+                    
+                    
+                    <a href="#08小结" class="toc-item">08.小结</a>
+                
+            </div>
+        </aside>
         
     </div>
 </article>
@@ -155,17 +470,17 @@
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="Search titles or categories…" autocomplete="off" aria-label="Search">
-            <span class="search-hint" data-i18n="search_shortcut">Type to search, or press Esc</span>
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
             <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
-            <div class="search-empty" data-i18n="search_shortcut">Type to search, or press Esc</div>
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
         </div>
         <div class="search-footer">
-            <span class="search-footer-hint" data-i18n="search_hint">Esc to close</span>
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
         </div>
     </div>
 </div>
@@ -176,7 +491,7 @@
     <div class="footer-row" data-fx-footrow>
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
-            <div class="footer-tagline" data-i18n="footer_tagline">Build, write, tinker — simply.</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
         </div>
         <div class="footer-social">
             <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
@@ -186,13 +501,13 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json?v=ac54700a2d85" };</script>
     
-    <script src="/js/polelight.js?v=bed4059500f9" defer></script>
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
 </body>
 </html>
