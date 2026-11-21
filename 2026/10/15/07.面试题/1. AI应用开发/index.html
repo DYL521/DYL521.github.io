@@ -113,8 +113,8 @@
             <div class="article-meta" data-reveal>
                 <span class="meta-badge">面试题</span>
                 <span>2026-10-15</span>
-                <span>· 126 <span data-i18n="post_read_suffix">min read</span></span>
-                <span>· 37605 <span data-i18n="post_words_suffix">words</span></span>
+                <span>· 151 <span data-i18n="post_read_suffix">min read</span></span>
+                <span>· 45275 <span data-i18n="post_words_suffix">words</span></span>
             </div>
             
 
@@ -176,18 +176,22 @@
 <h3 id="项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台"><a class="markdownIt-Anchor" href="#项目-bjarvis-registry-企业级-mcp-gateway-a2a-编排平台"></a> 项目 B：jarvis-registry —— 企业级 MCP Gateway / A2A 编排平台</h3>
 <ul>
 <li><strong>定位</strong>：开源的企业级 <strong>MCP（Model Context Protocol）网关 + A2A（Agent-to-Agent）编排平台</strong>，让任意 AI copilot / 自治 Agent 安全、受治理地访问企业内部工具和数据。</li>
-<li><strong>核心能力</strong>：
+<li><strong>核心能力</strong>（统一治理 <strong>MCP 工具</strong> 和 <strong>A2A agent</strong> 两类协议）：
 <ul>
-<li><strong>MCP 网关 / 反向代理</strong>：所有 AI 客户端统一经一个认证入口，走 MCP over SSE / Streamable HTTP。</li>
+<li><strong>MCP 网关 / 反向代理</strong>：所有 AI 客户端统一经一个认证入口，走 MCP over SSE / Streamable HTTP；原生实现 <strong>MCP elicitation</strong>（工具调用中途可向用户要补充输入）+ 会话内再鉴权。</li>
+<li><strong>Registry = 合规强制层（不只是目录）</strong>：MCP server / A2A agent <strong>注册时即校验</strong>——工具 manifest 字段/input schema、声明的 transport 与真实能力是否匹配、AgentCard 是否符合 A2A spec、跑的是 <strong>v0.3 还是 v1.0</strong>——不合规在注册期就拒，不等首次调用才炸。这是「存条目的目录」和「强制协议合规的注册中心」的区别。</li>
+<li><strong>跨运行时 A2A 联邦</strong>：把 <strong>AWS AgentCore Runtime / Azure AI Foundry Agent Service / 自托管 A2A</strong> 的 agent 收进同一个可搜索目录，屏蔽各平台的非标 AgentCard 路径（如 Foundry 用 <code>agentCard/v0.3</code> 而非 <code>/.well-known/...</code>）、transport/auth 差异，任意客户端/编排器无需按平台写专用代码。</li>
+<li><strong>Skill Gateway + 安全扫描</strong>：企业私有 skill 的授权/版本/资源级 ACL + 从 <strong>GitHub/GitLab 单向导入</strong> + 经 <strong>AI Skills CLI</strong> 分发到 Claude Code/Codex/Copilot/Cursor；skill 写入时<strong>事务性入队</strong>，独立 <code>skill-scan-worker</code>（租约式 leased-job + orphan sweeper）用可配置 <strong>LLM 适配器</strong>（Bedrock/Azure OpenAI）扫描安全风险、按 severity 出 findings——防「投毒 skill」流进开发者环境。</li>
 <li><strong>身份与鉴权</strong>：OAuth 2.0 / OIDC，对接 Keycloak、Cognito、Entra ID，自己不写认证代码。</li>
-<li><strong>细粒度 ACL</strong>：<code>middleware/rbac.py</code> + <code>acl_schema.py</code>，scope / role 权限细到<strong>单个工具级别</strong>。</li>
-<li><strong>语义化工具发现</strong>：<code>services/search</code>（<strong>FAISS</strong> 向量检索）对 skill/描述/tag 做语义搜索，Agent 运行时按需找到对的 MCP server / A2A agent。</li>
+<li><strong>细粒度 ACL</strong>：<code>middleware/rbac.py</code> + <code>acl_schema.py</code>，scope / role 权限细到<strong>单个工具/skill 级别</strong>；ACL 过滤发现结果（无权的工具<strong>对调用方不可见</strong>，不是可见但拒绝）。</li>
+<li><strong>凭证治理</strong>：下游 OAuth egress 的 token 由网关集中获取/轮换/<strong>加密存储</strong>，per-server 隔离（一个被攻破的 server 拿不到别家凭证）；入站 token 校验后按剩余 TTL 缓存省 IdP 往返，吊销即失效。</li>
+<li><strong>语义化工具发现</strong>：<code>services/search</code>（<strong>FAISS</strong> 向量检索）对 skill/描述/tag 做语义搜索，Agent 运行时按需找到对的 MCP server / A2A agent；空召回时按本次搜索给定向提示。</li>
 <li><strong>无状态网关</strong>：<code>mcpgw/core/client_info_store.py</code> 用 <strong>Redis</strong> 缓存 client-info，网关做成 stateless，可水平扩容。</li>
-<li><strong>审计与可观测</strong>：全量请求日志、OpenTelemetry tracing、Prometheus metrics。</li>
-<li><strong>Federation + workflow-worker</strong>：多注册中心联邦 + 工作流 executor/scheduler。</li>
+<li><strong>审计与可观测</strong>：全量请求日志、OpenTelemetry tracing、Prometheus metrics（per server/agent/transport）。</li>
+<li><strong>A2A workflow 编排 + workflow-worker</strong>：orchestrator–worker 跨运行时协调，executor/scheduler；多注册中心 Federation。</li>
 </ul>
 </li>
-<li><strong>一句话价值</strong>：解决企业 AI「工具访问碎片化 + 安全盲区」问题——把鉴权、权限、审计、发现从每个 Agent 里抽出来，下沉到网关。</li>
+<li><strong>一句话价值</strong>：解决企业 AI「工具/agent 访问碎片化 + 安全治理盲区」——把<strong>接入、注册期合规校验、鉴权、权限、审计、发现、凭证、skill 分发</strong>从每个 Agent 抽出下沉到一个控制面，跨 <strong>AgentCore / Foundry / 自托管</strong>用同一套 ACL 统一治理。</li>
 <li><strong>核心流程图（MCP 网关 / A2A 编排）</strong>：</li>
 </ul>
 <pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TD
@@ -201,13 +205,17 @@
     AUTH --> ACL[RBAC / ACL<br/>scope·role 细到工具级]
     ACL --> PROXY[MCP 反向代理<br/>无状态 · Redis client-info 缓存]
     DISC[语义工具发现<br/>FAISS 向量检索 skill/tag] -.运行时按需定位.-> PROXY
-    PROXY --> M1[MCP Server A]
-    PROXY --> M2[MCP Server B]
-    PROXY --> W[A2A Worker Agent]
+    PROXY --> M1[MCP Server]
+    PROXY --> R1[AWS AgentCore Agent]
+    PROXY --> R2[Azure AI Foundry Agent]
+    PROXY --> R3[自托管 A2A Agent]
     PROXY --> OBS[审计 & 可观测<br/>全量日志·OTel·Prometheus]
+    REG[Registry 合规强制层<br/>注册时验 schema/transport/AgentCard·A2A v0.3-v1.0] -.注册期拦截.-> PROXY
+    SG[Skill Gateway<br/>私有skill·Git导入·CLI分发] --> SCAN[skill-scan-worker<br/>LLM 安全扫描·severity findings]
+    SG -.-> PROXY
+    WF[workflow-worker<br/>orchestrator–worker 跨运行时编排] -.-> PROXY
     FED[Federation 多注册中心联邦] -.-> PROXY
-    WF[workflow-worker<br/>executor · scheduler] -.-> PROXY
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="项目-crag_api-id-based-rag-索引检索微服务"><a class="markdownIt-Anchor" href="#项目-crag_api-id-based-rag-索引检索微服务"></a> 项目 C：rag_api —— ID-based RAG 索引/检索微服务</h3>
 <ul>
 <li><strong>定位</strong>：<strong>LangChain + FastAPI</strong> 的异步、可扩展 RAG 后端，文档按 <code>file_id</code> 组织 embedding，用 <strong>PostgreSQL/pgvector</strong> 做向量库。给 LibreChat 等上层提供「文档入库 / 检索 / 删除」的 RAG 基础能力——是把 <strong>RAG 当独立服务</strong>沉淀，而不是塞在 Agent 里。</li>
@@ -246,7 +254,7 @@
 <p>面试组合拳（三项目各打一个点）：</p>
 <ul>
 <li><strong>mate-assist</strong> 讲「单 Agent 对话系统的<strong>深度</strong>」——RAG 子链/记忆分层/状态图/流式/合规；</li>
-<li><strong>jarvis-registry</strong> 讲「Agent 基础设施的<strong>广度</strong>」——MCP 网关/多 Agent/权限/可观测；</li>
+<li><strong>jarvis-registry</strong> 讲「Agent 基础设施的<strong>广度</strong>」——MCP/A2A 双协议网关、注册期合规校验、跨运行时（AgentCore/Foundry/自托管）联邦、Skill 治理 + LLM 安全扫描、权限/可观测；</li>
 <li><strong>rag_api</strong> 讲「RAG <strong>工程基建</strong>」——ID-based 索引/pgvector/可插拔 embedding/异步线程池。<br />
 问 RAG 原理用 mate-assist 的检索-精排-grade 子链答效果，问 RAG 工程/选型用 rag_api 答基建。</li>
 </ul>
@@ -473,6 +481,33 @@
 <li>重试：瞬时故障（超时/5xx/限流）指数退避重试 + 幂等键；限流：令牌桶/信号量控并发；降级：下游挂了走缓存/默认值/友好兜底话术。</li>
 <li>结合项目：mate-assist 节点级 <code>RetryPolicy</code> 只重试瞬时故障；jarvis-registry 网关层统一做限流/鉴权/降级。详见第六章。</li>
 </ul>
+<h3 id="4-模型返回-tool_call-后参数校验权限校验沙箱执行结果回灌全流程二面-4"><a class="markdownIt-Anchor" href="#4-模型返回-tool_call-后参数校验权限校验沙箱执行结果回灌全流程二面-4"></a> 4. 模型返回 tool_call 后，参数校验→权限校验→沙箱执行→结果回灌全流程？（二面 4）</h3>
+<ul>
+<li><strong>参数校验</strong>：Pydantic/JSON Schema 校验模型吐的参数（类型/枚举/范围/必填）；缺参或类型错 → 把错误回喂模型<strong>自我修正</strong>（限次数），不是直接抛。</li>
+<li><strong>权限校验</strong>：执行前查当前身份对「该工具 + 该参数范围」的 ACL（能不能调、能动哪些资源），无权直接拒并回喂「无权限」让模型换路，<strong>绝不先执行再判</strong>。jarvis-registry 的 scope/role 细到工具级就是干这个。</li>
+<li><strong>沙箱执行</strong>：工具不在主进程裸跑——经网关/子进程代理，带超时、资源上限、网络/文件白名单，隔离防逃逸；写操作带幂等键。</li>
+<li><strong>结果回灌</strong>：执行结果作为 <code>tool</code> 角色消息回喂模型；回灌前<strong>同样 schema 校验 + 截断/脱敏</strong>（出参也不可信，防二次注入/超长炸上下文）。</li>
+<li><strong>一句话</strong>：校验→鉴权→沙箱→回灌，<strong>每一环都当下游不可信</strong>，模型只决策不直接碰资源。</li>
+</ul>
+<h3 id="5-工具返回数据过大怎么截断摘要二面-11"><a class="markdownIt-Anchor" href="#5-工具返回数据过大怎么截断摘要二面-11"></a> 5. 工具返回数据过大怎么截断/摘要？（二面 11）</h3>
+<ul>
+<li><strong>先截断再摘要</strong>：设单工具返回 token 上限，超限先按<strong>结构裁剪</strong>（只留模型要的字段，白名单投影）而非盲砍尾部；仍大则 <strong>LLM/规则摘要</strong>成要点再回灌。</li>
+<li><strong>分页/引用代替全量</strong>：大结果存外部（Redis/对象存储）只回<strong>摘要 + 引用 id</strong>，模型要细节再按 id 取——对应 SSE 实战「长 URL/大 JSON 移出模型」（第十一章）。</li>
+<li><strong>结构化优先</strong>：表格/列表转紧凑结构（保列名、截行数并标注「还有 N 条」），别让模型逐 token 读废数据。</li>
+</ul>
+<h3 id="6-企业级-mcpa2a-网关怎么做注册中心而不只是目录跨云-agent-怎么统一接入jarvis-registry-新增"><a class="markdownIt-Anchor" href="#6-企业级-mcpa2a-网关怎么做注册中心而不只是目录跨云-agent-怎么统一接入jarvis-registry-新增"></a> 6. 企业级 MCP/A2A 网关怎么做「注册中心」而不只是目录？跨云 agent 怎么统一接入？（jarvis-registry 新增）</h3>
+<ul>
+<li><strong>注册中心 = 合规强制层，不是存条目的目录</strong>：jarvis-registry 在 <strong>server/agent 注册时就校验</strong>，不合规直接拒、不等首次调用才炸：
+<ul>
+<li>MCP server：工具 manifest 字段/input schema 完整性、声明的 transport（SSE / Streamable HTTP）与真实能力是否一致、下游 OAuth egress 凭证映射。</li>
+<li>A2A agent：AgentCard 按 spec 校验（name/description/url/capabilities 必填）、能力与 skill 定义内部自洽、<strong>追踪跑的是 v0.3 还是 v1.0</strong>——防止把 v1.0 调用方静默路由到 legacy agent 造成 payload 不匹配。</li>
+</ul>
+</li>
+<li><strong>发现结果按身份过滤</strong>：ACL 把无权的工具/skill <strong>做成不可见</strong>（不是可见但拒绝），降信息泄漏面。</li>
+<li><strong>跨运行时联邦（这题的亮点）</strong>：AWS AgentCore / Azure AI Foundry / 自托管 A2A 三家对 transport、AgentCard 发现路径、auth 前置条件各有各的非标做法（如 Foundry 用 <code>agentCard/v0.3</code> 路径、AgentCore 要 JWTAuthorizer）。网关<strong>把这些 per-runtime 差异存进 Registry 并在路由时消化</strong>，让任意 MCP 客户端/编排器无需按平台写专用代码就能调到——这就是「跨云 agent 统一接入」的工程内核。</li>
+<li><strong>凭证不下沉到各 server</strong>：OAuth egress token 网关集中获取/轮换/<strong>加密存储</strong> + per-server 隔离，入站 token 校验后按 TTL 缓存。</li>
+<li><strong>一句话</strong>：把「接入、合规校验、鉴权、发现、凭证、审计」从每个 Agent 抽出下沉到控制面，<strong>注册期就拦住不合规</strong>，比运行时报错止损早一个数量级。</li>
+</ul>
 <h2 id="六-agent-稳定性异常-死循环-容错"><a class="markdownIt-Anchor" href="#六-agent-稳定性异常-死循环-容错"></a> 六、Agent 稳定性：异常、死循环、容错</h2>
 <h3 id="1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7"><a class="markdownIt-Anchor" href="#1-工具调用异常json-解析失败参数缺失超时重试-幂等-熔断7"></a> 1. 工具调用异常（JSON 解析失败/参数缺失/超时）：重试、幂等、熔断？（7）</h3>
 <ul>
@@ -496,6 +531,20 @@
 <li><strong>结果校验/进展判定</strong>：每步判断是否有实质进展，无进展计数超限就停。</li>
 <li><strong>预算上限</strong>：token / 调用次数 / 时间预算，超了强制收尾。</li>
 <li><strong>结合项目</strong>：mate-assist RAG 子链用 <code>rewrite_count</code> 卡重写次数，到上限就直接 generate，不无限重检索。「max step 是底线，重复检测 + 进展判定 + 预算才是真正的防线」。</li>
+</ul>
+<h3 id="4-harness-里-agent-loop-怎么设计终止条件除-max_turns-还控哪些二面-3"><a class="markdownIt-Anchor" href="#4-harness-里-agent-loop-怎么设计终止条件除-max_turns-还控哪些二面-3"></a> 4. Harness 里 agent loop 怎么设计？终止条件除 max_turns 还控哪些？（二面 3）</h3>
+<ul>
+<li><strong>loop 骨架</strong>：<code>while 未完成: 组装上下文 → 调模型 → 解析输出（文本/tool_call）→ 执行工具 → 结果回灌 → 判终止</code>。每轮<strong>前</strong>做上下文裁剪/预算检查，每轮<strong>后</strong>更新状态与调用指纹。</li>
+<li><strong>终止条件（max_turns 只是底线）</strong>：
+<ul>
+<li><strong>模型主动收尾</strong>：吐 final answer / 无 tool_call → 正常结束。</li>
+<li><strong>预算上限</strong>：token / 调用次数 / 墙钟时间 / 成本，任一超限强制收尾（治 OWASP LLM10 无限消耗）。</li>
+<li><strong>重复/无进展</strong>：(工具,参数) 状态指纹去重，连续 N 轮无实质进展 → 打断（见本章第 3 题）。</li>
+<li><strong>错误上限</strong>：工具/解析连续失败超阈值 → 熔断降级，不无限自我修正。</li>
+<li><strong>人工中断</strong>：HITL interrupt 挂起等审批（见第九章）。</li>
+</ul>
+</li>
+<li><strong>结合项目</strong>：mate-assist 用<strong>确定性 LangGraph 图</strong>而非自由 loop，自主只给到 RAG 子链且带 <code>rewrite_count</code> + <code>recursion_limit</code> 双保险——「能用确定性 workflow 就别放开 loop，放开也必须多条终止线兜」。</li>
 </ul>
 <h2 id="七-记忆与上下文管理"><a class="markdownIt-Anchor" href="#七-记忆与上下文管理"></a> 七、记忆与上下文管理</h2>
 <h3 id="1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49"><a class="markdownIt-Anchor" href="#1-记忆分层三层记忆会话级-工作实体级-长期分别存什么何时读写怎么防污染8-9-49"></a> 1. 记忆分层/三层记忆：会话级、工作/实体级、长期分别存什么？何时读写？怎么防污染？（8 / 9 / 49）</h3>
@@ -544,6 +593,13 @@
 <ul>
 <li>私有：每个 Agent/会话独占，隔离防串味；共享：多 Agent 协作需要的公共黑板（任务状态/中间结果），要做<strong>访问控制 + 写冲突处理</strong>。见第八章。</li>
 </ul>
+<h3 id="6-摘要压缩丢了关键信息怎么补跨块关联怎么保证二面-6"><a class="markdownIt-Anchor" href="#6-摘要压缩丢了关键信息怎么补跨块关联怎么保证二面-6"></a> 6. 摘要压缩丢了关键信息怎么补？跨块关联怎么保证？（二面 6）</h3>
+<ul>
+<li><strong>防丢</strong>：别无脑整体摘要——<strong>结构化关键事实单独抽</strong>（槽位/实体/决定/约束进 State，如 <code>last_car</code>/预算/已排除项），摘要只负责叙事主线，<strong>硬事实走结构化字段不进摘要</strong>，压缩就揉不没它。</li>
+<li><strong>补回</strong>：摘要外<strong>保最近 N 轮原文</strong>（近期高保真）；需要远期细节时<strong>向量检索历史原文</strong>按需捞回（RAG over history）；关键槽位每轮回喂，丢了能从持久化 State 重注。</li>
+<li><strong>跨块关联</strong>：① 摘要<strong>增量滚动</strong>——「老摘要 + 新增轮次」一起摘，保留跨轮因果而非各块独立摘（mate-assist <code>context_control</code> 就这么做，成本还恒定）；② 实体用稳定 id 贯穿各块（指代消解接地到同一 <code>focus_car</code>），跨块指向同一实体不断链；③ 检索历史时带相邻块 overlap / parent-doc 返回大块保上下文。</li>
+<li><strong>一句话</strong>：<strong>事实结构化 + 叙事滚动摘要 + 远期可检索</strong>三层，压缩只压叙事不压硬事实，关联靠稳定实体 id 和增量摘要维持。</li>
+</ul>
 <h2 id="八-多-agent-协作"><a class="markdownIt-Anchor" href="#八-多-agent-协作"></a> 八、多 Agent 协作</h2>
 <h3 id="1-子-agent-之间怎么通讯-任务怎么拆分20"><a class="markdownIt-Anchor" href="#1-子-agent-之间怎么通讯-任务怎么拆分20"></a> 1. 子 Agent 之间怎么通讯、任务怎么拆分？（20）</h3>
 <ul>
@@ -576,8 +632,36 @@
 <li><strong>沙箱</strong>：工具经网关代理执行，隔离、限流、超时。</li>
 <li><strong>审计</strong>：全量请求日志 + OpenTelemetry tracing + Prometheus metrics。</li>
 <li><strong>成本</strong>：网关统一统计 token/调用次数，按租户/Agent 配额。</li>
+<li><strong>跨运行时统一治理</strong>：AgentCore / Foundry / 自托管的 agent 用<strong>同一套 ACL/RBAC</strong> 编排，orchestrator→worker 每一跳都过网关、auth 与权限一致，没有「编排器和 worker 之间的策略空洞」（详见第五章第 6 题）。</li>
+<li><strong>skill 供应链治理</strong>：私有 skill 从 Git 单向导入 + CLI 分发前，经 <code>skill-scan-worker</code> 做 <strong>LLM 安全扫描</strong>出 severity findings，防投毒 skill 流入（详见第十五章）。</li>
 </ul>
 </li>
+</ul>
+<h3 id="7-多-agent-结果冲突怎么仲裁二面-7"><a class="markdownIt-Anchor" href="#7-多-agent-结果冲突怎么仲裁二面-7"></a> 7. 多 Agent 结果冲突怎么仲裁？（二面 7）</h3>
+<ul>
+<li><strong>先定冲突类型</strong>：① 同一事实不同答案（谁对）；② 并行子任务结果不一致（怎么合并）；③ 写同一资源的竞争（见下题）。</li>
+<li><strong>仲裁策略</strong>：
+<ul>
+<li><strong>带置信度/证据投票</strong>：各 Agent 输出附 confidence + 来源，<strong>Self-Consistency 多数票</strong>或取高置信 + 可溯源的。</li>
+<li><strong>Reviewer/Supervisor 裁决</strong>：设一个校验角色按 Rubric 判优劣（对应 Supervisor/Reviewer 边界，八.2），不让平级 Agent 互相甩锅。</li>
+<li><strong>规则兜底</strong>：确定性冲突（价格/合规）用硬规则压过模型输出，不投票。</li>
+<li><strong>latest-wins / 版本化</strong>：状态类冲突按时间戳取新（对应记忆合并，七.2）。</li>
+</ul>
+</li>
+<li><strong>关键</strong>：冲突仲裁要有<strong>单一裁决点 + 明确优先级</strong>，别让多 Agent 无限互相纠正（加全局 step/预算上限）。</li>
+</ul>
+<h3 id="8-多个-agent-并发改同一文件资源怎么防冲突锁粒度怎么定二面-8"><a class="markdownIt-Anchor" href="#8-多个-agent-并发改同一文件资源怎么防冲突锁粒度怎么定二面-8"></a> 8. 多个 Agent 并发改同一文件/资源怎么防冲突？锁粒度怎么定？（二面 8）</h3>
+<ul>
+<li><strong>先避免共享可变状态</strong>：能拆成<strong>各 Agent 写各自分区</strong>（按 file_id / 分片）就不抢锁——rag_api 的 ID-based 设计天然按 <code>file_id</code> 隔离，删改以文件为单位互不干扰。</li>
+<li><strong>要共享就上锁</strong>：
+<ul>
+<li><strong>分布式锁</strong>：Redis <code>SETNX + 过期</code>（防死锁）/ Redlock，锁住「资源 key」串行化写；读多写少用读写锁。</li>
+<li><strong>乐观锁</strong>：资源带 version/etag，写时 CAS，冲突重试——适合冲突少的场景，不长期占锁。</li>
+<li><strong>队列串行化</strong>：同一资源的写操作投递到单分区队列按序执行（最稳，牺牲并发）。</li>
+</ul>
+</li>
+<li><strong>锁粒度权衡</strong>：<strong>粗粒度</strong>（锁整文件/整表）简单但并发低；<strong>细粒度</strong>（锁行/段/字段）并发高但复杂、易死锁。原则：<strong>锁住真正冲突的最小单元</strong>，按资源 hash 分桶降争抢；锁必带<strong>超时 + 自动释放</strong>，防 Agent 崩了锁不放。</li>
+<li><strong>一句话</strong>：<strong>能分区隔离就别共享，必须共享用分布式锁 + 幂等 + 超时释放</strong>，粒度按冲突热度调，不是越细越好。</li>
 </ul>
 <h2 id="九-框架langgraph-langchain-agentscope"><a class="markdownIt-Anchor" href="#九-框架langgraph-langchain-agentscope"></a> 九、框架：LangGraph / LangChain / AgentScope</h2>
 <h3 id="1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53"><a class="markdownIt-Anchor" href="#1-langchain-和-langgraph-区别何时链够用-何时必须上状态图53"></a> 1. LangChain 和 LangGraph 区别？何时链够用、何时必须上状态图？（53）</h3>
@@ -604,6 +688,21 @@
 <li>选型：Neo4j 成熟、Cypher 易用；也可 NebulaGraph（大规模）。按规模和团队选。</li>
 <li>建模：实体=节点、关系=边、属性挂节点/边。</li>
 <li><strong>互补</strong>：向量召回管<strong>模糊语义匹配</strong>，图查询管<strong>精确多跳关系</strong>（A 的配件兼容哪些车型）；<strong>GraphRAG</strong> 思路——先向量定位实体，再图上扩展关系补全上下文。</li>
+</ul>
+<h3 id="5-agent-执行到一半服务重启checkpoint-存什么-放哪-怎么恢复现场二面-9"><a class="markdownIt-Anchor" href="#5-agent-执行到一半服务重启checkpoint-存什么-放哪-怎么恢复现场二面-9"></a> 5. Agent 执行到一半服务重启，checkpoint 存什么、放哪、怎么恢复现场？（二面 9）</h3>
+<ul>
+<li><strong>存什么</strong>：完整可恢复的 State——<code>messages</code>（ground truth）、跨轮状态（<code>last_intent</code>/<code>last_car</code>/<code>context_summary</code>）、<strong>执行到哪个节点</strong>（图的 next）、未完成的中断点（interrupt 现场）。<strong>临时派生态（model_input）不必存</strong>，可重算。</li>
+<li><strong>放哪</strong>：持久化外部存储、按 <code>thread_id</code> 组织——mate-assist 用 <strong>MySQL checkpointer</strong>（不是进程内存，否则重启即丢）；高频可加 Redis 热缓存。</li>
+<li><strong>怎么恢复</strong>：重启后按 thread_id 从 checkpointer 读回最近 checkpoint，LangGraph <strong>从 next 节点续跑</strong>而非从头重来；配合<strong>节点幂等 + 写操作幂等键</strong>，防重启后某步重复执行（重复下单/重复吐字）。</li>
+<li><strong>粒度</strong>：<strong>每个节点边界存一次</strong>（step-level），崩在节点内最多重跑该节点；别只在会话结束存（崩了全丢）。</li>
+</ul>
+<h3 id="6-human-in-the-loop用户驳回或超时任务怎么续跑和兜底二面-10"><a class="markdownIt-Anchor" href="#6-human-in-the-loop用户驳回或超时任务怎么续跑和兜底二面-10"></a> 6. human-in-the-loop：用户驳回或超时，任务怎么续跑和兜底？（二面 10）</h3>
+<ul>
+<li><strong>机制</strong>：用 LangGraph <code>interrupt()</code> 在关键节点（高风险写操作/合规审批）挂起，状态存 checkpointer，等人工输入——<strong>挂起期间现场不丢</strong>，可跨进程恢复。</li>
+<li><strong>用户驳回</strong>：把驳回意见作为新输入回喂，从中断点<strong>带反馈重跑该步</strong>（改方案而非从头）；驳回达上限则降级到安全兜底（人工接管 / 返回保守默认）。</li>
+<li><strong>超时</strong>：设审批 TTL——超时按策略走<strong>默认安全动作</strong>（保守侧：不执行高风险操作 + 通知）或<strong>挂起转人工队列</strong>，绝不默认「超时即放行」危险操作。</li>
+<li><strong>幂等兜底</strong>：续跑前校验外部状态是否已变（用户可能线下已处理），写操作带幂等键防重复；全程审计留痕（谁批/驳/超时）。</li>
+<li><strong>一句话</strong>：<strong>interrupt + checkpointer 保现场</strong>，驳回带反馈重跑、超时走安全默认，高风险动作永远「宁可不做不可错做」。</li>
 </ul>
 <h2 id="十-模型原理-调参与微调"><a class="markdownIt-Anchor" href="#十-模型原理-调参与微调"></a> 十、模型原理、调参与微调</h2>
 <h3 id="1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11"><a class="markdownIt-Anchor" href="#1-kv-cache-原理temperaturetop_ptop_kb-端怎么调参11"></a> 1. KV Cache 原理？temperature/top_p/top_k？B 端怎么调参？（11）</h3>
@@ -648,6 +747,13 @@
 <p>📌 <strong>实战 1：别让模型逐 token 复制长内容</strong>。早期把完整媒体标签（<code>&lt;image src=&quot;很长的 COS 签名 URL&quot; poster=&quot;...&quot;&gt;</code>）塞进 Prompt 要模型<strong>原样复制</strong>，导致模型逐 token 吐超长 URL，一次 <code>/chat</code> 耗时 <strong>2 分 7 秒</strong>、响应体 182KB。优化：Prompt 里只放<strong>短占位符/媒体 id</strong>，真实 URL 由<strong>后端拼接</strong>，不进模型。结论：流式场景下「模型要输出的 token 数」直接决定延迟和成本，长 URL/大 JSON 这类死内容一律移出模型。</p>
 <p>📌 <strong>实战 2：SSE 把辅助 token 当正文透出的 bug</strong>。<code>stream_mode=&quot;messages&quot;</code> 会把图里<strong>所有</strong> LLM 节点的 token 都往外吐——场景兜底匹配的辅助 LLM 吐的英文场景 key（<code>close_deal</code>/<code>general_service</code>）被当正文流给了前端。要<strong>按节点/标签过滤</strong>，只透出 <code>generate_answer</code> 的正文流；已固化成合规回归的 PART 4。</p>
 </blockquote>
+<h3 id="2-流式输出下工具调用事件怎么往前端正向推送断线重连怎么恢复二面-17"><a class="markdownIt-Anchor" href="#2-流式输出下工具调用事件怎么往前端正向推送断线重连怎么恢复二面-17"></a> 2. 流式输出下，工具调用事件怎么往前端正向推送？断线重连怎么恢复？（二面 17）</h3>
+<ul>
+<li><strong>工具事件正向推送</strong>：SSE 不止推正文 token，用<strong>事件类型分流</strong>——<code>event: tool_call</code>（开始调哪个工具 + 参数摘要）、<code>event: tool_result</code>（完成/失败）、<code>event: token</code>（正文）、<code>event: done</code>（结束带元信息）。前端按 event 类型分别渲染「正在查询…」状态条和正文，<strong>让用户看见 Agent 在干什么</strong>，降长等待焦虑。</li>
+<li><strong>只透出该透的</strong>：<code>stream_mode=&quot;messages&quot;</code> 会把图里所有 LLM 节点 token 都吐出来，要<strong>按节点/标签过滤</strong>，辅助 LLM 的 token 不当正文推（对应本章实战 2 的 bug）。</li>
+<li><strong>断线重连</strong>：每帧带 <code>id:</code>（单调序号），客户端断线后用 <code>Last-Event-ID</code> 带上次序号重连，服务端<strong>从该序号后续推</strong>；已落 checkpointer 的状态保证重连后能接着生成，不从头重跑。</li>
+<li><strong>心跳保活</strong>：长等待（工具执行慢）发心跳注释帧防连接被中间层掐断；生成中断发 <code>event: error</code> 让前端体面收尾而非卡死。</li>
+</ul>
 <h2 id="十二-工程架构异步-redis-mysql-可观测"><a class="markdownIt-Anchor" href="#十二-工程架构异步-redis-mysql-可观测"></a> 十二、工程架构：异步、Redis、MySQL、可观测</h2>
 <h3 id="1-agent-调用链里异步-vs-同步怎么选为什么64"><a class="markdownIt-Anchor" href="#1-agent-调用链里异步-vs-同步怎么选为什么64"></a> 1. Agent 调用链里异步 vs 同步怎么选？为什么？（64）</h3>
 <ul>
@@ -789,6 +895,19 @@
 <li>面试能报出框架加分：<strong>OWASP LLM Top 10</strong>（2025）覆盖——<strong>LLM01 Prompt Injection</strong>（直接/间接注入，最高频）、<strong>LLM02 敏感信息泄漏</strong>、<strong>LLM05 不安全的输出处理</strong>（模型输出直接拼 SQL/命令/HTML → 注入）、<strong>LLM06 过度代理权限</strong>（Agent 工具权限过大）、<strong>LLM08 向量/embedding 投毒</strong>、<strong>LLM10 无限资源消耗</strong>（成本/DoS）等。</li>
 <li><strong>工程对策串起来</strong>：输入侧——检索内容/用户上传当不可信数据、做隔离与标注；输出侧——结构化校验、转义、不直接执行模型吐的代码；工具侧——<strong>最小权限 ACL + 沙箱 + 审计</strong>（jarvis-registry 的工具级 ACL 正是治 LLM06）；资源侧——token/调用预算上限治 LLM10（见第十四章）。</li>
 </ul>
+<h3 id="5-skill-工具供应链怎么防投毒jarvis-registry-新增"><a class="markdownIt-Anchor" href="#5-skill-工具供应链怎么防投毒jarvis-registry-新增"></a> 5. Skill / 工具供应链怎么防投毒？（jarvis-registry 新增）</h3>
+<ul>
+<li><strong>问题</strong>：Agent 生态里 skill/工具是第三方产物（从 Git、社区导入），一条被投毒的 skill（藏恶意指令/危险命令/数据外带）分发给几百个开发者就是<strong>供应链攻击</strong>（对应 OWASP LLM03 供应链 / LLM08 投毒）。光靠人工 review 过不了量。</li>
+<li><strong>jarvis-registry 的做法</strong>：
+<ul>
+<li><strong>私有优先 + 单向导入</strong>：skill 默认私有、资源级 ACL；只从 GitHub/GitLab <strong>单向导入</strong>进 Registry 当「授权与治理的唯一真相源」，不反向发布私有内容。</li>
+<li><strong>写入即扫描</strong>：skill 一旦写入就<strong>事务性入队</strong>一个扫描任务（写和入队同一事务，不漏扫），由独立 <code>skill-scan-worker</code> 异步处理，不阻塞写路径。</li>
+<li><strong>LLM 安全扫描</strong>：worker 用可配置扫描模型（Bedrock / Azure OpenAI 适配器）对 skill 内容做安全分析，按 <strong>severity 出 findings</strong>；配 RBAC scope 控「谁能读扫描结果 / 谁能手动触发重扫」。</li>
+<li><strong>可靠性细节</strong>：租约式 leased-job（防并发重复领取）+ orphan sweeper 回收僵死任务 + max-attempts 上限，确定性失败不无限重试（呼应第六章错误分流）。</li>
+</ul>
+</li>
+<li><strong>一句话</strong>：<strong>导入即私有、写入即扫描、分发前过安全门</strong>——把 skill 当不可信供应链产物，用「事务性入队 + LLM 扫描 + severity 门禁」在它流到开发者环境前拦下来。</li>
+</ul>
 <h2 id="十六-模型与推理基础原理兜底"><a class="markdownIt-Anchor" href="#十六-模型与推理基础原理兜底"></a> 十六、模型与推理基础（原理兜底）</h2>
 <blockquote>
 <p>这些是「应用层问多了必然往下探」的底层，答不出会显得只会调 API。不用背公式，但要讲清<strong>机制和取舍</strong>。</p>
@@ -919,6 +1038,22 @@
         kept<span class="token punctuation">.</span>append<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span> total <span class="token operator">+=</span> t
     <span class="token keyword">return</span> list<span class="token punctuation">(</span>reversed<span class="token punctuation">(</span>kept<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-扁平列表带-parent_id恢复成树返回根节点列表二面-18"><a class="markdownIt-Anchor" href="#6-扁平列表带-parent_id恢复成树返回根节点列表二面-18"></a> 6. 扁平列表（带 parent_id）恢复成树，返回根节点列表（二面 18）</h3>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">build_forest</span><span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""nodes: [{'id':1,'parent_id':None,...}, ...]；返回根节点列表，子节点挂 children。"""</span>
+    by_id <span class="token operator">=</span> <span class="token punctuation">{</span>n<span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token operator">**</span>n<span class="token punctuation">,</span> <span class="token string">'children'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span> <span class="token keyword">for</span> n <span class="token keyword">in</span> nodes<span class="token punctuation">}</span>   <span class="token comment" spellcheck="true"># 一遍建索引</span>
+    roots <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> n <span class="token keyword">in</span> by_id<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pid <span class="token operator">=</span> n<span class="token punctuation">[</span><span class="token string">'parent_id'</span><span class="token punctuation">]</span>
+        <span class="token keyword">if</span> pid <span class="token keyword">is</span> None <span class="token operator">or</span> pid <span class="token operator">not</span> <span class="token keyword">in</span> by_id<span class="token punctuation">:</span>        <span class="token comment" spellcheck="true"># 无父 / 父不在集合 → 当根</span>
+            roots<span class="token punctuation">.</span>append<span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            by_id<span class="token punctuation">[</span>pid<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'children'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>n<span class="token punctuation">)</span>       <span class="token comment" spellcheck="true"># 挂到父的 children</span>
+    <span class="token keyword">return</span> roots
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>讲点：<strong>两遍 O(n)</strong>（先建 id→node 索引，再挂边），比每次找父的 O(n²) 快；边界——父不存在当根（防丢节点）、要防脏数据成环可在挂边时沿 parent 链 visited 判重；要保序就按原列表顺序遍历。</li>
+</ul>
 <h2 id="十九-部署与分布式sre-视角"><a class="markdownIt-Anchor" href="#十九-部署与分布式sre-视角"></a> 十九、部署与分布式（SRE 视角）</h2>
 <blockquote>
 <p>工程岗会问「怎么上线、怎么扩、挂了怎么办」。串起前面各章的工程点。</p>
@@ -1232,6 +1367,21 @@
                     
                     
                     
+                    <a href="#4-模型返回-tool_call-后参数校验权限校验沙箱执行结果回灌全流程二面-4" class="toc-item"> 4. 模型返回 tool_call 后，参数校验→权限校验→沙箱执行→结果回灌全流程？（二面 4）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-工具返回数据过大怎么截断摘要二面-11" class="toc-item"> 5. 工具返回数据过大怎么截断/摘要？（二面 11）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-企业级-mcpa2a-网关怎么做注册中心而不只是目录跨云-agent-怎么统一接入jarvis-registry-新增" class="toc-item"> 6. 企业级 MCP/A2A 网关怎么做「注册中心」而不只是目录？跨云 agent 怎么统一接入？（jarvis-registry 新增）</a>
+                
+                    
+                    
+                    
                     <a href="#六-agent-稳定性异常-死循环-容错" class="toc-item"> 六、Agent 稳定性：异常、死循环、容错</a>
                 
                     
@@ -1248,6 +1398,11 @@
                     
                     
                     <a href="#3-循环调用死循环无限工具调用怎么防max-step-之外还有啥34-59-68-74" class="toc-item"> 3. 循环调用/死循环/无限工具调用怎么防？max step 之外还有啥？（34 / 59 / 68 / 74）</a>
+                
+                    
+                    
+                    
+                    <a href="#4-harness-里-agent-loop-怎么设计终止条件除-max_turns-还控哪些二面-3" class="toc-item"> 4. Harness 里 agent loop 怎么设计？终止条件除 max_turns 还控哪些？（二面 3）</a>
                 
                     
                     
@@ -1278,6 +1433,11 @@
                     
                     
                     <a href="#5-共享-memory-和私有-memory-怎么设计67" class="toc-item"> 5. 共享 memory 和私有 memory 怎么设计？（67）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-摘要压缩丢了关键信息怎么补跨块关联怎么保证二面-6" class="toc-item"> 6. 摘要压缩丢了关键信息怎么补？跨块关联怎么保证？（二面 6）</a>
                 
                     
                     
@@ -1317,6 +1477,16 @@
                     
                     
                     
+                    <a href="#7-多-agent-结果冲突怎么仲裁二面-7" class="toc-item"> 7. 多 Agent 结果冲突怎么仲裁？（二面 7）</a>
+                
+                    
+                    
+                    
+                    <a href="#8-多个-agent-并发改同一文件资源怎么防冲突锁粒度怎么定二面-8" class="toc-item"> 8. 多个 Agent 并发改同一文件/资源怎么防冲突？锁粒度怎么定？（二面 8）</a>
+                
+                    
+                    
+                    
                     <a href="#九-框架langgraph-langchain-agentscope" class="toc-item"> 九、框架：LangGraph / LangChain / AgentScope</a>
                 
                     
@@ -1338,6 +1508,16 @@
                     
                     
                     <a href="#4-图数据库选-neo4j-还是其他实体关系属性怎么建模图查询和向量召回怎么互补55" class="toc-item"> 4. 图数据库选 Neo4j 还是其他？实体/关系/属性怎么建模？图查询和向量召回怎么互补？（55）</a>
+                
+                    
+                    
+                    
+                    <a href="#5-agent-执行到一半服务重启checkpoint-存什么-放哪-怎么恢复现场二面-9" class="toc-item"> 5. Agent 执行到一半服务重启，checkpoint 存什么、放哪、怎么恢复现场？（二面 9）</a>
+                
+                    
+                    
+                    
+                    <a href="#6-human-in-the-loop用户驳回或超时任务怎么续跑和兜底二面-10" class="toc-item"> 6. human-in-the-loop：用户驳回或超时，任务怎么续跑和兜底？（二面 10）</a>
                 
                     
                     
@@ -1368,6 +1548,11 @@
                     
                     
                     <a href="#1-sse-怎么实现异常断流怎么处理乱序问题10" class="toc-item"> 1. SSE 怎么实现？异常断流怎么处理？乱序问题？（10）</a>
+                
+                    
+                    
+                    
+                    <a href="#2-流式输出下工具调用事件怎么往前端正向推送断线重连怎么恢复二面-17" class="toc-item"> 2. 流式输出下，工具调用事件怎么往前端正向推送？断线重连怎么恢复？（二面 17）</a>
                 
                     
                     
@@ -1512,6 +1697,11 @@
                     
                     
                     
+                    <a href="#5-skill-工具供应链怎么防投毒jarvis-registry-新增" class="toc-item"> 5. Skill / 工具供应链怎么防投毒？（jarvis-registry 新增）</a>
+                
+                    
+                    
+                    
                     <a href="#十六-模型与推理基础原理兜底" class="toc-item"> 十六、模型与推理基础（原理兜底）</a>
                 
                     
@@ -1582,6 +1772,11 @@
                     
                     
                     
+                    <a href="#6-扁平列表带-parent_id恢复成树返回根节点列表二面-18" class="toc-item"> 6. 扁平列表（带 parent_id）恢复成树，返回根节点列表（二面 18）</a>
+                
+                    
+                    
+                    
                     <a href="#十九-部署与分布式sre-视角" class="toc-item"> 十九、部署与分布式（SRE 视角）</a>
                 
                     
@@ -1639,7 +1834,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="243" data-site-tags="167" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
+        <span data-site-posts="245" data-site-tags="171" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} posts · {tags} tags · since {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
