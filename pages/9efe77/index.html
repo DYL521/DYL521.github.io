@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    
+    <meta name="description" content="01.redis哨兵模式 redis哨兵模式请占时参考我的博客园 redis哨兵模式 1.1 为什么需要哨兵 普通的主从复制（见《部署Redis主从》）解决了数据备份和读扩展，但有一个致命问题：主节点挂了之后不">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Redis哨兵模式 - DYL521">
+    <meta property="og:description" content="01.redis哨兵模式 redis哨兵模式请占时参考我的博客园 redis哨兵模式 1.1 为什么需要哨兵 普通的主从复制（见《部署Redis主从》）解决了数据备份和读扩展，但有一个致命问题：主节点挂了之后不">
+    <meta property="og:url" content="https://dyl521.github.io/pages/9efe77/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="Redis哨兵模式 - DYL521">
+    
+    <meta property="article:published_time" content="2021-02-23T23:16:44.000Z">
+    <meta property="article:modified_time" content="2026-11-21T15:12:48.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Redis哨兵模式 - DYL521">
+    <meta name="twitter:description" content="01.redis哨兵模式 redis哨兵模式请占时参考我的博客园 redis哨兵模式 1.1 为什么需要哨兵 普通的主从复制（见《部署Redis主从》）解决了数据备份和读扩展，但有一个致命问题：主节点挂了之后不">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <link rel="canonical" href="https://dyl521.github.io/pages/9efe77/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>Redis哨兵模式 - DYL521</title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../index.html" class="nav-link " data-i18n="index">首页</a>
+        
+            
+            <a href="../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
+        
+            
+            <a href="../../categories" class="nav-link " data-i18n="category">分类</a>
+        
+            
+            <a href="../../archives" class="nav-link " data-i18n="archive">归档</a>
+        
+            
+            <a href="../../tag" class="nav-link " data-i18n="tag">标签</a>
+        
+            
+            <a href="../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
+    
+        
+        <a href="../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
+    
+        
+        <a href="../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
+    
+        
+        <a href="../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
+    
+        
+        <a href="../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
+    
+        
+        <a href="../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2021</span></div>
+            
+            <h1 class="article-title" data-reveal>Redis哨兵模式</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">数据库</span>
+                <span>2021-02-23</span>
+                <span>· 20 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 5939 <span data-i18n="post_words_suffix">字</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Crect%20x%3D%22380%22%20y%3D%22140%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M410%20185h230%22%2F%3E%3Crect%20x%3D%22396%22%20y%3D%22194%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M426%20239h230%22%2F%3E%3Crect%20x%3D%22412%22%20y%3D%22248%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M442%20293h230%22%2F%3E%3Crect%20x%3D%22428%22%20y%3D%22302%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M458%20347h230%22%2F%3E%3Crect%20x%3D%22444%22%20y%3D%22356%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M474%20401h230%22%2F%3E%3Crect%20x%3D%22460%22%20y%3D%22410%22%20width%3D%22340%22%20height%3D%2290%22%20rx%3D%2210%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M490%20455h230%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Redis哨兵模式 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <h2 id="01redis哨兵模式"><a class="markdownIt-Anchor" href="#01redis哨兵模式"></a> 01.redis哨兵模式</h2>
+<ul>
+<li>redis哨兵模式请占时参考我的博客园</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaonq/p/12348184.html">redis哨兵模式</a></li>
+</ul>
+<h3 id="11-为什么需要哨兵"><a class="markdownIt-Anchor" href="#11-为什么需要哨兵"></a> 1.1 为什么需要哨兵</h3>
+<p>普通的主从复制（见《部署Redis主从》）解决了<strong>数据备份和读扩展</strong>，但有一个致命问题：<strong>主节点挂了之后不会自动切换</strong>，需要人工把某个从节点 <code>REPLICAOF NO ONE</code> 提升为主，再修改其他从节点和所有客户端的配置，期间写服务不可用。</p>
+<p>Redis Sentinel（哨兵）就是官方提供的<strong>高可用方案</strong>，它负责：</p>
+<ul>
+<li><strong>监控（Monitoring）</strong>：持续检查主、从节点是否正常；</li>
+<li><strong>通知（Notification）</strong>：节点出问题时通过 API / 发布订阅通知管理员或其他程序；</li>
+<li><strong>自动故障转移（Automatic failover）</strong>：主节点故障时，自动选一个从节点提升为新主，并让其他从节点复制新主；</li>
+<li><strong>配置提供者（Configuration provider）</strong>：客户端不直接写死主节点地址，而是向哨兵询问&quot;当前主节点是谁&quot;。</li>
+</ul>
+<h3 id="12-架构与角色"><a class="markdownIt-Anchor" href="#12-架构与角色"></a> 1.2 架构与角色</h3>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    subgraph Sentinels[哨兵集群（至少 3 个）]
+        S1[Sentinel 1<br/>:26379]
+        S2[Sentinel 2<br/>:26379]
+        S3[Sentinel 3<br/>:26379]
+    end
+    M[(Master<br/>:6379)]
+    R1[(Replica 1)]
+    R2[(Replica 2)]
+    C[客户端]
+
+    M --> R1
+    M --> R2
+    S1 & S2 & S3 -. 监控 .-> M
+    S1 & S2 & S3 -. 监控 .-> R1
+    S1 & S2 & S3 -. 监控 .-> R2
+    C -- 1.询问主节点地址 --> S1
+    C -- 2.读写 --> M
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>数据节点</strong>：一个 master + 若干 replica，就是普通的 redis-server；</li>
+<li><strong>哨兵节点</strong>：特殊模式运行的 Redis 进程，不存储业务数据，默认端口 26379；</li>
+<li>哨兵之间<strong>互相发现</strong>：通过主节点的 <code>__sentinel__:hello</code> 频道发布自己的信息，所以配置里只需要写主节点地址，从节点和其他哨兵都能自动发现。</li>
+</ul>
+<p>哨兵内部有三个定时任务：</p>
+<table>
+<thead>
+<tr>
+<th>周期</th>
+<th>动作</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每 10 秒</td>
+<td>向主、从节点发送 <code>INFO</code></td>
+<td>发现从节点、获取复制信息</td>
+</tr>
+<tr>
+<td>每 2 秒</td>
+<td>向主节点的 <code>__sentinel__:hello</code> 频道发布消息</td>
+<td>哨兵之间互相发现、交换主节点视图</td>
+</tr>
+<tr>
+<td>每 1 秒</td>
+<td>向主、从、其他哨兵发送 <code>PING</code></td>
+<td>心跳检测，判断节点是否下线</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>以上周期以 Redis 官方文档描述为准，不同版本可能略有差异。</p>
+</blockquote>
+<h2 id="02主观下线与客观下线"><a class="markdownIt-Anchor" href="#02主观下线与客观下线"></a> 02.主观下线与客观下线</h2>
+<h3 id="21-sdown主观下线"><a class="markdownIt-Anchor" href="#21-sdown主观下线"></a> 2.1 SDOWN（主观下线）</h3>
+<p>某个哨兵在 <code>down-after-milliseconds</code> 时间内没有收到节点的有效 <code>PING</code> 回复，就认为该节点<strong>主观下线</strong>。这只是&quot;我自己觉得它挂了&quot;，可能是这个哨兵自己的网络问题。</p>
+<p>对从节点和其他哨兵，判断到主观下线就结束了；<strong>只有主节点才会进入下一步</strong>。</p>
+<h3 id="22-odown客观下线"><a class="markdownIt-Anchor" href="#22-odown客观下线"></a> 2.2 ODOWN（客观下线）</h3>
+<p>哨兵认为主节点主观下线后，会询问其他哨兵（<code>SENTINEL is-master-down-by-addr</code>）。当认为主节点下线的哨兵数量<strong>达到 quorum</strong> 时，主节点被标记为<strong>客观下线</strong>，开始故障转移流程。</p>
+<h3 id="23-quorum-与多数派"><a class="markdownIt-Anchor" href="#23-quorum-与多数派"></a> 2.3 quorum 与多数派</h3>
+<p>这是最容易混淆的面试点：</p>
+<ul>
+<li><strong>quorum</strong>：判定客观下线需要的哨兵票数，由 <code>sentinel monitor</code> 最后一个参数配置；</li>
+<li><strong>多数派（majority）</strong>：真正执行故障转移，需要选出领头哨兵，这一步需要<strong>超过半数哨兵</strong>投票同意。</li>
+</ul>
+<p>例如 5 个哨兵、quorum = 2：2 个哨兵认为主挂了就能判定 ODOWN，但要执行故障转移仍需要至少 3 个哨兵在线并投票。所以：</p>
+<ul>
+<li>quorum 设小，故障检测更敏感，但误判可能性更高；</li>
+<li>哨兵数量建议<strong>奇数且至少 3 个</strong>，部署在<strong>不同物理机/可用区</strong>；</li>
+<li>2 个哨兵是不安全的：任一哨兵挂掉，剩下 1 个达不到多数派，无法故障转移。</li>
+</ul>
+<h2 id="03领头哨兵选举与故障转移"><a class="markdownIt-Anchor" href="#03领头哨兵选举与故障转移"></a> 03.领头哨兵选举与故障转移</h2>
+<h3 id="31-选举领头哨兵"><a class="markdownIt-Anchor" href="#31-选举领头哨兵"></a> 3.1 选举领头哨兵</h3>
+<p>判定 ODOWN 后，多个哨兵可能同时想执行故障转移，需要先选出一个 <strong>leader</strong>，算法类似 Raft：</p>
+<ol>
+<li>发现 ODOWN 的哨兵把自己的配置纪元（<code>epoch</code>）加 1，向其他哨兵请求投票；</li>
+<li>每个哨兵在一个纪元内只投一票，<strong>先到先得</strong>；</li>
+<li>获得<strong>超过半数</strong>且不少于 quorum 的票数即成为 leader；</li>
+<li>如果本轮没选出来，等待一段时间后进入下一个纪元重新选举。</li>
+</ol>
+<h3 id="32-选择新的主节点"><a class="markdownIt-Anchor" href="#32-选择新的主节点"></a> 3.2 选择新的主节点</h3>
+<p>leader 从从节点中筛选：</p>
+<ol>
+<li><strong>排除不健康的</strong>：已下线、最近没有回复 PING、与原主节点断开时间过长的从节点；</li>
+<li>按 <strong><code>replica-priority</code></strong>（旧版本叫 <code>slave-priority</code>）排序，值越小优先级越高，<strong>为 0 表示永不提升为主</strong>；</li>
+<li>优先级相同，选择<strong>复制偏移量（offset）最大</strong>的，即数据最新的；</li>
+<li>仍然相同，选择 <strong>run ID 最小</strong>的。</li>
+</ol>
+<h3 id="33-执行切换"><a class="markdownIt-Anchor" href="#33-执行切换"></a> 3.3 执行切换</h3>
+<ol>
+<li>对选中的从节点执行 <code>REPLICAOF NO ONE</code>，使其成为新主；</li>
+<li>让其他从节点执行 <code>REPLICAOF &lt;新主 IP&gt; &lt;端口&gt;</code>，复制新主（并发数受 <code>parallel-syncs</code> 控制）；</li>
+<li>更新哨兵自身配置，并通过 <code>+switch-master</code> 消息通知客户端；</li>
+<li>原主节点恢复上线后，哨兵会把它<strong>降级为新主的从节点</strong>。</li>
+</ol>
+<h2 id="04部署配置示例"><a class="markdownIt-Anchor" href="#04部署配置示例"></a> 04.部署配置示例</h2>
+<p>假设环境（沿用主从部署那篇的机器规划）：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master</td>
+<td>192.168.56.65</td>
+<td>6379</td>
+</tr>
+<tr>
+<td>replica</td>
+<td>192.168.56.66</td>
+<td>6379</td>
+</tr>
+<tr>
+<td>replica</td>
+<td>192.168.56.67</td>
+<td>6379</td>
+</tr>
+<tr>
+<td>sentinel × 3</td>
+<td>三台机器各一个</td>
+<td>26379</td>
+</tr>
+</tbody>
+</table>
+<h3 id="41-sentinelconf"><a class="markdownIt-Anchor" href="#41-sentinelconf"></a> 4.1 sentinel.conf</h3>
+<pre class="line-numbers language-conf"><code class="language-conf">port 26379
+daemonize yes
+logfile "/var/log/redis/sentinel.log"
+dir "/tmp"
+
+# 监控名为 mymaster 的主节点，quorum = 2
+sentinel monitor mymaster 192.168.56.65 6379 2
+
+# 主节点设置了密码时需要配置
+sentinel auth-pass mymaster yourpassword
+
+# 30 秒无有效回复判为主观下线
+sentinel down-after-milliseconds mymaster 30000
+
+# 故障转移后，同时向新主发起同步的从节点数量，越小对服务影响越小
+sentinel parallel-syncs mymaster 1
+
+# 故障转移超时时间
+sentinel failover-timeout mymaster 180000
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意：哨兵运行时会<strong>改写自己的配置文件</strong>（记录发现的从节点、其他哨兵、当前纪元），所以配置文件必须可写，也不要多个哨兵共用同一份文件。</p>
+</blockquote>
+<h3 id="42-启动与检查"><a class="markdownIt-Anchor" href="#42-启动与检查"></a> 4.2 启动与检查</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 两种启动方式等价</span>
+redis-sentinel /usr/local/redis/sentinel.conf
+redis-server /usr/local/redis/sentinel.conf --sentinel
+
+<span class="token comment" spellcheck="true"># 连接哨兵查看状态</span>
+redis-cli -p 26379
+127.0.0.1:26379<span class="token operator">></span> SENTINEL get-master-addr-by-name mymaster
+1<span class="token punctuation">)</span> <span class="token string">"192.168.56.65"</span>
+2<span class="token punctuation">)</span> <span class="token string">"6379"</span>
+127.0.0.1:26379<span class="token operator">></span> SENTINEL masters
+127.0.0.1:26379<span class="token operator">></span> SENTINEL replicas mymaster      <span class="token comment" spellcheck="true"># 旧版本用 SENTINEL slaves</span>
+127.0.0.1:26379<span class="token operator">></span> SENTINEL sentinels mymaster
+127.0.0.1:26379<span class="token operator">></span> SENTINEL ckquorum mymaster      <span class="token comment" spellcheck="true"># 检查当前哨兵数能否满足 quorum 和多数派</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="43-模拟故障转移"><a class="markdownIt-Anchor" href="#43-模拟故障转移"></a> 4.3 模拟故障转移</h3>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 方式一：直接停掉主节点，等待 down-after-milliseconds 之后观察日志</span>
+redis-cli -h 192.168.56.65 -p 6379 <span class="token function">shutdown</span>
+
+<span class="token comment" spellcheck="true"># 方式二：手动触发故障转移（不需要其他哨兵同意）</span>
+redis-cli -p 26379 SENTINEL failover mymaster
+
+<span class="token comment" spellcheck="true"># 再次查询主节点地址，应该已经变成某个从节点</span>
+redis-cli -p 26379 SENTINEL get-master-addr-by-name mymaster
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>哨兵日志中可以看到 <code>+sdown</code>、<code>+odown</code>、<code>+try-failover</code>、<code>+elected-leader</code>、<code>+switch-master</code> 等事件。</p>
+<h2 id="05客户端如何发现主节点"><a class="markdownIt-Anchor" href="#05客户端如何发现主节点"></a> 05.客户端如何发现主节点</h2>
+<p>客户端连接的是<strong>哨兵地址列表</strong>，由客户端库负责询问主节点地址，并在切换后自动重连。</p>
+<p>Python（redis-py）：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> redis<span class="token punctuation">.</span>sentinel <span class="token keyword">import</span> Sentinel
+
+sentinel <span class="token operator">=</span> Sentinel<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">"192.168.56.65"</span><span class="token punctuation">,</span> <span class="token number">26379</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">"192.168.56.66"</span><span class="token punctuation">,</span> <span class="token number">26379</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">"192.168.56.67"</span><span class="token punctuation">,</span> <span class="token number">26379</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    socket_timeout<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+master <span class="token operator">=</span> sentinel<span class="token punctuation">.</span>master_for<span class="token punctuation">(</span><span class="token string">"mymaster"</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">"yourpassword"</span><span class="token punctuation">,</span> socket_timeout<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+replica <span class="token operator">=</span> sentinel<span class="token punctuation">.</span>slave_for<span class="token punctuation">(</span><span class="token string">"mymaster"</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">"yourpassword"</span><span class="token punctuation">,</span> socket_timeout<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+
+master<span class="token punctuation">.</span>set<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">,</span> <span class="token string">"bar"</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># 写主</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>replica<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 读从（可能读到旧数据）</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Go（go-redis）：</p>
+<pre class="line-numbers language-go"><code class="language-go">rdb <span class="token operator">:=</span> redis<span class="token punctuation">.</span><span class="token function">NewFailoverClient</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>redis<span class="token punctuation">.</span>FailoverOptions<span class="token punctuation">{</span>
+	MasterName<span class="token punctuation">:</span>    <span class="token string">"mymaster"</span><span class="token punctuation">,</span>
+	SentinelAddrs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"192.168.56.65:26379"</span><span class="token punctuation">,</span> <span class="token string">"192.168.56.66:26379"</span><span class="token punctuation">,</span> <span class="token string">"192.168.56.67:26379"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+	Password<span class="token punctuation">:</span>      <span class="token string">"yourpassword"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+err <span class="token operator">:=</span> rdb<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> <span class="token string">"foo"</span><span class="token punctuation">,</span> <span class="token string">"bar"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Err</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="06脑裂与数据丢失"><a class="markdownIt-Anchor" href="#06脑裂与数据丢失"></a> 06.脑裂与数据丢失</h2>
+<h3 id="61-脑裂是怎么产生的"><a class="markdownIt-Anchor" href="#61-脑裂是怎么产生的"></a> 6.1 脑裂是怎么产生的</h3>
+<p>原主节点和客户端在一个网络分区，哨兵和从节点在另一个分区：</p>
+<ol>
+<li>哨兵认为主节点下线，把某个从节点提升为新主；</li>
+<li>旧主其实还活着，客户端继续往<strong>旧主</strong>写数据；</li>
+<li>网络恢复后，旧主被降级为从节点，<strong>清空自己的数据去同步新主</strong>，分区期间写入旧主的数据全部丢失。</li>
+</ol>
+<p>此外，主从复制是<strong>异步</strong>的，主节点宕机时还没同步到从节点的数据，在故障转移后也会丢失。</p>
+<h3 id="62-缓解办法"><a class="markdownIt-Anchor" href="#62-缓解办法"></a> 6.2 缓解办法</h3>
+<p>在<strong>数据节点</strong>（redis.conf）中配置：</p>
+<pre class="line-numbers language-conf"><code class="language-conf"># 至少有 1 个从节点在线，且复制延迟不超过 10 秒，主节点才接受写入
+min-replicas-to-write 1
+min-replicas-max-lag 10
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>旧版本中对应的配置名是 <code>min-slaves-to-write</code> / <code>min-slaves-max-lag</code>。</p>
+<p>效果：旧主被隔离后，连不上从节点，超过 10 秒就<strong>拒绝写入</strong>，从而把丢失的数据控制在一个时间窗口内。代价是从节点全部故障时主节点也不可写，<strong>可用性换一致性</strong>。</p>
+<p>需要明确：Redis Sentinel 无法做到&quot;零数据丢失&quot;，对强一致有要求的数据（如资金）不要只依赖 Redis。</p>
+<h2 id="07哨兵-vs-cluster"><a class="markdownIt-Anchor" href="#07哨兵-vs-cluster"></a> 07.哨兵 vs Cluster</h2>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>哨兵模式</th>
+<th>Redis Cluster</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>解决的问题</td>
+<td>主从高可用、自动故障转移</td>
+<td>高可用 + <strong>数据分片</strong>、水平扩展</td>
+</tr>
+<tr>
+<td>写能力</td>
+<td>只有一个主节点，写能力受单机限制</td>
+<td>多个主节点分摊 16384 个哈希槽</td>
+</tr>
+<tr>
+<td>容量</td>
+<td>受单机内存限制</td>
+<td>可以通过加节点扩容</td>
+</tr>
+<tr>
+<td>额外组件</td>
+<td>需要单独部署哨兵进程</td>
+<td>节点内置故障检测，不需要哨兵</td>
+</tr>
+<tr>
+<td>客户端</td>
+<td>需要支持哨兵的客户端</td>
+<td>需要支持集群（MOVED/ASK 重定向）的客户端</td>
+</tr>
+<tr>
+<td>多 key 操作</td>
+<td>无限制</td>
+<td>跨槽的多 key 命令、事务、Lua 受限（可用 hash tag）</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>数据量单机放得下，主要需要高可用</td>
+<td>数据量或写 QPS 超出单机能力</td>
+</tr>
+</tbody>
+</table>
+<h2 id="08面试题速答"><a class="markdownIt-Anchor" href="#08面试题速答"></a> 08.面试题速答</h2>
+<ul>
+<li><strong>哨兵的作用？</strong> 监控、通知、自动故障转移、配置提供。</li>
+<li><strong>主观下线和客观下线的区别？</strong> 单个哨兵判断为 SDOWN；达到 quorum 个哨兵同意为 ODOWN，只针对主节点。</li>
+<li><strong>quorum 和多数派的关系？</strong> quorum 决定能否判定客观下线；执行故障转移需要多数哨兵选出 leader。</li>
+<li><strong>新主怎么选？</strong> 排除不健康节点 → 优先级 → 复制偏移量 → run ID。</li>
+<li><strong>为什么至少 3 个哨兵？</strong> 保证挂掉 1 个后仍有多数派可以完成选举。</li>
+<li><strong>哨兵模式会丢数据吗？</strong> 会，异步复制和脑裂都可能丢，<code>min-replicas-to-write</code> 只能缩小丢失窗口。</li>
+<li><strong>哨兵和 Cluster 怎么选？</strong> 单机能装下用哨兵，需要分片扩容用 Cluster。</li>
+</ul>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ul>
+<li>哨兵是在主从复制基础上提供<strong>自动故障转移</strong>的高可用方案；</li>
+<li>流程：SDOWN → 达到 quorum 判 ODOWN → 多数派选出 leader → 选新主 → 切换 → 通知客户端；</li>
+<li>至少 3 个哨兵、分散部署；客户端通过哨兵获取主节点地址；</li>
+<li>用 <code>min-replicas-to-write</code> / <code>min-replicas-max-lag</code> 缓解脑裂丢数据；</li>
+<li>需要水平扩展时选择 Redis Cluster。</li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../pages/660dc4/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">MySQL管理</div>
+                </a>
+                
+                
+                <a href="../../pages/2b505d/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">Redis的cluster配置</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#01redis哨兵模式" class="toc-item">01.redis哨兵模式</a>
+                
+                    
+                    
+                    
+                    <a href="#11-为什么需要哨兵" class="toc-item">1.1 为什么需要哨兵</a>
+                
+                    
+                    
+                    
+                    <a href="#12-架构与角色" class="toc-item">1.2 架构与角色</a>
+                
+                    
+                    
+                    
+                    <a href="#02主观下线与客观下线" class="toc-item">02.主观下线与客观下线</a>
+                
+                    
+                    
+                    
+                    <a href="#21-sdown主观下线" class="toc-item">2.1 SDOWN（主观下线）</a>
+                
+                    
+                    
+                    
+                    <a href="#22-odown客观下线" class="toc-item">2.2 ODOWN（客观下线）</a>
+                
+                    
+                    
+                    
+                    <a href="#23-quorum-与多数派" class="toc-item">2.3 quorum 与多数派</a>
+                
+                    
+                    
+                    
+                    <a href="#03领头哨兵选举与故障转移" class="toc-item">03.领头哨兵选举与故障转移</a>
+                
+                    
+                    
+                    
+                    <a href="#31-选举领头哨兵" class="toc-item">3.1 选举领头哨兵</a>
+                
+                    
+                    
+                    
+                    <a href="#32-选择新的主节点" class="toc-item">3.2 选择新的主节点</a>
+                
+                    
+                    
+                    
+                    <a href="#33-执行切换" class="toc-item">3.3 执行切换</a>
+                
+                    
+                    
+                    
+                    <a href="#04部署配置示例" class="toc-item">04.部署配置示例</a>
+                
+                    
+                    
+                    
+                    <a href="#41-sentinelconf" class="toc-item">4.1 sentinel.conf</a>
+                
+                    
+                    
+                    
+                    <a href="#42-启动与检查" class="toc-item">4.2 启动与检查</a>
+                
+                    
+                    
+                    
+                    <a href="#43-模拟故障转移" class="toc-item">4.3 模拟故障转移</a>
+                
+                    
+                    
+                    
+                    <a href="#05客户端如何发现主节点" class="toc-item">05.客户端如何发现主节点</a>
+                
+                    
+                    
+                    
+                    <a href="#06脑裂与数据丢失" class="toc-item">06.脑裂与数据丢失</a>
+                
+                    
+                    
+                    
+                    <a href="#61-脑裂是怎么产生的" class="toc-item">6.1 脑裂是怎么产生的</a>
+                
+                    
+                    
+                    
+                    <a href="#62-缓解办法" class="toc-item">6.2 缓解办法</a>
+                
+                    
+                    
+                    
+                    <a href="#07哨兵-vs-cluster" class="toc-item">07.哨兵 vs Cluster</a>
+                
+                    
+                    
+                    
+                    <a href="#08面试题速答" class="toc-item">08.面试题速答</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../search.json?v=31a66f308473" };</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+</body>
+</html>

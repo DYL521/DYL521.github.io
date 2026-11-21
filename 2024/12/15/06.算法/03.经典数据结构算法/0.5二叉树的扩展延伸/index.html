@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    
+    <meta name="description" content="《手把手刷二叉树算法》里总结了两种思维模式：遍历（traverse + 外部变量）和分解问题（定义递归函数，利用子树返回值），以及前/中/后序位置的含义。本篇在此基础上延伸几类更进阶的题型：构造与序列化、后序位">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="二叉树的扩展延伸 - DYL521">
+    <meta property="og:description" content="《手把手刷二叉树算法》里总结了两种思维模式：遍历（traverse + 外部变量）和分解问题（定义递归函数，利用子树返回值），以及前/中/后序位置的含义。本篇在此基础上延伸几类更进阶的题型：构造与序列化、后序位">
+    <meta property="og:url" content="https://dyl521.github.io/2024/12/15/06.%E7%AE%97%E6%B3%95/03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="二叉树的扩展延伸 - DYL521">
+    
+    <meta property="article:published_time" content="2024-12-15T18:53:14.000Z">
+    <meta property="article:modified_time" content="2024-12-15T18:53:14.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="二叉树的扩展延伸 - DYL521">
+    <meta name="twitter:description" content="《手把手刷二叉树算法》里总结了两种思维模式：遍历（traverse + 外部变量）和分解问题（定义递归函数，利用子树返回值），以及前/中/后序位置的含义。本篇在此基础上延伸几类更进阶的题型：构造与序列化、后序位">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <link rel="canonical" href="https://dyl521.github.io/2024/12/15/06.%E7%AE%97%E6%B3%95/03.%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/0.5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>二叉树的扩展延伸 - DYL521</title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
+        
+            
+            <a href="../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
+        
+            
+            <a href="../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
+        
+            
+            <a href="../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
+        
+            
+            <a href="../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
+        
+            
+            <a href="../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
+    
+        
+        <a href="../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
+    
+        
+        <a href="../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
+    
+        
+        <a href="../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
+    
+        
+        <a href="../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
+    
+        
+        <a href="../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2024</span></div>
+            
+            <h1 class="article-title" data-reveal>二叉树的扩展延伸</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">算法</span>
+                <span>2024-12-15</span>
+                <span>· 24 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 7115 <span data-i18n="post_words_suffix">字</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M140%20150C420%20520%20740%2050%201060%20170%22%2F%3E%3Cpath%20d%3D%22M140%20173C420%20505%20740%2069%201060%20193%22%2F%3E%3Cpath%20d%3D%22M140%20196C420%20490%20740%2088%201060%20216%22%2F%3E%3Cpath%20d%3D%22M140%20219C420%20475%20740%20107%201060%20239%22%2F%3E%3Cpath%20d%3D%22M140%20242C420%20460%20740%20126%201060%20262%22%2F%3E%3Cpath%20d%3D%22M140%20265C420%20445%20740%20145%201060%20285%22%2F%3E%3Cpath%20d%3D%22M140%20288C420%20430%20740%20164%201060%20308%22%2F%3E%3Cpath%20d%3D%22M140%20311C420%20415%20740%20183%201060%20331%22%2F%3E%3Cpath%20d%3D%22M140%20334C420%20400%20740%20202%201060%20354%22%2F%3E%3Cpath%20d%3D%22M140%20357C420%20385%20740%20221%201060%20377%22%2F%3E%3Cpath%20d%3D%22M140%20380C420%20370%20740%20240%201060%20400%22%2F%3E%3Cpath%20d%3D%22M140%20403C420%20355%20740%20259%201060%20423%22%2F%3E%3Cpath%20d%3D%22M140%20426C420%20340%20740%20278%201060%20446%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="二叉树的扩展延伸 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <p>《手把手刷二叉树算法》里总结了两种思维模式：<strong>遍历</strong>（traverse + 外部变量）和<strong>分解问题</strong>（定义递归函数，利用子树返回值），以及前/中/后序位置的含义。本篇在此基础上延伸几类更进阶的题型：<strong>构造与序列化、后序位置的妙用、最近公共祖先、二叉搜索树（BST）</strong>，最后再看二叉树框架是如何「延伸」成回溯、动态规划和图算法的。</p>
+<p>节点定义沿用 LeetCode：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TreeNode</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> val<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> left<span class="token operator">=</span>None<span class="token punctuation">,</span> right<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>val <span class="token operator">=</span> val
+        self<span class="token punctuation">.</span>left <span class="token operator">=</span> left
+        self<span class="token punctuation">.</span>right <span class="token operator">=</span> right
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="一-构造类问题分解问题的思维"><a class="markdownIt-Anchor" href="#一-构造类问题分解问题的思维"></a> 一、构造类问题：分解问题的思维</h2>
+<p>二叉树的构造问题一般都用「分解问题」的思路：<strong>构造整棵树 = 根节点 + 构造左子树 + 构造右子树</strong>。关键是在遍历结果中找到根节点，并划分出左右子树对应的区间。</p>
+<h3 id="105-从前序与中序遍历序列构造二叉树"><a class="markdownIt-Anchor" href="#105-从前序与中序遍历序列构造二叉树"></a> 105. 从前序与中序遍历序列构造二叉树</h3>
+<ul>
+<li>前序的第一个元素是根；</li>
+<li>在中序中找到根的位置 <code>idx</code>，左边是左子树、右边是右子树，左子树大小 <code>left_size = idx - in_lo</code>；</li>
+<li>据此切分前序区间，递归构造。</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">buildTree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> preorder<span class="token punctuation">:</span> List<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">,</span> inorder<span class="token punctuation">:</span> List<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># 值 -> 中序下标，避免每次线性查找（题目保证无重复值）</span>
+        index <span class="token operator">=</span> <span class="token punctuation">{</span>v<span class="token punctuation">:</span> i <span class="token keyword">for</span> i<span class="token punctuation">,</span> v <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>inorder<span class="token punctuation">)</span><span class="token punctuation">}</span>
+
+        <span class="token keyword">def</span> <span class="token function">build</span><span class="token punctuation">(</span>pre_lo<span class="token punctuation">,</span> pre_hi<span class="token punctuation">,</span> in_lo<span class="token punctuation">,</span> in_hi<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> pre_lo <span class="token operator">></span> pre_hi<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> None
+            root_val <span class="token operator">=</span> preorder<span class="token punctuation">[</span>pre_lo<span class="token punctuation">]</span>
+            idx <span class="token operator">=</span> index<span class="token punctuation">[</span>root_val<span class="token punctuation">]</span>
+            left_size <span class="token operator">=</span> idx <span class="token operator">-</span> in_lo
+            root <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span>root_val<span class="token punctuation">)</span>
+            root<span class="token punctuation">.</span>left <span class="token operator">=</span> build<span class="token punctuation">(</span>pre_lo <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> pre_lo <span class="token operator">+</span> left_size<span class="token punctuation">,</span> in_lo<span class="token punctuation">,</span> idx <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            root<span class="token punctuation">.</span>right <span class="token operator">=</span> build<span class="token punctuation">(</span>pre_lo <span class="token operator">+</span> left_size <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> pre_hi<span class="token punctuation">,</span> idx <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> in_hi<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> root
+
+        <span class="token keyword">return</span> build<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>preorder<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>inorder<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>，空间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>。<strong>坑</strong>：索引区间一定要画图算清楚，最常见的错误是左子树前序区间写成 <code>pre_lo + 1 .. idx</code>（混用了中序下标）。同理可以做 106（中序 + 后序，根在后序末尾）。</p>
+<h3 id="297-二叉树的序列化与反序列化"><a class="markdownIt-Anchor" href="#297-二叉树的序列化与反序列化"></a> 297. 二叉树的序列化与反序列化</h3>
+<p>用<strong>前序遍历 + 空指针占位符 <code>#</code></strong> 序列化。因为记录了空指针，单靠前序就能唯一确定一棵树：反序列化时第一个元素是根，然后递归地依次消费列表构造左、右子树。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Codec</span><span class="token punctuation">:</span>
+    SEP<span class="token punctuation">,</span> NULL <span class="token operator">=</span> <span class="token string">","</span><span class="token punctuation">,</span> <span class="token string">"#"</span>
+
+    <span class="token keyword">def</span> <span class="token function">serialize</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token keyword">def</span> <span class="token function">traverse</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> node <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                res<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>NULL<span class="token punctuation">)</span>
+                <span class="token keyword">return</span>
+            res<span class="token punctuation">.</span>append<span class="token punctuation">(</span>str<span class="token punctuation">(</span>node<span class="token punctuation">.</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment" spellcheck="true"># 前序位置</span>
+            traverse<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+            traverse<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+
+        traverse<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>SEP<span class="token punctuation">.</span>join<span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">deserialize</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        nodes <span class="token operator">=</span> iter<span class="token punctuation">(</span>data<span class="token punctuation">.</span>split<span class="token punctuation">(</span>self<span class="token punctuation">.</span>SEP<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">def</span> <span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            val <span class="token operator">=</span> next<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> val <span class="token operator">==</span> self<span class="token punctuation">.</span>NULL<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> None
+            root <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span>int<span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            root<span class="token punctuation">.</span>left <span class="token operator">=</span> build<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            root<span class="token punctuation">.</span>right <span class="token operator">=</span> build<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> root
+
+        <span class="token keyword">return</span> build<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>中序遍历无法反序列化：拿不到根节点的位置；后序遍历可以，从列表<strong>末尾</strong>往前消费，并且先构造右子树再构造左子树。</p>
+</blockquote>
+<h2 id="二-后序位置的妙用"><a class="markdownIt-Anchor" href="#二-后序位置的妙用"></a> 二、后序位置的妙用</h2>
+<p>前序位置只能拿到从父节点传下来的信息，<strong>后序位置还能拿到子树通过返回值传上来的信息</strong>。凡是题目和「子树」有关，大概率要在后序位置写代码。</p>
+<h3 id="543-二叉树的直径"><a class="markdownIt-Anchor" href="#543-二叉树的直径"></a> 543. 二叉树的直径</h3>
+<p>直径 = 某个节点的「左子树最大深度 + 右子树最大深度」的最大值。在计算最大深度的后序位置顺便更新答案：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">diameterOfBinaryTree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>res <span class="token operator">=</span> <span class="token number">0</span>
+
+        <span class="token keyword">def</span> <span class="token function">max_depth</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> node <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">0</span>
+            left <span class="token operator">=</span> max_depth<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+            right <span class="token operator">=</span> max_depth<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># 后序位置：已知左右子树深度，顺便计算经过 node 的直径</span>
+            self<span class="token punctuation">.</span>res <span class="token operator">=</span> max<span class="token punctuation">(</span>self<span class="token punctuation">.</span>res<span class="token punctuation">,</span> left <span class="token operator">+</span> right<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">+</span> max<span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span>
+
+        max_depth<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果在前序位置对每个节点都调用一次 <code>max_depth</code>，复杂度是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span>；利用后序返回值只需 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>。</p>
+<h3 id="652-寻找重复的子树"><a class="markdownIt-Anchor" href="#652-寻找重复的子树"></a> 652. 寻找重复的子树</h3>
+<p>要知道「以我为根的子树长什么样」，只能在后序位置把子树<strong>序列化</strong>成字符串，再用哈希表计数：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">findDuplicateSubtrees</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> List<span class="token punctuation">[</span>Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        memo <span class="token operator">=</span> collections<span class="token punctuation">.</span>defaultdict<span class="token punctuation">(</span>int<span class="token punctuation">)</span>
+        res <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token keyword">def</span> <span class="token function">serialize</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> node <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token string">"#"</span>
+            left <span class="token operator">=</span> serialize<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+            right <span class="token operator">=</span> serialize<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+            s <span class="token operator">=</span> f<span class="token string">"{left},{right},{node.val}"</span>   <span class="token comment" spellcheck="true"># 后序序列化</span>
+            memo<span class="token punctuation">[</span>s<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> memo<span class="token punctuation">[</span>s<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">:</span>                    <span class="token comment" spellcheck="true"># 只在第二次出现时加入，避免重复</span>
+                res<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> s
+
+        serialize<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这种写法字符串拼接的总长度最坏为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span>，面试中说明即可；优化思路是给每种子树结构分配一个整数 id。</p>
+<h2 id="三-最近公共祖先lca"><a class="markdownIt-Anchor" href="#三-最近公共祖先lca"></a> 三、最近公共祖先（LCA）</h2>
+<h3 id="236-二叉树的最近公共祖先"><a class="markdownIt-Anchor" href="#236-二叉树的最近公共祖先"></a> 236. 二叉树的最近公共祖先</h3>
+<p>定义 <code>find(root, p, q)</code>：在以 root 为根的树中寻找 p 或 q，找到就返回，否则返回 None。</p>
+<ul>
+<li>前序位置：如果 root 本身就是 p 或 q，直接返回 root（另一个节点要么在它下面，要么根本不在这棵子树里，答案都是 root）；</li>
+<li>后序位置：如果左右子树各找到一个，说明 root 就是 LCA；否则返回非空的那一边。</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">lowestCommonAncestor</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> <span class="token string">'TreeNode'</span><span class="token punctuation">,</span> p<span class="token punctuation">:</span> <span class="token string">'TreeNode'</span><span class="token punctuation">,</span> q<span class="token punctuation">:</span> <span class="token string">'TreeNode'</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token string">'TreeNode'</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> root <span class="token keyword">is</span> None <span class="token operator">or</span> root <span class="token keyword">is</span> p <span class="token operator">or</span> root <span class="token keyword">is</span> q<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> root
+        left <span class="token operator">=</span> self<span class="token punctuation">.</span>lowestCommonAncestor<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">)</span>
+        right <span class="token operator">=</span> self<span class="token punctuation">.</span>lowestCommonAncestor<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> left <span class="token operator">and</span> right<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> root
+        <span class="token keyword">return</span> left <span class="token keyword">if</span> left <span class="token keyword">else</span> right
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>。如果是 BST（235 题），可以利用大小关系：p、q 都比 root 小就去左子树，都比 root 大就去右子树，否则 root 就是答案，时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>h</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(h)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">h</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="四-二叉搜索树bst"><a class="markdownIt-Anchor" href="#四-二叉搜索树bst"></a> 四、二叉搜索树（BST）</h2>
+<p>BST 的核心特性是「左小右大」，以及<strong>中序遍历结果有序</strong>。几乎所有 BST 题目都围绕这两点。</p>
+<h3 id="98-验证二叉搜索树"><a class="markdownIt-Anchor" href="#98-验证二叉搜索树"></a> 98. 验证二叉搜索树</h3>
+<p><strong>坑</strong>：只比较节点和它的左右孩子是不够的，必须保证<strong>整棵左子树</strong>都小于 root。做法是把上下界作为参数往下传：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">isValidBST</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> bool<span class="token punctuation">:</span>
+        <span class="token keyword">def</span> <span class="token function">check</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> hi<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># 要求 lo.val &lt; node.val &lt; hi.val</span>
+            <span class="token keyword">if</span> node <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">True</span>
+            <span class="token keyword">if</span> lo <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> node<span class="token punctuation">.</span>val <span class="token operator">&lt;=</span> lo<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+            <span class="token keyword">if</span> hi <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> node<span class="token punctuation">.</span>val <span class="token operator">>=</span> hi<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+            <span class="token keyword">return</span> check<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> node<span class="token punctuation">)</span> <span class="token operator">and</span> check<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">,</span> node<span class="token punctuation">,</span> hi<span class="token punctuation">)</span>
+
+        <span class="token keyword">return</span> check<span class="token punctuation">(</span>root<span class="token punctuation">,</span> None<span class="token punctuation">,</span> None<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="230-二叉搜索树中第-k-小的元素"><a class="markdownIt-Anchor" href="#230-二叉搜索树中第-k-小的元素"></a> 230. 二叉搜索树中第 K 小的元素</h3>
+<p>中序遍历有序，数到第 k 个即可（遍历思维）：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">kthSmallest</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">,</span> k<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
+        stack<span class="token punctuation">,</span> node <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> root
+        <span class="token keyword">while</span> stack <span class="token operator">or</span> node<span class="token punctuation">:</span>
+            <span class="token keyword">while</span> node<span class="token punctuation">:</span>                 <span class="token comment" spellcheck="true"># 一路向左</span>
+                stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+                node <span class="token operator">=</span> node<span class="token punctuation">.</span>left
+            node <span class="token operator">=</span> stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 中序位置</span>
+            k <span class="token operator">-=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> k <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> node<span class="token punctuation">.</span>val
+            node <span class="token operator">=</span> node<span class="token punctuation">.</span>right
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用显式栈的迭代写法可以在找到答案后立即停止，时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>h</mi><mo>+</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(h + k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">h</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>。</p>
+<h3 id="450-删除二叉搜索树中的节点"><a class="markdownIt-Anchor" href="#450-删除二叉搜索树中的节点"></a> 450. 删除二叉搜索树中的节点</h3>
+<p>找到目标节点后分三种情况：</p>
+<ol>
+<li>叶子节点：直接删除；</li>
+<li>只有一个孩子：让孩子顶替自己；</li>
+<li>有两个孩子：找到右子树的最小节点（后继），用它的值替换自己，再到右子树中删除这个后继。</li>
+</ol>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">deleteNode</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>TreeNode<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> root <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> None
+        <span class="token keyword">if</span> key <span class="token operator">&lt;</span> root<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+            root<span class="token punctuation">.</span>left <span class="token operator">=</span> self<span class="token punctuation">.</span>deleteNode<span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">,</span> key<span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> key <span class="token operator">></span> root<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+            root<span class="token punctuation">.</span>right <span class="token operator">=</span> self<span class="token punctuation">.</span>deleteNode<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">,</span> key<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> root<span class="token punctuation">.</span>left <span class="token keyword">is</span> None<span class="token punctuation">:</span>       <span class="token comment" spellcheck="true"># 情况 1、2</span>
+                <span class="token keyword">return</span> root<span class="token punctuation">.</span>right
+            <span class="token keyword">if</span> root<span class="token punctuation">.</span>right <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> root<span class="token punctuation">.</span>left
+            succ <span class="token operator">=</span> root<span class="token punctuation">.</span>right           <span class="token comment" spellcheck="true"># 情况 3：找右子树最小节点</span>
+            <span class="token keyword">while</span> succ<span class="token punctuation">.</span>left<span class="token punctuation">:</span>
+                succ <span class="token operator">=</span> succ<span class="token punctuation">.</span>left
+            root<span class="token punctuation">.</span>val <span class="token operator">=</span> succ<span class="token punctuation">.</span>val
+            root<span class="token punctuation">.</span>right <span class="token operator">=</span> self<span class="token punctuation">.</span>deleteNode<span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">,</span> succ<span class="token punctuation">.</span>val<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> root
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>h</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(h)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">h</span><span class="mclose">)</span></span></span></span>。BST 的增删改查都要<strong>把递归结果接回父节点</strong>（<code>root.left = ...</code>），这是和普通二叉树遍历最大的区别。</p>
+<h2 id="五-二叉树框架的延伸"><a class="markdownIt-Anchor" href="#五-二叉树框架的延伸"></a> 五、二叉树框架的延伸</h2>
+<p>二叉树之所以重要，是因为很多算法本质上都是在一棵「树」上做遍历：</p>
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>对应的树</th>
+<th>对应的思维</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回溯（全排列、子集、N 皇后）</td>
+<td>多叉决策树</td>
+<td>遍历：在前序位置「做选择」，后序位置「撤销选择」</td>
+</tr>
+<tr>
+<td>动态规划（斐波那契、零钱兑换）</td>
+<td>递归树</td>
+<td>分解问题：子问题的答案推出原问题，用备忘录剪掉重复子树</td>
+</tr>
+<tr>
+<td>快速排序 / 归并排序</td>
+<td>递归树</td>
+<td>前序 / 后序位置（见《手把手刷二叉树算法》）</td>
+</tr>
+<tr>
+<td>DFS / BFS 图遍历</td>
+<td>可能有环的「多叉树」</td>
+<td>多叉树遍历 + <code>visited</code> 数组防止走回头路（见《手把手刷图算法》）</td>
+</tr>
+</tbody>
+</table>
+<p>例如回溯框架就是多叉树遍历框架加上「选择 / 撤销」：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">backtrack</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> choices<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> 满足结束条件<span class="token punctuation">:</span>
+        res<span class="token punctuation">.</span>append<span class="token punctuation">(</span>path<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token keyword">for</span> c <span class="token keyword">in</span> choices<span class="token punctuation">:</span>
+        path<span class="token punctuation">.</span>append<span class="token punctuation">(</span>c<span class="token punctuation">)</span>          <span class="token comment" spellcheck="true"># 前序位置：做选择</span>
+        backtrack<span class="token punctuation">(</span>path<span class="token punctuation">,</span> choices<span class="token punctuation">)</span>
+        path<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment" spellcheck="true"># 后序位置：撤销选择</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<ol>
+<li><strong>构造题</strong>用分解思维，核心是找根、算左子树大小、切分区间；</li>
+<li><strong>序列化</strong>用前序 + 空指针占位，反序列化按同样顺序消费；</li>
+<li>和<strong>子树</strong>相关的信息（深度、结构、是否包含某节点）都在<strong>后序位置</strong>处理，往往能把 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span> 降到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>；</li>
+<li><strong>BST</strong> 抓住「左小右大」和「中序有序」，修改操作记得把递归结果接回去；</li>
+<li>回溯、动态规划、图遍历都是二叉树遍历框架的延伸，把二叉树练熟，其他递归算法会轻松很多。</li>
+</ol>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../0.4%E5%A5%97%E6%A8%A1%E6%9D%BF%E8%A7%A3%E5%86%B3100%E9%81%93%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%83%E4%B9%A0/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">套模板解决100道二叉树练习</div>
+                </a>
+                
+                
+                <a href="../0.7%E6%89%8B%E6%8A%8A%E6%89%8B%E5%88%B7%E5%9B%BE%E7%AE%97%E6%B3%95/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">手把手刷图算法</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#一-构造类问题分解问题的思维" class="toc-item">一、构造类问题：分解问题的思维</a>
+                
+                    
+                    
+                    
+                    <a href="#105-从前序与中序遍历序列构造二叉树" class="toc-item">105. 从前序与中序遍历序列构造二叉树</a>
+                
+                    
+                    
+                    
+                    <a href="#297-二叉树的序列化与反序列化" class="toc-item">297. 二叉树的序列化与反序列化</a>
+                
+                    
+                    
+                    
+                    <a href="#二-后序位置的妙用" class="toc-item">二、后序位置的妙用</a>
+                
+                    
+                    
+                    
+                    <a href="#543-二叉树的直径" class="toc-item">543. 二叉树的直径</a>
+                
+                    
+                    
+                    
+                    <a href="#652-寻找重复的子树" class="toc-item">652. 寻找重复的子树</a>
+                
+                    
+                    
+                    
+                    <a href="#三-最近公共祖先lca" class="toc-item">三、最近公共祖先（LCA）</a>
+                
+                    
+                    
+                    
+                    <a href="#236-二叉树的最近公共祖先" class="toc-item">236. 二叉树的最近公共祖先</a>
+                
+                    
+                    
+                    
+                    <a href="#四-二叉搜索树bst" class="toc-item">四、二叉搜索树（BST）</a>
+                
+                    
+                    
+                    
+                    <a href="#98-验证二叉搜索树" class="toc-item">98. 验证二叉搜索树</a>
+                
+                    
+                    
+                    
+                    <a href="#230-二叉搜索树中第-k-小的元素" class="toc-item">230. 二叉搜索树中第 K 小的元素</a>
+                
+                    
+                    
+                    
+                    <a href="#450-删除二叉搜索树中的节点" class="toc-item">450. 删除二叉搜索树中的节点</a>
+                
+                    
+                    
+                    
+                    <a href="#五-二叉树框架的延伸" class="toc-item">五、二叉树框架的延伸</a>
+                
+                    
+                    
+                    
+                    <a href="#小结" class="toc-item">小结</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../../../../../search.json?v=31a66f308473" };</script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+</body>
+</html>

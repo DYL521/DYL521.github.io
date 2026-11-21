@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    
+    <meta name="description" content="一句话总结 ⭐ 核心结论：我们的 MCP 网关把官方推荐的&amp;quot;渐进式发现&amp;quot;放在网关里实现。网关只给模型一组固定工具；下游几十个服务器的能力，由网关事先抓取、存成快照、建好向量索引；对话时，模型">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MCP 网关实战：从发现到执行的设计与踩坑 - DYL521">
+    <meta property="og:description" content="一句话总结 ⭐ 核心结论：我们的 MCP 网关把官方推荐的&amp;quot;渐进式发现&amp;quot;放在网关里实现。网关只给模型一组固定工具；下游几十个服务器的能力，由网关事先抓取、存成快照、建好向量索引；对话时，模型">
+    <meta property="og:url" content="https://dyl521.github.io/2026/11/21/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/04.MCP%E7%BD%91%E5%85%B3%E5%AE%9E%E6%88%98-%E4%BB%8E%E5%8F%91%E7%8E%B0%E5%88%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E8%B8%A9%E5%9D%91/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="MCP 网关实战：从发现到执行的设计与踩坑 - DYL521">
+    
+    <meta property="article:published_time" content="2026-11-21T11:00:00.000Z">
+    <meta property="article:modified_time" content="2026-11-21T14:16:28.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MCP 网关实战：从发现到执行的设计与踩坑 - DYL521">
+    <meta name="twitter:description" content="一句话总结 ⭐ 核心结论：我们的 MCP 网关把官方推荐的&amp;quot;渐进式发现&amp;quot;放在网关里实现。网关只给模型一组固定工具；下游几十个服务器的能力，由网关事先抓取、存成快照、建好向量索引；对话时，模型">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <link rel="canonical" href="https://dyl521.github.io/2026/11/21/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/04.MCP%E7%BD%91%E5%85%B3%E5%AE%9E%E6%88%98-%E4%BB%8E%E5%8F%91%E7%8E%B0%E5%88%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E8%B8%A9%E5%9D%91/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>MCP 网关实战：从发现到执行的设计与踩坑 - DYL521</title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
+        
+            
+            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
+        
+            
+            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
+        
+            
+            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
+        
+            
+            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
+        
+            
+            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
+    
+        
+        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
+    
+        
+        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
+    
+        
+        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
+    
+        
+        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
+    
+        
+        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
+            
+            <h1 class="article-title" data-reveal>MCP 网关实战：从发现到执行的设计与踩坑</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">人工智能</span>
+                <span>2026-11-21</span>
+                <span>· 56 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 16519 <span data-i18n="post_words_suffix">字</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M600%20335L840%20335%22%2F%3E%3Ccircle%20cx%3D%22840%22%20cy%3D%22335%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20479.6388242565855%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22479.6388242565855%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504846%20515.3616637536373%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504846%22%20cy%3D%22515.3616637536373%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.76747170341946%20415.2684917367483%22%2F%3E%3Ccircle%20cx%3D%22383.76747170341946%22%20cy%3D%22415.2684917367483%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.7674717034194%20254.73150826325178%22%2F%3E%3Ccircle%20cx%3D%22383.7674717034194%22%20cy%3D%22254.73150826325178%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504845%20154.63833624636263%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504845%22%20cy%3D%22154.63833624636263%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20190.36117574341446%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22190.36117574341446%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2268%22%20fill%3D%22%23211a2b%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2235%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="MCP 网关实战：从发现到执行的设计与踩坑 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <h2 id="一句话总结"><a class="markdownIt-Anchor" href="#一句话总结"></a> 一句话总结</h2>
+<div class="callout key">
+<p>⭐ <strong>核心结论</strong>：我们的 MCP 网关把官方推荐的&quot;渐进式发现&quot;放在<strong>网关</strong>里实现。网关只给模型一组固定工具；下游几十个服务器的能力，由网关<strong>事先抓取、存成快照、建好向量索引</strong>；对话时，模型<strong>先检索，再通过网关执行</strong>。Tool 这条路很快就跑通了，但接入 Resource 和 Prompt 时踩了三个大坑：<span class="hl-r"><strong>跨用户数据泄露</strong></span>、<span class="hl-r"><strong>执行逻辑其实是桩代码</strong></span>、<span class="hl-r"><strong>Prompt 的 role 丢失</strong></span>。</p>
+</div>
+<h2 id="系列说明"><a class="markdownIt-Anchor" href="#系列说明"></a> 系列说明</h2>
+<div class="callout note">
+<p>📌 这是&quot;MCP 网关&quot;系列的<strong>第二篇</strong>。文中用到的基础概念（Host/Client/Server、Tool/Resource/Prompt 及其控制方、分页、role、渐进式发现）在第一篇《MCP 基础：Tool、Resource、Prompt 与渐进式发现》中都有讲解，建议先读第一篇。</p>
+</div>
+<h2 id="目录"><a class="markdownIt-Anchor" href="#目录"></a> 目录</h2>
+<ul>
+<li><a href="#1-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84">1. 整体架构</a></li>
+<li><a href="#2-%E4%B8%A4%E5%B1%82%E7%BB%93%E6%9E%84%E6%A8%A1%E5%9E%8B%E8%83%BD%E7%9C%8B%E5%88%B0%E4%BB%80%E4%B9%88">2. 两层结构：模型能看到什么</a></li>
+<li><a href="#3-%E4%B8%89%E6%9D%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99">3. 三条设计原则</a></li>
+<li><a href="#4-%E4%BA%8B%E5%89%8D%E7%BD%91%E5%85%B3%E4%BB%A3%E4%B8%BA%E5%8F%91%E7%8E%B0">4. 事前：网关代为发现</a>
+<ul>
+<li><a href="#41-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E6%8A%93%E5%8F%96">4.1 什么时候抓取</a></li>
+<li><a href="#42-%E4%BB%8E%E6%8A%93%E5%8F%96%E5%88%B0%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AE%8C%E6%95%B4%E9%93%BE%E8%B7%AF">4.2 从抓取到建索引的完整链路</a></li>
+<li><a href="#43-%E4%B8%80%E4%B8%AA%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%9A%E7%94%9F%E6%88%90%E5%93%AA%E4%BA%9B%E6%A3%80%E7%B4%A2%E6%96%87%E6%A1%A3">4.3 一个服务器会生成哪些检索文档</a></li>
+</ul>
+</li>
+<li><a href="#5-%E4%BA%8B%E4%B8%AD%E6%A3%80%E7%B4%A2%E4%B8%8E%E6%89%A7%E8%A1%8C">5. 事中：检索与执行</a>
+<ul>
+<li><a href="#51-%E6%A3%80%E7%B4%A2discover_servers">5.1 检索：discover_servers</a></li>
+<li><a href="#52-%E6%89%A7%E8%A1%8Cexecute_tool-%E7%9A%84-12-%E6%AD%A5">5.2 执行：execute_tool 的 12 步</a></li>
+<li><a href="#53-%E4%B8%89%E7%A7%8D%E5%9B%9E%E5%BA%94%E9%80%9A%E9%81%93">5.3 三种回应通道</a></li>
+</ul>
+</li>
+<li><a href="#6-%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BE%8B%E5%AD%90">6. 一个完整的例子</a></li>
+<li><a href="#7-%E5%9D%91%E4%B8%80resource-%E7%9A%84%E6%95%B0%E6%8D%AE%E6%80%8E%E4%B9%88%E6%8A%93%E6%89%8D%E5%AF%B9">7. 坑一：Resource 的数据怎么抓才对</a>
+<ul>
+<li><a href="#71-%E9%97%AE%E9%A2%98%E6%B8%85%E5%8D%95">7.1 问题清单</a></li>
+<li><a href="#72-%E6%9C%80%E4%B8%A5%E9%87%8D%E7%9A%84%E4%B8%80%E4%B8%AA%E8%B7%A8%E7%94%A8%E6%88%B7%E6%B3%84%E9%9C%B2">7.2 最严重的一个：跨用户泄露</a></li>
+<li><a href="#73-%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%E7%94%A8%E7%9C%9F%E5%8D%8F%E8%AE%AE%E5%81%9A%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%B5%8B%E8%AF%95">7.3 怎么验证：用真协议做端到端测试</a></li>
+</ul>
+</li>
+<li><a href="#8-%E5%9D%91%E4%BA%8C%E6%89%A7%E8%A1%8C%E8%BF%99%E4%B8%80%E6%AD%A5%E5%8E%9F%E6%9D%A5%E6%98%AF%E5%81%87%E7%9A%84">8. 坑二：执行这一步原来是假的</a></li>
+<li><a href="#9-%E5%9D%91%E4%B8%89prompt-%E7%9A%84-role-%E4%B8%A2%E4%BA%86">9. 坑三：Prompt 的 role 丢了</a>
+<ul>
+<li><a href="#91-role-%E5%9C%A8%E5%93%AA%E4%B8%80%E6%AD%A5%E4%B8%A2%E5%A4%B1">9.1 role 在哪一步丢失</a></li>
+<li><a href="#92-%E6%8A%98%E4%B8%AD%E5%81%9A%E6%B3%95%E5%8F%8A%E5%85%B6%E8%BE%B9%E7%95%8C">9.2 折中做法及其边界</a></li>
+<li><a href="#93-%E6%A0%B9%E6%9C%AC%E8%A7%A3%E6%B3%95">9.3 根本解法</a></li>
+</ul>
+</li>
+<li><a href="#10-%E8%A6%81%E4%B8%8D%E8%A6%81%E5%81%9A%E6%B7%B7%E5%90%88%E6%A8%A1%E5%BC%8F">10. 要不要做&quot;混合模式&quot;</a></li>
+<li><a href="#11-%E5%AF%B9%E7%85%A7%E4%B8%9A%E7%95%8C%E8%BF%98%E8%83%BD%E5%80%9F%E9%89%B4%E4%BB%80%E4%B9%88">11. 对照业界：还能借鉴什么</a></li>
+<li><a href="#12-%E6%9C%AC%E6%96%87%E6%B6%89%E5%8F%8A%E7%9A%84%E6%A0%87%E5%87%86%E6%9D%A1%E6%AC%BE%E4%B8%8E%E6%88%91%E4%BB%AC%E7%9A%84%E8%90%BD%E5%9C%B0">12. 本文涉及的标准条款与我们的落地</a></li>
+<li><a href="#13-%E6%96%87%E7%AB%A0%E6%80%BB%E7%BB%93">13. 文章总结</a>
+<ul>
+<li><a href="#131-%E7%BB%8F%E9%AA%8C%E6%B8%85%E5%8D%95">13.1 经验清单</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+<hr />
+<h2 id="1-整体架构"><a class="markdownIt-Anchor" href="#1-整体架构"></a> 1. 整体架构</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph CLIENTS["客户端"]
+      H1[企业聊天助手]
+      H2[Claude Code / IDE]
+      H3[自动化 Agent]
+    end
+    AUTH[认证服务<br/>OAuth 登录 · 签发 token]
+    subgraph REG[Registry]
+      GW[MCP 网关<br/>6 个固定工具]
+      API[管理 API<br/>注册 · 启用 · 刷新]
+      SYNC[向量同步<br/>后台任务 + 兜底对账]
+    end
+    DB[(快照数据库<br/>服务器配置 · 能力清单<br/>权限 · 用户同意 · token)]
+    VEC[(向量索引<br/>Tool / Resource / Prompt 文档)]
+    subgraph DS["下游 MCP 服务器"]
+      S1[GitHub]
+      S2[Google Drive]
+      S3[Jira]
+      S4[……几十个]
+    end
+    H1 & H2 & H3 -->|OAuth 登录| AUTH
+    H1 & H2 & H3 -->|Bearer token| GW
+    API -->|"抓取 */list"| DS
+    API --> DB
+    DB --> SYNC --> VEC
+    GW -->|检索| VEC
+    GW -->|权限 · 同意 · 凭证| DB
+    GW -->|以调用者身份执行| DS
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>认证服务</td>
+<td>客户端通过 OAuth 登录，拿到访问网关的 token</td>
+</tr>
+<tr>
+<td>MCP 网关</td>
+<td>对模型暴露固定工具；负责检索、安全检查，并代为调用下游</td>
+</tr>
+<tr>
+<td>管理 API</td>
+<td>注册、启用、刷新服务器。<strong>抓取下游能力清单就发生在这一步</strong></td>
+</tr>
+<tr>
+<td>快照数据库</td>
+<td>保存每个服务器的能力清单（快照），以及权限、用户同意记录、每个用户的 OAuth token</td>
+</tr>
+<tr>
+<td>向量索引</td>
+<td>由快照生成的检索文档；网关检索时只查这里</td>
+</tr>
+<tr>
+<td>向量同步</td>
+<td>快照变化后同步更新索引；失败时由后台对账任务兜底</td>
+</tr>
+</tbody>
+</table>
+<div class="callout key">
+<p>⭐ <strong>本节要点</strong>：网关承担了两个角色。对客户端来说它是一台 <strong>MCP 服务器</strong>（只提供固定工具）；对下游来说它是一个 <strong>MCP 客户端</strong>（负责抓取清单和代为调用）。</p>
+</div>
+<hr />
+<h2 id="2-两层结构模型能看到什么"><a class="markdownIt-Anchor" href="#2-两层结构模型能看到什么"></a> 2. 两层结构：模型能看到什么</h2>
+<p>网关只对模型暴露 <strong>6 个固定工具</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网关工具</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discover_servers</code></td>
+<td>检索 Tool、Resource、Prompt</td>
+</tr>
+<tr>
+<td><code>execute_tool</code></td>
+<td>执行 Tool</td>
+</tr>
+<tr>
+<td><code>read_resource</code></td>
+<td>读取 Resource（具体 URI，或填好变量的模板）</td>
+</tr>
+<tr>
+<td><code>get_prompt</code></td>
+<td>获取 Prompt</td>
+</tr>
+<tr>
+<td><code>discover_agents</code> / <code>execute_agent</code></td>
+<td>A2A Agent（本文不涉及）</td>
+</tr>
+</tbody>
+</table>
+<p>整个系统因此分成两层：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    subgraph L0["客户端 + 模型"]
+      M["tools/list → 只有 6 个网关工具<br/>resources/list、prompts/list → 空"]
+    end
+    subgraph L1["第一层：网关层（模型能直接看到）"]
+      D[discover_servers]
+      E[execute_tool]
+      R[read_resource]
+      P[get_prompt]
+      SEC["统一安全检查<br/>认证 → 权限 → 禁用 → 用户同意"]
+      E & R & P --> SEC
+    end
+    subgraph BR["桥梁：快照 + 向量索引"]
+      IDX[(每个下游能力一条检索文档)]
+    end
+    subgraph L2["第二层：下游能力层（模型看不到）"]
+      S1["GitHub：create_issue · github://… · code_review"]
+      S2["Drive：… · gdrive://file/{fileId} · …"]
+      S3["…… 几十个服务器，几百个能力"]
+    end
+    M --> D & E & R & P
+    D -->|检索，只返回最相关的几条| IDX
+    L2 -->|事前抓取：操作人身份| IDX
+    SEC -->|实时请求：调用者身份| L2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>和第一篇介绍的官方模式对照：</p>
+<table>
+<thead>
+<tr>
+<th>官方渐进式发现</th>
+<th>我们的网关</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search_tools</code> 元工具</td>
+<td><code>discover_servers</code></td>
+</tr>
+<tr>
+<td>固定的 <code>call_tool</code> 元工具（工具列表不变，对提示词缓存友好）</td>
+<td><code>execute_tool</code> / <code>read_resource</code> / <code>get_prompt</code></td>
+</tr>
+<tr>
+<td>由每个 Host 各自实现</td>
+<td><strong>集中在网关实现</strong>，所有客户端共用，同时统一做权限控制</td>
+</tr>
+</tbody>
+</table>
+<div class="callout note">
+<p>📖 <strong>规范依据</strong>：官方《Client Best Practices》指出，需要<span class="key">按权限过滤</span>时，应当自己实现检索，这正是网关的场景。Resources 规范也允许应用&quot;根据启发式规则或 <strong>AI 模型的选择</strong> 自动纳入上下文&quot;，所以把 Resource 交给模型检索和读取，是规范允许的做法。</p>
+</div>
+<hr />
+<h2 id="3-三条设计原则"><a class="markdownIt-Anchor" href="#3-三条设计原则"></a> 3. 三条设计原则</h2>
+<p>后面所有问题都能从这三条原则推导出来：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>原则</th>
+<th>推论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><span class="hl-b"><strong>发现查的是快照，执行才实时调用下游</strong></span></td>
+<td>快照可能过时，需要刷新机制</td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="hl-b"><strong>抓取用&quot;操作人&quot;的身份，结果所有人共享；执行用&quot;调用者&quot;自己的身份</strong></span></td>
+<td>快照里只能存<strong>与具体用户无关</strong>的数据（见坑一）</td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="hl-b"><strong>网关只能返回工具结果</strong></span></td>
+<td>下游的 Resource 和 Prompt 都要包装成工具结果，原生语义会丢失（见坑三）</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph FETCH["抓取：低频、操作人身份"]
+      A[管理员 Alice 点刷新] -->|Alice 的凭证| S[(下游服务器)]
+      S --> SNAP[(快照：所有人共享)]
+    end
+    subgraph EXEC["执行：每次调用、调用者身份"]
+      B[用户 Bob 的模型调用] -->|Bob 的凭证| S2[(下游服务器)]
+      S2 --> OUT[结果只给 Bob]
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>本节要点</strong>：分清&quot;<strong>什么时候</strong>拿数据&quot;（事前还是实时）和&quot;<strong>用谁的身份</strong>拿数据&quot;（操作人还是调用者），是设计这类网关的关键。</p>
+</div>
+<hr />
+<h2 id="4-事前网关代为发现"><a class="markdownIt-Anchor" href="#4-事前网关代为发现"></a> 4. 事前：网关代为发现</h2>
+<h3 id="41-什么时候抓取"><a class="markdownIt-Anchor" href="#41-什么时候抓取"></a> 4.1 什么时候抓取</h3>
+<table>
+<thead>
+<tr>
+<th>触发</th>
+<th>用谁的凭证</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>注册服务器</td>
+<td>注册人</td>
+<td>OAuth 服务器在注册时跳过，因为此时还没有 token</td>
+</tr>
+<tr>
+<td>启用服务器</td>
+<td>启用人</td>
+<td>抓取失败会回滚为禁用</td>
+</tr>
+<tr>
+<td>手动刷新</td>
+<td>刷新人</td>
+<td>更新已有服务器的唯一主动入口</td>
+</tr>
+<tr>
+<td>联邦同步（如云厂商的 Agent 运行时）</td>
+<td>共享凭证</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warn">
+<p>⚠️ <strong>快照不会自动更新</strong>：目前没有定时刷新。下游能力变化后，要等有人刷新，快照才会同步。规范中的 <code>listChanged</code> 通知可以作为未来的触发手段。</p>
+</div>
+<h3 id="42-从抓取到建索引的完整链路"><a class="markdownIt-Anchor" href="#42-从抓取到建索引的完整链路"></a> 4.2 从抓取到建索引的完整链路</h3>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant Admin as 管理员
+    participant API as 管理 API
+    participant S as 下游服务器
+    participant DB as 快照数据库
+    participant SYNC as 向量同步
+    participant VEC as 向量索引
+    Admin->>API: 刷新 GitHub 服务器
+    API->>S: 握手（自动协商协议版本）
+    API->>S: tools/list
+    API->>S: resources/list（分页拉完；OAuth 服务器不调用）
+    API->>S: resources/templates/list（仅当声明了 resources 能力）
+    API->>S: prompts/list（分页拉完）
+    API->>DB: 写入快照 + 标记"待同步"
+    API->>SYNC: 立即触发同步
+    SYNC->>VEC: 内容有变化 → 删除旧文档，重新向量化后写入
+    Note over SYNC,VEC: 同步失败时，后台对账任务按"待同步"标记重试
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="43-一个服务器会生成哪些检索文档"><a class="markdownIt-Anchor" href="#43-一个服务器会生成哪些检索文档"></a> 4.3 一个服务器会生成哪些检索文档</h3>
+<p>以 GitHub 服务器为例，每个能力生成一条文档，文本开头都带有服务器信息：</p>
+<pre class="line-numbers language-undefined"><code class="language-undefined">[tool]      github | … | create_issue | 在仓库里创建一个 issue | Parameters: repo (string, required), …
+[resource]  github | … | URI: github://me/profile | MIME type: application/json
+[resource]  github | … | URI template: github://repo/{owner}/{repo}/readme | MIME type: text/markdown
+[prompt]    github | … | code_review | 按团队规范审查代码 | Required: language
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面两类内容<span class="hl-y"><strong>会存入快照，但不进入索引</strong></span>：OAuth 服务器的具体资源，以及 MCP Apps 的 UI 资源（见第 7 节）。</p>
+<hr />
+<h2 id="5-事中检索与执行"><a class="markdownIt-Anchor" href="#5-事中检索与执行"></a> 5. 事中：检索与执行</h2>
+<h3 id="51-检索discover_servers"><a class="markdownIt-Anchor" href="#51-检索discover_servers"></a> 5.1 检索：<code>discover_servers</code></h3>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    Q["discover_servers(query, top_n, type_list)"] --> ACL[取出调用者有权访问的服务器]
+    ACL --> F["过滤：类型 ∈ type_list · 服务器已启用 · 工具未禁用"]
+    F --> B{query 为空？}
+    B -->|是| L["直接列出 top_n 条（普查，不排序）"]
+    B -->|否| H["混合检索：向量 + 关键词各占一半<br/>召回 50–100 条候选"] --> RR[重排模型] --> TOP[取 top_n]
+    L & TOP --> RES["结果：entity_type · server_id ·<br/>tool_name / resource_uri / resource_uri_template / prompt_name"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout warn">
+<p>⚠️ <strong>几个容易误解的地方</strong></p>
+<ul>
+<li><code>type_list</code> <strong>默认只有 <code>tool</code></strong>。模型不主动加上 <code>resource</code> 或 <code>prompt</code>，就搜不到这两类。</li>
+<li>检索<strong>不分页</strong>：没有 cursor，默认返回 3 条，最多 50 条。找不到就换个关键词再搜。</li>
+<li>&quot;只取最相关的&quot;发生在<strong>检索阶段</strong>；执行阶段只执行模型选中的那一个。</li>
+<li>资源类结果中，<code>resource_uri</code> 和 <code>resource_uri_template</code> <strong>只会出现一个</strong>：前者直接使用，后者需要先填好变量。</li>
+</ul>
+</div>
+<h3 id="52-执行execute_tool-的-12-步"><a class="markdownIt-Anchor" href="#52-执行execute_tool-的-12-步"></a> 5.2 执行：<code>execute_tool</code> 的 12 步</h3>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    S([execute_tool]) --> A1{1 token 有效？}
+    A1 -->|否| X1[isError：需要认证]
+    A1 -->|是| A2{2 服务器存在？}
+    A2 -->|否| X2["isError：server_id 已过时，请重新 discover"]
+    A2 -->|是| A3{3 有权限？}
+    A3 -->|否| X3[isError：无权访问]
+    A3 -->|是| A4{4 用户之前拒绝过授权？}
+    A4 -->|是| X4[isError：用户已拒绝，不要重试]
+    A4 -->|否| A5{5 工具被管理员禁用？}
+    A5 -->|是| X5[isError：已禁用，换一个]
+    A5 -->|否| A6{6 用户已同意？}
+    A6 -->|否| X6[请用户去浏览器确认同意]
+    A6 -->|是| A7[7 取调用者自己的 OAuth token 或 API key]
+    A7 --> A8[8 连接下游：使用缓存的协议版本]
+    A8 --> A9["9 tools/list 找到目标工具（用于校验输出）"]
+    A9 --> A10[10 tools/call]
+    A10 -->|401| RF[刷新 OAuth token 后重试一次] --> A10
+    A10 --> A11{11 下游要求用户输入？}
+    A11 -->|是| X7[转成文字提示]
+    A11 -->|否| OK([12 原样返回下游结果])
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout note">
+<p>📖 <strong>规范依据</strong>：Tools 规范要求服务器 <strong>MUST</strong> 实施访问控制，并建议 <strong>SHOULD</strong> 始终保留&quot;由人决定是否拒绝调用&quot;的环节。第 3、5 步的权限和禁用检查对应前者，第 6 步的用户同意对应后者。</p>
+</div>
+<h3 id="53-三种回应通道"><a class="markdownIt-Anchor" href="#53-三种回应通道"></a> 5.3 三种回应通道</h3>
+<table>
+<thead>
+<tr>
+<th>通道</th>
+<th>什么时候用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工具结果 + <code>isError: true</code></td>
+<td><strong>模型自己能纠正</strong>的问题</td>
+<td>server_id 过时、工具被禁用、无权限</td>
+</tr>
+<tr>
+<td>让用户去浏览器操作</td>
+<td>需要<strong>用户本人</strong>处理</td>
+<td>用户同意、OAuth 重新授权。新版协议返回 <code>InputRequiredResult</code>，旧版协议返回 <code>-32042</code> 错误；客户端不支持时，退化为一段文字提示</td>
+</tr>
+<tr>
+<td>JSON-RPC 错误</td>
+<td>模型和用户都处理不了</td>
+<td>下游宕机、超时、内部错误</td>
+</tr>
+</tbody>
+</table>
+<div class="callout tip">
+<p>💡 <strong>两条防护</strong>：客户端重试时，网关会<strong>重新检查</strong>用户同意和 token，不直接相信客户端声称的&quot;已同意&quot;；<strong>同一项检查最多只提示一次</strong>，防止自动确认的客户端陷入死循环。</p>
+</div>
+<hr />
+<h2 id="6-一个完整的例子"><a class="markdownIt-Anchor" href="#6-一个完整的例子"></a> 6. 一个完整的例子</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant U as 用户
+    participant M as 模型（Host）
+    participant G as 网关
+    participant V as 向量索引
+    participant S as GitHub 服务器
+    U->>M: 在 anthropic/sdk 建个 issue：README 链接失效
+    M->>G: discover_servers("github create issue")
+    G->>V: 按权限过滤后检索
+    G-->>M: create_issue · server_id=abc · 参数 schema
+    M->>G: execute_tool(create_issue, abc, {...})
+    G->>G: 认证 · 权限 · 禁用检查 ✓ · 用户同意 ✗
+    G-->>M: 需要用户在浏览器确认同意（附链接）
+    M-->>U: 请打开链接确认
+    U->>G: 在浏览器中点击"同意"
+    M->>G: 用相同参数重试 execute_tool
+    G->>G: 重新检查全部通过 · 取出用户自己的 GitHub token
+    G->>S: tools/list → tools/call create_issue
+    S-->>G: issue #42 created
+    G-->>M: 原样返回
+    M-->>U: 已创建 issue #42
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr />
+<h2 id="7-坑一resource-的数据怎么抓才对"><a class="markdownIt-Anchor" href="#7-坑一resource-的数据怎么抓才对"></a> 7. 坑一：Resource 的数据怎么抓才对</h2>
+<p>Tool 跑通之后，我们开始接入 Resource 和 Prompt。第一批问题都出在&quot;事前抓取&quot;这一步。</p>
+<h3 id="71-问题清单"><a class="markdownIt-Anchor" href="#71-问题清单"></a> 7.1 问题清单</h3>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>后果</th>
+<th>修法</th>
+<th>对应的标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>从不调用 <code>resources/templates/list</code></td>
+<td>参数化资源（如&quot;任意仓库的 README&quot;）完全搜不到</td>
+<td>补上模板抓取，并且只有服务器声明了 <code>resources</code> 能力才请求</td>
+<td>能力声明 <span class="tag tag-r">MUST</span></td>
+</tr>
+<tr>
+<td>只取第一页</td>
+<td>大服务器的资源被悄悄截断</td>
+<td>按 cursor 拉完所有页；整个列表共用一个超时；cursor 重复时停止</td>
+<td>cursor 不透明 <span class="tag tag-r">MUST</span></td>
+</tr>
+<tr>
+<td><strong>OAuth 服务器跨用户泄露</strong></td>
+<td>见 7.2</td>
+<td>见 7.2</td>
+<td>资源访问控制 <span class="tag tag-b">SHOULD</span></td>
+</tr>
+<tr>
+<td>MCP Apps 的 UI 资源（<code>ui://</code>、<code>text/html;profile=mcp-app</code>）</td>
+<td>实际统计时，11 个已索引资源中有 9 个是这类 HTML，对模型毫无用处</td>
+<td>照常存入快照，但不进入索引；比较 MIME 前先统一大小写、去掉空格</td>
+<td>MCP Apps 扩展</td>
+</tr>
+<tr>
+<td>具体 URI 被标成 “URI template”</td>
+<td>模型会去&quot;填空&quot;一个根本没有变量的 URI</td>
+<td>具体资源标 <code>URI:</code>，模板标 <code>URI template:</code>，两个字段只出现一个</td>
+<td>Resource 与 Template 的区分</td>
+</tr>
+<tr>
+<td>一个列表失败就写入空值</td>
+<td>一次网络抖动就把已有数据全部清空</td>
+<td>失败时保留旧值；只有下游明确返回 <code>-32601</code>（不支持）才清空</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-最严重的一个跨用户泄露"><a class="markdownIt-Anchor" href="#72-最严重的一个跨用户泄露"></a> 7.2 最严重的一个：跨用户泄露</h3>
+<p>根源在第 3 节的原则 2：<strong>抓取用的是操作人的身份</strong>。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    Alice[管理员 Alice 刷新 Drive 服务器] -->|Alice 的 OAuth token| GD[(Google Drive MCP)]
+    GD -->|resources/list 返回 Alice 的文件<br/>salary.xlsx、合同.pdf……| SNAP[(快照)]
+    SNAP --> IDX[(向量索引)]
+    SNAP --> DETAIL[服务器详情页]
+    SNAP --> LOG[抓取日志]
+    IDX --> Bob[用户 Bob 检索时看到 Alice 的文件名]
+    DETAIL --> Carol[用户 Carol 在详情页看到]
+    style SNAP fill:#f8d7da
+    style LOG fill:#f8d7da
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout danger">
+<p>🚫 <strong>泄露的是&quot;存在性&quot;</strong>：别人真去读这些文件时会被 OAuth 拒绝，但&quot;Alice 有一个叫 salary.xlsx 的文件&quot;这件事已经泄露了，而且日志里也打印了全部 URI。</p>
+</div>
+<p>修法：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph LAYER1["① 抓取时：根本不调用"]
+      O[OAuth 服务器] -.->|不发送 resources/list| X((×))
+      O -->|只抓模板和 prompt| SNAP2[(快照：resources = 空)]
+    end
+    subgraph LAYER2["② 建索引时：再过滤一次"]
+      SNAP2 --> IDX2[(索引：跳过 OAuth 服务器的具体资源)]
+    end
+    subgraph LAYER3["③ 返回时：再过滤一次"]
+      SNAP2 --> API2[详情接口：resources 返回空]
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>根本不调用</strong>，而不是&quot;拉回来再丢掉&quot;，因为拉取过程中数据已经经过了内存和日志。</li>
+<li><strong>三层防护</strong>：即使旧版本程序在滚动发布期间把数据写了回去，也不会暴露出来。</li>
+<li><strong>日志只记录数量</strong>，不记录 URI。</li>
+<li><strong>写数据迁移</strong>：清理库里的历史数据，并触发索引重建。</li>
+</ul>
+<div class="callout key">
+<p>⭐ <strong>经验</strong>：凡是&quot;用一个人的身份抓来、给所有人看&quot;的数据，都要先问一句：<strong>这份数据和具体用户有关吗？</strong></p>
+</div>
+<h3 id="73-怎么验证用真协议做端到端测试"><a class="markdownIt-Anchor" href="#73-怎么验证用真协议做端到端测试"></a> 7.3 怎么验证：用真协议做端到端测试</h3>
+<p>单元测试用的是 mock，很容易出现&quot;mock 接受任何参数，真实 SDK 却不认&quot;的情况。我们差点就栽在一个分页参数名上：照着需求文档的写法会抛异常，而异常被一个宽泛的 <code>except</code> 吞掉，结果所有列表都静默变成空，mock 测试却全部通过。</p>
+<p>所以我们另外写了一个端到端验证脚本：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    SCRIPT[验证脚本] -->|1 写入测试用户、服务器、权限、token| DB[(数据库)]
+    SCRIPT -->|2 调用真实刷新接口| API[管理 API]
+    API -->|3 真实 MCP 协议| FX["假下游服务器（FastAPI）<br/>7 种场景 · 记录每个请求"]
+    SCRIPT -->|4 检查快照与详情接口| DB
+    SCRIPT -->|5 通过真实网关调用 discover_servers| GW[网关]
+    SCRIPT -->|6 断言：请求记录、快照、索引、日志| FX
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>7 种场景分别是：分页、两个协议版本、OAuth、未声明能力、列表报错、不再提供某个列表（<code>-32601</code>）、零工具服务器。断言按 MCP 规范逐条编写，例如&quot;OAuth 服务器从未收到 <code>resources/list</code>&quot;、“cursor 被原样回传”、“日志中搜不到任何资源 URI”。</p>
+<div class="callout key">
+<p>⭐ <strong>经验</strong>：<strong>涉及协议对接的功能，至少要有一条走真协议的端到端测试。</strong></p>
+</div>
+<hr />
+<h2 id="8-坑二执行这一步原来是假的"><a class="markdownIt-Anchor" href="#8-坑二执行这一步原来是假的"></a> 8. 坑二：执行这一步原来是假的</h2>
+<p>数据修好之后才发现，<code>read_resource</code> 和 <code>get_prompt</code> 其实是<strong>桩代码</strong>：不管传入什么，都返回写死的假数据，而且<span class="hl-r"><strong>跳过了权限检查和用户同意</strong></span>。</p>
+<div class="callout warn">
+<p>⚠️ <strong>上线顺序问题</strong>：数据修好后，资源更容易被检索到，模型拿到假数据的次数反而会增加。所以要么两件事一起上线，要么先发一个小修复，让这两个工具直接返回&quot;暂不可用&quot;。</p>
+</div>
+<p>修法是<strong>不再复制一份安全检查</strong>，而是把 <code>execute_tool</code> 的流程改成一条通用管道：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    T[execute_tool] --> OP1["ToolCall(name, args)"]
+    R[read_resource] --> OP2["ResourceRead(uri)"]
+    P[get_prompt] --> OP3["PromptGet(name, args)"]
+    OP1 & OP2 & OP3 --> AUTHZ["共用的安全检查<br/>认证 → 服务器 → 权限 → 用户同意<br/>（禁用检查只对 ToolCall 生效）"]
+    AUTHZ --> CALL["共用的下游调用<br/>凭证 · 协议版本 · 401 刷新重试 · 错误映射"]
+    CALL -->|ToolCall| C1["tools/list → tools/call"]
+    CALL -->|ResourceRead| C2["resources/read（不走缓存）"]
+    CALL -->|PromptGet| C3["prompts/get（不走缓存）"]
+    C1 & C2 & C3 --> RENDER["各自的结果包装 → 工具结果"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>经验</strong>：<strong>安全检查只能有一份。</strong> 两套几乎一样的代码，迟早会有一边漏掉某个检查，我们的桩代码就是现成的例子。</p>
+</div>
+<hr />
+<h2 id="9-坑三prompt-的-role-丢了"><a class="markdownIt-Anchor" href="#9-坑三prompt-的-role-丢了"></a> 9. 坑三：Prompt 的 role 丢了</h2>
+<p>第一篇第 7 节讲过：Prompt 的消息带有 <code>user</code> / <code>assistant</code> role，直连时由 Host 按原 role 插入对话。经过网关之后，情况就不同了。</p>
+<h3 id="91-role-在哪一步丢失"><a class="markdownIt-Anchor" href="#91-role-在哪一步丢失"></a> 9.1 role 在哪一步丢失</h3>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    D["下游 prompts/get<br/>messages = [user: 任务, assistant: 示范]"] --> G["网关内部<br/>role 仍然完整"]
+    G --> W["包装成工具结果<br/>CallToolResult 只有 content<br/>没有放 role 的位置"]
+    W --> H["Host 把它当作『工具结果』<br/>交给模型"]
+    style W fill:#f8d7da
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两种方式下，模型看到的对话对比如下：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    subgraph DIRECT["直连：role 原样生效"]
+      A1["user：请审查代码，按三栏输出"] --> A2["assistant：好的，我会按表格输出"] --> A3["user：（代码）"] --> A4["assistant：▌ 延续表格格式"]
+    end
+    subgraph VIAGW["经过网关：全部变成工具结果"]
+      B1["user：用 code_review 模板审一下"] --> B2["assistant：调用 get_prompt"] --> B3["工具结果：（任务 + 示范，全部是外部数据）"] --> B4["assistant：▌"]
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Prompt 类型</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只有 user 消息（最常见）</td>
+<td>基本可用。用户刚要求使用这个模板，模型通常会照做，效果类似&quot;按需加载一段说明&quot;</td>
+</tr>
+<tr>
+<td>带 assistant 示范消息</td>
+<td>示范作用明显变弱：模型不会认为这些是&quot;自己说过的话&quot;</td>
+</tr>
+</tbody>
+</table>
+<div class="callout note">
+<p>📖 <strong>规范依据</strong>：Prompts 规范中写道 <em>“Prompts are designed to be user-controlled”</em>，同时也说明协议<strong>不强制</strong>具体的交互方式。所以把 Prompt 交给模型去检索和调用，并不违反规范，但偏离了它的设计意图。规范还要求 <strong>MUST</strong> 严格校验 Prompt 的输入和输出，以防止注入攻击。</p>
+</div>
+<h3 id="92-折中做法及其边界"><a class="markdownIt-Anchor" href="#92-折中做法及其边界"></a> 9.2 折中做法及其边界</h3>
+<p>我们在内容里给每条消息加上 <code>[message 1: user]</code>、<code>[message 2: assistant]</code> 这样的标记。这样做的边界要说清楚：<span class="hl-y"><strong>恢复的只是&quot;标签&quot;，不是&quot;语义&quot;</strong></span>。assistant 消息只能作为&quot;示例&quot;供模型参考。</p>
+<div class="callout danger">
+<p>🚫 <strong>这一点是有意为之</strong>：如果网关能让模型相信&quot;下游给的这段话是你自己说的&quot;，那么任何一个接入的第三方服务器都可以操纵模型。</p>
+</div>
+<p>最初的设计里还有一句说明：&quot;请把 user 消息当作用户的请求去执行。&quot;这句话有两个问题：</p>
+<ul>
+<li>等于网关替下游背书，下游可以借此冒充用户；</li>
+<li>模型出于防注入的训练，可能直接忽略这句话。</li>
+</ul>
+<p>更好的写法是<strong>只说明&quot;这是什么&quot;</strong>：</p>
+<blockquote>
+<p>以下是用户要求使用的模板 X 的内容，请按模板完成用户的请求；标为 assistant 的消息是示例回复。</p>
+</blockquote>
+<h3 id="93-根本解法"><a class="markdownIt-Anchor" href="#93-根本解法"></a> 9.3 根本解法</h3>
+<p>根因在第一篇讲过：<span class="key">role 由拼装消息的 Host 决定，网关做不到。</span>所以根本解法只有一条：让 Host 按真实 role 把消息插入对话。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    ROOT["根因：只有 Host 能决定 role"] --> A["方式 A：网关原生暴露 prompts/get<br/>用户在客户端点选 → Host 按 role 插入<br/>标准做法，所有标准客户端都可用"]
+    ROOT --> B["方式 B：在工具结果的元数据里附上原始消息<br/>自家客户端识别后按 role 重新插入<br/>非标准约定，只对改造过的客户端有效"]
+    A & B --> SAFE["安全前提：只有用户明确选择了这个模板时，才按原 role 插入"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout warn">
+<p>⚠️ <strong>常见误解：应该整体放进 assistant 吗？</strong> 不是。每条消息应回到它自己的 role：任务说明放 user，示范回答放 assistant。而且网关本身没有这个选择权，工具结果在消息数组中的位置是固定的。</p>
+</div>
+<div class="callout key">
+<p>⭐ <strong>经验</strong>：<strong>协议里&quot;谁来控制&quot;的设定不是摆设。</strong> 把用户控制的 Prompt 交给模型调用，就要接受语义上的损失，并重新审视安全边界。</p>
+</div>
+<hr />
+<h2 id="10-要不要做混合模式"><a class="markdownIt-Anchor" href="#10-要不要做混合模式"></a> 10. 要不要做&quot;混合模式&quot;</h2>
+<p>我们也考虑过<strong>混合模式</strong>：Tool 仍然走检索；同时网关原生暴露 <code>prompts/list</code> 和 <code>resources/list</code>，供客户端界面使用（斜杠菜单、<code>@</code> 资源选择）。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph NOW["现在：只有一条路"]
+      M1[模型] -->|discover → get_prompt| G1[网关]
+    end
+    subgraph HYBRID["混合模式：两条路"]
+      M2[模型] -->|discover → 执行| G2[网关]
+      U2[用户] -->|"/ 菜单、@ 选择"| H2[Host] -->|"原生 prompts/get、resources/read"| G2
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout tip">
+<p>💡 <strong>关键认识</strong>：&quot;只暴露 Tool&quot;的理由<strong>只对 Tool 成立</strong>。<code>tools/list</code> 的内容会交给模型，所以数量不能多；<code>prompts/list</code> 和 <code>resources/list</code> 只用于渲染界面，不会进入模型的上下文。</p>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>现在</th>
+<th>混合模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户能看到有哪些 Prompt / Resource</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Prompt 的 role</td>
+<td>只能写成文字标记</td>
+<td>✅ 原样保留</td>
+</tr>
+<tr>
+<td>下游返回的 <code>resource_link</code></td>
+<td>❌ 读不到</td>
+<td>✅ 改写 URI 后可以读取</td>
+</tr>
+<tr>
+<td>模型上下文</td>
+<td>6 个工具</td>
+<td>不变</td>
+</tr>
+<tr>
+<td>模型自己找工具的场景</td>
+<td>—</td>
+<td><strong>没有任何改善</strong></td>
+</tr>
+</tbody>
+</table>
+<p>我们在本地实测过：一次带关键词的检索大约 1 秒，列一次目录只要几毫秒。在&quot;用户自己知道要用哪个模板或资料&quot;的场景里，混合模式每次能省下约 2 轮模型推理和 1 次检索（这是估算）。但最常见的&quot;模型自己找工具&quot;场景完全不受影响；而且我们自家的客户端会把每个 Prompt 转成一个工具，列表一大反而会撑爆上下文。权衡之后，<strong>暂时不做</strong>，先把当前方案做扎实。</p>
+<div class="callout key">
+<p>⭐ <strong>经验</strong>：评估一个方案时，<strong>先分清它解决的是哪个问题，再看这个问题在真实使用中占多大比例</strong>。</p>
+</div>
+<hr />
+<h2 id="11-对照业界还能借鉴什么"><a class="markdownIt-Anchor" href="#11-对照业界还能借鉴什么"></a> 11. 对照业界：还能借鉴什么</h2>
+<p>第一篇第 9 节列出了业界常见做法。这里按设计维度和我们的网关逐项对比：</p>
+<table>
+<thead>
+<tr>
+<th>设计维度</th>
+<th>业界做法</th>
+<th>我们的现状</th>
+<th>启发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>检索时附带授权状态</td>
+<td>Composio 的搜索结果直接标明&quot;是否已授权&quot;；Alexa 会先试探候选能否处理</td>
+<td>执行时才发现需要同意或授权</td>
+<td><strong>在检索结果中标注授权状态</strong></td>
+</tr>
+<tr>
+<td>排序信号</td>
+<td>Alexa 重排时参考用户已启用的技能、使用记录等</td>
+<td>只看文本相关度</td>
+<td><strong>加入使用记录、成功率等信号</strong></td>
+</tr>
+<tr>
+<td>检索与参数定义分离</td>
+<td>Composio 分搜索和获取 schema 两步；官方三层模式</td>
+<td>检索结果直接带完整 schema（每条约 250 token）</td>
+<td>拆成两步，或提供精简模式参数</td>
+</tr>
+<tr>
+<td>常用能力常驻</td>
+<td>Anthropic 建议常驻 3–5 个；Agentforce 按主题限定；ContextForge 虚拟服务器</td>
+<td>没有</td>
+<td>常用的直接挂出，长尾的走检索</td>
+</tr>
+<tr>
+<td>分层检索</td>
+<td>Copilot 先选插件再选函数；MCP-Zero 先选服务器再选工具</td>
+<td>平铺检索</td>
+<td>服务器多了以后再加</td>
+</tr>
+<tr>
+<td>点名调用与自动路由并存</td>
+<td>Alexa 两者都支持</td>
+<td>只有自动路由</td>
+<td>即第 10 节的混合模式</td>
+</tr>
+<tr>
+<td>批量执行</td>
+<td>Composio 支持一次并行执行多个</td>
+<td>一次一个</td>
+<td>长期方向</td>
+</tr>
+</tbody>
+</table>
+<p>后续改进按投入产出比排序：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    P0["P0 建立检索评测集<br/>真实查询 → 正确能力<br/>衡量召回率"] --> P1a["P1 检索结果带授权状态"]
+    P0 --> P1b["P1 重排加入使用信号"]
+    P0 --> P1c["P1 用大模型扩写能力描述"]
+    P1a & P1b & P1c --> P2["P2 常用常驻 · 检索与参数定义分离 · 混合模式"]
+    P2 --> P3["P3 分层检索 · 推理前预检索 · 批量执行 / Code Mode"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout tip">
+<p>💡 <strong>网关独有的优势</strong>：&quot;授权状态&quot;和&quot;使用信号&quot;这两项，只有网关才做得到：权限、用户同意、token、调用记录都在网关手里，单纯做检索的方案拿不到这些数据。</p>
+</div>
+<hr />
+<h2 id="12-本文涉及的标准条款与我们的落地"><a class="markdownIt-Anchor" href="#12-本文涉及的标准条款与我们的落地"></a> 12. 本文涉及的标准条款与我们的落地</h2>
+<table>
+<thead>
+<tr>
+<th>标准条款</th>
+<th>级别</th>
+<th>我们的落地</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>支持某项能力的服务器必须声明该能力</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td>只有下游声明了 <code>resources</code> 才去抓取模板</td>
+</tr>
+<tr>
+<td>cursor 是不透明令牌，不解析、不修改；不假设页大小</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td>抓取时原样回传 cursor，一直拉到没有 <code>nextCursor</code>；额外加了防重复和整体超时</td>
+</tr>
+<tr>
+<td>Tool 由模型控制，Resource 由应用驱动（可由模型选择），Prompt 由用户控制</td>
+<td>设计意图</td>
+<td>Tool、Resource 交给模型检索和执行；Prompt 也交给模型，但接受语义损失，并修正说明措辞</td>
+</tr>
+<tr>
+<td>服务器必须实施访问控制，必须校验输入、清洗输出</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td>检索前按权限过滤，执行前再检查一次；三种操作共用一条安全管道</td>
+</tr>
+<tr>
+<td>应保留&quot;由人决定是否拒绝调用&quot;的环节</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td>首次调用需用户在浏览器确认同意；重试时重新检查</td>
+</tr>
+<tr>
+<td>敏感资源应做访问控制，操作前检查权限</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td>OAuth 服务器不抓取具体资源，三层过滤</td>
+</tr>
+<tr>
+<td>工具执行错误用 <code>isError</code> 返回，交给模型自我纠正</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td>模型可纠正的问题（server_id 过时、工具被禁用）都用 <code>isError</code> 返回，并附上下一步建议</td>
+</tr>
+<tr>
+<td>Prompt 的输入输出必须严格校验，防止注入</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td>说明文字不声称&quot;这是用户说的&quot;，assistant 消息只作为示例</td>
+</tr>
+<tr>
+<td>工具多时采用渐进式发现，保持工具列表不变</td>
+<td><span class="tag tag-g">最佳实践</span></td>
+<td>网关只暴露 6 个固定工具，由 <code>discover_servers</code> 检索</td>
+</tr>
+<tr>
+<td><code>ui://</code> 资源是交给宿主渲染的 HTML</td>
+<td>扩展定义</td>
+<td>存入快照，但不进入索引</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13-文章总结"><a class="markdownIt-Anchor" href="#13-文章总结"></a> 13. 文章总结</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">mindmap
+  root((MCP 网关))
+    架构
+      网关对上是服务器
+      网关对下是客户端
+      快照加向量索引做桥梁
+    三条原则
+      发现查快照 执行才实时
+      抓取用操作人身份
+      执行用调用者身份
+      只能返回工具结果
+    检索与执行
+      默认只搜 tool
+      不分页 只取最相关
+      12 步安全检查
+      三种回应通道
+    三个坑
+      OAuth 跨用户泄露
+      执行是桩代码
+      Prompt 的 role 丢失
+    取舍与方向
+      混合模式暂不做
+      授权状态进检索结果
+      使用信号进重排
+      先建评测集
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>记住这五句话</strong></p>
+<ol>
+<li><strong>网关就是放在服务端的渐进式发现</strong>：只给模型固定工具，先检索再执行，所有客户端共用一套权限控制。</li>
+<li><strong>分清时机和身份</strong>：发现查快照、执行才实时；抓取用操作人身份、执行用调用者身份。<strong>快照里只能存与用户无关的数据。</strong></li>
+<li><strong>安全检查只写一份</strong>：三种能力共用一条管道，桩代码最容易绕过检查。</li>
+<li><strong>Prompt 经过网关会丢失 role</strong>：能补回的只是标签；要恢复原生语义，只能让 Host 按 role 插入。</li>
+<li><strong>先量化再优化</strong>：建评测集、统计使用比例，再决定做混合模式还是检索改进。</li>
+</ol>
+</div>
+<h3 id="131-经验清单"><a class="markdownIt-Anchor" href="#131-经验清单"></a> 13.1 经验清单</h3>
+<ol>
+<li><strong>工具多了就别全塞给模型</strong>：先检索再执行，并保持工具列表固定不变。</li>
+<li><strong>分清&quot;发现&quot;和&quot;执行&quot;</strong>：发现查快照，执行才实时调用；快照会过时，要有刷新机制。</li>
+<li><strong>分清&quot;抓取身份&quot;和&quot;执行身份&quot;</strong>：用一个人的身份抓来、给所有人看的数据，只能是与用户无关的。</li>
+<li><strong>列表一定要处理分页</strong>：cursor 原样回传，防止死循环，整个列表共用一个超时。</li>
+<li><strong>&quot;失败&quot;和&quot;不支持&quot;是两回事</strong>：失败时保留旧值，明确不支持（<code>-32601</code>）时才清空。</li>
+<li><strong>对模型没用的内容不进索引</strong>（如 UI 资源），但可以照常存储。</li>
+<li><strong>安全检查只写一份</strong>：新功能复用同一条管道。</li>
+<li><strong>注意上线顺序</strong>：数据和功能分开上线时，确认中间状态不会让用户拿到假数据。</li>
+<li><strong>尊重协议中&quot;谁来控制&quot;的设计意图</strong>：改变控制方，就要接受语义损失并重新评估注入风险。</li>
+<li><strong>不要让工具结果冒充用户</strong>：说明文字只描述&quot;这是什么&quot;。</li>
+<li><strong>端到端用真协议验证</strong>：mock 会掩盖参数名、协议版本这类问题。</li>
+<li><strong>先量化，再优化</strong>。</li>
+</ol>
+<hr />
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ul>
+<li>本系列第一篇：《MCP 基础：Tool、Resource、Prompt 与渐进式发现》</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/2026-07-28/develop/clients/client-best-practices">MCP Client Best Practices（Progressive Discovery）</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP 规范：Tools</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination">Pagination</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/draft/extensions/apps">MCP Apps 扩展</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.composio.dev/toolkits/meta-tools">Composio Meta Tools</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.science/blog/hyprank-how-alexa-determines-what-skill-can-best-meet-a-customers-need">Amazon Science: HypRank</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/orchestrator">Microsoft 365 Copilot 编排器</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/advanced-tool-use">Anthropic: Introducing advanced tool use</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-using-mcp-semantic-search.html">AWS AgentCore Gateway semantic search</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/IBM/mcp-context-forge">IBM ContextForge</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.01763">ToolRet</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.01056">MCP-Zero</a></li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../../../../01.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/03.go/03.%E8%BF%90%E8%A1%8C%E6%97%B6/01.%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/03.%E9%80%9A%E9%81%93-%20channel/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">通道- Channel</div>
+                </a>
+                
+                
+                <a href="../03.MCP%E5%9F%BA%E7%A1%80-Tool-Resource-Prompt%E4%B8%8E%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8F%91%E7%8E%B0/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">MCP 基础：Tool、Resource、Prompt 与渐进式发现</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#一句话总结" class="toc-item">一句话总结</a>
+                
+                    
+                    
+                    
+                    <a href="#系列说明" class="toc-item">系列说明</a>
+                
+                    
+                    
+                    
+                    <a href="#目录" class="toc-item">目录</a>
+                
+                    
+                    
+                    
+                    <a href="#1-整体架构" class="toc-item">1. 整体架构</a>
+                
+                    
+                    
+                    
+                    <a href="#2-两层结构模型能看到什么" class="toc-item">2. 两层结构：模型能看到什么</a>
+                
+                    
+                    
+                    
+                    <a href="#3-三条设计原则" class="toc-item">3. 三条设计原则</a>
+                
+                    
+                    
+                    
+                    <a href="#4-事前网关代为发现" class="toc-item">4. 事前：网关代为发现</a>
+                
+                    
+                    
+                    
+                    <a href="#41-什么时候抓取" class="toc-item">4.1 什么时候抓取</a>
+                
+                    
+                    
+                    
+                    <a href="#42-从抓取到建索引的完整链路" class="toc-item">4.2 从抓取到建索引的完整链路</a>
+                
+                    
+                    
+                    
+                    <a href="#43-一个服务器会生成哪些检索文档" class="toc-item">4.3 一个服务器会生成哪些检索文档</a>
+                
+                    
+                    
+                    
+                    <a href="#5-事中检索与执行" class="toc-item">5. 事中：检索与执行</a>
+                
+                    
+                    
+                    
+                    <a href="#51-检索discover_servers" class="toc-item">5.1 检索：discover_servers</a>
+                
+                    
+                    
+                    
+                    <a href="#52-执行execute_tool-的-12-步" class="toc-item">5.2 执行：execute_tool 的 12 步</a>
+                
+                    
+                    
+                    
+                    <a href="#53-三种回应通道" class="toc-item">5.3 三种回应通道</a>
+                
+                    
+                    
+                    
+                    <a href="#6-一个完整的例子" class="toc-item">6. 一个完整的例子</a>
+                
+                    
+                    
+                    
+                    <a href="#7-坑一resource-的数据怎么抓才对" class="toc-item">7. 坑一：Resource 的数据怎么抓才对</a>
+                
+                    
+                    
+                    
+                    <a href="#71-问题清单" class="toc-item">7.1 问题清单</a>
+                
+                    
+                    
+                    
+                    <a href="#72-最严重的一个跨用户泄露" class="toc-item">7.2 最严重的一个：跨用户泄露</a>
+                
+                    
+                    
+                    
+                    <a href="#73-怎么验证用真协议做端到端测试" class="toc-item">7.3 怎么验证：用真协议做端到端测试</a>
+                
+                    
+                    
+                    
+                    <a href="#8-坑二执行这一步原来是假的" class="toc-item">8. 坑二：执行这一步原来是假的</a>
+                
+                    
+                    
+                    
+                    <a href="#9-坑三prompt-的-role-丢了" class="toc-item">9. 坑三：Prompt 的 role 丢了</a>
+                
+                    
+                    
+                    
+                    <a href="#91-role-在哪一步丢失" class="toc-item">9.1 role 在哪一步丢失</a>
+                
+                    
+                    
+                    
+                    <a href="#92-折中做法及其边界" class="toc-item">9.2 折中做法及其边界</a>
+                
+                    
+                    
+                    
+                    <a href="#93-根本解法" class="toc-item">9.3 根本解法</a>
+                
+                    
+                    
+                    
+                    <a href="#10-要不要做混合模式" class="toc-item">10. 要不要做&quot;混合模式&quot;</a>
+                
+                    
+                    
+                    
+                    <a href="#11-对照业界还能借鉴什么" class="toc-item">11. 对照业界：还能借鉴什么</a>
+                
+                    
+                    
+                    
+                    <a href="#12-本文涉及的标准条款与我们的落地" class="toc-item">12. 本文涉及的标准条款与我们的落地</a>
+                
+                    
+                    
+                    
+                    <a href="#13-文章总结" class="toc-item">13. 文章总结</a>
+                
+                    
+                    
+                    
+                    <a href="#131-经验清单" class="toc-item">13.1 经验清单</a>
+                
+                    
+                    
+                    
+                    <a href="#参考资料" class="toc-item">参考资料</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json?v=31a66f308473" };</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+</body>
+</html>

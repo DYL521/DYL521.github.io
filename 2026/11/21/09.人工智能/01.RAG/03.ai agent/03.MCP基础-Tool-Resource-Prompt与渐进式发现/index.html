@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    
+    <meta name="description" content="一句话总结 ⭐ 核心结论：MCP 定义了 AI 应用对接外部系统的统一方式。服务器对外提供三种能力：Tool（动作）、Resource（资料）、Prompt（模板），分别由模型、应用、用户决定何时使用。客户端先">
+    <meta property="og:site_name" content="DYL521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MCP 基础：Tool、Resource、Prompt 与渐进式发现 - DYL521">
+    <meta property="og:description" content="一句话总结 ⭐ 核心结论：MCP 定义了 AI 应用对接外部系统的统一方式。服务器对外提供三种能力：Tool（动作）、Resource（资料）、Prompt（模板），分别由模型、应用、用户决定何时使用。客户端先">
+    <meta property="og:url" content="https://dyl521.github.io/2026/11/21/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/03.MCP%E5%9F%BA%E7%A1%80-Tool-Resource-Prompt%E4%B8%8E%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8F%91%E7%8E%B0/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <meta property="og:image:alt" content="MCP 基础：Tool、Resource、Prompt 与渐进式发现 - DYL521">
+    
+    <meta property="article:published_time" content="2026-11-21T10:00:00.000Z">
+    <meta property="article:modified_time" content="2026-11-21T14:15:44.000Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MCP 基础：Tool、Resource、Prompt 与渐进式发现 - DYL521">
+    <meta name="twitter:description" content="一句话总结 ⭐ 核心结论：MCP 定义了 AI 应用对接外部系统的统一方式。服务器对外提供三种能力：Tool（动作）、Resource（资料）、Prompt（模板），分别由模型、应用、用户决定何时使用。客户端先">
+    <meta name="twitter:image" content="https://dyl521.github.io/image/og-default.png?v=9c14b871d638">
+    <link rel="canonical" href="https://dyl521.github.io/2026/11/21/09.%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/01.RAG/03.ai%20agent/03.MCP%E5%9F%BA%E7%A1%80-Tool-Resource-Prompt%E4%B8%8E%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8F%91%E7%8E%B0/">
+    <script>
+    (function () {
+        var THEME_KEY = 'dyl_site_theme';
+        var theme;
+        try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+            // 未手动选择过：跟随系统；拿不到系统偏好时默认暗色
+            theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <title>MCP 基础：Tool、Resource、Prompt 与渐进式发现 - DYL521</title>
+    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../../../atom.xml">
+    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <script type="application/json" id="site-i18n">
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <a class="skip-link" href="#main-content" data-i18n="skip_link">跳转到正文</a>
+    <div id="dyl-progress" aria-hidden="true"></div>
+
+    
+
+<nav id="dyl-nav" aria-label="Main">
+    <div class="nav-brand">
+        <a href="../../../../../../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
+        <span class="tagline">THE ENGINEERING JOURNAL</span>
+    </div>
+    <div class="nav-links" data-fx-navlinks>
+        
+            
+            <a href="../../../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
+        
+            
+            <a href="../../../../../../../posts/" class="nav-link " data-i18n="nav_posts">文章</a>
+        
+            
+            <a href="../../../../../../../categories" class="nav-link " data-i18n="category">分类</a>
+        
+            
+            <a href="../../../../../../../archives" class="nav-link " data-i18n="archive">归档</a>
+        
+            
+            <a href="../../../../../../../tag" class="nav-link " data-i18n="tag">标签</a>
+        
+            
+            <a href="../../../../../../../pages/dyl521/" class="nav-link " data-i18n="about">关于</a>
+        
+    </div>
+    <div class="nav-actions">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+</nav>
+<!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
+     block for fixed descendants, which would clip this overlay to the bar. -->
+<div class="mobile-nav" id="dyl-mobile-nav" aria-hidden="true">
+    
+        
+        <a href="../../../../../../../index.html" class="mobile-nav-link " data-i18n="index">首页</a>
+    
+        
+        <a href="../../../../../../../posts/" class="mobile-nav-link " data-i18n="nav_posts">文章</a>
+    
+        
+        <a href="../../../../../../../categories" class="mobile-nav-link " data-i18n="category">分类</a>
+    
+        
+        <a href="../../../../../../../archives" class="mobile-nav-link " data-i18n="archive">归档</a>
+    
+        
+        <a href="../../../../../../../tag" class="mobile-nav-link " data-i18n="tag">标签</a>
+    
+        
+        <a href="../../../../../../../pages/dyl521/" class="mobile-nav-link " data-i18n="about">关于</a>
+    
+</div>
+
+    <main id="main-content"><article class="article-page" data-fx-pad>
+    
+    <div class="article-grid">
+        <div class="article-main">
+            
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
+            
+            <h1 class="article-title" data-reveal>MCP 基础：Tool、Resource、Prompt 与渐进式发现</h1>
+            <div class="article-meta" data-reveal>
+                <span class="meta-badge">人工智能</span>
+                <span>2026-11-21</span>
+                <span>· 44 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 13154 <span data-i18n="post_words_suffix">字</span></span>
+            </div>
+            
+
+            
+            <figure class="article-cover">
+                <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221200%22%20height%3D%22675%22%20viewBox%3D%220%200%201200%20675%22%3E%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22%23100e16%22%2F%3E%3Cg%20stroke%3D%22%2333293f%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200V675M0%200H1200%22%2F%3E%3Cpath%20d%3D%22M60%200V675M0%2060H1200%22%2F%3E%3Cpath%20d%3D%22M120%200V675M0%20120H1200%22%2F%3E%3Cpath%20d%3D%22M180%200V675M0%20180H1200%22%2F%3E%3Cpath%20d%3D%22M240%200V675M0%20240H1200%22%2F%3E%3Cpath%20d%3D%22M300%200V675M0%20300H1200%22%2F%3E%3Cpath%20d%3D%22M360%200V675M0%20360H1200%22%2F%3E%3Cpath%20d%3D%22M420%200V675M0%20420H1200%22%2F%3E%3Cpath%20d%3D%22M480%200V675M0%20480H1200%22%2F%3E%3Cpath%20d%3D%22M540%200V675M0%20540H1200%22%2F%3E%3Cpath%20d%3D%22M600%200V675M0%20600H1200%22%2F%3E%3Cpath%20d%3D%22M660%200V675M0%20660H1200%22%2F%3E%3Cpath%20d%3D%22M720%200V675M0%20720H1200%22%2F%3E%3Cpath%20d%3D%22M780%200V675M0%20780H1200%22%2F%3E%3Cpath%20d%3D%22M840%200V675M0%20840H1200%22%2F%3E%3Cpath%20d%3D%22M900%200V675M0%20900H1200%22%2F%3E%3Cpath%20d%3D%22M960%200V675M0%20960H1200%22%2F%3E%3Cpath%20d%3D%22M1020%200V675M0%201020H1200%22%2F%3E%3Cpath%20d%3D%22M1080%200V675M0%201080H1200%22%2F%3E%3Cpath%20d%3D%22M1140%200V675M0%201140H1200%22%2F%3E%3Cpath%20d%3D%22M1200%200V675M0%201200H1200%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23a995d5%22%20stroke-width%3D%222%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M600%20335L840%20335%22%2F%3E%3Ccircle%20cx%3D%22840%22%20cy%3D%22335%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20479.6388242565855%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22479.6388242565855%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504846%20515.3616637536373%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504846%22%20cy%3D%22515.3616637536373%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.76747170341946%20415.2684917367483%22%2F%3E%3Ccircle%20cx%3D%22383.76747170341946%22%20cy%3D%22415.2684917367483%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L383.7674717034194%20254.73150826325178%22%2F%3E%3Ccircle%20cx%3D%22383.7674717034194%22%20cy%3D%22254.73150826325178%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L546.5949758504845%20154.63833624636263%22%2F%3E%3Ccircle%20cx%3D%22546.5949758504845%22%20cy%3D%22154.63833624636263%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Cpath%20d%3D%22M600%20335L749.637552446096%20190.36117574341446%22%2F%3E%3Ccircle%20cx%3D%22749.637552446096%22%20cy%3D%22190.36117574341446%22%20r%3D%2224%22%20fill%3D%22%2317131f%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2268%22%20fill%3D%22%23211a2b%22%2F%3E%3Ccircle%20cx%3D%22600%22%20cy%3D%22335%22%20r%3D%2235%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="MCP 基础：Tool、Resource、Prompt 与渐进式发现 · 主题概念图" width="1440" height="810" fetchpriority="high" decoding="async">
+            </figure>
+            
+
+            <div class="article-body" data-reveal>
+                <h2 id="一句话总结"><a class="markdownIt-Anchor" href="#一句话总结"></a> 一句话总结</h2>
+<div class="callout key">
+<p>⭐ <strong>核心结论</strong>：MCP 定义了 AI 应用对接外部系统的统一方式。服务器对外提供三种能力：<span class="hl-b"><strong>Tool（动作）</strong></span>、<span class="hl-g"><strong>Resource（资料）</strong></span>、<span class="hl-p"><strong>Prompt（模板）</strong></span>，分别由<strong>模型</strong>、<strong>应用</strong>、<strong>用户</strong>决定何时使用。客户端先用 <code>*/list</code> 拉取清单，再用各自的方法调用或读取。工具多到几十个服务器、几百个能力时，官方推荐改用<strong>渐进式发现</strong>：先检索，再加载，最后执行。</p>
+</div>
+<h2 id="系列说明"><a class="markdownIt-Anchor" href="#系列说明"></a> 系列说明</h2>
+<div class="callout note">
+<p>📌 这是&quot;MCP 网关&quot;系列的<strong>第一篇</strong>，只讲<strong>标准本身和基础概念</strong>，不涉及具体产品。</p>
+<ul>
+<li><strong>第一篇（本文）</strong>：MCP 的角色、三种能力、发现与使用流程、消息里的 role、工具过多时的标准做法。</li>
+<li><strong>第二篇</strong>：《MCP 网关实战：从发现到执行的设计与踩坑》，讲我们的网关如何落地这些概念，以及踩过的坑。</li>
+</ul>
+</div>
+<h2 id="目录"><a class="markdownIt-Anchor" href="#目录"></a> 目录</h2>
+<ul>
+<li><a href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-mcp">1. 为什么需要 MCP</a></li>
+<li><a href="#2-mcp-%E9%87%8C%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A7%92%E8%89%B2">2. MCP 里的三个角色</a></li>
+<li><a href="#3-%E4%B8%89%E7%A7%8D%E8%83%BD%E5%8A%9Btool-resource-prompt">3. 三种能力：Tool、Resource、Prompt</a>
+<ul>
+<li><a href="#31-%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%8C%BA%E5%88%86">3.1 一句话区分</a></li>
+<li><a href="#32-%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%B8%80%E5%BC%A0%E8%A1%A8%E8%B0%81%E5%86%B3%E5%AE%9A%E4%BD%BF%E7%94%A8">3.2 最重要的一张表：谁决定使用</a></li>
+<li><a href="#33-resource-%E4%B8%8E-resource-template-%E7%9A%84%E5%8C%BA%E5%88%AB">3.3 Resource 与 Resource Template 的区别</a></li>
+</ul>
+</li>
+<li><a href="#4-%E4%B8%80%E6%AC%A1%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BC%80%E5%A7%8B%E6%8F%A1%E6%89%8B%E4%B8%8E%E8%83%BD%E5%8A%9B%E5%A3%B0%E6%98%8E">4. 一次连接的开始：握手与能力声明</a></li>
+<li><a href="#5-%E5%8F%91%E7%8E%B0%E6%8A%8A%E6%B8%85%E5%8D%95%E6%8B%89%E4%B8%8B%E6%9D%A5">5. 发现：把清单拉下来</a>
+<ul>
+<li><a href="#51-%E5%88%86%E9%A1%B5%E6%96%B0%E6%89%8B%E6%9C%80%E5%AE%B9%E6%98%93%E6%BC%8F%E7%9A%84%E7%BB%86%E8%8A%82">5.1 分页：新手最容易漏的细节</a></li>
+<li><a href="#52-%E5%B8%B8%E8%A7%81%E7%9A%84%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">5.2 常见的错误处理</a></li>
+</ul>
+</li>
+<li><a href="#6-%E4%BD%BF%E7%94%A8%E4%B8%89%E7%A7%8D%E8%83%BD%E5%8A%9B%E5%90%84%E6%9C%89%E5%90%84%E7%9A%84%E6%96%B9%E6%B3%95">6. 使用：三种能力各有各的方法</a></li>
+<li><a href="#7-%E6%B6%88%E6%81%AF%E9%87%8C%E7%9A%84-roleprompt-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%B8%A6-user-assistant">7. 消息里的 role：Prompt 为什么要带 user / assistant</a>
+<ul>
+<li><a href="#71-%E4%BB%80%E4%B9%88%E6%98%AF-role">7.1 什么是 role</a></li>
+<li><a href="#72-prompt-%E7%9A%84%E6%B6%88%E6%81%AF%E5%A6%82%E4%BD%95%E8%BF%9B%E5%85%A5%E5%AF%B9%E8%AF%9D">7.2 Prompt 的消息如何进入对话</a></li>
+<li><a href="#73-%E4%B8%A4%E4%B8%AA%E8%A6%81%E7%82%B9">7.3 两个要点</a></li>
+</ul>
+</li>
+<li><a href="#8-%E5%B7%A5%E5%85%B7%E5%A4%AA%E5%A4%9A%E6%80%8E%E4%B9%88%E5%8A%9E%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8F%91%E7%8E%B0">8. 工具太多怎么办：渐进式发现</a>
+<ul>
+<li><a href="#81-%E9%97%AE%E9%A2%98">8.1 问题</a></li>
+<li><a href="#82-%E5%AE%98%E6%96%B9%E6%8E%A8%E8%8D%90%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8F%91%E7%8E%B0">8.2 官方推荐：渐进式发现</a></li>
+<li><a href="#83-%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E6%8F%90%E9%86%92%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%BC%93%E5%AD%98">8.3 容易被忽略的提醒：提示词缓存</a></li>
+<li><a href="#84-%E6%89%A9%E5%B1%95%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BA%A7%E5%88%AB">8.4 扩展到服务器级别</a></li>
+</ul>
+</li>
+<li><a href="#9-%E4%B8%9A%E7%95%8C%E5%B8%B8%E8%A7%81%E5%81%9A%E6%B3%95">9. 业界常见做法</a></li>
+<li><a href="#10-%E8%A7%84%E8%8C%83%E8%A6%81%E7%82%B9%E9%80%9F%E6%9F%A5">10. 规范要点速查</a></li>
+<li><a href="#11-%E6%96%87%E7%AB%A0%E6%80%BB%E7%BB%93">11. 文章总结</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+<hr />
+<h2 id="1-为什么需要-mcp"><a class="markdownIt-Anchor" href="#1-为什么需要-mcp"></a> 1. 为什么需要 MCP</h2>
+<p>假设一家公司有 3 个 AI 应用（聊天助手、IDE 插件、自动化 Agent），要对接 4 个系统（GitHub、Jira、Google Drive、数据库）。没有统一协议时，每个应用都要为每个系统单独写一套对接代码：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph NOMCP["没有统一协议：3 × 4 = 12 份对接代码"]
+      A1[聊天助手] --- G1[GitHub]
+      A1 --- J1[Jira]
+      A1 --- D1[Drive]
+      A1 --- B1[数据库]
+      A2[IDE 插件] --- G1
+      A2 --- J1
+      A2 --- D1
+      A2 --- B1
+      A3[自动化 Agent] --- G1
+      A3 --- J1
+      A3 --- D1
+      A3 --- B1
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>MCP 的思路和 USB 类似：<strong>应用实现一次&quot;MCP 客户端&quot;，系统实现一次&quot;MCP 服务器&quot;</strong>，双方用同一个协议通信，对接成本从&quot;相乘&quot;降为&quot;相加&quot;。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    subgraph WITHMCP["使用 MCP：3 + 4 = 7 份实现"]
+      A1[聊天助手] --> P((MCP 协议))
+      A2[IDE 插件] --> P
+      A3[自动化 Agent] --> P
+      P --> G1[GitHub MCP 服务器]
+      P --> J1[Jira MCP 服务器]
+      P --> D1[Drive MCP 服务器]
+      P --> B1[数据库 MCP 服务器]
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>本节要点</strong>：MCP 把&quot;每个应用 × 每个系统&quot;的点对点对接，变成&quot;应用实现客户端、系统实现服务器&quot;的标准化对接。</p>
+</div>
+<hr />
+<h2 id="2-mcp-里的三个角色"><a class="markdownIt-Anchor" href="#2-mcp-里的三个角色"></a> 2. MCP 里的三个角色</h2>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>是什么</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Host（宿主）</strong></td>
+<td>用户直接使用的 AI 应用，负责和大模型对话</td>
+<td>Claude Desktop、Claude Code、Cursor、企业聊天助手</td>
+</tr>
+<tr>
+<td><strong>Client（客户端）</strong></td>
+<td>Host 内部负责和某个 MCP 服务器通信的模块，每个服务器对应一个</td>
+<td>由 Host 内置</td>
+</tr>
+<tr>
+<td><strong>Server（服务器）</strong></td>
+<td>对外提供能力的一方</td>
+<td>GitHub MCP 服务器、数据库 MCP 服务器</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    U((用户)) --> H
+    subgraph H["Host：AI 应用"]
+      LLM[大模型对话]
+      C1[MCP Client 1]
+      C2[MCP Client 2]
+    end
+    C1 <-->|MCP| S1[MCP Server：GitHub]
+    C2 <-->|MCP| S2[MCP Server：Drive]
+    LLM <--> C1
+    LLM <--> C2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>本节要点</strong>：<span class="key">只有 Host 在和大模型对话。</span>发给模型的消息怎么组织、每条消息是什么 role，都由 Host 决定，Server 无权决定。第二篇里我们遇到的&quot;role 丢失&quot;问题，根源就在这里。</p>
+</div>
+<hr />
+<h2 id="3-三种能力tool-resource-prompt"><a class="markdownIt-Anchor" href="#3-三种能力tool-resource-prompt"></a> 3. 三种能力：Tool、Resource、Prompt</h2>
+<p>用 Python 的 FastMCP 框架写一个 GitHub 服务器，最直观：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> fastmcp <span class="token keyword">import</span> FastMCP
+<span class="token keyword">from</span> fastmcp<span class="token punctuation">.</span>prompts <span class="token keyword">import</span> Message
+
+mcp <span class="token operator">=</span> FastMCP<span class="token punctuation">(</span><span class="token string">"github"</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># ① Tool：一个"动作"。模型传参数调用，服务器执行，可能改变外部数据</span>
+@mcp<span class="token punctuation">.</span>tool
+<span class="token keyword">def</span> <span class="token function">create_issue</span><span class="token punctuation">(</span>repo<span class="token punctuation">:</span> str<span class="token punctuation">,</span> title<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""在仓库里创建一个 issue"""</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token keyword">return</span> <span class="token string">"issue #42 created"</span>
+
+<span class="token comment" spellcheck="true"># ② Resource：一份"资料"。用固定 URI 标识，读取时返回内容，只读</span>
+@mcp<span class="token punctuation">.</span>resource<span class="token punctuation">(</span><span class="token string">"github://me/profile"</span><span class="token punctuation">,</span> mime_type<span class="token operator">=</span><span class="token string">"application/json"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_profile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">'{"login": "alice", "repos": 37}'</span>
+
+<span class="token comment" spellcheck="true"># ③ Resource Template：URI 里带 {变量}，代表"一类资料"</span>
+<span class="token comment" spellcheck="true">#    （FastMCP 检测到 URI 含变量时，会自动注册为模板）</span>
+@mcp<span class="token punctuation">.</span>resource<span class="token punctuation">(</span><span class="token string">"github://repo/{owner}/{repo}/readme"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">readme</span><span class="token punctuation">(</span>owner<span class="token punctuation">:</span> str<span class="token punctuation">,</span> repo<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
+    <span class="token keyword">return</span> fetch_readme<span class="token punctuation">(</span>owner<span class="token punctuation">,</span> repo<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># ④ Prompt：一份"提示词模板"。返回若干条消息，本身不执行任何操作</span>
+@mcp<span class="token punctuation">.</span>prompt
+<span class="token keyword">def</span> <span class="token function">code_review</span><span class="token punctuation">(</span>language<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>            <span class="token comment" spellcheck="true"># 返回 str = 一条 role=user 的消息</span>
+    <span class="token keyword">return</span> f<span class="token string">"请以资深 {language} 工程师的标准审查下面的代码……"</span>
+
+@mcp<span class="token punctuation">.</span>prompt
+<span class="token keyword">def</span> <span class="token function">code_review_with_example</span><span class="token punctuation">(</span>language<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> list<span class="token punctuation">[</span>Message<span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>
+        Message<span class="token punctuation">(</span>f<span class="token string">"请审查下面的 {language} 代码，按『问题-原因-建议』三栏输出。"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true"># user</span>
+        Message<span class="token punctuation">(</span><span class="token string">"好的，我会按『问题 | 原因 | 建议』的表格输出。"</span><span class="token punctuation">,</span> role<span class="token operator">=</span><span class="token string">"assistant"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true"># 示范回答</span>
+    <span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="31-一句话区分"><a class="markdownIt-Anchor" href="#31-一句话区分"></a> 3.1 一句话区分</h3>
+<div class="callout tip">
+<p>💡 <span class="hl-b"><strong>Tool 是&quot;动作&quot;</strong></span>，<span class="hl-g"><strong>Resource 是&quot;资料&quot;</strong></span>，<span class="hl-p"><strong>Prompt 是&quot;做事的模板&quot;</strong></span>。</p>
+</div>
+<h3 id="32-最重要的一张表谁决定使用"><a class="markdownIt-Anchor" href="#32-最重要的一张表谁决定使用"></a> 3.2 最重要的一张表：谁决定使用</h3>
+<p>MCP 规范为三种能力规定了不同的<strong>控制方</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>是什么</th>
+<th><strong>谁决定使用</strong></th>
+<th>类比</th>
+<th>典型界面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tool</td>
+<td>动作，可能有副作用</td>
+<td><span class="tag tag-b">模型</span></td>
+<td>函数调用</td>
+<td>用户看不到，由模型调用</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>只读资料，用 URI 标识</td>
+<td><span class="tag tag-g">应用</span>（含用户的选择）</td>
+<td>打开文件</td>
+<td><code>@</code> 资源选择器、“附加文件”</td>
+</tr>
+<tr>
+<td>Resource Template</td>
+<td>带变量的 URI</td>
+<td><span class="tag tag-g">应用</span></td>
+<td>带参数的 URL</td>
+<td>填好变量后附加</td>
+</tr>
+<tr>
+<td>Prompt</td>
+<td>消息模板</td>
+<td><span class="tag tag-p">用户</span></td>
+<td>斜杠命令</td>
+<td><code>/code_review</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    subgraph CTRL["控制方"]
+      M[模型] -->|自己决定调用| T[Tool]
+      A[应用 / 用户的附加操作] -->|决定把什么放进上下文| R[Resource / Template]
+      U[用户] -->|主动选择| P[Prompt]
+    end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout note">
+<p>📖 <strong>规范原文</strong>（MCP 2025-11-25）：</p>
+<ul>
+<li>Tools：<em>“Tools in MCP are designed to be <strong>model-controlled</strong>.”</em>（<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools</a>）</li>
+<li>Resources：<em>“Resources in MCP are designed to be <strong>application-driven</strong>.”</em>（<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a>）</li>
+<li>Prompts：<em>“Prompts are designed to be <strong>user-controlled</strong>.”</em>（<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts</a>）</li>
+</ul>
+<p>同时，三处原文都补充了一句：<em>“the protocol itself does not mandate any specific user interaction model”</em>。也就是说，&quot;控制方&quot;是<strong>设计意图</strong>，协议并不强制界面必须怎么做。例如 Resources 一节明确允许应用 <em>“implement automatic context inclusion, based on heuristics or the AI model’s selection”</em>，即可以由模型来选择要读取哪些资源。</p>
+</div>
+<div class="callout key">
+<p>⭐ <strong>本节要点</strong>：控制方不只是一个分类。它决定了<strong>结果以什么身份进入对话</strong>（见第 7 节），也决定了<strong>谁来承担安全责任</strong>。</p>
+</div>
+<h3 id="33-resource-与-resource-template-的区别"><a class="markdownIt-Anchor" href="#33-resource-与-resource-template-的区别"></a> 3.3 Resource 与 Resource Template 的区别</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Resource</th>
+<th>Resource Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表方法</td>
+<td><code>resources/list</code></td>
+<td><code>resources/templates/list</code></td>
+</tr>
+<tr>
+<td>URI</td>
+<td>具体地址：<code>github://me/profile</code></td>
+<td>带变量：<code>github://repo/&#123;owner&#125;/&#123;repo&#125;/readme</code></td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>数量有限、能全部列出的资料</td>
+<td>数量无限或参数化的资料（任意仓库、任意日期）</td>
+</tr>
+<tr>
+<td>读取方式</td>
+<td>直接 <code>resources/read</code></td>
+<td>先按 <a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc6570">RFC 6570</a> 填好变量，再 <code>resources/read</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout warn">
+<p>⚠️ <strong>常见遗漏</strong>：只调用 <code>resources/list</code> 而不调用 <code>resources/templates/list</code>，会把所有参数化资源整类丢掉。</p>
+</div>
+<hr />
+<h2 id="4-一次连接的开始握手与能力声明"><a class="markdownIt-Anchor" href="#4-一次连接的开始握手与能力声明"></a> 4. 一次连接的开始：握手与能力声明</h2>
+<p>客户端连上服务器后，第一步是<strong>握手</strong>：双方协商协议版本，服务器同时声明自己支持哪些能力。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant C as MCP Client
+    participant S as MCP Server
+    Note over C,S: 2025-11-25 版本：initialize 握手（有会话）
+    C->>S: initialize（客户端版本、客户端能力）
+    S-->>C: 协议版本 + capabilities: tools / resources / prompts
+    C->>S: notifications/initialized
+    Note over C,S: 2026-07-28 版本：server/discover（无状态）
+    C->>S: server/discover
+    S-->>C: 支持的版本 + capabilities
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout note">
+<p>📖 <strong>规范原文</strong>：<em>“Servers that support resources <strong>MUST</strong> declare the <code>resources</code> capability.”</em> tools、prompts 的规定相同。反过来理解：<strong>服务器没有声明的能力，客户端就不应该去请求。</strong></p>
+</div>
+<blockquote>
+<p>两个协议版本的差异可参考《MCP 2026-07-28 规范解读》。本文只用到一点：握手之后，客户端就知道服务器支持哪些能力。</p>
+</blockquote>
+<hr />
+<h2 id="5-发现把清单拉下来"><a class="markdownIt-Anchor" href="#5-发现把清单拉下来"></a> 5. 发现：把清单拉下来</h2>
+<p>握手之后，客户端用各个 <code>*/list</code> 方法拉取清单：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant C as MCP Client
+    participant S as MCP Server
+    C->>S: tools/list
+    S-->>C: create_issue（含参数 schema）
+    C->>S: resources/list
+    S-->>C: github://me/profile
+    C->>S: resources/templates/list
+    S-->>C: github://repo/{owner}/{repo}/readme
+    C->>S: prompts/list
+    S-->>C: code_review（含参数说明）
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="51-分页新手最容易漏的细节"><a class="markdownIt-Anchor" href="#51-分页新手最容易漏的细节"></a> 5.1 分页：新手最容易漏的细节</h3>
+<p>清单很长时，服务器每次只返回一页，同时给出一个 <code>nextCursor</code>：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant C as MCP Client
+    participant S as MCP Server
+    C->>S: resources/list
+    S-->>C: 第 1 页 + nextCursor = "abc"
+    C->>S: resources/list（cursor = "abc"）
+    S-->>C: 第 2 页 + nextCursor = "xyz"
+    C->>S: resources/list（cursor = "xyz"）
+    S-->>C: 第 3 页（没有 nextCursor，表示结束）
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout note">
+<p>📖 <strong>规范原文</strong>（<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination">Pagination</a>）：</p>
+<ul>
+<li>cursor 是<strong>不透明令牌</strong>（opaque token）。客户端 <strong>MUST</strong> 把它当作不透明值：不对格式做任何假设，不解析、不修改，也不跨会话保存。</li>
+<li>每页大小由服务器决定，客户端 <strong>MUST NOT</strong> 假设固定的页大小。</li>
+<li>客户端 <strong>SHOULD</strong> 把响应中缺少 <code>nextCursor</code> 视为结果结束。</li>
+</ul>
+</div>
+<div class="callout warn">
+<p>⚠️ <strong>工程上的补充</strong>（规范未要求，但建议做）：同一个 cursor 重复出现，说明服务器有 bug，此时应停止翻页，避免死循环；整个列表最好共用一个超时，而不是每页单独计时。</p>
+</div>
+<h3 id="52-常见的错误处理"><a class="markdownIt-Anchor" href="#52-常见的错误处理"></a> 5.2 常见的错误处理</h3>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>含义</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JSON-RPC 错误 <code>-32601</code>（Method not found）</td>
+<td>服务器<strong>不支持</strong>这个方法</td>
+<td>视为&quot;没有&quot;，结果为空</td>
+</tr>
+<tr>
+<td>超时、网络错误、服务器内部错误</td>
+<td>这一次<strong>请求失败</strong></td>
+<td>保留之前的结果，稍后重试</td>
+</tr>
+</tbody>
+</table>
+<div class="callout danger">
+<p>🚫 <strong>不要把&quot;失败&quot;当成&quot;没有&quot;</strong>：否则一次网络抖动，就会把已有的数据全部清空。</p>
+</div>
+<hr />
+<h2 id="6-使用三种能力各有各的方法"><a class="markdownIt-Anchor" href="#6-使用三种能力各有各的方法"></a> 6. 使用：三种能力各有各的方法</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant U as 用户
+    participant H as Host（含大模型）
+    participant S as MCP Server
+    Note over H,S: Tool：模型决定
+    H->>S: tools/call create_issue {repo, title}
+    S-->>H: CallToolResult：content = [text: issue #42 created]
+    Note over U,S: Resource：用户或应用决定
+    U->>H: 在 @ 列表里选 readme 模板，填 owner / repo
+    H->>S: resources/read github://repo/anthropic/sdk/readme
+    S-->>H: ReadResourceResult：contents = [text: README 内容]
+    Note over U,S: Prompt：用户决定
+    U->>H: 输入 /code_review，填 language = python
+    H->>S: prompts/get code_review {language: python}
+    S-->>H: GetPromptResult：messages = [role: user, content: …]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三种结果的结构：</p>
+<table>
+<thead>
+<tr>
+<th>结果类型</th>
+<th>主要字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CallToolResult</code></td>
+<td><code>content</code>（内容块列表）、<code>structuredContent</code>、<code>isError</code></td>
+<td>内容块可以是 text、image、audio、<code>resource_link</code>、<code>resource</code>（嵌入资源）。<span class="hl-r"><strong>没有 role</strong></span></td>
+</tr>
+<tr>
+<td><code>ReadResourceResult</code></td>
+<td><code>contents</code>（文本或二进制）</td>
+<td>读到的资料内容</td>
+</tr>
+<tr>
+<td><code>GetPromptResult</code></td>
+<td><code>description</code>、<code>messages: [&#123;role, content&#125;]</code></td>
+<td><span class="hl-g"><strong>每条消息都带 role</strong></span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout note">
+<p>📖 <strong>规范原文</strong>（<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools · Error Handling</a>）：错误分两类。</p>
+<ul>
+<li><strong>协议错误</strong>：未知工具、请求格式不符合规范、服务器内部错误，用 JSON-RPC error 返回。</li>
+<li><strong>工具执行错误</strong>：API 失败、输入校验失败、业务逻辑错误，放在结果里并标记 <code>isError: true</code>。</li>
+</ul>
+<p>客户端 <strong>SHOULD</strong> 把工具执行错误交给模型，方便它自我纠正后重试；协议错误则 <strong>MAY</strong> 交给模型，但模型通常无法据此恢复。</p>
+</div>
+<hr />
+<h2 id="7-消息里的-roleprompt-为什么要带-user-assistant"><a class="markdownIt-Anchor" href="#7-消息里的-roleprompt-为什么要带-user-assistant"></a> 7. 消息里的 role：Prompt 为什么要带 user / assistant</h2>
+<h3 id="71-什么是-role"><a class="markdownIt-Anchor" href="#71-什么是-role"></a> 7.1 什么是 role</h3>
+<p>Host 调用大模型时，对话是一串按顺序排列的消息，每条都带有 role：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    S["system：你是一个代码审查助手"] --> U1["user：帮我看看这段代码"]
+    U1 --> A1["assistant：好的，我会检查错误处理"]
+    A1 --> U2["user：（贴出代码）"]
+    U2 --> A2["assistant：▌（模型从这里接着写）"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>模型对不同 role 的态度不同：</p>
+<table>
+<thead>
+<tr>
+<th>role</th>
+<th>模型怎么理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>system</code></td>
+<td>规则和身份设定</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td><span class="hl-y"><strong>用户的要求</strong></span>，是要完成的任务</td>
+</tr>
+<tr>
+<td><code>assistant</code></td>
+<td><span class="hl-y"><strong>“这是我自己说过的话”</strong></span>，会顺着往下说</td>
+</tr>
+<tr>
+<td>工具结果</td>
+<td><span class="hl-y"><strong>外部数据</strong></span>，可以参考，但不会把其中的指令当作用户的命令。训练良好的模型还会刻意提防工具结果中冒充用户的内容，这是防御 prompt 注入的基本功</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-prompt-的消息如何进入对话"><a class="markdownIt-Anchor" href="#72-prompt-的消息如何进入对话"></a> 7.2 Prompt 的消息如何进入对话</h3>
+<p>MCP 的 Prompt 消息只有 <code>user</code> 和 <code>assistant</code> 两种 role。用户选择 <code>/code_review_with_example</code> 后，Host 会<strong>按每条消息原来的 role</strong> 插入对话：</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart TB
+    P1["user：请审查下面的 python 代码，按三栏输出"] --> P2["assistant：好的，我会按『问题 | 原因 | 建议』的表格输出"]
+    P2 --> U3["user：（用户真正要审查的代码）"]
+    U3 --> OUT["assistant：▌ 模型会延续『自己』说过的表格格式"]
+    style P1 fill:#e8def7
+    style P2 fill:#e8def7
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>assistant 消息的作用在这里：让模型以为自己已经这样回答过，它就会照着这个格式继续写下去。</p>
+<h3 id="73-两个要点"><a class="markdownIt-Anchor" href="#73-两个要点"></a> 7.3 两个要点</h3>
+<div class="callout key">
+<p>⭐ <strong>要点一：role 由 Host 决定。</strong> 只有负责拼装消息数组的 Host，才能把消息放到 user 或 assistant 的位置。Server 只负责提供内容。</p>
+</div>
+<div class="callout danger">
+<p>🚫 <strong>要点二：Prompt 被设计成由用户控制，有安全上的道理。</strong> 允许外部内容以 assistant 身份进入对话，就等于允许它伪造&quot;模型自己说过的话&quot;。只有在用户亲自选择了这个模板时，Host 按原 role 插入才是合理的。</p>
+</div>
+<blockquote>
+<p>第二篇会讲到：网关如果把 Prompt 包装成工具结果交给模型，这两点都会受到影响，role 也会丢失。</p>
+</blockquote>
+<hr />
+<h2 id="8-工具太多怎么办渐进式发现"><a class="markdownIt-Anchor" href="#8-工具太多怎么办渐进式发现"></a> 8. 工具太多怎么办：渐进式发现</h2>
+<h3 id="81-问题"><a class="markdownIt-Anchor" href="#81-问题"></a> 8.1 问题</h3>
+<p>按第 5、6 节的做法，Host 会把所有工具的说明交给模型。接入 50 个服务器、几百个工具时：</p>
+<ul>
+<li><strong>上下文放不下</strong>：光是工具说明就可能占掉大半个上下文窗口。</li>
+<li><strong>模型容易选错</strong>：候选太多，选错工具、填错参数的情况会变多。</li>
+</ul>
+<h3 id="82-官方推荐渐进式发现"><a class="markdownIt-Anchor" href="#82-官方推荐渐进式发现"></a> 8.2 官方推荐：渐进式发现</h3>
+<p>MCP 官方的《Client Best Practices》给出了标准做法：</p>
+<ul>
+<li>工具定义占上下文窗口的比例超过某个阈值（官方举例为 1%–5%）时，不再全部交给模型；</li>
+<li>只给模型一个轻量的 <code>search_tools</code> 元工具，需要什么先搜什么；</li>
+<li>搜到之后，再加载那几个工具的完整定义。</li>
+</ul>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">flowchart LR
+    Q[模型：我要更新 Salesforce 记录] --> L1["① Catalog 目录<br/>search_tools(query)<br/>只返回名字 + 一句话描述"]
+    L1 --> L2["② Inspect 查看<br/>get_tool_details(name)<br/>只取这一个工具的完整参数定义"]
+    L2 --> L3["③ Execute 执行<br/>带着完整定义调用"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>检索策略可以是关键词（BM25、正则）、向量、子代理（让小模型挑选）或混合。官方特别指出：需要按领域定制排序，或需要<span class="key">按权限过滤</span>时，应当自己实现检索。</p>
+<div class="callout note">
+<p>📌 <strong>定位</strong>：渐进式发现出自官方的<strong>客户端最佳实践</strong>文档，不是协议的强制条款（不是 MUST）。规范层面的讨论（如给 <code>tools/list</code> 增加查询参数）目前还处于草案阶段。</p>
+</div>
+<h3 id="83-容易被忽略的提醒提示词缓存"><a class="markdownIt-Anchor" href="#83-容易被忽略的提醒提示词缓存"></a> 8.3 容易被忽略的提醒：提示词缓存</h3>
+<div class="callout warn">
+<p>⚠️ 大模型服务商会缓存提示词前缀，其中包括工具列表。<strong>对话中途增删工具会让缓存失效，代价可能比省下来的 token 还多。</strong> 官方建议：新发现的工具追加在缓存断点之后，不要重新排序；或者<strong>所有调用都走一个固定的 <code>call_tool(&#123;name, args&#125;)</code> 元工具</strong>，让工具列表始终不变。</p>
+</div>
+<h3 id="84-扩展到服务器级别"><a class="markdownIt-Anchor" href="#84-扩展到服务器级别"></a> 8.4 扩展到服务器级别</h3>
+<p>同样的思路也可以用在&quot;服务器&quot;这一级：维护一份服务器注册表，需要时再连接，用完就断开。</p>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">sequenceDiagram
+    participant M as 模型
+    participant H as Host
+    participant R as 服务器注册表
+    participant S as MCP Server
+    M->>H: search_available_servers("CRM")
+    H->>R: 查询
+    R-->>H: Salesforce 服务器（未连接）
+    M->>H: enable_server("salesforce")
+    H->>S: server/discover + tools/list
+    H-->>M: 已连接，可用工具……
+    Note over M,H: 任务完成后
+    M->>H: disable_server("salesforce")
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr />
+<h2 id="9-业界常见做法"><a class="markdownIt-Anchor" href="#9-业界常见做法"></a> 9. 业界常见做法</h2>
+<p>&quot;能力太多，先缩小范围再执行&quot;并不是 MCP 独有的问题，各家都有自己的做法：</p>
+<table>
+<thead>
+<tr>
+<th>做法</th>
+<th>代表</th>
+<th>思路</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工具检索 + 延迟加载</td>
+<td>Anthropic Tool Search Tool</td>
+<td>工具标记为 <code>defer_loading</code>，检索后每次加载 3–5 个；<strong>建议最常用的 3–5 个常驻</strong></td>
+</tr>
+<tr>
+<td>网关内置语义检索</td>
+<td>AWS AgentCore Gateway</td>
+<td>为所有工具建立向量索引，提供一个检索工具代替 <code>tools/list</code></td>
+</tr>
+<tr>
+<td>按服务器动态接入</td>
+<td>Docker MCP Gateway</td>
+<td><code>mcp-find</code> 搜索目录，<code>mcp-add</code> 把整台服务器加入当前会话</td>
+</tr>
+<tr>
+<td>按场景组合</td>
+<td>IBM ContextForge</td>
+<td>从多个服务器中挑选能力，组合成一台&quot;虚拟服务器&quot;</td>
+</tr>
+<tr>
+<td>元工具 + 授权管理</td>
+<td>Composio Tool Router</td>
+<td>把搜索工具、获取参数、管理授权、批量执行都做成元工具</td>
+</tr>
+<tr>
+<td>先召回再重排</td>
+<td>Amazon Alexa 技能路由</td>
+<td>先粗选候选，再结合用户习惯等上下文信号精排</td>
+</tr>
+<tr>
+<td>先选主题再选动作</td>
+<td>Salesforce Agentforce、Microsoft 365 Copilot</td>
+<td>先选领域、插件或主题，再在小范围内选具体动作</td>
+</tr>
+<tr>
+<td>用代码组合调用</td>
+<td>Cloudflare Code Mode、Anthropic code execution with MCP</td>
+<td>把工具转成代码 API，模型写代码，在沙箱中组合调用，中间结果不经过模型</td>
+</tr>
+</tbody>
+</table>
+<div class="callout tip">
+<p>💡 <strong>研究结论</strong>（<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.01763">ToolRet</a>）：通用的向量检索模型在&quot;工具检索&quot;上表现并不好。常见的提升手段有：用大模型扩写工具描述、扩展查询、分层检索（先选服务器，再选工具）、重排。</p>
+</div>
+<hr />
+<h2 id="10-规范要点速查"><a class="markdownIt-Anchor" href="#10-规范要点速查"></a> 10. 规范要点速查</h2>
+<p>下表把本文涉及的标准条款集中列出，方便日后查阅。<span class="tag tag-r">MUST</span> 表示规范强制，<span class="tag tag-b">SHOULD</span> 表示规范建议，<span class="tag tag-g">最佳实践</span> 表示官方实践文档中的建议。</p>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>要点</th>
+<th>级别</th>
+<th>出处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>能力声明</td>
+<td>支持 tools / resources / prompts 的服务器必须在握手时声明对应能力</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a> 等</td>
+</tr>
+<tr>
+<td>控制方</td>
+<td>Tool 由模型控制，Resource 由应用驱动，Prompt 由用户控制；协议不强制具体交互方式</td>
+<td>设计意图</td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools</a> / <a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a> / <a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts</a></td>
+</tr>
+<tr>
+<td>分页</td>
+<td>cursor 是不透明令牌，不解析、不修改、不跨会话保存；不假设固定页大小</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination">Pagination</a></td>
+</tr>
+<tr>
+<td>分页结束</td>
+<td>响应中缺少 <code>nextCursor</code> 即表示结束</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td>同上</td>
+</tr>
+<tr>
+<td>资源模板</td>
+<td>用 RFC 6570 URI 模板表示参数化资源</td>
+<td>规范定义</td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a>、<a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc6570">RFC 6570</a></td>
+</tr>
+<tr>
+<td>Prompt 消息</td>
+<td>消息的 role 只能是 <code>user</code> 或 <code>assistant</code></td>
+<td>规范定义</td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts</a></td>
+</tr>
+<tr>
+<td>工具错误</td>
+<td>协议错误走 JSON-RPC error；工具执行错误在结果中标 <code>isError: true</code>，客户端应把后者交给模型</td>
+<td>规范定义 / <span class="tag tag-b">SHOULD</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools</a></td>
+</tr>
+<tr>
+<td>服务器安全</td>
+<td>服务器必须校验所有工具输入、实施访问控制、限流、清洗输出</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools · Security</a></td>
+</tr>
+<tr>
+<td>资源访问控制</td>
+<td>敏感资源应做访问控制，操作前应检查权限</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources · Security</a></td>
+</tr>
+<tr>
+<td>Prompt 安全</td>
+<td>必须严格校验 Prompt 的输入和输出，防止注入攻击和越权访问</td>
+<td><span class="tag tag-r">MUST</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts · Security</a></td>
+</tr>
+<tr>
+<td>人工确认</td>
+<td>对工具调用应当有人类参与，并能拒绝调用</td>
+<td><span class="tag tag-b">SHOULD</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">Tools · Security</a></td>
+</tr>
+<tr>
+<td>渐进式发现</td>
+<td>工具定义占上下文比例过高时，改为先检索、再加载、后执行</td>
+<td><span class="tag tag-g">最佳实践</span></td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/2026-07-28/develop/clients/client-best-practices">Client Best Practices</a></td>
+</tr>
+<tr>
+<td>缓存友好</td>
+<td>不在对话中途改动工具列表，或改走固定的 <code>call_tool</code> 元工具</td>
+<td><span class="tag tag-g">最佳实践</span></td>
+<td>同上</td>
+</tr>
+<tr>
+<td>UI 资源</td>
+<td><code>ui://</code> 资源（<code>text/html;profile=mcp-app</code>）是交给宿主渲染的 HTML</td>
+<td>扩展定义</td>
+<td><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/draft/extensions/apps">MCP Apps</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-文章总结"><a class="markdownIt-Anchor" href="#11-文章总结"></a> 11. 文章总结</h2>
+<pre class="line-numbers language-mermaid"><code class="language-mermaid">mindmap
+  root((MCP 基础))
+    角色
+      Host 和模型对话
+      Host 决定 role
+      Client 一对一连接 Server
+    三种能力
+      Tool 动作 模型控制
+      Resource 资料 应用控制
+      Template 带变量的 URI
+      Prompt 模板 用户控制
+    发现
+      握手与能力声明
+      list 方法拉取清单
+      cursor 分页原样回传
+      不支持与失败要区分
+    使用
+      tools/call
+      resources/read
+      prompts/get 带 role
+    规模化
+      渐进式发现
+      目录 查看 执行
+      保持工具列表不变
+      检索 重排 分层
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="callout key">
+<p>⭐ <strong>记住这五句话</strong></p>
+<ol>
+<li><strong>Tool 是动作，Resource 是资料，Prompt 是模板</strong>，分别由模型、应用、用户控制。</li>
+<li><strong>只有 Host 和模型对话</strong>，消息的 role 由 Host 决定。</li>
+<li><strong>发现靠 <code>*/list</code></strong>：先看能力声明，cursor 原样翻页，&quot;不支持&quot;和&quot;失败&quot;要分开处理。</li>
+<li><strong>Prompt 的 role 是有意义的</strong>：user 是任务，assistant 是&quot;我说过的话&quot;，所以 Prompt 需要由用户来触发。</li>
+<li><strong>工具多了用渐进式发现</strong>：先检索，再加载，最后执行，并保持工具列表不变。</li>
+</ol>
+</div>
+<p>下一篇《MCP 网关实战：从发现到执行的设计与踩坑》会讲：我们如何把渐进式发现放到<strong>网关</strong>里实现，以及接入 Resource、Prompt 时遇到的跨用户泄露、桩代码、role 丢失等问题。</p>
+<hr />
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP 规范：Tools</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">Resources</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">Prompts</a>、<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination">Pagination</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/2026-07-28/develop/clients/client-best-practices">MCP Client Best Practices（Progressive Discovery）</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/draft/extensions/apps">MCP Apps 扩展</a>、<a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc6570">RFC 6570 URI Template</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/advanced-tool-use">Anthropic: Introducing advanced tool use</a>、<a target="_blank" rel="noopener" href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool">Tool search tool</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/code-execution-with-mcp">Anthropic: Code execution with MCP</a>、<a target="_blank" rel="noopener" href="https://blog.cloudflare.com/code-mode/">Cloudflare: Code Mode</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-using-mcp-semantic-search.html">AWS AgentCore Gateway semantic search</a>、<a target="_blank" rel="noopener" href="https://docs.docker.com/ai/mcp-catalog-and-toolkit/dynamic-mcp/">Docker Dynamic MCP</a>、<a target="_blank" rel="noopener" href="https://github.com/IBM/mcp-context-forge">IBM ContextForge</a>、<a target="_blank" rel="noopener" href="https://docs.composio.dev/toolkits/meta-tools">Composio Meta Tools</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.science/blog/hyprank-how-alexa-determines-what-skill-can-best-meet-a-customers-need">Amazon Science: HypRank</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/orchestrator">Microsoft 365 Copilot 编排器</a>、<a target="_blank" rel="noopener" href="https://www.salesforce.com/in/agentforce/what-is-a-reasoning-engine/atlas/">Salesforce Atlas Reasoning Engine</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.01763">ToolRet</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.03275">RAG-MCP</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.01056">MCP-Zero</a></li>
+</ul>
+
+            </div>
+
+            
+            <div class="article-nav" data-reveal>
+                
+                <a href="../04.MCP%E7%BD%91%E5%85%B3%E5%AE%9E%E6%88%98-%E4%BB%8E%E5%8F%91%E7%8E%B0%E5%88%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E8%B8%A9%E5%9D%91/" class="nav-card">
+                    <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
+                    <div class="nav-title">MCP 网关实战：从发现到执行的设计与踩坑</div>
+                </a>
+                
+                
+                <a href="../../../../../../10/15/00.%E6%A0%B7%E5%BC%8F%E6%89%8B%E5%86%8C/%E6%A0%B7%E5%BC%8F%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="nav-card nav-next">
+                    <div class="nav-label" data-i18n="post_next_label">下一篇</div>
+                    <div class="nav-title">笔记样式速查手册</div>
+                </a>
+                
+            </div>
+            
+        </div>
+
+        
+        
+            
+            
+        
+        
+        <aside class="toc" data-fx-toc>
+            <div class="toc-header" id="dyl-toc-header">
+                <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+            </div>
+            <div class="toc-list" id="dyl-toc-list">
+                
+                    
+                    
+                    
+                    <a href="#一句话总结" class="toc-item">一句话总结</a>
+                
+                    
+                    
+                    
+                    <a href="#系列说明" class="toc-item">系列说明</a>
+                
+                    
+                    
+                    
+                    <a href="#目录" class="toc-item">目录</a>
+                
+                    
+                    
+                    
+                    <a href="#1-为什么需要-mcp" class="toc-item">1. 为什么需要 MCP</a>
+                
+                    
+                    
+                    
+                    <a href="#2-mcp-里的三个角色" class="toc-item">2. MCP 里的三个角色</a>
+                
+                    
+                    
+                    
+                    <a href="#3-三种能力tool-resource-prompt" class="toc-item">3. 三种能力：Tool、Resource、Prompt</a>
+                
+                    
+                    
+                    
+                    <a href="#31-一句话区分" class="toc-item">3.1 一句话区分</a>
+                
+                    
+                    
+                    
+                    <a href="#32-最重要的一张表谁决定使用" class="toc-item">3.2 最重要的一张表：谁决定使用</a>
+                
+                    
+                    
+                    
+                    <a href="#33-resource-与-resource-template-的区别" class="toc-item">3.3 Resource 与 Resource Template 的区别</a>
+                
+                    
+                    
+                    
+                    <a href="#4-一次连接的开始握手与能力声明" class="toc-item">4. 一次连接的开始：握手与能力声明</a>
+                
+                    
+                    
+                    
+                    <a href="#5-发现把清单拉下来" class="toc-item">5. 发现：把清单拉下来</a>
+                
+                    
+                    
+                    
+                    <a href="#51-分页新手最容易漏的细节" class="toc-item">5.1 分页：新手最容易漏的细节</a>
+                
+                    
+                    
+                    
+                    <a href="#52-常见的错误处理" class="toc-item">5.2 常见的错误处理</a>
+                
+                    
+                    
+                    
+                    <a href="#6-使用三种能力各有各的方法" class="toc-item">6. 使用：三种能力各有各的方法</a>
+                
+                    
+                    
+                    
+                    <a href="#7-消息里的-roleprompt-为什么要带-user-assistant" class="toc-item">7. 消息里的 role：Prompt 为什么要带 user / assistant</a>
+                
+                    
+                    
+                    
+                    <a href="#71-什么是-role" class="toc-item">7.1 什么是 role</a>
+                
+                    
+                    
+                    
+                    <a href="#72-prompt-的消息如何进入对话" class="toc-item">7.2 Prompt 的消息如何进入对话</a>
+                
+                    
+                    
+                    
+                    <a href="#73-两个要点" class="toc-item">7.3 两个要点</a>
+                
+                    
+                    
+                    
+                    <a href="#8-工具太多怎么办渐进式发现" class="toc-item">8. 工具太多怎么办：渐进式发现</a>
+                
+                    
+                    
+                    
+                    <a href="#81-问题" class="toc-item">8.1 问题</a>
+                
+                    
+                    
+                    
+                    <a href="#82-官方推荐渐进式发现" class="toc-item">8.2 官方推荐：渐进式发现</a>
+                
+                    
+                    
+                    
+                    <a href="#83-容易被忽略的提醒提示词缓存" class="toc-item">8.3 容易被忽略的提醒：提示词缓存</a>
+                
+                    
+                    
+                    
+                    <a href="#84-扩展到服务器级别" class="toc-item">8.4 扩展到服务器级别</a>
+                
+                    
+                    
+                    
+                    <a href="#9-业界常见做法" class="toc-item">9. 业界常见做法</a>
+                
+                    
+                    
+                    
+                    <a href="#10-规范要点速查" class="toc-item">10. 规范要点速查</a>
+                
+                    
+                    
+                    
+                    <a href="#11-文章总结" class="toc-item">11. 文章总结</a>
+                
+                    
+                    
+                    
+                    <a href="#参考资料" class="toc-item">参考资料</a>
+                
+            </div>
+        </aside>
+        
+    </div>
+</article>
+</main>
+    
+        
+<div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+        <div class="search-header">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
+            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+        </div>
+        <div id="dyl-search-results" class="search-results">
+            <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
+        </div>
+        <div class="search-footer">
+            <span class="search-footer-hint" data-i18n="search_hint">Esc 关闭</span>
+        </div>
+    </div>
+</div>
+
+
+    
+    <footer class="site-footer" data-fx-pad>
+    <div class="footer-row" data-fx-footrow>
+        <div class="footer-brand">
+            <div class="footer-logo">DYL521</div>
+            <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
+        </div>
+        <div class="footer-social">
+            <a href="https://github.com/DYL521" target="_blank" rel="noopener">github</a>
+            
+            <a href="../../../../../../../atom.xml">rss</a>
+            
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
+    </div>
+</footer>
+
+    <script>window.DYL_SEARCH = { url: "../../../../../../../search.json?v=31a66f308473" };</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js" defer></script>
+    
+    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+</body>
+</html>
