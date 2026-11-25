@@ -23,6 +23,9 @@
     <meta name="twitter:description" content="https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1 https://markdown.lovejade.cn/ http">
     <meta name="twitter:image" content="https://dyl521.github.io/post-images/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/cover.webp?v=b42da80ac596">
     <link rel="canonical" href="https://dyl521.github.io/2026/09/04/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">
+    
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Go 常见面试题","description":"https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1 https://markdown.lovejade.cn/ http","image":"https://dyl521.github.io/post-images/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/cover.webp?v=b42da80ac596","datePublished":"2026-09-04T14:41:37.051Z","dateModified":"2026-09-04T14:47:00.000Z","author":{"@type":"Person","name":"DYL521"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://dyl521.github.io/2026/09/04/07.%E9%9D%A2%E8%AF%95%E9%A2%98/Golang%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/"}}</script>
+    
     <script>
     (function () {
         var THEME_KEY = 'dyl_site_theme';
@@ -33,15 +36,24 @@
             theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
+        var lang;
+        try { lang = localStorage.getItem('dyl_site_lang'); } catch (e) {}
+        if (lang === 'en') {
+            document.documentElement.lang = 'en';
+            document.documentElement.setAttribute('data-i18n-pending', 'true');
+        }
     })();
     </script>
     <title>Go 常见面试题 - DYL521</title>
-    <link rel="shortcut icon" href="/image/mark.svg">
+    <link rel="shortcut icon" href="/image/mark.svg?v=e916ea0f132d">
     <link rel="alternate" type="application/atom+xml" title="DYL521" href="../../../../../atom.xml">
-    <link rel="stylesheet" href="/css/polelight.css?v=fc11242bfdd0">
-    <link rel="stylesheet" href="/css/prism-polelight.css?v=99cf924b26ed">
+    <link rel="stylesheet" href="/css/polelight.css?v=eef1cb536d71">
+    
+    <link rel="stylesheet" href="/css/prism-polelight.css?v=fa83984fca42">
+    
+    
     <script type="application/json" id="site-i18n">
-    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search post titles…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…"}}
+    {"zh":{"index":"首页","archive":"归档","category":"分类","tag":"标签","about":"关于","read_more":"阅读全文 →","featured":"精选文章","featuredHead":"把想清楚的东西，慢慢写出来。","featured_cover_note":"可换成你的封面","featured_cover_generated":"SVG 自动生成","latest":"最新文章","all":"查看全部","tag_cloud":"标签云","prev":"上一篇","next":"下一篇","toc":"本页目录","back_home":"返回首页","page_not_found":"页面不存在","tagline":"工程师 · 文档驱动 · 折腾党","aboutHead":"为写码而生。","aboutBody":"工程师气质很重，但不埋头硬写。遇到一个项目，我会先搭一份技术设计文档，再让它跟着思考一起长大——文档驱动、迭代式，是对抗混沌最朴素的方式。","footer_stats":"{posts} 篇文章 · {tags} 标签 · 自 {year}","archive_sub":"按时间倒序","cat_title":"分类","tag_title":"标签","tag_total_prefix":"共","tag_total_suffix":"个","cat_total_prefix":"共","cat_total_suffix":"个","not_found_title":"页面不存在","not_found_path":"/void/null","not_found_body":"你访问的页面不存在，可能地址有误或已迁移。","not_found_back":"返回首页","not_found_search":"搜索","post_badge":"工程笔记","post_read_suffix":"分钟阅读","post_words_suffix":"字","post_views_suffix":"浏览","post_prev_label":"上一篇","post_next_label":"下一篇","post_toc_label":"本页目录","about_title":"关于我","about_now_label":"我在折腾","about_find_label":"找到我","resume":"简历","resume_cn":"中文简历","resume_en":"英文简历","nav_posts":"文章","page_prev":"上一页","page_next":"下一页","posts_filter_placeholder":"搜索文章标题或分类…","posts_filter_empty":"没有匹配的文章","uncategorized":"未分类","footer_tagline":"简单地活着，肆意而又精彩。","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"我在意开发体验本身：工具链顺不顺手、流程别不别扭。这些前期投入，后面会一直回本。技术品味上偏好做有想法的取舍，而不是套模板。","scroll_label":"SCROLL","slide_label":"幻灯片 {n}","search":"搜索","search_placeholder":"搜索标题、标签或正文…","search_no_results":"没有找到相关文章","search_index_missing":"搜索暂不可用，请通过文章列表浏览。","search_hint":"Esc 关闭","search_shortcut":"输入关键词搜索，按 Esc 关闭","theme_toggle":"切换主题","posts":"文章","tags":"标签","categories":"分类","featured_sub":"把想清楚的东西，慢慢写出来。","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"仓库","about_stat_followers":"粉丝","about_stat_stars":"获星","about_repos_title":"精选项目","about_repos_loading":"正在从 GitHub 加载项目…","about_repos_no_desc":"暂无描述","about_repos_error":"项目暂时无法加载，前往 GitHub 查看。","about_email_label":"邮箱","nav_journal":"文章","about_me":"关于我","browse_journal":"浏览文章","home_selected_title":"值得展开的思考","home_selected_all":"全部文章","home_read_story":"阅读笔记","hero_title_1":"构建系统，","hero_title_2":"理解复杂。","hero_intro":"你好，我是 DYL521。一名关注 AI 与后端系统的工程师。这里记录我构建系统、拆解问题，以及持续学习的过程。","hero_cta":"阅读文章","hero_strip":"SYSTEM NOTES / 一份持续迭代的工程手记","hero_strip_articles":"篇文章","home_topics_title":"沿着主题，继续阅读","home_topics_all":"全部分类 ↗","unit_articles":"篇文章","home_recent_title":"最近在写","home_recent_all":"查看全部 ↗","home_now_title":"保持好奇，持续构建。","home_now_body":"一些正在探索的方向，也可能是下一篇文章的起点。","skip_link":"跳转到正文","cover_alt":"主题概念图","search_loading":"检索中…","copy":"复制","copy_success":"已复制","copy_failed":"复制失败","code_copy":"复制代码","diagram_copy":"复制图表源码","diagram_toggle":"切换图表与源码","diagram_view":"图表","diagram_source":"源码","diagram_collapse":"折叠","diagram_expand":"展开","diagram_zoom":"全屏","media_collapse":"折叠","media_expand":"展开","media_zoom":"放大","media_image_label":"图片","zoom_in":"放大","zoom_out":"缩小","zoom_reset":"重置缩放","resume_print":"打印 / 导出 PDF","resume_switch_en":"English Version","resume_switch_zh":"中文简历","post_updated_prefix":"更新于","post_tags_label":"标签","back_to_top":"回到顶部","nav_menu_toggle":"切换菜单","lang_toggle_label":"切换语言","search_close":"关闭搜索","toc_toggle":"展开或收起目录","lightbox_close":"关闭图片预览"},"en":{"index":"Home","archive":"Archive","category":"Category","tag":"Tag","about":"About","read_more":"Read more →","featured":"Selected writing","featuredHead":"Think it through, then write it down — slowly.","featured_cover_note":"Replace with your cover","featured_cover_generated":"SVG auto-generated","latest":"Latest posts","all":"View all","tag_cloud":"Tag cloud","prev":"Previous","next":"Next","toc":"On this page","back_home":"Back home","page_not_found":"Page not found","tagline":"Engineer · Doc-driven · Tinkerer","aboutHead":"Built for building.","aboutBody":"Engineer at heart, but never heads-down hacking. I draft a design doc first and let it grow with my thinking — doc-driven and iterative, my way of fighting chaos.","footer_stats":"{posts} posts · {tags} tags · since {year}","archive_sub":"Newest first","cat_title":"Categories","tag_title":"Tags","tag_total_prefix":"","tag_total_suffix":"total","cat_total_prefix":"","cat_total_suffix":"total","not_found_title":"Page not found","not_found_path":"/void/null","not_found_body":"The page you're looking for doesn't exist — wrong address, or it has moved.","not_found_back":"Back home","not_found_search":"Search","post_badge":"Engineering","post_read_suffix":"min read","post_words_suffix":"words","post_views_suffix":"views","post_prev_label":"Previous","post_next_label":"Next","post_toc_label":"On this page","about_title":"About me","about_now_label":"What I'm tinkering with","about_find_label":"Find me","resume":"Resume","resume_cn":"Chinese Resume","resume_en":"English Resume","nav_posts":"Posts","page_prev":"Prev","page_next":"Next","posts_filter_placeholder":"Search titles or categories…","posts_filter_empty":"No matching posts","uncategorized":"Uncategorized","footer_tagline":"Build, write, tinker — simply.","footer_copyright":"© 2020–2026 DYL521 · built with hexo · Polelight","about_body2":"I care about developer experience itself: whether the toolchain feels right and the workflow isn't awkward. These early investments pay off over time. I'd rather make thoughtful trade-offs than copy templates.","scroll_label":"SCROLL","slide_label":"Slide {n}","search":"Search","search_placeholder":"Search titles, tags or content…","search_no_results":"No matching posts found","search_index_missing":"Search is unavailable. Browse the journal instead.","search_hint":"Esc to close","search_shortcut":"Type to search, or press Esc","theme_toggle":"Toggle theme","posts":"posts","tags":"tags","categories":"categories","featured_sub":"Think it through, then write it down — slowly.","about_whoami_cmd":"whoami","about_now_cmd":"now --list","about_stat_repos":"Repos","about_stat_followers":"Followers","about_stat_stars":"Stars","about_repos_title":"Featured Projects","about_repos_loading":"Loading projects from GitHub…","about_repos_no_desc":"No description provided.","about_repos_error":"Projects are temporarily unavailable. Visit GitHub instead.","about_email_label":"Email","nav_journal":"Journal","about_me":"About me","browse_journal":"Browse the journal","home_selected_title":"Ideas worth exploring","home_selected_all":"All articles","home_read_story":"Read the story","hero_title_1":"Build systems.","hero_title_2":"Understand complexity.","hero_intro":"I'm DYL521, an engineer working with AI and backend systems. This is where I document what I build, what I learn, and the questions along the way.","hero_cta":"Explore the journal","hero_strip":"An evolving collection of engineering notes","hero_strip_articles":"ARTICLES","home_topics_title":"Follow a thread","home_topics_all":"All topics ↗","unit_articles":"articles","home_recent_title":"Fresh from the notebook","home_recent_all":"View all ↗","home_now_title":"Stay curious. Keep building.","home_now_body":"What I'm exploring now. Perhaps the beginning of the next story.","skip_link":"Skip to content","cover_alt":"concept art","search_loading":"Searching…","copy":"Copy","copy_success":"Copied","copy_failed":"Failed","code_copy":"Copy code","diagram_copy":"Copy diagram source","diagram_toggle":"Toggle diagram source","diagram_view":"Diagram","diagram_source":"Source","diagram_collapse":"Collapse","diagram_expand":"Expand","diagram_zoom":"Fullscreen","media_collapse":"Collapse","media_expand":"Expand","media_zoom":"Zoom","media_image_label":"Image","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Reset zoom","resume_print":"Print / Save PDF","resume_switch_en":"English Version","resume_switch_zh":"中文简历","post_updated_prefix":"Updated","post_tags_label":"Tags","back_to_top":"Back to top","nav_menu_toggle":"Toggle menu","lang_toggle_label":"Toggle language","search_close":"Close search","toc_toggle":"Toggle table of contents","lightbox_close":"Close image preview"}}
     </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
@@ -55,7 +67,7 @@
         <a href="../../../../../index.html" class="logo"><span class="brand-symbol" aria-hidden="true">✳</span> DYL521<span class="brand-period">.</span></a>
         <span class="tagline">THE ENGINEERING JOURNAL</span>
     </div>
-    <div class="nav-links" data-fx-navlinks>
+    <div class="nav-links">
         
             
             <a href="../../../../../index.html" class="nav-link " data-i18n="index">首页</a>
@@ -77,14 +89,14 @@
         
     </div>
     <div class="nav-actions">
-        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <button type="button" id="dyl-mobile-menu-toggle" class="mobile-menu-toggle" data-i18n-aria-label="nav_menu_toggle" aria-label="切换菜单" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
         </button>
-        <button type="button" id="dyl-lang-toggle" aria-label="Toggle language">中 / EN</button>
-        <button type="button" id="dyl-theme-toggle" class="theme-toggle" aria-label="切换主题" aria-pressed="true">☀</button>
-        <button type="button" id="dyl-search-trigger" class="search-icon" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button type="button" id="dyl-lang-toggle" data-i18n-aria-label="lang_toggle_label" aria-label="切换语言">中 / EN</button>
+        <button type="button" id="dyl-theme-toggle" class="theme-toggle" data-i18n-aria-label="theme_toggle" aria-label="切换主题" aria-pressed="true">☀</button>
+        <button type="button" id="dyl-search-trigger" class="search-icon" data-i18n-aria-label="search" aria-label="搜索"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><kbd class="search-kbd" aria-hidden="true">⌘K</kbd></button>
     </div>
 </nav>
 <!-- Kept outside #dyl-nav: its backdrop-filter turns it into the containing
@@ -111,7 +123,7 @@
     
 </div>
 
-    <main id="main-content"><article class="article-page" data-fx-pad>
+    <main id="main-content"><article class="article-page">
     
     <div class="article-grid">
         <div class="article-main">
@@ -120,14 +132,19 @@
             
             
             
-            <div class="breadcrumb"><a href="../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
             
-            <h1 class="article-title" data-reveal>Go 常见面试题</h1>
-            <div class="article-meta" data-reveal>
-                <span class="meta-badge">面试题</span>
+            
+            
+            
+            
+            <div class="breadcrumb"><a href="../../../../../posts/" data-i18n="nav_journal">文章</a><span> / </span><span>2026</span></div>
+            <h1 class="article-title">Go 常见面试题</h1>
+            <div class="article-meta">
+                <span class="meta-badge"><span data-zh="面试题" data-en="Interview">面试题</span></span>
                 <span>2026-09-04</span>
-                <span>· 226 <span data-i18n="post_read_suffix">分钟阅读</span></span>
-                <span>· 67680 <span data-i18n="post_words_suffix">字</span></span>
+                
+                <span>· 160 <span data-i18n="post_read_suffix">分钟阅读</span></span>
+                <span>· 47851 <span data-i18n="post_words_suffix">字</span></span>
             </div>
             
 
@@ -137,7 +154,13 @@
             </figure>
             
 
-            <div class="article-body" data-reveal>
+            
+            
+            
+                
+                
+            
+            <div class="article-body">
                 <p><a target="_blank" rel="noopener" href="https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1">https://python-web-guide.readthedocs.io/zh/latest/go-note/web.html#id1</a></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://markdown.lovejade.cn/">https://markdown.lovejade.cn/</a></li>
@@ -3904,7 +3927,18 @@ err <span class="token operator">:=</span> fmt<span class="token punctuation">.<
             </div>
 
             
-            <div class="article-nav" data-reveal>
+            <div class="article-tags">
+                <span class="article-tags-label" data-i18n="post_tags_label">标签</span>
+                
+                <a href="../../../../../tag/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-tag-pill">#面试题</a>
+                
+                <a href="../../../../../tag/Go/" class="article-tag-pill">#Go</a>
+                
+            </div>
+            
+
+            
+            <div class="article-nav">
                 
                 <a href="../../../../10/15/07.%E9%9D%A2%E8%AF%95%E9%A2%98/1.%20AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/" class="nav-card">
                     <div class="nav-label" data-i18n="post_prev_label">上一篇</div>
@@ -3927,927 +3961,1294 @@ err <span class="token operator">:=</span> fmt<span class="token punctuation">.<
             
         
         
-        <aside class="toc" data-fx-toc>
+        <aside class="toc">
             <div class="toc-header" id="dyl-toc-header">
                 <div class="toc-label">// <span data-i18n="post_toc_label">本页目录</span></div>
-                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" aria-label="Toggle table of contents">&#9660;</button>
+                <button type="button" class="toc-toggle" id="dyl-toc-toggle" aria-expanded="true" aria-controls="dyl-toc-list" data-i18n-aria-label="toc_toggle" aria-label="展开或收起目录">&#9660;</button>
             </div>
-            <div class="toc-list" id="dyl-toc-list">
+            <div class="toc-list toc--compact" id="dyl-toc-list">
                 
+                
+                    
                     
                     
                     
-                    <a href="#目录" class="toc-item">目录</a>
+                    
+                    <a href="#目录" class="toc-item" data-toc-group="1">目录</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#11-newt" class="toc-item">1.1 new(T)</a>
+                    <a href="#11-newt" class="toc-item" data-toc-group="2">1.1 new(T)</a>
                 
                     
                     
                     
-                    <a href="#12-maket-args" class="toc-item">1.2 make(T, args)</a>
+                    
+                    
+                    <a href="#12-maket-args" class="toc-item" data-toc-group="3">1.2 make(T, args)</a>
                 
+                    
                     
                     
                     
-                    <a href="#13-代码对比" class="toc-item">1.3 代码对比</a>
+                    
+                    <a href="#13-代码对比" class="toc-item" data-toc-group="4">1.3 代码对比</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#14-总结" class="toc-item">1.4 总结</a>
+                    <a href="#14-总结" class="toc-item" data-toc-group="5">1.4 总结</a>
                 
                     
                     
                     
-                    <a href="#21-声明和初始化" class="toc-item">2.1 声明和初始化</a>
+                    
+                    
+                    <a href="#21-声明和初始化" class="toc-item" data-toc-group="6">2.1 声明和初始化</a>
                 
                     
                     
                     
-                    <a href="#22-类型特性" class="toc-item">2.2 类型特性</a>
+                    
+                    
+                    <a href="#22-类型特性" class="toc-item" data-toc-group="7">2.2 类型特性</a>
                 
+                    
                     
                     
                     
-                    <a href="#23-长度和容量" class="toc-item">2.3 长度和容量</a>
+                    
+                    <a href="#23-长度和容量" class="toc-item" data-toc-group="8">2.3 长度和容量</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#24-函数传递" class="toc-item">2.4 函数传递</a>
+                    <a href="#24-函数传递" class="toc-item" data-toc-group="9">2.4 函数传递</a>
                 
                     
                     
                     
-                    <a href="#25-切片的底层结构" class="toc-item">2.5 切片的底层结构</a>
+                    
+                    
+                    <a href="#25-切片的底层结构" class="toc-item" data-toc-group="10">2.5 切片的底层结构</a>
                 
+                    
                     
                     
                     
-                    <a href="#26-使用场景" class="toc-item">2.6 使用场景</a>
+                    
+                    <a href="#26-使用场景" class="toc-item" data-toc-group="11">2.6 使用场景</a>
                 
+                    
                     
                     
                     
-                    <a href="#27-数组转切片" class="toc-item">2.7 数组转切片</a>
+                    
+                    <a href="#27-数组转切片" class="toc-item" data-toc-group="12">2.7 数组转切片</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#28-最佳实践建议" class="toc-item">2.8 最佳实践建议</a>
+                    <a href="#28-最佳实践建议" class="toc-item" data-toc-group="13">2.8 最佳实践建议</a>
                 
                     
                     
                     
-                    <a href="#31-基本现象" class="toc-item">3.1 基本现象</a>
+                    
+                    
+                    <a href="#31-基本现象" class="toc-item" data-toc-group="14">3.1 基本现象</a>
                 
+                    
                     
                     
                     
-                    <a href="#32-常见陷阱-指针切片" class="toc-item">3.2 常见陷阱-指针切片</a>
+                    
+                    <a href="#32-常见陷阱-指针切片" class="toc-item" data-toc-group="15">3.2 常见陷阱-指针切片</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#33-闭包陷阱" class="toc-item">3.3 闭包陷阱</a>
+                    <a href="#33-闭包陷阱" class="toc-item" data-toc-group="16">3.3 闭包陷阱</a>
                 
                     
                     
                     
-                    <a href="#34-goroutine-陷阱" class="toc-item">3.4. goroutine 陷阱</a>
+                    
+                    
+                    <a href="#34-goroutine-陷阱" class="toc-item" data-toc-group="17">3.4. goroutine 陷阱</a>
                 
+                    
                     
                     
                     
-                    <a href="#35-结构体切片的陷阱" class="toc-item">3.5. 结构体切片的陷阱</a>
+                    
+                    <a href="#35-结构体切片的陷阱" class="toc-item" data-toc-group="18">3.5. 结构体切片的陷阱</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#36-map遍历" class="toc-item">3.6. map遍历</a>
+                    <a href="#36-map遍历" class="toc-item" data-toc-group="19">3.6. map遍历</a>
                 
                     
                     
                     
-                    <a href="#41-defer基本原理" class="toc-item">4.1 defer基本原理</a>
+                    
+                    
+                    <a href="#41-defer基本原理" class="toc-item" data-toc-group="20">4.1 defer基本原理</a>
                 
+                    
                     
                     
                     
-                    <a href="#42-多个defer的执行顺序" class="toc-item">4.2 多个defer的执行顺序</a>
+                    
+                    <a href="#42-多个defer的执行顺序" class="toc-item" data-toc-group="21">4.2 多个defer的执行顺序</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#43-defer修改返回值的时机" class="toc-item">4.3 defer修改返回值的时机</a>
+                    <a href="#43-defer修改返回值的时机" class="toc-item" data-toc-group="22">4.3 defer修改返回值的时机</a>
                 
                     
                     
                     
-                    <a href="#431-命名返回值示例" class="toc-item">4.3.1 命名返回值示例</a>
+                    
+                    
+                    <a href="#431-命名返回值示例" class="toc-item toc-item--sub" data-toc-group="22">4.3.1 命名返回值示例</a>
                 
                     
                     
                     
-                    <a href="#432-匿名返回值示例" class="toc-item">4.3.2 匿名返回值示例</a>
+                    
+                    
+                    <a href="#432-匿名返回值示例" class="toc-item toc-item--sub" data-toc-group="22">4.3.2 匿名返回值示例</a>
                 
+                    
                     
                     
                     
-                    <a href="#433-返回指针引用类型-defer-可以修改" class="toc-item">4.3.3 返回指针/引用类型 - defer 可以修改</a>
+                    
+                    <a href="#433-返回指针引用类型-defer-可以修改" class="toc-item toc-item--sub" data-toc-group="22">4.3.3 返回指针/引用类型 - defer 可以修改</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#44-defer的参数求值时机" class="toc-item">4.4 defer的参数求值时机</a>
+                    <a href="#44-defer的参数求值时机" class="toc-item" data-toc-group="23">4.4 defer的参数求值时机</a>
                 
                     
                     
                     
-                    <a href="#51-基本概念" class="toc-item">5.1 基本概念</a>
+                    
+                    
+                    <a href="#51-基本概念" class="toc-item" data-toc-group="24">5.1 基本概念</a>
                 
+                    
                     
                     
                     
-                    <a href="#52-溢出行为" class="toc-item">5.2 溢出行为</a>
+                    
+                    <a href="#52-溢出行为" class="toc-item" data-toc-group="25">5.2 溢出行为</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#53-实际场景" class="toc-item">5.3 实际场景</a>
+                    <a href="#53-实际场景" class="toc-item" data-toc-group="26">5.3 实际场景</a>
                 
                     
                     
                     
-                    <a href="#54-防止溢出的方法" class="toc-item">5.4 防止溢出的方法</a>
+                    
+                    
+                    <a href="#54-防止溢出的方法" class="toc-item" data-toc-group="27">5.4 防止溢出的方法</a>
                 
+                    
                     
                     
                     
-                    <a href="#61-基本概念" class="toc-item">6.1 基本概念</a>
+                    
+                    <a href="#61-基本概念" class="toc-item" data-toc-group="28">6.1 基本概念</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#62-rune与字符的关系" class="toc-item">6.2 rune与字符的关系</a>
+                    <a href="#62-rune与字符的关系" class="toc-item" data-toc-group="29">6.2 rune与字符的关系</a>
                 
                     
                     
                     
-                    <a href="#63-rune与字符串的关系" class="toc-item">6.3 rune与字符串的关系</a>
+                    
+                    
+                    <a href="#63-rune与字符串的关系" class="toc-item" data-toc-group="30">6.3 rune与字符串的关系</a>
                 
+                    
                     
                     
                     
-                    <a href="#64-rune的使用场景" class="toc-item">6.4 rune的使用场景</a>
+                    
+                    <a href="#64-rune的使用场景" class="toc-item" data-toc-group="31">6.4 rune的使用场景</a>
                 
+                    
                     
                     
                     
-                    <a href="#65-性能考虑" class="toc-item">6.5 性能考虑</a>
+                    
+                    <a href="#65-性能考虑" class="toc-item" data-toc-group="32">6.5 性能考虑</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#71-struct-tag-是什么为什么能被解析" class="toc-item">7.1 struct tag 是什么？为什么能被解析？</a>
+                    <a href="#71-struct-tag-是什么为什么能被解析" class="toc-item" data-toc-group="33">7.1 struct tag 是什么？为什么能被解析？</a>
                 
                     
                     
                     
-                    <a href="#72-go是怎么解析tag的" class="toc-item">7.2 Go是怎么解析tag的？</a>
+                    
+                    
+                    <a href="#72-go是怎么解析tag的" class="toc-item" data-toc-group="34">7.2 Go是怎么解析tag的？</a>
                 
+                    
                     
                     
                     
-                    <a href="#81-go里面只有值传递那为什么还有指针" class="toc-item">8.1 Go里面只有值传递，那为什么还有指针？</a>
+                    
+                    <a href="#81-go里面只有值传递那为什么还有指针" class="toc-item" data-toc-group="35">8.1 Go里面只有值传递，那为什么还有指针？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#82-什么时候一定要传指针" class="toc-item">8.2 什么时候一定要传指针？</a>
+                    <a href="#82-什么时候一定要传指针" class="toc-item" data-toc-group="36">8.2 什么时候一定要传指针？</a>
                 
                     
                     
                     
-                    <a href="#821-函数需要修改结构体最重要" class="toc-item">8.2.1 函数需要修改结构体（最重要）</a>
+                    
+                    
+                    <a href="#821-函数需要修改结构体最重要" class="toc-item toc-item--sub" data-toc-group="36">8.2.1 函数需要修改结构体（最重要）</a>
                 
+                    
                     
                     
                     
-                    <a href="#822-结构体较大" class="toc-item">8.2.2 结构体较大</a>
+                    
+                    <a href="#822-结构体较大" class="toc-item toc-item--sub" data-toc-group="36">8.2.2 结构体较大</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#823-需要保持语义一致性" class="toc-item">8.2.3 需要保持语义一致性</a>
+                    <a href="#823-需要保持语义一致性" class="toc-item toc-item--sub" data-toc-group="36">8.2.3 需要保持语义一致性</a>
                 
                     
                     
                     
-                    <a href="#824-避免拷贝导致的隐藏-bug" class="toc-item">8.2.4 避免拷贝导致的“隐藏 Bug”</a>
+                    
+                    
+                    <a href="#824-避免拷贝导致的隐藏-bug" class="toc-item toc-item--sub" data-toc-group="36">8.2.4 避免拷贝导致的“隐藏 Bug”</a>
                 
+                    
                     
                     
                     
-                    <a href="#83-什么时候传值" class="toc-item">8.3 什么时候传值？</a>
+                    
+                    <a href="#83-什么时候传值" class="toc-item" data-toc-group="37">8.3 什么时候传值？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#831-结构体很小-不可变语义" class="toc-item">8.3.1 结构体很小 + 不可变语义</a>
+                    <a href="#831-结构体很小-不可变语义" class="toc-item toc-item--sub" data-toc-group="37">8.3.1 结构体很小 + 不可变语义</a>
                 
                     
                     
                     
-                    <a href="#832-只读场景-明确不修改" class="toc-item">8.3.2 只读场景 + 明确不修改</a>
+                    
+                    
+                    <a href="#832-只读场景-明确不修改" class="toc-item toc-item--sub" data-toc-group="37">8.3.2 只读场景 + 明确不修改</a>
                 
                     
                     
                     
-                    <a href="#833-避免-nil稳定性" class="toc-item">8.3.3 避免 nil（稳定性）</a>
+                    
+                    
+                    <a href="#833-避免-nil稳定性" class="toc-item toc-item--sub" data-toc-group="37">8.3.3 避免 nil（稳定性）</a>
                 
+                    
                     
                     
                     
-                    <a href="#834-高并发-不希望共享状态" class="toc-item">8.3.4 高并发 / 不希望共享状态</a>
+                    
+                    <a href="#834-高并发-不希望共享状态" class="toc-item toc-item--sub" data-toc-group="37">8.3.4 高并发 / 不希望共享状态</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#84-总结" class="toc-item">8.4 总结</a>
+                    <a href="#84-总结" class="toc-item" data-toc-group="38">8.4 总结</a>
                 
                     
                     
                     
-                    <a href="#91-append-导致原数据被悄悄改掉" class="toc-item">9.1 append 导致原数据被悄悄改掉</a>
+                    
+                    
+                    <a href="#91-append-导致原数据被悄悄改掉" class="toc-item" data-toc-group="39">9.1 append 导致原数据被悄悄改掉</a>
                 
+                    
                     
                     
                     
-                    <a href="#92-for-range-append-导致逻辑错误" class="toc-item">9.2 for range + append 导致逻辑错误</a>
+                    
+                    <a href="#92-for-range-append-导致逻辑错误" class="toc-item" data-toc-group="40">9.2 for range + append 导致逻辑错误</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#93-sub-slice-导致内存泄漏" class="toc-item">9.3 sub-slice 导致内存泄漏</a>
+                    <a href="#93-sub-slice-导致内存泄漏" class="toc-item" data-toc-group="41">9.3 sub-slice 导致内存泄漏</a>
                 
                     
                     
                     
-                    <a href="#94-append-扩容后旧指针悬空" class="toc-item">9.4 append 扩容后旧指针悬空</a>
+                    
+                    
+                    <a href="#94-append-扩容后旧指针悬空" class="toc-item" data-toc-group="42">9.4 append 扩容后旧指针悬空</a>
                 
+                    
                     
                     
                     
-                    <a href="#95-并发读写-slice-导致数据竞态" class="toc-item">9.5 并发读写 slice 导致数据竞态</a>
+                    
+                    <a href="#95-并发读写-slice-导致数据竞态" class="toc-item" data-toc-group="43">9.5 并发读写 slice 导致数据竞态</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#96-make-参数理解错误" class="toc-item">9.6 make 参数理解错误</a>
+                    <a href="#96-make-参数理解错误" class="toc-item" data-toc-group="44">9.6 make 参数理解错误</a>
                 
                     
                     
                     
-                    <a href="#97-删除元素时的内存残留" class="toc-item">9.7 删除元素时的内存残留</a>
+                    
+                    
+                    <a href="#97-删除元素时的内存残留" class="toc-item" data-toc-group="45">9.7 删除元素时的内存残留</a>
                 
+                    
                     
                     
                     
-                    <a href="#98-总结" class="toc-item">9.8 总结</a>
+                    
+                    <a href="#98-总结" class="toc-item" data-toc-group="46">9.8 总结</a>
                 
+                    
                     
                     
                     
-                    <a href="#101-基本规则" class="toc-item">10.1 基本规则</a>
+                    
+                    <a href="#101-基本规则" class="toc-item" data-toc-group="47">10.1 基本规则</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#102-比较规则详解" class="toc-item">10.2 比较规则详解</a>
+                    <a href="#102-比较规则详解" class="toc-item" data-toc-group="48">10.2 比较规则详解</a>
                 
                     
                     
                     
-                    <a href="#103-实际示例" class="toc-item">10.3 实际示例</a>
+                    
+                    
+                    <a href="#103-实际示例" class="toc-item" data-toc-group="49">10.3 实际示例</a>
                 
+                    
                     
                     
                     
-                    <a href="#104-特殊情况" class="toc-item">10.4 特殊情况</a>
+                    
+                    <a href="#104-特殊情况" class="toc-item" data-toc-group="50">10.4 特殊情况</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#105-最佳实践" class="toc-item">10.5 最佳实践</a>
+                    <a href="#105-最佳实践" class="toc-item" data-toc-group="51">10.5 最佳实践</a>
                 
                     
                     
                     
-                    <a href="#111-什么是闭包" class="toc-item">11.1 什么是闭包？</a>
+                    
+                    
+                    <a href="#111-什么是闭包" class="toc-item" data-toc-group="52">11.1 什么是闭包？</a>
                 
+                    
                     
                     
                     
-                    <a href="#112-闭包的基本特性" class="toc-item">11.2 闭包的基本特性</a>
+                    
+                    <a href="#112-闭包的基本特性" class="toc-item" data-toc-group="53">11.2 闭包的基本特性</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#113-闭包的常见陷阱" class="toc-item">11.3 闭包的常见陷阱</a>
+                    <a href="#113-闭包的常见陷阱" class="toc-item" data-toc-group="54">11.3 闭包的常见陷阱</a>
                 
                     
                     
                     
-                    <a href="#1131-循环变量陷阱" class="toc-item">11.3.1 循环变量陷阱</a>
+                    
+                    
+                    <a href="#1131-循环变量陷阱" class="toc-item toc-item--sub" data-toc-group="54">11.3.1 循环变量陷阱</a>
                 
+                    
                     
                     
                     
-                    <a href="#1132-goroutine闭包陷阱" class="toc-item">11.3.2 goroutine闭包陷阱</a>
+                    
+                    <a href="#1132-goroutine闭包陷阱" class="toc-item toc-item--sub" data-toc-group="54">11.3.2 goroutine闭包陷阱</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#114-闭包的实际应用" class="toc-item">11.4 闭包的实际应用</a>
+                    <a href="#114-闭包的实际应用" class="toc-item" data-toc-group="55">11.4 闭包的实际应用</a>
                 
                     
                     
                     
-                    <a href="#1141-函数工厂" class="toc-item">11.4.1 函数工厂</a>
+                    
+                    
+                    <a href="#1141-函数工厂" class="toc-item toc-item--sub" data-toc-group="55">11.4.1 函数工厂</a>
                 
                     
                     
                     
-                    <a href="#1142-装饰器模式" class="toc-item">11.4.2 装饰器模式</a>
+                    
+                    
+                    <a href="#1142-装饰器模式" class="toc-item toc-item--sub" data-toc-group="55">11.4.2 装饰器模式</a>
                 
+                    
                     
                     
                     
-                    <a href="#1143-延迟计算" class="toc-item">11.4.3 延迟计算</a>
+                    
+                    <a href="#1143-延迟计算" class="toc-item toc-item--sub" data-toc-group="55">11.4.3 延迟计算</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#115-闭包与内存管理" class="toc-item">11.5 闭包与内存管理</a>
+                    <a href="#115-闭包与内存管理" class="toc-item" data-toc-group="56">11.5 闭包与内存管理</a>
                 
                     
                     
                     
-                    <a href="#116-闭包的最佳实践" class="toc-item">11.6 闭包的最佳实践</a>
+                    
+                    
+                    <a href="#116-闭包的最佳实践" class="toc-item" data-toc-group="57">11.6 闭包的最佳实践</a>
                 
+                    
                     
                     
                     
-                    <a href="#121-context-结构是什么样的" class="toc-item">12.1、context 结构是什么样的？</a>
+                    
+                    <a href="#121-context-结构是什么样的" class="toc-item" data-toc-group="58">12.1、context 结构是什么样的？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1211-context接口定义" class="toc-item">12.1.1 Context接口定义</a>
+                    <a href="#1211-context接口定义" class="toc-item toc-item--sub" data-toc-group="58">12.1.1 Context接口定义</a>
                 
                     
                     
                     
-                    <a href="#1212-context的继承结构" class="toc-item">12.1.2 Context的继承结构</a>
+                    
+                    
+                    <a href="#1212-context的继承结构" class="toc-item toc-item--sub" data-toc-group="58">12.1.2 Context的继承结构</a>
                 
+                    
                     
                     
                     
-                    <a href="#122-context-使用场景和用途基本必问" class="toc-item">12.2、context 使用场景和用途？（基本必问）</a>
+                    
+                    <a href="#122-context-使用场景和用途基本必问" class="toc-item" data-toc-group="59">12.2、context 使用场景和用途？（基本必问）</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1221-主要使用场景" class="toc-item">12.2.1 主要使用场景</a>
+                    <a href="#1221-主要使用场景" class="toc-item toc-item--sub" data-toc-group="59">12.2.1 主要使用场景</a>
                 
                     
                     
                     
-                    <a href="#1222-实际应用示例" class="toc-item">12.2.2 实际应用示例</a>
+                    
+                    
+                    <a href="#1222-实际应用示例" class="toc-item toc-item--sub" data-toc-group="59">12.2.2 实际应用示例</a>
                 
+                    
                     
                     
                     
-                    <a href="#1223-context的最佳实践" class="toc-item">12.2.3 Context的最佳实践</a>
+                    
+                    <a href="#1223-context的最佳实践" class="toc-item toc-item--sub" data-toc-group="59">12.2.3 Context的最佳实践</a>
                 
+                    
                     
                     
                     
-                    <a href="#1224-context使用注意事项" class="toc-item">12.2.4 Context使用注意事项</a>
+                    
+                    <a href="#1224-context使用注意事项" class="toc-item toc-item--sub" data-toc-group="59">12.2.4 Context使用注意事项</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#131-channel-是纯线程安全锁用在什么地方" class="toc-item">13.1、channel 是纯线程安全？锁用在什么地方？</a>
+                    <a href="#131-channel-是纯线程安全锁用在什么地方" class="toc-item" data-toc-group="60">13.1、channel 是纯线程安全？锁用在什么地方？</a>
                 
                     
                     
                     
-                    <a href="#1311-内部锁机制" class="toc-item">13.1.1 内部锁机制</a>
+                    
+                    
+                    <a href="#1311-内部锁机制" class="toc-item toc-item--sub" data-toc-group="60">13.1.1 内部锁机制</a>
                 
+                    
                     
                     
                     
-                    <a href="#1312-安全操作与不安全操作" class="toc-item">13.1.2 安全操作与不安全操作</a>
+                    
+                    <a href="#1312-安全操作与不安全操作" class="toc-item toc-item--sub" data-toc-group="60">13.1.2 安全操作与不安全操作</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1313-适用场景" class="toc-item">13.1.3 适用场景</a>
+                    <a href="#1313-适用场景" class="toc-item toc-item--sub" data-toc-group="60">13.1.3 适用场景</a>
                 
                     
                     
                     
-                    <a href="#132-go-channel-的底层实现原理数据结构" class="toc-item">13.2、go channel 的底层实现原理（数据结构）</a>
+                    
+                    
+                    <a href="#132-go-channel-的底层实现原理数据结构" class="toc-item" data-toc-group="61">13.2、go channel 的底层实现原理（数据结构）</a>
                 
+                    
                     
                     
                     
-                    <a href="#1321-底层实现数据结构" class="toc-item">13.2.1 底层实现数据结构</a>
+                    
+                    <a href="#1321-底层实现数据结构" class="toc-item toc-item--sub" data-toc-group="61">13.2.1 底层实现数据结构</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1322-channel类型性能对比" class="toc-item">13.2.2 channel类型性能对比</a>
+                    <a href="#1322-channel类型性能对比" class="toc-item toc-item--sub" data-toc-group="61">13.2.2 channel类型性能对比</a>
                 
                     
                     
                     
-                    <a href="#133-nil-关闭的-channel-有数据的-channel再进行读-写-关闭会怎么样各类变种题型" class="toc-item">13.3、nil、关闭的 channel、有数据的 channel，再进行读、写、关闭会怎么样？（各类变种题型）</a>
+                    
+                    
+                    <a href="#133-nil-关闭的-channel-有数据的-channel再进行读-写-关闭会怎么样各类变种题型" class="toc-item" data-toc-group="62">13.3、nil、关闭的 channel、有数据的 channel，再进行读、写、关闭会怎么样？（各类变种题型）</a>
                 
+                    
                     
                     
                     
-                    <a href="#1331-各类操作汇总表" class="toc-item">13.3.1 各类操作汇总表</a>
+                    
+                    <a href="#1331-各类操作汇总表" class="toc-item toc-item--sub" data-toc-group="62">13.3.1 各类操作汇总表</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1332-详细代码示例" class="toc-item">13.3.2 详细代码示例</a>
+                    <a href="#1332-详细代码示例" class="toc-item toc-item--sub" data-toc-group="62">13.3.2 详细代码示例</a>
                 
                     
                     
                     
-                    <a href="#1333-常见面试题变种" class="toc-item">13.3.3 常见面试题变种</a>
+                    
+                    
+                    <a href="#1333-常见面试题变种" class="toc-item toc-item--sub" data-toc-group="62">13.3.3 常见面试题变种</a>
                 
                     
                     
                     
-                    <a href="#134-向-channel-发送数据和从-channel-读数据的流程是什么样的" class="toc-item">13.4、向 channel 发送数据和从 channel 读数据的流程是什么样的？</a>
+                    
+                    
+                    <a href="#134-向-channel-发送数据和从-channel-读数据的流程是什么样的" class="toc-item" data-toc-group="63">13.4、向 channel 发送数据和从 channel 读数据的流程是什么样的？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1341-发送操作流程" class="toc-item">13.4.1 发送操作流程</a>
+                    
+                    <a href="#1341-发送操作流程" class="toc-item toc-item--sub" data-toc-group="63">13.4.1 发送操作流程</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1342-接收操作流程" class="toc-item">13.4.2 接收操作流程</a>
+                    <a href="#1342-接收操作流程" class="toc-item toc-item--sub" data-toc-group="63">13.4.2 接收操作流程</a>
                 
                     
                     
                     
-                    <a href="#141-map-使用注意的点并发安全" class="toc-item">14.1、map 使用注意的点，并发安全？</a>
+                    
+                    
+                    <a href="#141-map-使用注意的点并发安全" class="toc-item" data-toc-group="64">14.1、map 使用注意的点，并发安全？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1411-基本特性" class="toc-item">14.1.1 基本特性</a>
+                    
+                    <a href="#1411-基本特性" class="toc-item toc-item--sub" data-toc-group="64">14.1.1 基本特性</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1412-并发安全问题" class="toc-item">14.1.2 并发安全问题</a>
+                    <a href="#1412-并发安全问题" class="toc-item toc-item--sub" data-toc-group="64">14.1.2 并发安全问题</a>
                 
                     
                     
                     
-                    <a href="#1413-解决并发安全的方法" class="toc-item">14.1.3 解决并发安全的方法</a>
+                    
+                    
+                    <a href="#1413-解决并发安全的方法" class="toc-item toc-item--sub" data-toc-group="64">14.1.3 解决并发安全的方法</a>
                 
+                    
                     
                     
                     
-                    <a href="#142-map-循环是有序的还是无序的" class="toc-item">14.2、map 循环是有序的还是无序的？</a>
+                    
+                    <a href="#142-map-循环是有序的还是无序的" class="toc-item" data-toc-group="65">14.2、map 循环是有序的还是无序的？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1421-无序性演示" class="toc-item">14.2.1 无序性演示</a>
+                    <a href="#1421-无序性演示" class="toc-item toc-item--sub" data-toc-group="65">14.2.1 无序性演示</a>
                 
                     
                     
                     
-                    <a href="#1422-确保有序遍历的方法" class="toc-item">14.2.2 确保有序遍历的方法</a>
+                    
+                    
+                    <a href="#1422-确保有序遍历的方法" class="toc-item toc-item--sub" data-toc-group="65">14.2.2 确保有序遍历的方法</a>
                 
+                    
                     
                     
                     
-                    <a href="#143-map-中删除一个-key它的内存会释放么" class="toc-item">14.3、map 中删除一个 key，它的内存会释放么？</a>
+                    
+                    <a href="#143-map-中删除一个-key它的内存会释放么" class="toc-item" data-toc-group="66">14.3、map 中删除一个 key，它的内存会释放么？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1431-内存释放机制" class="toc-item">14.3.1 内存释放机制</a>
+                    
+                    <a href="#1431-内存释放机制" class="toc-item toc-item--sub" data-toc-group="66">14.3.1 内存释放机制</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1432-关键结论delete-不会缩容" class="toc-item">14.3.2 关键结论：delete 不会缩容</a>
+                    <a href="#1432-关键结论delete-不会缩容" class="toc-item toc-item--sub" data-toc-group="66">14.3.2 关键结论：delete 不会缩容</a>
                 
                     
                     
                     
-                    <a href="#144-怎么处理对-map-进行并发访问有没有其他方案区别是什么" class="toc-item">14.4、怎么处理对 map 进行并发访问？有没有其他方案？区别是什么？</a>
+                    
+                    
+                    <a href="#144-怎么处理对-map-进行并发访问有没有其他方案区别是什么" class="toc-item" data-toc-group="67">14.4、怎么处理对 map 进行并发访问？有没有其他方案？区别是什么？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1441-各种方案对比" class="toc-item">14.4.1 各种方案对比</a>
+                    
+                    <a href="#1441-各种方案对比" class="toc-item toc-item--sub" data-toc-group="67">14.4.1 各种方案对比</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1442-方案选择策略" class="toc-item">14.4.2 方案选择策略</a>
+                    <a href="#1442-方案选择策略" class="toc-item toc-item--sub" data-toc-group="67">14.4.2 方案选择策略</a>
                 
                     
                     
                     
-                    <a href="#145-nil-map-和空-map-有何不同" class="toc-item">14.5、nil map 和空 map 有何不同？</a>
+                    
+                    
+                    <a href="#145-nil-map-和空-map-有何不同" class="toc-item" data-toc-group="68">14.5、nil map 和空 map 有何不同？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1451-基本区别" class="toc-item">14.5.1 基本区别</a>
+                    
+                    <a href="#1451-基本区别" class="toc-item toc-item--sub" data-toc-group="68">14.5.1 基本区别</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1452-安全操作-nil-map-的方法" class="toc-item">14.5.2 安全操作 nil map 的方法</a>
+                    <a href="#1452-安全操作-nil-map-的方法" class="toc-item toc-item--sub" data-toc-group="68">14.5.2 安全操作 nil map 的方法</a>
                 
                     
                     
                     
-                    <a href="#146-map-的数据结构是什么是怎么实现扩容的" class="toc-item">14.6、map 的数据结构是什么？是怎么实现扩容的？</a>
+                    
+                    
+                    <a href="#146-map-的数据结构是什么是怎么实现扩容的" class="toc-item" data-toc-group="69">14.6、map 的数据结构是什么？是怎么实现扩容的？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1461-底层实现结构" class="toc-item">14.6.1 底层实现结构</a>
+                    
+                    <a href="#1461-底层实现结构" class="toc-item toc-item--sub" data-toc-group="69">14.6.1 底层实现结构</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1462-扩容机制" class="toc-item">14.6.2 扩容机制</a>
+                    <a href="#1462-扩容机制" class="toc-item toc-item--sub" data-toc-group="69">14.6.2 扩容机制</a>
                 
                     
                     
                     
-                    <a href="#147-map-取一个-key然后修改这个值原-map-数据的值会不会变化" class="toc-item">14.7、map 取一个 key，然后修改这个值，原 map 数据的值会不会变化</a>
+                    
+                    
+                    <a href="#147-map-取一个-key然后修改这个值原-map-数据的值会不会变化" class="toc-item" data-toc-group="70">14.7、map 取一个 key，然后修改这个值，原 map 数据的值会不会变化</a>
                 
                     
                     
                     
-                    <a href="#1471-基本规则" class="toc-item">14.7.1 基本规则</a>
+                    
+                    
+                    <a href="#1471-基本规则" class="toc-item toc-item--sub" data-toc-group="70">14.7.1 基本规则</a>
                 
+                    
                     
                     
                     
-                    <a href="#151-什么是-gmp必问调度流程是什么样的对流程熟悉要求更高问的较多" class="toc-item">15.1、什么是 GMP？（必问）调度流程是什么样的？（对流程熟悉，要求更高，问的较多）</a>
+                    
+                    <a href="#151-什么是-gmp必问调度流程是什么样的对流程熟悉要求更高问的较多" class="toc-item" data-toc-group="71">15.1、什么是 GMP？（必问）调度流程是什么样的？（对流程熟悉，要求更高，问的较多）</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1511-基本概念" class="toc-item">15.1.1 基本概念</a>
+                    <a href="#1511-基本概念" class="toc-item toc-item--sub" data-toc-group="71">15.1.1 基本概念</a>
                 
                     
                     
                     
-                    <a href="#1512-调度流程" class="toc-item">15.1.2 调度流程</a>
+                    
+                    
+                    <a href="#1512-调度流程" class="toc-item toc-item--sub" data-toc-group="71">15.1.2 调度流程</a>
                 
+                    
                     
                     
                     
-                    <a href="#1513-调度流程详解" class="toc-item">15.1.3 调度流程详解</a>
+                    
+                    <a href="#1513-调度流程详解" class="toc-item toc-item--sub" data-toc-group="71">15.1.3 调度流程详解</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#152-进程-线程-协程有什么区别" class="toc-item">15.2、进程、线程、协程有什么区别？</a>
+                    <a href="#152-进程-线程-协程有什么区别" class="toc-item" data-toc-group="72">15.2、进程、线程、协程有什么区别？</a>
                 
                     
                     
                     
-                    <a href="#1521-基本概念对比" class="toc-item">15.2.1 基本概念对比</a>
+                    
+                    
+                    <a href="#1521-基本概念对比" class="toc-item toc-item--sub" data-toc-group="72">15.2.1 基本概念对比</a>
                 
+                    
                     
                     
                     
-                    <a href="#1522-go协程的优势" class="toc-item">15.2.2 Go协程的优势</a>
+                    
+                    <a href="#1522-go协程的优势" class="toc-item toc-item--sub" data-toc-group="72">15.2.2 Go协程的优势</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#153-抢占式调度是如何抢占的" class="toc-item">15.3、抢占式调度是如何抢占的？</a>
+                    <a href="#153-抢占式调度是如何抢占的" class="toc-item" data-toc-group="73">15.3、抢占式调度是如何抢占的？</a>
                 
                     
                     
                     
-                    <a href="#1531-抢占触发条件" class="toc-item">15.3.1 抢占触发条件</a>
+                    
+                    
+                    <a href="#1531-抢占触发条件" class="toc-item toc-item--sub" data-toc-group="73">15.3.1 抢占触发条件</a>
                 
+                    
                     
                     
                     
-                    <a href="#1532-抢占实现机制" class="toc-item">15.3.2 抢占实现机制</a>
+                    
+                    <a href="#1532-抢占实现机制" class="toc-item toc-item--sub" data-toc-group="73">15.3.2 抢占实现机制</a>
                 
+                    
                     
                     
                     
-                    <a href="#154-m-和-p-的数量问题" class="toc-item">15.4、M 和 P 的数量问题？</a>
+                    
+                    <a href="#154-m-和-p-的数量问题" class="toc-item" data-toc-group="74">15.4、M 和 P 的数量问题？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1541-默认值与配置" class="toc-item">15.4.1 默认值与配置</a>
+                    <a href="#1541-默认值与配置" class="toc-item toc-item--sub" data-toc-group="74">15.4.1 默认值与配置</a>
                 
                     
                     
                     
-                    <a href="#1542-最佳实践" class="toc-item">15.4.2 最佳实践</a>
+                    
+                    
+                    <a href="#1542-最佳实践" class="toc-item toc-item--sub" data-toc-group="74">15.4.2 最佳实践</a>
                 
+                    
                     
                     
                     
-                    <a href="#155-协程怎么退出" class="toc-item">15.5、协程怎么退出？</a>
+                    
+                    <a href="#155-协程怎么退出" class="toc-item" data-toc-group="75">15.5、协程怎么退出？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1551-协程退出的方式" class="toc-item">15.5.1 协程退出的方式</a>
+                    <a href="#1551-协程退出的方式" class="toc-item toc-item--sub" data-toc-group="75">15.5.1 协程退出的方式</a>
                 
                     
                     
                     
-                    <a href="#1552-处理协程的优雅退出" class="toc-item">15.5.2 处理协程的优雅退出</a>
+                    
+                    
+                    <a href="#1552-处理协程的优雅退出" class="toc-item toc-item--sub" data-toc-group="75">15.5.2 处理协程的优雅退出</a>
                 
+                    
                     
                     
                     
-                    <a href="#156-map-如何顺序读取" class="toc-item">15.6、map 如何顺序读取？</a>
+                    
+                    <a href="#156-map-如何顺序读取" class="toc-item" data-toc-group="76">15.6、map 如何顺序读取？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1561-标准库方案" class="toc-item">15.6.1 标准库方案</a>
+                    <a href="#1561-标准库方案" class="toc-item toc-item--sub" data-toc-group="76">15.6.1 标准库方案</a>
                 
                     
                     
                     
-                    <a href="#1562-使用结构体封装的方式" class="toc-item">15.6.2 使用结构体封装的方式</a>
+                    
+                    
+                    <a href="#1562-使用结构体封装的方式" class="toc-item toc-item--sub" data-toc-group="76">15.6.2 使用结构体封装的方式</a>
                 
+                    
                     
                     
                     
-                    <a href="#161-除了-mutex-以外还有那些方式安全读写共享变量" class="toc-item">16.1、除了 mutex 以外还有那些方式安全读写共享变量？</a>
+                    
+                    <a href="#161-除了-mutex-以外还有那些方式安全读写共享变量" class="toc-item" data-toc-group="77">16.1、除了 mutex 以外还有那些方式安全读写共享变量？</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1611-各种同步原语对比" class="toc-item">16.1.1 各种同步原语对比</a>
+                    <a href="#1611-各种同步原语对比" class="toc-item toc-item--sub" data-toc-group="77">16.1.1 各种同步原语对比</a>
                 
                     
                     
                     
-                    <a href="#1612-atomic-操作示例" class="toc-item">16.1.2 atomic 操作示例</a>
+                    
+                    
+                    <a href="#1612-atomic-操作示例" class="toc-item toc-item--sub" data-toc-group="77">16.1.2 atomic 操作示例</a>
                 
                     
                     
                     
-                    <a href="#162-go-如何实现原子操作" class="toc-item">16.2、Go 如何实现原子操作？</a>
+                    
+                    
+                    <a href="#162-go-如何实现原子操作" class="toc-item" data-toc-group="78">16.2、Go 如何实现原子操作？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1621-底层原理" class="toc-item">16.2.1 底层原理</a>
+                    
+                    <a href="#1621-底层原理" class="toc-item toc-item--sub" data-toc-group="78">16.2.1 底层原理</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1622-原子操作的类型" class="toc-item">16.2.2 原子操作的类型</a>
+                    <a href="#1622-原子操作的类型" class="toc-item toc-item--sub" data-toc-group="78">16.2.2 原子操作的类型</a>
                 
                     
                     
                     
-                    <a href="#163-mutex-是悲观锁还是乐观锁悲观锁-乐观锁是什么" class="toc-item">16.3、Mutex 是悲观锁还是乐观锁？悲观锁、乐观锁是什么？</a>
+                    
+                    
+                    <a href="#163-mutex-是悲观锁还是乐观锁悲观锁-乐观锁是什么" class="toc-item" data-toc-group="79">16.3、Mutex 是悲观锁还是乐观锁？悲观锁、乐观锁是什么？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1631-悲观锁与乐观锁" class="toc-item">16.3.1 悲观锁与乐观锁</a>
+                    
+                    <a href="#1631-悲观锁与乐观锁" class="toc-item toc-item--sub" data-toc-group="79">16.3.1 悲观锁与乐观锁</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1632-场景选择" class="toc-item">16.3.2 场景选择</a>
+                    <a href="#1632-场景选择" class="toc-item toc-item--sub" data-toc-group="79">16.3.2 场景选择</a>
                 
                     
                     
                     
-                    <a href="#164-mutex-有几种模式" class="toc-item">16.4、Mutex 有几种模式？</a>
+                    
+                    
+                    <a href="#164-mutex-有几种模式" class="toc-item" data-toc-group="80">16.4、Mutex 有几种模式？</a>
                 
+                    
                     
                     
                     
-                    <a href="#1641-mutex的状态" class="toc-item">16.4.1 Mutex的状态</a>
+                    
+                    <a href="#1641-mutex的状态" class="toc-item toc-item--sub" data-toc-group="80">16.4.1 Mutex的状态</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#1642-正常模式与饥饿模式" class="toc-item">16.4.2 正常模式与饥饿模式</a>
+                    <a href="#1642-正常模式与饥饿模式" class="toc-item toc-item--sub" data-toc-group="80">16.4.2 正常模式与饥饿模式</a>
                 
                     
                     
                     
-                    <a href="#165-goroutine-的自旋占用资源如何解决" class="toc-item">16.5、goroutine 的自旋占用资源如何解决</a>
+                    
+                    
+                    <a href="#165-goroutine-的自旋占用资源如何解决" class="toc-item" data-toc-group="81">16.5、goroutine 的自旋占用资源如何解决</a>
                 
+                    
                     
                     
                     
-                    <a href="#1651-自旋条件" class="toc-item">16.5.1 自旋条件</a>
+                    
+                    <a href="#1651-自旋条件" class="toc-item toc-item--sub" data-toc-group="81">16.5.1 自旋条件</a>
                 
+                    
                     
                     
                     
-                    <a href="#1652-自旋优化策略" class="toc-item">16.5.2 自旋优化策略</a>
+                    
+                    <a href="#1652-自旋优化策略" class="toc-item toc-item--sub" data-toc-group="81">16.5.2 自旋优化策略</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#166-读写锁底层是怎么实现的" class="toc-item">16.6、读写锁底层是怎么实现的？</a>
+                    <a href="#166-读写锁底层是怎么实现的" class="toc-item" data-toc-group="82">16.6、读写锁底层是怎么实现的？</a>
                 
                     
                     
                     
-                    <a href="#1661-底层实现原理" class="toc-item">16.6.1 底层实现原理</a>
+                    
+                    
+                    <a href="#1661-底层实现原理" class="toc-item toc-item--sub" data-toc-group="82">16.6.1 底层实现原理</a>
                 
+                    
                     
                     
                     
-                    <a href="#1662-状态转换" class="toc-item">16.6.2 状态转换</a>
+                    
+                    <a href="#1662-状态转换" class="toc-item toc-item--sub" data-toc-group="82">16.6.2 状态转换</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#171-知道哪些-sync-同步原语各有什么作用" class="toc-item">17.1、知道哪些 sync 同步原语？各有什么作用？</a>
+                    <a href="#171-知道哪些-sync-同步原语各有什么作用" class="toc-item" data-toc-group="83">17.1、知道哪些 sync 同步原语？各有什么作用？</a>
                 
                     
                     
                     
-                    <a href="#1711-syncpool高频问题" class="toc-item">17.1.1 sync.Pool（高频问题）</a>
+                    
+                    
+                    <a href="#1711-syncpool高频问题" class="toc-item toc-item--sub" data-toc-group="83">17.1.1 sync.Pool（高频问题）</a>
                 
+                    
                     
                     
                     
-                    <a href="#1712-synccond" class="toc-item">17.1.2 sync.Cond</a>
+                    
+                    <a href="#1712-synccond" class="toc-item toc-item--sub" data-toc-group="83">17.1.2 sync.Cond</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#172-syncwaitgroup" class="toc-item">17.2、sync.WaitGroup</a>
+                    <a href="#172-syncwaitgroup" class="toc-item" data-toc-group="84">17.2、sync.WaitGroup</a>
                 
                     
                     
                     
-                    <a href="#1721-基本使用" class="toc-item">17.2.1 基本使用</a>
+                    
+                    
+                    <a href="#1721-基本使用" class="toc-item toc-item--sub" data-toc-group="84">17.2.1 基本使用</a>
                 
+                    
                     
                     
                     
-                    <a href="#1722-waitgroup的高级用法" class="toc-item">17.2.2 WaitGroup的高级用法</a>
+                    
+                    <a href="#1722-waitgroup的高级用法" class="toc-item toc-item--sub" data-toc-group="84">17.2.2 WaitGroup的高级用法</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#181-go-用的是什么-gc-算法" class="toc-item">18.1 Go 用的是什么 GC 算法？</a>
+                    <a href="#181-go-用的是什么-gc-算法" class="toc-item" data-toc-group="85">18.1 Go 用的是什么 GC 算法？</a>
                 
                     
                     
                     
-                    <a href="#182-三色标记法" class="toc-item">18.2 三色标记法</a>
+                    
+                    
+                    <a href="#182-三色标记法" class="toc-item" data-toc-group="86">18.2 三色标记法</a>
                 
                     
                     
                     
-                    <a href="#183-为什么需要写屏障" class="toc-item">18.3 为什么需要写屏障？</a>
+                    
+                    
+                    <a href="#183-为什么需要写屏障" class="toc-item" data-toc-group="87">18.3 为什么需要写屏障？</a>
                 
+                    
                     
                     
                     
-                    <a href="#184-gc-触发时机" class="toc-item">18.4 GC 触发时机</a>
+                    
+                    <a href="#184-gc-触发时机" class="toc-item" data-toc-group="88">18.4 GC 触发时机</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#185-stw-发生在哪" class="toc-item">18.5 STW 发生在哪？</a>
+                    <a href="#185-stw-发生在哪" class="toc-item" data-toc-group="89">18.5 STW 发生在哪？</a>
                 
                     
                     
                     
-                    <a href="#191-什么是逃逸" class="toc-item">19.1 什么是逃逸？</a>
+                    
+                    
+                    <a href="#191-什么是逃逸" class="toc-item" data-toc-group="90">19.1 什么是逃逸？</a>
                 
+                    
                     
                     
                     
-                    <a href="#192-常见逃逸场景" class="toc-item">19.2 常见逃逸场景</a>
+                    
+                    <a href="#192-常见逃逸场景" class="toc-item" data-toc-group="91">19.2 常见逃逸场景</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#193-为什么关心逃逸" class="toc-item">19.3 为什么关心逃逸？</a>
+                    <a href="#193-为什么关心逃逸" class="toc-item" data-toc-group="92">19.3 为什么关心逃逸？</a>
                 
                     
                     
                     
-                    <a href="#201-两种底层结构" class="toc-item">20.1 两种底层结构</a>
+                    
+                    
+                    <a href="#201-两种底层结构" class="toc-item" data-toc-group="93">20.1 两种底层结构</a>
                 
+                    
                     
                     
                     
-                    <a href="#202-经典陷阱接口的-nil-判断" class="toc-item">20.2 经典陷阱：接口的 nil 判断</a>
+                    
+                    <a href="#202-经典陷阱接口的-nil-判断" class="toc-item" data-toc-group="94">20.2 经典陷阱：接口的 nil 判断</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#211-特性" class="toc-item">21.1 特性</a>
+                    <a href="#211-特性" class="toc-item" data-toc-group="95">21.1 特性</a>
                 
                     
                     
                     
-                    <a href="#221-错误包装与判断go-113" class="toc-item">22.1 错误包装与判断（Go 1.13+）</a>
+                    
+                    
+                    <a href="#221-错误包装与判断go-113" class="toc-item" data-toc-group="96">22.1 错误包装与判断（Go 1.13+）</a>
                 
+                    
                     
                     
                     
-                    <a href="#231-内存与-gc-优化" class="toc-item">23.1 内存与 GC 优化</a>
+                    
+                    <a href="#231-内存与-gc-优化" class="toc-item" data-toc-group="97">23.1 内存与 GC 优化</a>
                 
+                    
                     
                     
                     
-                    <a href="#232-并发优化" class="toc-item">23.2 并发优化</a>
+                    
+                    <a href="#232-并发优化" class="toc-item" data-toc-group="98">23.2 并发优化</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#233-减少拷贝与序列化开销" class="toc-item">23.3 减少拷贝与序列化开销</a>
+                    <a href="#233-减少拷贝与序列化开销" class="toc-item" data-toc-group="99">23.3 减少拷贝与序列化开销</a>
                 
                     
                     
                     
-                    <a href="#234-io-与外部依赖" class="toc-item">23.4 I/O 与外部依赖</a>
+                    
+                    
+                    <a href="#234-io-与外部依赖" class="toc-item" data-toc-group="100">23.4 I/O 与外部依赖</a>
                 
+                    
                     
                     
                     
-                    <a href="#235-pprof-快速上手" class="toc-item">23.5 pprof 快速上手</a>
+                    
+                    <a href="#235-pprof-快速上手" class="toc-item" data-toc-group="101">23.5 pprof 快速上手</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#241-各公司侧重点" class="toc-item">24.1 各公司侧重点</a>
+                    <a href="#241-各公司侧重点" class="toc-item" data-toc-group="102">24.1 各公司侧重点</a>
                 
                     
                     
                     
-                    <a href="#242-几乎必问的万金油题无论哪家" class="toc-item">24.2 几乎必问的“万金油”题（无论哪家）</a>
+                    
+                    
+                    <a href="#242-几乎必问的万金油题无论哪家" class="toc-item" data-toc-group="103">24.2 几乎必问的“万金油”题（无论哪家）</a>
                 
+                    
                     
                     
                     
-                    <a href="#243-常见项目-场景延伸题" class="toc-item">24.3 常见“项目 + 场景”延伸题</a>
+                    
+                    <a href="#243-常见项目-场景延伸题" class="toc-item" data-toc-group="104">24.3 常见“项目 + 场景”延伸题</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#channel-相关" class="toc-item">Channel 相关</a>
+                    <a href="#channel-相关" class="toc-item" data-toc-group="105">Channel 相关</a>
                 
                     
                     
                     
-                    <a href="#map-相关" class="toc-item">Map 相关</a>
+                    
+                    
+                    <a href="#map-相关" class="toc-item" data-toc-group="106">Map 相关</a>
                 
+                    
                     
                     
                     
-                    <a href="#gmp-相关" class="toc-item">GMP 相关</a>
+                    
+                    <a href="#gmp-相关" class="toc-item" data-toc-group="107">GMP 相关</a>
                 
+                    
+                    
                     
                     
                     
-                    <a href="#运行时与语言核心新增" class="toc-item">运行时与语言核心（新增）</a>
+                    <a href="#运行时与语言核心新增" class="toc-item" data-toc-group="108">运行时与语言核心（新增）</a>
                 
             </div>
         </aside>
@@ -4858,11 +5259,11 @@ err <span class="token operator">:=</span> fmt<span class="token punctuation">.<
     
         
 <div id="dyl-search-overlay" class="search-overlay" aria-hidden="true">
-    <div class="search-modal" role="dialog" aria-modal="true" aria-label="搜索">
+    <div class="search-modal" role="dialog" aria-modal="true" data-i18n-aria-label="search" aria-label="搜索">
         <div class="search-header">
-            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="搜索">
+            <input type="search" id="dyl-search-input" class="search-input" placeholder="搜索标题、标签或正文…" data-i18n-placeholder="search_placeholder" data-i18n-aria-label="search" autocomplete="off" aria-label="搜索">
             <span class="search-hint" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</span>
-            <button type="button" id="dyl-search-close" class="search-close" aria-label="Close search">×</button>
+            <button type="button" id="dyl-search-close" class="search-close" data-i18n-aria-label="search_close" aria-label="关闭搜索">×</button>
         </div>
         <div id="dyl-search-results" class="search-results">
             <div class="search-empty" data-i18n="search_shortcut">输入关键词搜索，按 Esc 关闭</div>
@@ -4875,8 +5276,8 @@ err <span class="token operator">:=</span> fmt<span class="token punctuation">.<
 
 
     
-    <footer class="site-footer" data-fx-pad>
-    <div class="footer-row" data-fx-footrow>
+    <footer class="site-footer">
+    <div class="footer-row">
         <div class="footer-brand">
             <div class="footer-logo">DYL521</div>
             <div class="footer-tagline" data-i18n="footer_tagline">简单地活着，肆意而又精彩。</div>
@@ -4889,13 +5290,13 @@ err <span class="token operator">:=</span> fmt<span class="token punctuation">.<
         </div>
     </div>
     <div class="footer-bottom">
-        <span data-site-posts="244" data-site-tags="169" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
+        <span data-site-posts="245" data-site-tags="170" data-site-year="2020"><span class="status-dot">●</span> <span data-i18n="footer_stats">{posts} 篇文章 · {tags} 标签 · 自 {year}</span></span>
         <span data-i18n="footer_copyright">© 2020–2026 DYL521 · built with hexo · Polelight</span>
     </div>
 </footer>
 
-    <script>window.DYL_SEARCH = { url: "../../../../../search.json?v=ac54700a2d85" };</script>
+    <script>window.DYL_SEARCH = { url: "../../../../../search.json?v=f9de40e66f26" };</script>
     
-    <script src="/js/polelight.js?v=a1d2418b8017" defer></script>
+    <script src="/js/polelight.js?v=ef8a7497a7e9" defer></script>
 </body>
 </html>
