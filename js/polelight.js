@@ -28,101 +28,101 @@
       theme: 'base',
       flowchart: {
         curve: 'basis',
-        padding: 16,
-        nodeSpacing: 40,
-        rankSpacing: 64,
+        padding: 12,
+        nodeSpacing: 32,
+        rankSpacing: 44,
         htmlLabels: true
       },
       themeVariables: isDark ? {
         darkMode: true,
-        background: '#191524',
+        background: '#181e30',
         fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif",
         fontSize: '13px',
-        primaryColor: '#251d3a',
-        primaryTextColor: '#F2ECFC',
-        primaryBorderColor: '#8C68D0',
-        mainBkg: '#251d3a',
-        nodeBkg: '#251d3a',
-        nodeBorder: '#8C68D0',
-        lineColor: '#B68DF8',
-        defaultLinkColor: '#B68DF8',
-        textColor: '#EAE2FA',
-        secondaryColor: '#1E1730',
-        tertiaryColor: '#191428',
-        clusterBkg: '#1C162B',
-        clusterBorder: '#4B3B6B',
-        titleColor: '#D8CAF5',
-        edgeLabelBackground: '#201933',
-        actorBkg: '#251d3a',
-        actorBorder: '#8C68D0',
-        actorTextColor: '#F2ECFC',
-        actorLineColor: '#695294',
-        signalColor: '#C4A3FC',
-        signalTextColor: '#EAE2FA',
-        labelBoxBkgColor: '#251d3a',
-        labelBoxBorderColor: '#695294',
-        labelTextColor: '#F2ECFC',
-        noteBkgColor: '#2C2245',
-        noteBorderColor: '#8C68D0',
-        noteTextColor: '#F2ECFC',
-        doneTaskBkgColor: '#3D2B5E',
-        doneTaskBorderColor: '#8B68C7',
-        activeTaskBkgColor: '#674397',
-        activeTaskBorderColor: '#C795FF',
-        taskBkgColor: '#2B1F42',
-        taskBorderColor: '#7E5BB8',
-        taskTextColor: '#F1ECFF',
-        taskTextDarkColor: '#F1ECFF',
-        taskTextOutsideColor: '#D8CEF0',
-        gridColor: '#3B2F52',
-        pie1: '#7E57C2',
-        pie2: '#5C6BC0',
-        pie3: '#26A69A',
-        pie4: '#AB47BC',
-        pieTitleTextColor: '#F1ECFF',
+        primaryColor: '#202740',
+        primaryTextColor: '#F1F4FC',
+        primaryBorderColor: '#6B7FD9',
+        mainBkg: '#202740',
+        nodeBkg: '#202740',
+        nodeBorder: '#6B7FD9',
+        lineColor: '#93A5F8',
+        defaultLinkColor: '#93A5F8',
+        textColor: '#DDE4F7',
+        secondaryColor: '#181e30',
+        tertiaryColor: '#141929',
+        clusterBkg: '#151B2C',
+        clusterBorder: '#37446B',
+        titleColor: '#D6E0FC',
+        edgeLabelBackground: '#1C2338',
+        actorBkg: '#202740',
+        actorBorder: '#6B7FD9',
+        actorTextColor: '#F1F4FC',
+        actorLineColor: '#5667A6',
+        signalColor: '#93A5F8',
+        signalTextColor: '#DDE4F7',
+        labelBoxBkgColor: '#202740',
+        labelBoxBorderColor: '#5667A6',
+        labelTextColor: '#F1F4FC',
+        noteBkgColor: '#1F2A42',
+        noteBorderColor: '#6FD9E8',
+        noteTextColor: '#F1F4FC',
+        doneTaskBkgColor: '#2A3459',
+        doneTaskBorderColor: '#6B7FD9',
+        activeTaskBkgColor: '#5B6EE1',
+        activeTaskBorderColor: '#6FD9E8',
+        taskBkgColor: '#222B47',
+        taskBorderColor: '#6B7FD9',
+        taskTextColor: '#F1F4FC',
+        taskTextDarkColor: '#F1F4FC',
+        taskTextOutsideColor: '#D2DAF0',
+        gridColor: '#2B3552',
+        pie1: '#7E91F0',
+        pie2: '#55C6D9',
+        pie3: '#A894F2',
+        pie4: '#5EC4A2',
+        pieTitleTextColor: '#F1F4FC',
         pieSectionTextColor: '#FFFFFF',
-        pieLegendTextColor: '#D8CEF0'
+        pieLegendTextColor: '#D2DAF0'
       } : {
         darkMode: false,
-        background: '#f7f5fc',
+        background: '#f6f8fc',
         fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif",
         fontSize: '13px',
         primaryColor: '#FFFFFF',
-        primaryTextColor: '#1E1833',
-        primaryBorderColor: '#8C63C9',
+        primaryTextColor: '#1A2238',
+        primaryBorderColor: '#7788E0',
         mainBkg: '#FFFFFF',
         nodeBkg: '#FFFFFF',
-        nodeBorder: '#8C63C9',
-        lineColor: '#7546BC',
-        defaultLinkColor: '#7546BC',
-        textColor: '#272334',
-        secondaryColor: '#F5F2FB',
-        tertiaryColor: '#EFEAF8',
-        clusterBkg: '#F2EEF9',
-        clusterBorder: '#C7B6E4',
-        titleColor: '#3A285C',
+        nodeBorder: '#7788E0',
+        lineColor: '#5B6EE1',
+        defaultLinkColor: '#5B6EE1',
+        textColor: '#2F3A52',
+        secondaryColor: '#F6F8FC',
+        tertiaryColor: '#EEF2F9',
+        clusterBkg: '#F0F3FA',
+        clusterBorder: '#C4CEEE',
+        titleColor: '#3948B0',
         edgeLabelBackground: '#FFFFFF',
         actorBkg: '#FFFFFF',
-        actorBorder: '#8C63C9',
-        actorTextColor: '#1E1833',
-        actorLineColor: '#9E82CE',
-        signalColor: '#7546BC',
-        signalTextColor: '#272334',
-        noteBkgColor: '#F5F0FC',
-        noteBorderColor: '#8C63C9',
-        noteTextColor: '#272334',
-        doneTaskBkgColor: '#D8CCF0',
-        doneTaskBorderColor: '#8255ba',
-        activeTaskBkgColor: '#7546bc',
-        activeTaskBorderColor: '#572e94',
-        taskBkgColor: '#EDE7F8',
-        taskBorderColor: '#9B80BC',
-        taskTextColor: '#1A1433',
-        taskTextDarkColor: '#1A1433',
-        pie1: '#7546bc',
-        pie2: '#4F6D9A',
-        pie3: '#2E8B7D',
-        pie4: '#A65E9A'
+        actorBorder: '#7788E0',
+        actorTextColor: '#1A2238',
+        actorLineColor: '#919FE0',
+        signalColor: '#5B6EE1',
+        signalTextColor: '#2F3A52',
+        noteBkgColor: '#EFF5FC',
+        noteBorderColor: '#38A3B8',
+        noteTextColor: '#2F3A52',
+        doneTaskBkgColor: '#D5DDF7',
+        doneTaskBorderColor: '#6A7CD9',
+        activeTaskBkgColor: '#5B6EE1',
+        activeTaskBorderColor: '#38A3B8',
+        taskBkgColor: '#E8EDFB',
+        taskBorderColor: '#8D9CE0',
+        taskTextColor: '#1A2238',
+        taskTextDarkColor: '#1A2238',
+        pie1: '#5B6EE1',
+        pie2: '#38A3B8',
+        pie3: '#8872DB',
+        pie4: '#2D9B7E'
       },
       securityLevel: 'loose'
     });
@@ -245,16 +245,108 @@
     });
   }
 
+  function readSvgNaturalSize(svg) {
+    if (!svg) return null;
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    if (vb && vb.width > 0 && vb.height > 0) {
+      return { width: vb.width, height: vb.height };
+    }
+    var attr = svg.getAttribute ? svg.getAttribute('viewBox') : '';
+    if (attr) {
+      var parts = String(attr).trim().split(/[\s,]+/).map(Number);
+      if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+        return { width: parts[2], height: parts[3] };
+      }
+    }
+    var rect = svg.getBoundingClientRect ? svg.getBoundingClientRect() : null;
+    if (rect && rect.width > 0 && rect.height > 0) {
+      return { width: rect.width, height: rect.height };
+    }
+    return null;
+  }
+
+  function adaptMermaidLayout(container, view) {
+    if (!container || !view) return;
+    var svg = view.querySelector ? view.querySelector('svg') : null;
+    if (!svg) return;
+    var nat = readSvgNaturalSize(svg);
+    if (!nat || !nat.width || !nat.height) return;
+
+    var boxW = (view.clientWidth || (container.clientWidth ? container.clientWidth - 32 : 0)) || 720;
+    var maxBoxH = Math.min(Math.round((window.innerHeight || 900) * 0.72), 640);
+    var maxContentH = Math.max(240, maxBoxH - 16);
+    var natW = nat.width;
+    var natH = nat.height;
+    var fitWScale = boxW / natW;
+    var fitHScale = maxContentH / natH;
+    var fitBothScale = Math.min(fitWScale, fitHScale, 1.08);
+    var isPortrait = natH > natW * 1.35;
+    var targetScale;
+
+    if (isPortrait) {
+      // 纵向图：若按安全高度完整塞入仍保持清晰（>= 0.65，或宽度占容器 >= 45%），直接完整展示；
+      // 仅在极端细长时保底宽度并启用滚动 / 展开全图
+      if (fitBothScale >= 0.65 || (fitBothScale >= 0.42 && (natW * fitBothScale) >= boxW * 0.45)) {
+        targetScale = fitBothScale;
+      } else {
+        targetScale = Math.min(1, Math.max(0.65, (boxW * 0.58) / natW), fitWScale);
+      }
+    } else {
+      // 横向 / 均衡图：优先完整展示全图（宽、高同时适应视口）；
+      // 仅当极端超宽（缩放低于 0.38，文字已不可辨认）时保底到 0.50 并允许拖拽/缩放
+      if (fitBothScale >= 0.38) {
+        targetScale = fitBothScale;
+      } else {
+        targetScale = Math.max(0.5, fitWScale);
+      }
+    }
+
+    var baseW = Math.max(160, Math.round(natW * targetScale));
+    if (svg.style) {
+      svg.style.height = 'auto';
+      if (baseW > boxW) {
+        svg.style.maxWidth = 'none';
+        svg.style.width = baseW + 'px';
+      } else {
+        svg.style.maxWidth = '100%';
+        svg.style.width = baseW + 'px';
+      }
+    }
+
+    if (svg.dataset) {
+      svg.dataset.baseWidth = String(baseW);
+      svg.dataset.natWidth = String(Math.round(natW));
+      svg.dataset.natHeight = String(Math.round(natH));
+    }
+
+    var estH = Math.round(baseW * (natH / natW));
+    var isTall = estH > maxContentH + 8;
+    var isWideScroll = baseW > boxW + 8;
+    if (container.classList) {
+      container.classList.toggle('mermaid--tall', isTall);
+      container.classList.toggle('mermaid--pannable', isTall || isWideScroll);
+    }
+    var fitBtn = container.querySelector ? container.querySelector('.mermaid-fit-btn') : null;
+    if (fitBtn) {
+      fitBtn.hidden = !isTall;
+      var expanded = Boolean(container.classList && container.classList.contains('mermaid--expanded'));
+      fitBtn.setAttribute('aria-pressed', expanded ? 'true' : 'false');
+      setButtonText(fitBtn, expanded ? 'diagram_compact_height' : 'diagram_expand_height');
+    }
+  }
+
   function applyMermaidScale(container, nextScale) {
     var scale = Math.min(2.5, Math.max(0.5, Math.round(nextScale * 100) / 100));
     container.dataset.scale = String(scale);
     var label = container.querySelector('.mermaid-zoom-reset');
     if (label) label.textContent = Math.round(scale * 100) + '%';
+    var view = container.querySelector('.mermaid-view');
     var svg = container.querySelector('.mermaid-view svg');
     if (!svg) return;
     if (scale === 1) {
       svg.style.maxWidth = '100%';
       svg.style.width = '';
+      adaptMermaidLayout(container, view);
       return;
     }
     var baseWidth = Number(svg.dataset.baseWidth || 0);
@@ -265,6 +357,9 @@
     }
     svg.style.maxWidth = 'none';
     svg.style.width = Math.round(baseWidth * scale) + 'px';
+    if (container.classList && typeof container.classList.toggle === 'function') {
+      container.classList.toggle('mermaid--pannable', scale > 1);
+    }
   }
 
   function ensureMermaidScaffold(container) {
@@ -335,7 +430,9 @@
       var natH = (vb && vb.height) || (rect && rect.height) || 480;
       var maxW = Math.min(window.innerWidth * 0.88, 1320);
       var maxH = window.innerHeight * 0.78;
-      var ratio = Math.min(maxW / natW, maxH / natH, 2.2);
+      var fitRatio = Math.min(maxW / natW, maxH / natH, 2.2);
+      var aspect = natH / (natW || 1);
+      var ratio = aspect > 1.6 ? Math.max(fitRatio, Math.min(1, maxW / natW)) : fitRatio;
       var dispW = Math.max(240, Math.round(natW * ratio));
       var dispH = Math.max(140, Math.round(natH * ratio));
       if (cloned.id) {
@@ -360,7 +457,41 @@
       openMediaLightbox(cloned, diagLabel);
     }
     zoomFull.addEventListener('click', openMermaidFull);
-    if (view.addEventListener) view.addEventListener('dblclick', openMermaidFull);
+    if (view.addEventListener) {
+      view.addEventListener('dblclick', openMermaidFull);
+      var panState = null;
+      view.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0 || e.pointerType === 'touch') return;
+        if (!container.classList || !container.classList.contains('mermaid--pannable')) return;
+        panState = { x: e.clientX, y: e.clientY, sl: view.scrollLeft, st: view.scrollTop };
+        if (view.classList) view.classList.add('is-panning');
+      });
+      view.addEventListener('pointermove', function (e) {
+        if (!panState) return;
+        view.scrollLeft = panState.sl - (e.clientX - panState.x);
+        view.scrollTop = panState.st - (e.clientY - panState.y);
+      });
+      var endPan = function () {
+        if (!panState) return;
+        panState = null;
+        if (view.classList) view.classList.remove('is-panning');
+      };
+      view.addEventListener('pointerup', endPan);
+      view.addEventListener('pointercancel', endPan);
+      view.addEventListener('pointerleave', endPan);
+    }
+
+    var fitBtn = document.createElement('button');
+    fitBtn.type = 'button';
+    fitBtn.className = 'mermaid-btn mermaid-fit-btn';
+    fitBtn.hidden = true;
+    fitBtn.setAttribute('aria-pressed', 'false');
+    setButtonText(fitBtn, 'diagram_expand_height');
+    fitBtn.addEventListener('click', function () {
+      var expanded = container.classList.toggle('mermaid--expanded');
+      fitBtn.setAttribute('aria-pressed', expanded ? 'true' : 'false');
+      setButtonText(fitBtn, expanded ? 'diagram_compact_height' : 'diagram_expand_height');
+    });
 
     var collapse = document.createElement('button');
     collapse.type = 'button';
@@ -391,6 +522,7 @@
     bar.className = 'mermaid-toolbar';
     bar.appendChild(label);
     bar.appendChild(zoomGroup);
+    bar.appendChild(fitBtn);
     bar.appendChild(zoomFull);
     bar.appendChild(collapse);
     bar.appendChild(toggle);
@@ -435,6 +567,7 @@
         });
       }
       fixMermaidNodeContrast(view);
+      adaptMermaidLayout(container, view);
       var savedScale = Number(container.dataset.scale || '1');
       if (savedScale !== 1) applyMermaidScale(container, savedScale);
     }).catch(function (err) {
@@ -530,7 +663,7 @@
   function syncThemeUI(t) {
     document.documentElement.setAttribute('data-theme', t);
     var tc = document.getElementById('dyl-theme-color');
-    if (tc) tc.setAttribute('content', t === 'light' ? '#f4f5f9' : '#0e0c14');
+    if (tc) tc.setAttribute('content', t === 'light' ? '#f6f8fc' : '#10131e');
     var btn = document.getElementById('dyl-theme-toggle');
     if (btn) {
       btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
@@ -1498,6 +1631,37 @@
     }
 
     input.addEventListener('input', runFilter);
+    if (input.addEventListener) {
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          if (input.value || activeCat) {
+            input.value = '';
+            activeCat = '';
+            runFilter();
+          } else if (input.blur) {
+            input.blur();
+          }
+        }
+      });
+    }
+    if (document.addEventListener) {
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+        var tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
+        var overlay = document.getElementById('dyl-search-overlay');
+        if (overlay && overlay.classList && overlay.classList.contains('active')) return;
+        e.preventDefault();
+        if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+        if (input.focus) {
+          if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(function () { input.focus(); });
+          } else {
+            input.focus();
+          }
+        }
+      });
+    }
 
     var catBox = document.getElementById('dyl-posts-cats');
     if (catBox && catBox.addEventListener) {
@@ -2272,6 +2436,7 @@
     var list = document.querySelector('[data-pill-list]');
     if (!input || !list) return;
     var empty = document.querySelector('[data-pill-empty]');
+    var counter = document.querySelector('[data-pill-count]');
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
       var shown = 0;
@@ -2282,6 +2447,7 @@
         pill.hidden = !ok;
         if (ok) shown++;
       });
+      if (counter) counter.textContent = String(shown);
       if (empty) empty.hidden = shown > 0;
     });
   }
@@ -2556,12 +2722,50 @@
     }
   }
 
+  function initNavPill() {
+    var navLinks = document.getElementById('dyl-nav-links');
+    var pill = document.getElementById('dyl-nav-pill');
+    if (!navLinks || !pill || typeof navLinks.querySelectorAll !== 'function') return;
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+
+    var links = Array.prototype.slice.call(navLinks.querySelectorAll('.nav-link'));
+    if (!links.length) return;
+
+    function moveTo(el) {
+      if (!el || typeof el.getBoundingClientRect !== 'function') return;
+      var navRect = navLinks.getBoundingClientRect();
+      var rect = el.getBoundingClientRect();
+      if (!rect.width) return;
+      pill.style.width = Math.round(rect.width + 20) + 'px';
+      pill.style.transform = 'translate3d(' + Math.round(rect.left - navRect.left - 10) + 'px, -50%, 0)';
+      pill.style.opacity = '1';
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener('pointerenter', function (e) {
+        if (e && e.pointerType === 'touch') return;
+        moveTo(link);
+      });
+      link.addEventListener('focus', function () {
+        moveTo(link);
+      });
+    });
+
+    navLinks.addEventListener('pointerleave', function () {
+      pill.style.opacity = '0';
+    });
+    navLinks.addEventListener('focusout', function (e) {
+      if (e.relatedTarget && navLinks.contains(e.relatedTarget)) return;
+      pill.style.opacity = '0';
+    });
+  }
+
   function initCardSpotlight() {
     if (window.matchMedia) {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (window.matchMedia('(hover: none)').matches) return;
     }
-    var SELECTOR = '.story-card, .now-card, .topic-item, .related-card, .nav-card:not(.empty), .footprint-panel, .repo-card, .terminal-window';
+    var SELECTOR = '.story-card, .now-card, .topic-item, .related-card, .nav-card:not(.empty), .footprint-panel, .repo-card, .terminal-window, .tag-feature-card, .cat-domain-card';
     var frame = 0;
     var activeCard = null;
     var px = 0;
@@ -2630,6 +2834,153 @@
     }
   }
 
+  function initBigFish() {
+    var root = document.getElementById('dyl-bigfish');
+    if (!root) return;
+    var btn = document.getElementById('dyl-fish-btn');
+    var bubble = document.getElementById('dyl-fish-bubble');
+    var hideBtn = document.getElementById('dyl-fish-hide');
+    var wakeBtn = document.getElementById('dyl-fish-wake');
+    if (!btn || !bubble) return;
+
+    var SLEEP_KEY = 'dyl_bigfish_sleep_v1';
+    var bubbleTimer = 0;
+    var squishTimer = 0;
+    var msgIdx = 0;
+    var isDragging = false;
+    var moved = false;
+    var dragOrigin = null;
+
+    function setSleeping(sleep) {
+      if (root.classList) root.classList.toggle('is-sleeping', sleep);
+      if (wakeBtn) wakeBtn.hidden = !sleep;
+      if (sleep) bubble.hidden = true;
+      try {
+        if (sleep) localStorage.setItem(SLEEP_KEY, '1');
+        else localStorage.removeItem(SLEEP_KEY);
+      } catch (e) {}
+    }
+
+    try {
+      if (localStorage.getItem(SLEEP_KEY) === '1') setSleeping(true);
+    } catch (e) {}
+
+    function fishText(key, attr) {
+      var d = DICT[currentLang];
+      if (d && d[key]) return d[key];
+      return (root.getAttribute && root.getAttribute(attr)) || '';
+    }
+
+    function pickMessage() {
+      var article = document.querySelector && document.querySelector('.article-body:not(.article-body--resume)');
+      if (article && msgIdx % 2 === 0) {
+        var top = window.pageYOffset || document.documentElement.scrollTop || 0;
+        var total = (document.documentElement.scrollHeight || 0) - (window.innerHeight || 0);
+        if (total > 200) {
+          var pct = Math.min(100, Math.max(0, Math.round((top / total) * 100)));
+          if (pct >= 92) return fishText('fish_read_done', 'data-fish-done');
+          if (pct >= 10) return fishText('fish_read_progress', 'data-fish-progress').replace('{pct}', pct + '%');
+        }
+      }
+      var raw = fishText('fish_msgs', 'data-fish-msgs');
+      var pool = raw ? raw.split('|') : ['✦'];
+      return pool[msgIdx % pool.length];
+    }
+
+    function showBubble(text) {
+      bubble.textContent = text;
+      bubble.hidden = false;
+      clearTimeout(bubbleTimer);
+      bubbleTimer = setTimeout(function () { bubble.hidden = true; }, 3400);
+    }
+
+    function triggerPet() {
+      if (root.classList) {
+        root.classList.remove('is-squishing');
+        void root.offsetWidth;
+        root.classList.add('is-squishing');
+        root.classList.add('is-happy');
+      }
+      clearTimeout(squishTimer);
+      squishTimer = setTimeout(function () {
+        if (root.classList) {
+          root.classList.remove('is-squishing');
+          root.classList.remove('is-happy');
+        }
+      }, 1500);
+      showBubble(pickMessage());
+      msgIdx++;
+    }
+
+    if (hideBtn) {
+      hideBtn.addEventListener('click', function (e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        setSleeping(true);
+      });
+    }
+
+    if (wakeBtn) {
+      wakeBtn.addEventListener('click', function () {
+        setSleeping(false);
+        triggerPet();
+      });
+    }
+
+    btn.addEventListener('click', function () {
+      if (moved) { moved = false; return; }
+      triggerPet();
+    });
+
+    // Smooth drag-to-move within viewport bounds
+    btn.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || e.pointerType === 'touch') return;
+      var rect = root.getBoundingClientRect ? root.getBoundingClientRect() : null;
+      if (!rect) return;
+      isDragging = true;
+      moved = false;
+      dragOrigin = {
+        startX: e.clientX,
+        startY: e.clientY,
+        right: (window.innerWidth || 1200) - rect.right,
+        bottom: (window.innerHeight || 800) - rect.bottom
+      };
+      if (btn.setPointerCapture) {
+        try { btn.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+    });
+
+    btn.addEventListener('pointermove', function (e) {
+      if (!isDragging || !dragOrigin) return;
+      var dx = e.clientX - dragOrigin.startX;
+      var dy = e.clientY - dragOrigin.startY;
+      if (!moved && Math.hypot(dx, dy) > 6) {
+        moved = true;
+        if (root.classList) root.classList.add('is-dragging');
+        bubble.hidden = true;
+      }
+      if (!moved) return;
+      var fw = (btn.offsetWidth || 160) + 16;
+      var fh = (btn.offsetHeight || 136) + 16;
+      var maxRight = Math.max(20, (window.innerWidth || 1200) - fw);
+      var maxBottom = Math.max(20, (window.innerHeight || 800) - fh);
+      var nextRight = Math.min(maxRight, Math.max(12, dragOrigin.right - dx));
+      var nextBottom = Math.min(maxBottom, Math.max(12, dragOrigin.bottom - dy));
+      if (root.style) {
+        root.style.right = Math.round(nextRight) + 'px';
+        root.style.bottom = Math.round(nextBottom) + 'px';
+      }
+    });
+
+    function endDrag() {
+      if (!isDragging) return;
+      isDragging = false;
+      dragOrigin = null;
+      if (root.classList) root.classList.remove('is-dragging');
+    }
+    btn.addEventListener('pointerup', endDrag);
+    btn.addEventListener('pointercancel', endDrag);
+  }
+
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     syncThemeUI(theme);
@@ -2641,9 +2992,11 @@
     applyLang(lang);
     bindThemeToggle();
     bindMobileNav();
+    initNavPill();
     initHeroArt();
     initCardSpotlight();
     initScrollReveal();
+    initBigFish();
     initPostsFilter();
     initPillFilter();
     initShortcutsModal();
